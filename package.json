@@ -1,0 +1,22 @@
+{
+  "name": "cdtn-monolog",
+  "version": "1.0.0",
+  "description": "\"CDTN log analysis\"",
+  "main": "index.js",
+  "author": "SocialGouv",
+  "license": "MIT",
+  "scripts": {
+    "export-searches": "node -r esm src/main.js"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.4.0",
+    "commander": "^4.0.1",
+    "esm": "^3.2.25",
+    "request-promise-native": "^1.0.8"
+  },
+  "devDependencies": {
+    "@socialgouv/eslint-config-recommended": "^0.10.3",
+    "eslint": "^6.6.0",
+    "prettier": "^1.19.1"
+  }
+}
