@@ -6,7 +6,7 @@
   "author": "SocialGouv",
   "license": "MIT",
   "scripts": {
-    "export-searches": "node -r esm src/main.js"
+    "cli": "node -r esm src/main.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
