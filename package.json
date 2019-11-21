@@ -6,7 +6,8 @@
   "author": "SocialGouv",
   "license": "MIT",
   "scripts": {
-    "cli": "node -r esm src/main.js"
+    "print-visits": "node -r esm src/printer.js",
+    "write-searches": "node -r esm src/writer.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",

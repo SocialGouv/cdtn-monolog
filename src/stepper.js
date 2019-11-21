@@ -1,17 +1,13 @@
 import * as logstashClient from "./logstash/logstashClient";
 
-const selectSuggStep = "select_suggestion";
+export const selectSuggStep = "select_suggestion";
+export const selectResStep = "select_result";
+export const searchStep = "search";
 const suggCandidatesStep = "suggestion_candidates";
-const searchStep = "search";
 const resCandidatesStep = "result_candidates";
-const selectResStep = "select_result";
 const feedbackStep = "feedback";
 const visitStep = "visit";
 const homeStep = "home";
-
-export const writeSearches = () => {
-  logstashClient.getRequests().then(res => console.log(res));
-};
 
 const shorten = (str, len = 30) =>
   str.length > len ? str.substr(0, len - 1) + "..." : str;
@@ -53,85 +49,81 @@ const addSearchRank = visit => {
   let lastResultCandidatesDocs;
 
   for (const step of visit) {
-    // we should use select results here
+    // we should only use select results here, for now dealing with visits as well
     if (step._source.type === visitStep) {
       const page = step._source.url.split("gouv.fr/")[1];
       // there is a transformation for the type
       const split = page.split("/");
       const transformed =
         split[0].replace(/-/g, "_").replace("fiche", "fiches") + "/" + split[1];
-      step._source.rank = lastResultCandidatesDocs.indexOf(transformed);
+      if (lastResultCandidatesDocs != undefined)
+        step._source.rank = lastResultCandidatesDocs.indexOf(transformed);
     } else if (step._source.type === selectResStep) {
       const selection = step._source.selection;
-      step._source.rank = lastResultCandidatesDocs.indexOf(selection);
+      const split = selection.split("/");
+      const transformed =
+        split[1].replace(/-/g, "_").replace("fiche", "fiches") + "/" + split[2];
+      step._source.rank = lastResultCandidatesDocs.indexOf(transformed);
     } else if (step._source.type === resCandidatesStep) {
       lastResultCandidatesDocs = step._source.result_candidates.documents.map(
-        // another transformation needed to match visit and candidates
+        // another transformation needed to match visit and candidates, not compatible with selectResult
         d => d //.split("#")[0]
       );
     }
   }
 };
 
-export const printVisit = idVisit => {
-  logstashClient
-    .getVisitSteps(idVisit)
-    .then(steps => {
-      if (steps.length == 0) {
-        console.log("Cannot find logs for idVisit " + idVisit);
-      } else {
-        // add rank to suggestions
-        addSuggestionRank(steps);
-        addSearchRank(steps);
-        const agg = [];
-        steps.forEach(step => {
-          const values = step._source;
-          switch (values.type) {
-            case selectSuggStep:
-              values.param1 = values.prefix;
-              values.param2 = shorten(values.selection);
-              values.param3 = values.rank;
-              agg.push(values);
-              break;
-            case searchStep:
-              values.param2 = shorten(values.query, 40);
-              agg.push(values);
-              break;
-            case feedbackStep:
-              agg.push(values);
-              values.param1 = values.feedback_type;
-              break;
-            case visitStep: {
-              agg.push(values);
-              const page = values.url.split("gouv.fr/")[1].split("/");
-              values.param1 = page[0];
-              values.param2 = shorten(page[1], 40);
-              values.param3 = values.rank;
-              break;
-            }
-            case selectResStep: {
-              agg.push(values);
-              const selection = values.selection.split("/");
-              values.param1 = selection[1];
-              values.param2 = shorten(selection[2], 40);
-              values.param3 = values.rank;
-              break;
-            }
-            case homeStep:
-              agg.push(values);
-              break;
-            default:
-              agg.push(values);
+export const formatVisit = idVisit =>
+  logstashClient.getVisitSteps(idVisit).then(steps => {
+    if (steps.length == 0) {
+      console.log("Cannot find logs for idVisit " + idVisit);
+      return [];
+    } else {
+      // add rank to suggestions
+      addSuggestionRank(steps);
+      addSearchRank(steps);
+      const agg = [];
+      steps.forEach(step => {
+        const values = step._source;
+        switch (values.type) {
+          case selectSuggStep:
+            values.param1 = values.prefix;
+            values.param2 = shorten(values.selection);
+            values.param3 = values.rank;
+            agg.push(values);
+            break;
+          case searchStep:
+            values.param2 = shorten(values.query, 40);
+            agg.push(values);
+            break;
+          case feedbackStep:
+            agg.push(values);
+            values.param1 = values.feedback_type;
+            break;
+          case visitStep: {
+            agg.push(values);
+            const page = values.url.split("gouv.fr/")[1].split("/");
+            values.param1 = page[0];
+            if (page[1] != undefined) values.param2 = shorten(page[1], 40);
+            // values.param3 = values.rank;
+            break;
           }
-        });
-        console.table(agg, [
-          "type",
-          "timeSpentPretty",
-          "param1",
-          "param2",
-          "param3"
-        ]);
-      }
-    })
-    .catch(err => console.log(err));
-};
+          case selectResStep: {
+            agg.push(values);
+            const selection = values.selection.split("/");
+            values.param1 = selection[1];
+            values.param2 = shorten(selection[2], 40);
+            values.param3 = values.rank;
+            break;
+          }
+          case homeStep:
+            agg.push(values);
+            break;
+          default:
+            agg.push(values);
+        }
+      });
+
+      return agg;
+    }
+  });
