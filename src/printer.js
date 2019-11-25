@@ -1,25 +1,8 @@
 import * as stepper from "./stepper";
 import * as logstashClient from "./logstash/logstashClient";
 
+import { commaSeparatedIntList } from "./utils";
 import commander from "commander";
-
-const monolog = new commander.Command();
-
-function commaSeparatedList(value) {
-  return value.split(",").map(i => parseInt(i));
-}
-
-monolog
-  .option("-t, --type <type>", "Visit type : all, suggestion, search", "all")
-  .option("-n, --nvisits <n>", "Random n visits", parseInt, 10)
-  .option(
-    "-i, --ids <ids>",
-    "Comma separated list of specific visit ids",
-    commaSeparatedList,
-    []
-  );
-
-monolog.parse(process.argv);
 
 const allowedTypes = {
   search: [stepper.selectResStep, stepper.searchStep],
@@ -66,6 +49,20 @@ const getVisits = command => {
     return logstashClient.getRandomVisitIds(command.nvisits);
   }
 };
+
+const monolog = new commander.Command();
+
+monolog
+  .option("-t, --type <type>", "Visit type : all, suggestion, search", "all")
+  .option("-n, --nvisits <n>", "Random n visits", parseInt, 10)
+  .option(
+    "-i, --ids <ids>",
+    "Comma separated list of specific visit ids",
+    commaSeparatedIntList,
+    []
+  );
+
+monolog.parse(process.argv);
 
 getVisits(monolog)
   .then(ids => printVisits(ids, monolog.type))

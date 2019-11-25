@@ -7,12 +7,14 @@
   "license": "MIT",
   "scripts": {
     "print-visits": "node -r esm src/printer.js",
-    "write-searches": "node -r esm src/writer.js"
+    "export": "node -r esm src/writer.js",
+    "matomo-dump": "node -r esm src/matomo_dumper.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.4.0",
     "commander": "^4.0.1",
     "esm": "^3.2.25",
+    "request": "^2.88.0",
     "request-promise-native": "^1.0.8"
   },
   "devDependencies": {
