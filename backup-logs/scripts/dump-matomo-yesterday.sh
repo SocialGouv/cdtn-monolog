@@ -14,6 +14,6 @@ echo "Push file to Azure"
 az storage blob upload \
   --account-key "$AZ_STORAGE_TOKEN" \
   --account-name=cdtndata \
-  --container data \
+  --container logs \
   --file $file \
   --name $name
