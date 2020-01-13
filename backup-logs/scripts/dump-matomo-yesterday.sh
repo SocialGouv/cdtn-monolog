@@ -48,3 +48,5 @@ az storage blob upload \
   --container logs \
   --file $file \
   --name $name
+
+rm $file
