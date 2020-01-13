@@ -1,6 +1,7 @@
 #!/bin/bash
 
 date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`
+date=2020-01-12
 limit=100
 offset=0
 accu="[]"
@@ -37,7 +38,7 @@ echo "Assemble log files"
 name=matomo-dump-$date
 file=$name.json
 
-jq -s '[.[][]]' $prefix*.json > $file
+jq -c -s '[.[][]]' $prefix*.json > $file
 
 rm $prefix*.json
 
