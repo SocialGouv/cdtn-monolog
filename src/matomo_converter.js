@@ -1,6 +1,7 @@
 // Script to convert matomo raw logs into the json format required for analysis
 
 import * as fs from "fs";
+import * as bjson from "big-json";
 
 // takes a file, return the content properly formatted
 const whitelistNames = [
@@ -118,6 +119,26 @@ export const convertLogs = path => {
 };
 
 const dates = [
+  "2020-02-09",
+  "2020-02-08",
+  "2020-02-07",
+  "2020-02-06",
+  "2020-02-05",
+  "2020-02-04",
+  "2020-02-03",
+  "2020-02-02",
+  "2020-02-01",
+  "2020-01-31",
+  "2020-01-30",
+  "2020-01-29",
+  "2020-01-28",
+  "2020-01-22",
+  "2020-01-23",
+  "2020-01-24",
+  "2020-01-25",
+  "2020-01-26",
+  "2020-01-27",
+  "2020-01-21",
   "2020-01-20",
   "2020-01-19",
   "2020-01-18",
@@ -141,13 +162,36 @@ const dates = [
 ];
 const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
 
-const allDays = dates.flatMap(d => {
+const allDays = dates.map(d => {
   const logPath = `${path}${d}.json`;
   console.log(logPath);
-  return convertLogs(logPath);
+  const logs = convertLogs(logPath);
+  return [d, logs];
 });
 
-fs.writeFileSync(
-  "/Users/remim/tmp/all-january.json",
-  JSON.stringify(allDays, null, 2)
-);
+const output = "/Users/remim/tmp/cdtn-2020/";
+
+allDays.map(entry => {
+  fs.writeFileSync(
+    output + entry[0] + ".json",
+    JSON.stringify(entry[1], null, 2),
+    { flag: "w+" }
+  );
+});
+
+/*
+const stringifyStream = bjson.createStringifyStream({
+  body: allDays
+});
+
+const writeStream = fs.createWriteStream(output);
+
+stringifyStream.on("data", function(strChunk) {
+  // => BIG_POJO will be sent out in JSON chunks as the object is traversed
+  writeStream.write(strChunk);
+});
+
+stringifyStream.on("finish", function() {
+  writeStream.end();
+});
+*/
