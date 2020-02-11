@@ -14,7 +14,7 @@ echo "Download Matomo content for $date"
 # while not [], update offset and download next batch
 while [ "$finished" = false ]; do
 
-  url="https://matomo.tools.factory.social.gouv.fr/index.php?module=API&method=Live.getLastVisitsDetails&idSite=4&period=day&date=$date&format=JSON&token_auth=anonymous&filter_limit=$limit&filter_offset=$offset"
+  url="https://matomo.fabrique.social.gouv.fr/index.php?module=API&method=Live.getLastVisitsDetails&idSite=4&period=day&date=$date&format=JSON&token_auth=anonymous&filter_limit=$limit&filter_offset=$offset"
 
   out=$prefix-$offset.json
 
