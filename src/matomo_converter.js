@@ -118,6 +118,7 @@ export const convertLogs = path => {
   });
 };
 
+/*
 const dates = [
   "2020-02-09",
   "2020-02-08",
@@ -160,6 +161,9 @@ const dates = [
   "2020-01-02",
   "2020-01-01"
 ];
+*/
+
+const dates = ["2020-02-10"];
 const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
 
 const allDays = dates.map(d => {
