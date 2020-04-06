@@ -40,7 +40,8 @@ monolog.parse(process.argv);
 if (monolog.content == "search")
   writeSearches(monolog.output).catch(err => console.log(err));
 else if (monolog.content == "action")
-  writeSteps(monolog.limit, monolog.output).catch(err =>
-    console.log(err.meta.body.error)
-  );
+  writeSteps(monolog.limit, monolog.output).catch(err => {
+    console.log(err);
+    console.log(err.meta.body.error);
+  });
 else console.log("Unrecognized content type " + monolog.content);

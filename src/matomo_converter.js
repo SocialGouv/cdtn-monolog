@@ -69,7 +69,11 @@ const parseAction = (action, visit) => {
       case "candidateResults": {
         parsedAction["type"] = "result_candidates";
         parsedAction["query"] = action.eventAction;
-        parsedAction["result_candidates"] = JSON.parse(action.eventName);
+        break;
+      }
+      case "nextResultPage": {
+        parsedAction["type"] = "next_result_page";
+        parsedAction["query"] = action.eventAction;
         break;
       }
       case "selectResult": {
@@ -80,13 +84,17 @@ const parseAction = (action, visit) => {
       case "themeResults": {
         parsedAction["type"] = "theme_candidates";
         parsedAction["query"] = action.eventAction;
-        parsedAction["result_candidates"] = JSON.parse(action.eventName);
         break;
       }
       default: {
         parsedAction["type"] = action.eventCategory;
         break;
       }
+    }
+    if (action.eventCategory.startsWith("outil_")) {
+      parsedAction["outil"] = action.eventCategory.slice("outil_".length);
+      parsedAction["name"] = action.eventName;
+      parsedAction["action"] = action.eventAction;
     }
   } else {
     parsedAction["type"] = action.type;
@@ -99,13 +107,15 @@ const parseAction = (action, visit) => {
 };
 
 const parseVisit = visit => {
-  const actions = visit.actionDetails.flatMap(action => {
-    const pa = parseAction(action, visit);
-    // console.log(pa);
-    return pa;
-  });
-
-  return actions;
+  if (visit.actionDetails !== undefined) {
+    return visit.actionDetails.flatMap(action => {
+      const pa = parseAction(action, visit);
+      // console.log(pa);
+      return pa;
+    });
+  } else {
+    return [];
+  }
 };
 
 export const convertLogs = path => {
@@ -118,52 +128,9 @@ export const convertLogs = path => {
   });
 };
 
-/*
-const dates = [
-  "2020-02-09",
-  "2020-02-08",
-  "2020-02-07",
-  "2020-02-06",
-  "2020-02-05",
-  "2020-02-04",
-  "2020-02-03",
-  "2020-02-02",
-  "2020-02-01",
-  "2020-01-31",
-  "2020-01-30",
-  "2020-01-29",
-  "2020-01-28",
-  "2020-01-22",
-  "2020-01-23",
-  "2020-01-24",
-  "2020-01-25",
-  "2020-01-26",
-  "2020-01-27",
-  "2020-01-21",
-  "2020-01-20",
-  "2020-01-19",
-  "2020-01-18",
-  "2020-01-17",
-  "2020-01-16",
-  "2020-01-15",
-  "2020-01-14",
-  "2020-01-13",
-  "2020-01-12",
-  "2020-01-11",
-  "2020-01-10",
-  "2020-01-09",
-  "2020-01-08",
-  "2020-01-07",
-  "2020-01-06",
-  "2020-01-05",
-  "2020-01-04",
-  "2020-01-03",
-  "2020-01-02",
-  "2020-01-01"
-];
-*/
+const dates = ["2020-03-30"];
 
-const dates = ["2020-02-10"];
+// const dates = ["2020-03-25"];
 const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
 
 const allDays = dates.map(d => {
@@ -173,7 +140,7 @@ const allDays = dates.map(d => {
   return [d, logs];
 });
 
-const output = "/Users/remim/tmp/cdtn-2020/";
+const output = "/Users/remim/tmp/cdtn-2020-v4.4/";
 
 allDays.map(entry => {
   fs.writeFileSync(
