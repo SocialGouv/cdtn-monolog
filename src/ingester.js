@@ -28,6 +28,10 @@ async function main() {
       actionType: {
         type: "keyword",
       },
+      // unique visit id
+      uvi: {
+        type: "keyword",
+      },
     },
   };
 
@@ -57,9 +61,20 @@ async function main() {
     }
   }
 
+  // shameless copy past from stack overflow as non critical and
+  // to avoid adding yet another dependency
+  function hash(s) {
+    return s.split("").reduce(function(a, b) {
+      a = (a << 5) - a + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+  }
+
   function mapAction(action) {
     const header = { index: { _index: LOG_INDEX_NAME, _type: "_doc" } };
-    return [header, { actionType: action.type }];
+    // unique visit id
+    const uvi = hash(`${action.idVisit}-${action.lastActionDateTime}`);
+    return [header, { actionType: action.type, uvi: uvi }];
   }
 
   // bulk insert
