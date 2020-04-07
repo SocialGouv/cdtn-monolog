@@ -2,21 +2,26 @@ import { convertLogs } from "./matomo_converter";
 import { logger } from "./logger";
 import { Client } from "@elastic/elasticsearch";
 
-async function main() {
-  const ELASTICSEARCH_URL = "http://localhost:9200";
+import commander from "commander";
+import { commaSeparatedList } from "./utils";
+
+async function main(path, date) {
+  const ELASTICSEARCH_URL =
+    process.env.ELASTICSEARCH_URL || "http://localhost:9200";
   const LOG_INDEX_NAME = "logs";
+  const API_KEY = process.env.API_KEY || null;
 
-  const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
-
-  const date = "2020-03-30";
+  // const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
 
   // convert matomo logs to actions
   const logPath = `${path}${date}.json`;
   const actions = convertLogs(logPath);
 
   // push actions as batches to ES
+  const auth = API_KEY ? { apiKey: API_KEY } : null;
   const esClientConfig = {
     node: `${ELASTICSEARCH_URL}`,
+    auth,
   };
   const client = new Client(esClientConfig);
 
@@ -25,11 +30,88 @@ async function main() {
 
   const mappings = {
     properties: {
-      actionType: {
+      logfile: {
         type: "keyword",
       },
+
+      type: {
+        type: "keyword",
+      },
+
       // unique visit id
       uvi: {
+        type: "keyword",
+      },
+
+      idVisit: {
+        type: "keyword",
+      },
+
+      feedbackType: {
+        type: "keyword",
+      },
+
+      outilEvent: {
+        type: "keyword",
+      },
+
+      outilAction: {
+        type: "keyword",
+      },
+
+      outil: {
+        type: "keyword",
+      },
+
+      lastActionDateTime: {
+        type: "keyword",
+      },
+
+      lastActionTimestamp: {
+        type: "date",
+      },
+
+      query: {
+        type: "keyword",
+      },
+
+      referrerName: {
+        type: "keyword",
+      },
+
+      referrerTypeName: {
+        type: "keyword",
+      },
+
+      resultSelection: {
+        type: "object",
+      },
+
+      suggestionSelection: {
+        type: "keyword",
+      },
+
+      suggestionPrefix: {
+        type: "keyword",
+      },
+
+      // todo we might be able to use date type ?
+      serverTimePretty: {
+        type: "keyword",
+      },
+      timeSpent: {
+        type: "long",
+      },
+
+      timestamp: {
+        type: "date",
+      },
+
+      url: {
+        type: "keyword",
+      },
+
+      visited: {
         type: "keyword",
       },
     },
@@ -61,47 +143,127 @@ async function main() {
     }
   }
 
-  // shameless copy past from stack overflow as non critical and
+  // shameless copy paste from stack overflow as non critical and
   // to avoid adding yet another dependency
   function hash(s) {
-    return s.split("").reduce(function(a, b) {
+    return s.split("").reduce(function (a, b) {
       a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
     }, 0);
   }
 
-  function mapAction(action) {
+  function mapAction({
+    idVisit,
+    feedbackType,
+    lastActionDateTime,
+    lastActionTimestamp,
+    outilEvent,
+    outil,
+    outilAction,
+    suggestionPrefix,
+    query,
+    referrerName,
+    referrerTypeName,
+    resultSelection,
+    serverTimePretty,
+    suggestionSelection,
+    timeSpent,
+    timestamp,
+    type,
+    url,
+    visited,
+  }) {
     const header = { index: { _index: LOG_INDEX_NAME, _type: "_doc" } };
     // unique visit id
-    const uvi = hash(`${action.idVisit}-${action.lastActionDateTime}`);
-    return [header, { actionType: action.type, uvi: uvi }];
+    const uvi = hash(`${idVisit}-${lastActionDateTime}`);
+    const obj = {
+      type,
+      uvi,
+      idVisit,
+      feedbackType,
+      lastActionDateTime,
+      lastActionTimestamp,
+      outilEvent,
+      outilAction,
+      outil,
+      suggestionPrefix,
+      query,
+      referrerName,
+      referrerTypeName,
+      resultSelection,
+      serverTimePretty,
+      suggestionSelection,
+      timeSpent,
+      timestamp,
+      url,
+      visited,
+      logfile: date,
+    };
+
+    // logger.info(JSON.stringify(obj, null, 2));
+
+    return [header, obj];
   }
 
   // bulk insert
   async function insertActions(actions) {
     try {
-      await client.bulk({
+      const resp = await client.bulk({
         index: LOG_INDEX_NAME,
         body: actions.map(mapAction).flat(),
       });
-      logger.info(`Index ${actions.length} actions.`);
+
+      if (resp.body.errors) {
+        resp.body.items.forEach((element) => {
+          if (element.index.status == 400) {
+            logger.error(
+              `Error during insertion : ${element.index.error.reason}`
+            );
+          }
+        });
+      }
     } catch (error) {
       logger.error("Index actions", error);
     }
   }
 
-  logger.info(actions[0].type);
+  async function batchInsert(actions, size = 1000) {
+    // number of batches
+    const n = Math.ceil(actions.length / size);
+    await [...Array(n).keys()].forEach(async (i) => {
+      const batch = actions.slice(i * size, (i + 1) * size);
+      await insertActions(batch);
+    });
+    logger.info(`${actions.length} actions indexed.`);
+  }
 
-  insertActions(actions.slice(0, 10));
+  // split actions and insert as batches
+  await batchInsert(actions);
 }
 
-main().catch((response) => {
-  if (response.body) {
-    logger(response.meta.statusCode);
-    logger(response.name);
-    logger(response.meta.meta.request);
-  } else {
-    logger(response);
-  }
-  process.exit(-1);
+const cli = new commander.Command();
+
+cli
+  .option("-p, --path <path>", "JSON dump path", "/data/")
+  .requiredOption(
+    "-d, --days <days>",
+    "Days to dump from Matomo, separated by commas, example : -d 2019-11-19,2019-11-20",
+    commaSeparatedList,
+    [new Date(Date.now() - 86400000).toISOString().split("T")[0]]
+  );
+
+cli.parse(process.argv);
+
+cli.days.forEach(async (day) => {
+  logger.info("Indexing " + day);
+  await main(cli.path, day).catch((response) => {
+    if (response.body) {
+      logger.info(response.meta.statusCode);
+      logger.info(response.name);
+      logger.info(JSON.stringify(response.meta.meta.request, 2, null));
+    } else {
+      logger.info(response);
+    }
+    process.exit(-1);
+  });
 });

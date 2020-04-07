@@ -13,7 +13,7 @@ const whitelistNames = [
   "lastActionTimestamp",
   "lastActionDateTime",
   "referrerTypeName",
-  "referrerName"
+  "referrerName",
 ];
 
 const parseAction = (action, visit) => {
@@ -21,7 +21,7 @@ const parseAction = (action, visit) => {
   parsedAction["timeSpent"] = action["timeSpent"];
   parsedAction["url"] = action["url"];
 
-  whitelistNames.forEach(key => {
+  whitelistNames.forEach((key) => {
     parsedAction[key] = visit[key];
   });
 
@@ -51,19 +51,19 @@ const parseAction = (action, visit) => {
     switch (action.eventCategory) {
       case "selectedSuggestion": {
         parsedAction["type"] = "select_suggestion";
-        parsedAction["prefix"] = action.eventAction;
-        parsedAction["sugg_selection"] = action.eventName;
+        parsedAction["suggestionPrefix"] = action.eventAction;
+        parsedAction["suggestionSelection"] = action.eventName;
         break;
       }
       case "feedback": {
         parsedAction["type"] = "feedback";
-        parsedAction["feedback_type"] = action.eventAction;
+        parsedAction["feedbackType"] = action.eventAction;
         parsedAction["visited"] = action.eventName;
         break;
       }
       case "candidateSuggestions": {
         parsedAction["type"] = "suggestion_candidates";
-        parsedAction["suggestion_candidates"] = action.eventAction.split("###");
+        parsedAction["suggestionCandidates"] = action.eventAction.split("###");
         break;
       }
       case "candidateResults": {
@@ -78,7 +78,7 @@ const parseAction = (action, visit) => {
       }
       case "selectResult": {
         parsedAction["type"] = "select_result";
-        parsedAction["res_selection"] = JSON.parse(action.eventAction);
+        parsedAction["resultSelection"] = JSON.parse(action.eventAction);
         break;
       }
       case "themeResults": {
@@ -93,8 +93,8 @@ const parseAction = (action, visit) => {
     }
     if (action.eventCategory.startsWith("outil_")) {
       parsedAction["outil"] = action.eventCategory.slice("outil_".length);
-      parsedAction["name"] = action.eventName;
-      parsedAction["action"] = action.eventAction;
+      parsedAction["outilEvent"] = action.eventName;
+      parsedAction["outilAction"] = action.eventAction;
     }
   } else {
     parsedAction["type"] = action.type;
@@ -106,9 +106,9 @@ const parseAction = (action, visit) => {
   return parsedAction;
 };
 
-const parseVisit = visit => {
+const parseVisit = (visit) => {
   if (visit.actionDetails !== undefined) {
-    return visit.actionDetails.flatMap(action => {
+    return visit.actionDetails.flatMap((action) => {
       const pa = parseAction(action, visit);
       // console.log(pa);
       return pa;
@@ -118,22 +118,23 @@ const parseVisit = visit => {
   }
 };
 
-export const convertLogs = path => {
+export const convertLogs = (path) => {
   const rawData = fs.readFileSync(path);
   const rawVisits = JSON.parse(rawData);
 
-  return rawVisits.flatMap(visit => {
+  return rawVisits.flatMap((visit) => {
     // console.log(visit.idVisit);
     return parseVisit(visit);
   });
 };
 
+/*
 const dates = ["2020-03-30"];
 
 // const dates = ["2020-03-25"];
 const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
 
-const allDays = dates.map(d => {
+const allDays = dates.map((d) => {
   const logPath = `${path}${d}.json`;
   console.log(logPath);
   const logs = convertLogs(logPath);
@@ -142,13 +143,14 @@ const allDays = dates.map(d => {
 
 const output = "/Users/remim/tmp/cdtn-2020-v4.4/";
 
-allDays.map(entry => {
+allDays.map((entry) => {
   fs.writeFileSync(
     output + entry[0] + ".json",
     JSON.stringify(entry[1], null, 2),
     { flag: "w+" }
   );
 });
+*/
 
 /*
 const stringifyStream = bjson.createStringifyStream({
