@@ -129,10 +129,10 @@ export const convertLogs = (path) => {
 };
 
 /*
-const dates = ["2020-03-30"];
+const dates = ["2020-04-15"];
 
 // const dates = ["2020-03-25"];
-const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
+const path = "/Users/remim/tmp/matomo-dump/";
 
 const allDays = dates.map((d) => {
   const logPath = `${path}${d}.json`;
@@ -141,7 +141,7 @@ const allDays = dates.map((d) => {
   return [d, logs];
 });
 
-const output = "/Users/remim/tmp/cdtn-2020-v4.4/";
+const output = "/Users/remim/tmp/cdtn-es-logs/";
 
 allDays.map((entry) => {
   fs.writeFileSync(
@@ -150,21 +150,19 @@ allDays.map((entry) => {
     { flag: "w+" }
   );
 });
-*/
 
-/*
 const stringifyStream = bjson.createStringifyStream({
-  body: allDays
+  body: allDays,
 });
 
 const writeStream = fs.createWriteStream(output);
 
-stringifyStream.on("data", function(strChunk) {
+stringifyStream.on("data", function (strChunk) {
   // => BIG_POJO will be sent out in JSON chunks as the object is traversed
   writeStream.write(strChunk);
 });
 
-stringifyStream.on("finish", function() {
+stringifyStream.on("finish", function () {
   writeStream.end();
 });
 */

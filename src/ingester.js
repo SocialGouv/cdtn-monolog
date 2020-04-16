@@ -11,8 +11,6 @@ async function main(path, date) {
   const LOG_INDEX_NAME = "logs";
   const API_KEY = process.env.API_KEY || null;
 
-  // const path = "/Users/remim/dev/cdtn/cdtn-monolog/backup-logs/scripts/";
-
   // convert matomo logs to actions
   const logPath = `${path}${date}.json`;
   const actions = convertLogs(logPath);
@@ -230,15 +228,31 @@ async function main(path, date) {
   async function batchInsert(actions, size = 1000) {
     // number of batches
     const n = Math.ceil(actions.length / size);
-    await [...Array(n).keys()].forEach(async (i) => {
+    for (const i of [...Array(n).keys()]) {
       const batch = actions.slice(i * size, (i + 1) * size);
       await insertActions(batch);
-    });
+    }
     logger.info(`${actions.length} actions indexed.`);
   }
 
   // split actions and insert as batches
   await batchInsert(actions);
+}
+
+async function ingestMany(days, path) {
+  for (const day of days) {
+    logger.info("Indexing " + day);
+    await main(path, day).catch((response) => {
+      if (response.body) {
+        logger.info(response.meta.statusCode);
+        logger.info(response.name);
+        logger.info(JSON.stringify(response.meta.meta.request, 2, null));
+      } else {
+        logger.info(response);
+      }
+      process.exit(-1);
+    });
+  }
 }
 
 const cli = new commander.Command();
@@ -253,17 +267,4 @@ cli
   );
 
 cli.parse(process.argv);
-
-cli.days.forEach(async (day) => {
-  logger.info("Indexing " + day);
-  await main(cli.path, day).catch((response) => {
-    if (response.body) {
-      logger.info(response.meta.statusCode);
-      logger.info(response.name);
-      logger.info(JSON.stringify(response.meta.meta.request, 2, null));
-    } else {
-      logger.info(response);
-    }
-    process.exit(-1);
-  });
-});
+ingestMany(cli.days, cli.path);
