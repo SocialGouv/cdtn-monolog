@@ -16,6 +16,8 @@
     "@elastic/elasticsearch": "^7.4.0",
     "big-json": "^3.1.0",
     "commander": "^4.0.1",
+    "data-forge": "^1.8.5",
+    "data-forge-fs": "^0.0.7",
     "esm": "^3.2.25",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
