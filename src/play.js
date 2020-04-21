@@ -24,6 +24,11 @@ const actions = dataForge.readFileSync(output).parseCSV();
 const dataset = new Dataset(actions);
 const analyser = new Analyzer(dataset);
 
+// given log range :
+
+// get visits log report
+
+/*
 console.log(
   analyser
     .viewCount()
@@ -31,13 +36,27 @@ console.log(
     .take(20)
     .toString()
 );
-
-// console.log(actions);
-
-// given log range :
-
-// get visits log report
+*/
 
 // get suggestions log report
 
 // get connection graph log report
+
+const covisits = analyser.covisitGraph();
+
+const prefix = "https://code.travail.gouv.fr/";
+
+covisits.forEach((counts, url) => {
+  console.log(`### ${url.slice(prefix.length)}`);
+
+  Array.from(counts)
+    .slice(0, 6)
+    .forEach(([link, count]) => {
+      //   console.log(link);
+      //   console.log(count);
+      console.log(`- ${count} : ${link.slice(prefix.length)}`);
+    });
+});
+
+// console.log(covisits);
+// console.log(covisits.get(content));
