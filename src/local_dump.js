@@ -2,7 +2,7 @@
 
 // const compose = (...fns) => (arg) => fns.reduceRight((c, f) => f(c), arg);
 
-const BATCH_SIZE = 1000;
+const BATCH_SIZE = 500;
 const SCROLL_TIMEOUT = "30s";
 
 // get last n days from Elastic (starting yesterday)
@@ -65,6 +65,9 @@ async function queryLastDays(client, n) {
       scrollId,
       scroll: SCROLL_TIMEOUT,
     });
+    if (actions.length % 50000 == 0) {
+      console.log(actions.length);
+    }
     // read response and get next scroll id
     scrollId = treatResponse(response);
   }

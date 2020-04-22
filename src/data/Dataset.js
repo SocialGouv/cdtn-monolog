@@ -22,8 +22,7 @@ export class Visit {
   }
 
   getUniqueViews() {
-    return this.getActionsByType(visitType)
-      .distinct((row) => row.url)
-      .deflate((row) => row.url);
+    return this.getActionsByType(visitType).distinct((row) => row.url);
+    //   .deflate((row) => row.url);
   }
 }
