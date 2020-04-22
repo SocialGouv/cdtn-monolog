@@ -4,12 +4,14 @@ import * as dataForge from "data-forge";
 import "data-forge-fs";
 import { default as Analyzer } from "./analysis/Analyzer";
 import { Dataset } from "./data/Dataset";
+import { CovisitReporter } from "./report/CovisitReporter";
 
-// get logs and write them to offline file
-// const output = "logs.csv";
-const output = "/Users/remim/tmp/30-days-es-logs.csv";
+try {
+  // get logs and write them to offline file
+  const OUTPUT = process.env.OUTPUT || "logs.csv";
+  // const output = "/Users/remim/tmp/30-days-es-logs.csv";
 
-/*
+  /*
 queryLastDays(esClient, 0)
   .then((actions) => {
     console.log(`${actions.length} actions read.`);
@@ -19,16 +21,18 @@ queryLastDays(esClient, 0)
   .catch((err) => console.log(err));
   */
 
-// read logs from file
-const actions = dataForge.readFileSync(output).parseCSV();
-const dataset = new Dataset(actions);
-const analyser = new Analyzer(dataset);
+  // read logs from file
+  const actions = dataForge.readFileSync(OUTPUT).parseCSV();
+  const dataset = new Dataset(actions);
+  const analyser = new Analyzer(dataset);
 
-// given log range :
+  // console.log(dataset.getVisits()[0].dataFrame.toString());
 
-// get visits log report
+  // given log range :
 
-/*
+  // get visits log report
+
+  /*
 console.log(
   analyser
     .viewCount()
@@ -38,25 +42,21 @@ console.log(
 );
 */
 
-// get suggestions log report
+  // get suggestions log report
+  const 
 
-// get connection graph log report
 
-const covisits = analyser.covisitGraph();
+  // get connection graph log report
+  const covisits = analyser.covisitGraph();
 
-const prefix = "https://code.travail.gouv.fr/";
+  // console.log(covisits);
+  // console.log(covisits.get(content));
 
-covisits.forEach((counts, url) => {
-  console.log(`### ${url.slice(prefix.length)}`);
+  // write report to ES
 
-  Array.from(counts)
-    .slice(0, 6)
-    .forEach(([link, count]) => {
-      //   console.log(link);
-      //   console.log(count);
-      console.log(`- ${count} : ${link.slice(prefix.length)}`);
-    });
-});
-
-// console.log(covisits);
-// console.log(covisits.get(content));
+  const cvReport = new CovisitReporter(esClient);
+  // cvReport.printReport(covisits);
+  cvReport.publishReport(covisits);
+} catch (err) {
+  console.log(err);
+}

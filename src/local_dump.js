@@ -11,12 +11,10 @@ function getLastDays(n) {
   const dayMillis = 24 * 60 * 60 * 1000;
   const now = new Date().getTime();
 
-  const createDate = (i) => new Date(now - i * dayMillis);
+  const createDate = (i) => new Date(now - (i + 1) * dayMillis);
   const formatDate = (date) => date.toISOString().split("T")[0];
 
-  return [...Array(n).keys()]
-    .map((i) => createDate(i + 1))
-    .map((d) => formatDate(d));
+  return [...Array(n).keys()].map(createDate).map(formatDate);
 }
 
 async function queryLastDays(client, n) {

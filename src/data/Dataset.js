@@ -1,4 +1,4 @@
-const visitType = "visit_content";
+import { visitType } from "../utils";
 
 export class Dataset {
   constructor(dataFrame) {
@@ -17,13 +17,12 @@ export class Visit {
     this.dataFrame = dataFrame;
   }
 
-  getActions(type) {
+  getActionsByType(type) {
     return this.dataFrame.where((a) => a.type == type);
   }
 
   getUniqueViews() {
-    // use disctinct
-    return this.getActions(visitType)
+    return this.getActionsByType(visitType)
       .distinct((row) => row.url)
       .deflate((row) => row.url);
   }

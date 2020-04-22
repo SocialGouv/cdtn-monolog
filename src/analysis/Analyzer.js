@@ -1,4 +1,5 @@
 import * as dataForge from "data-forge";
+import { suggestionSelectionType } from "./utils";
 
 export default class Analyzer {
   constructor(dataset) {
@@ -88,7 +89,10 @@ export default class Analyzer {
 
     return sortedContents;
   }
-}
 
-// computeSuggestionWeights() {
-// }
+  computeSuggestionWeights() {
+    const suggestions = this.dataset
+      .getVisits()
+      .map((v) => v.getActionsByType(suggestionSelectionType));
+  }
+}

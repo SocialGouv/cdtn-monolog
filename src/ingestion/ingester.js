@@ -1,9 +1,9 @@
 import { convertLogs } from "./matomo_converter";
-import { logger } from "./logger";
+import { logger } from "../logger";
 import { Client } from "@elastic/elasticsearch";
 
 import commander from "commander";
-import { commaSeparatedList } from "./utils";
+import { commaSeparatedList } from "../utils";
 
 async function main(path, date) {
   const ELASTICSEARCH_URL =
@@ -208,7 +208,7 @@ async function main(path, date) {
     try {
       const resp = await client.bulk({
         index: LOG_INDEX_NAME,
-        body: actions.map(mapAction).flat(),
+        body: actions.flatMap(mapAction),
       });
 
       if (resp.body.errors) {
