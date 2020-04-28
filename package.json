@@ -1,0 +1,48 @@
+{
+  "name": "@socialgouv/cdtn-monolog",
+  "description": "CDTN log management : index logs and generate reports.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.0",
+  "homepage": "https://github.com/SocialGouv/cdtn-monolog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SocialGouv/cdtn-monolog.git"
+  },
+  "license": "Apache-2.0",
+  "scripts": {
+    "dev": "jest --watch",
+    "lint": "eslint . --ext .ts",
+    "test": "jest",
+    "test-one": "jest report --watch"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^7.6.1",
+    "data-forge": "^1.8.5",
+    "data-forge-fs": "^0.0.8",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@socialgouv/eslint-config-recommended": "^0.20.0",
+    "babel-jest": "^25.4.0",
+    "jest": "^25.4.0"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testRegex": "src/.*\\.test\\.js$"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "eslint . --ext .ts",
+      "pre-push": "run-p lint test"
+    }
+  }
+}
