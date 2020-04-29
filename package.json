@@ -15,12 +15,13 @@
     "dev": "jest --watch",
     "lint": "eslint . --ext .ts",
     "test": "jest",
-    "test-one": "jest report --watch"
+    "test-one": "jest analysis --watch"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.6.1",
     "data-forge": "^1.8.5",
     "data-forge-fs": "^0.0.8",
+    "esm": "^3.2.25",
     "winston": "^3.2.1"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@babel/preset-env": "^7.9.5",
     "@socialgouv/eslint-config-recommended": "^0.20.0",
     "babel-jest": "^25.4.0",
+    "eslint": "^6.8.0",
     "jest": "^25.4.0"
   },
   "jest": {

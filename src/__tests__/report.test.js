@@ -1,30 +1,39 @@
 // test reports are saved properly
-import { Dataset } from "../dataset";
-import { logfile } from "./util";
-import * as Covisit from "../analysis/Covisit";
+import { wait, logfile } from "./util";
+import * as Covisit from "../analysis/covisit";
 import * as Reader from "../reader";
-import * as reportStore from "../reportStore";
+import * as ReportStore from "../reportStore";
 import * as es from "../elastic";
 
-jest.mock("../reportStore");
+import { esClient } from "../esConf";
 
 const getAnalysis = async () =>
-  Reader.readFromFile(logfile)
-    .then((d) => Dataset(d))
-    .then((d) => Covisit.analyse(d));
+  Reader.readFromFile(logfile).then((d) => Covisit.analyse(d));
 
 const index = "fake-reports";
 
+beforeAll(async () => {
+  await es.testAndCreateIndex(index, Covisit.mappings);
+  await wait(2000);
+});
+
 test("should properly store reports", async () => {
   const docs = await getAnalysis();
-  reportStore.saveReport.mockResolvedValue(0);
-  const res = await reportStore.saveReport(docs, Covisit.mappings, index);
+  expect(docs.length).toBe(18);
+
+  const res = await ReportStore.saveReport(index, docs);
+  await wait(4000);
   expect(res).toBe(0);
 });
 
 test("should properly read reports", async () => {
-  const [doc] = await getAnalysis();
-  reportStore.loadReport.mockResolvedValue(doc);
-  const rep = await reportStore.loadReport(Covisit.mapReport);
-  expect(rep).toBe(doc);
+  const reports = await ReportStore.loadReport(index, Covisit.query);
+  const docs = await getAnalysis();
+
+  expect(reports.length).toBe(docs.length);
+  // expect(reports).toStrictEqual(docs);
+});
+
+afterAll(async () => {
+  await esClient.deleteByQuery({ index, body: { query: { match_all: {} } } });
 });
