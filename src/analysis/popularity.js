@@ -2,17 +2,6 @@ import * as dataForge from "data-forge";
 import * as util from "../util";
 import * as datasetUtil from "../dataset";
 
-const mappings = {
-  properties: {
-    content: {
-      type: "keyword",
-    },
-    links: {
-      type: "object",
-    },
-  },
-};
-
 const analyse = (dataset, proportion) => {
   const visits = datasetUtil.getVisits(dataset);
 
@@ -55,7 +44,7 @@ const analyse = (dataset, proportion) => {
   const dates = uniqueViews.deflate((r) => r.timestamp);
   const start = dates.min();
   const end = dates.max();
-  const refDate = start + proportion * (end - start);
+  const refDate = start + (1 - proportion) * (end - start);
 
   const afterRef = (a) => a.timestamp > refDate;
 
@@ -95,7 +84,7 @@ const analyse = (dataset, proportion) => {
       return {
         url: left.url,
         ref_norm_count: left.normalized_count,
-        focus_norm_cunt: right.normalized_count,
+        focus_norm_count: right.normalized_count,
         ref_count: left.count,
         focus_count: right.count,
       };
@@ -106,7 +95,7 @@ const analyse = (dataset, proportion) => {
 
   const diff = joined
     .generateSeries({
-      diff: (row) => row.focus_norm_cunt - row.ref_norm_count,
+      diff: (row) => row.focus_norm_count - row.ref_norm_count,
     })
     .generateSeries({
       abs_diff: (row) => Math.abs(row.diff),
@@ -114,7 +103,7 @@ const analyse = (dataset, proportion) => {
     .orderByDescending((r) => r.abs_diff)
     .take(nContent);
 
-  const toDate = (timestamp) => new Date(timestamp * 1000).toISOString();
+  const toDate = (timestamp) => new Date(timestamp * 1000).toUTCString();
 
   return {
     start: toDate(start),
@@ -124,4 +113,4 @@ const analyse = (dataset, proportion) => {
   };
 };
 
-export { analyse, mappings };
+export { analyse };

@@ -1,7 +1,7 @@
 import * as DatasetUtil from "../dataset";
 import * as DataForge from "data-forge";
 
-export const analyse = (dataset) => {
+const analyse = (dataset) => {
   // get unique suggestion selection events in visits
   const uniqueSuggs = DataForge.DataFrame.concat(
     DatasetUtil.getVisits(dataset)
@@ -28,3 +28,5 @@ export const analyse = (dataset) => {
 
   return counts.toArray();
 };
+
+export { analyse };

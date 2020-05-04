@@ -1,7 +1,11 @@
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
 
 export const urlToPath = (url) => {
-  return url.slice(SERVICE_URL.length);
+  if (url.startsWith(SERVICE_URL)) {
+    return url.slice(SERVICE_URL.length);
+  } else {
+    return url;
+  }
 };
 
 export const actionTypes = {

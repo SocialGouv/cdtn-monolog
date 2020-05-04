@@ -3,31 +3,15 @@
 import * as datasetUtil from "../dataset";
 import * as util from "../util";
 
-export const mappings = {
-  properties: {
-    count: {
-      type: "integer",
-    },
-    /*
-    start: {
-      type: "date",
-    },
-    end: {
-      type: "date",
-    },
-    pivot: {
-      type: "date",
-    },
-    results: {
-      type: "object",
-    },
-    */
-  },
-};
+// number of covisited links to be added to each content report
+const LINK_LIMIT = 6;
 
-const linkLimit = 6;
+// minimum covisits to consider as actual link
+// 5 means : a minimum of 5 unique visits where two contents were viewed
+const MIN_OCC = 5;
 
-export const analyse = (dataset) => {
+// we provide a configurable function
+const analyseNoConf = (minOcc, linkLimit) => (dataset) => {
   // FIXME avoid using to array
   const visits = datasetUtil.getVisits(dataset).toArray();
 
@@ -74,8 +58,7 @@ export const analyse = (dataset) => {
     };
 
     // only keep if count is more than MIN_OCC
-    const MIN_OCC = 5;
-    if (edge.count > MIN_OCC) {
+    if (edge.count >= minOcc) {
       addToContent(a, b);
       addToContent(b, a);
     }
@@ -106,6 +89,11 @@ export const analyse = (dataset) => {
   return docs;
 };
 
-export const query = {
+// configured function
+const analyse = analyseNoConf(MIN_OCC, LINK_LIMIT);
+
+const query = {
   match_all: {},
 };
+
+export { analyseNoConf, analyse, query };

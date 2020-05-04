@@ -19,12 +19,12 @@ beforeAll(async () => {
 
 test("should properly store reports", async () => {
   const docs = await getAnalysis();
-  expect(docs.length).toBe(18);
+  expect(docs.length).toBe(62);
 
   const res = await ReportStore.saveReport(index, docs);
-  await wait(4000);
+  await wait(8000);
   expect(res).toBe(0);
-});
+}, 10000);
 
 test("should properly read reports", async () => {
   const reports = await ReportStore.loadReport(index, Covisit.query);

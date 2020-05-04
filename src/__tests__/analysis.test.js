@@ -1,4 +1,4 @@
-// test analysis are corrects
+// test analysis are stable on actual data
 import { logfile } from "./util";
 import * as Covisit from "../analysis/covisit";
 import * as Popularity from "../analysis/popularity";
@@ -12,14 +12,20 @@ beforeAll(async () => {
   testDataset = await Reader.readFromFile(logfile);
 });
 
-test("Covisit analysis", () => {
-  expect(Covisit.analyse(testDataset)).toMatchSnapshot();
+describe("Covisit analysis", () => {
+  it("should match snapshots on actual data", () => {
+    expect(Covisit.analyse(testDataset)).toMatchSnapshot();
+  });
 });
 
-test("Popularity analysis", () => {
-  expect(Popularity.analyse(testDataset, 0.8)).toMatchSnapshot();
+describe("Popularity analysis", () => {
+  it("should match snapshots on actual data", () => {
+    expect(Popularity.analyse(testDataset, 0.2)).toMatchSnapshot();
+  });
 });
 
-test("Suggestions weigths", () => {
-  expect(Suggestion.analyse(testDataset)).toMatchSnapshot();
+describe("Suggestions weigths", () => {
+  it("should match snapshots on actual data", () => {
+    expect(Suggestion.analyse(testDataset)).toMatchSnapshot();
+  });
 });

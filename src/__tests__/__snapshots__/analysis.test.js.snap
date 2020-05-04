@@ -1,62 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Covisit analysis 1`] = `
+exports[`Covisit analysis should match snapshots on actual data 1`] = `
 Array [
   Object {
-    "content": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+    "content": "modeles-de-courriers/demande-de-paiement-de-salaire",
     "links": Array [
       Object {
-        "count": 123,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
+        "count": 8,
+        "link": "fiche-service-public/paiement-du-salaire",
       },
       Object {
-        "count": 76,
+        "count": 8,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
-      },
-      Object {
-        "count": 43,
-        "link": "fiche-ministere-travail/les-creches-a-vocation-dinsertion-professionnelle-vip-en-quoi-cela-consiste#Comment-beneficier-de-ce-dispositif",
-      },
-      Object {
-        "count": 26,
-        "link": "fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Quels-effets-sur-le-contrat-de-travail",
-      },
-      Object {
-        "count": 17,
-        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
-      },
-      Object {
-        "count": 14,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-deplacement-derogatoire",
       },
     ],
   },
   Object {
-    "content": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
+    "content": "fiche-service-public/paiement-du-salaire",
     "links": Array [
       Object {
-        "count": 123,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+        "count": 8,
+        "link": "modeles-de-courriers/demande-de-paiement-de-salaire",
       },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+    "links": Array [
       Object {
-        "count": 51,
+        "count": 280,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
       },
       Object {
-        "count": 12,
-        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+        "count": 131,
+        "link": "fiche-ministere-travail/garde-denfants-et-personnes-vulnerables",
       },
       Object {
-        "count": 11,
-        "link": "fiche-ministere-travail/les-creches-a-vocation-dinsertion-professionnelle-vip-en-quoi-cela-consiste#Comment-beneficier-de-ce-dispositif",
+        "count": 31,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
       },
       Object {
-        "count": 11,
-        "link": "fiche-ministere-travail/oppbtp-deux-outils-digitaux-innovants-dans-laccompagnement-a-la-prevention-des-risques-professionnels-aupres-des-tpe-pme#PreventionBTP-en-EnDirect-un-service-d-assistance-en-ligne-pour-obtenir-nbsp",
+        "count": 30,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
       },
       Object {
-        "count": 8,
-        "link": "fiche-ministere-travail/coronavirus-covid-19-questions-reponses-mon-compte-formation",
+        "count": 21,
+        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+      },
+      Object {
+        "count": 20,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/garde-denfants-et-personnes-vulnerables",
+    "links": Array [
+      Object {
+        "count": 131,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 50,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 6,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
       },
     ],
   },
@@ -64,92 +74,28 @@ Array [
     "content": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
     "links": Array [
       Object {
-        "count": 76,
+        "count": 324,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 280,
         "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
       },
       Object {
-        "count": 51,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
+        "count": 233,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
       },
       Object {
-        "count": 43,
-        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+        "count": 218,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
       },
       Object {
-        "count": 31,
-        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+        "count": 188,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
       },
       Object {
-        "count": 29,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-employeur",
-      },
-      Object {
-        "count": 13,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-deplacement-derogatoire",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
-    "links": Array [
-      Object {
-        "count": 31,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
-      },
-      Object {
-        "count": 15,
+        "count": 173,
         "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
-      },
-      Object {
-        "count": 13,
-        "link": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
-    "links": Array [
-      Object {
-        "count": 43,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
-      },
-      Object {
-        "count": 17,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
-      },
-      Object {
-        "count": 12,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/les-creches-a-vocation-dinsertion-professionnelle-vip-en-quoi-cela-consiste#Comment-beneficier-de-ce-dispositif",
-    "links": Array [
-      Object {
-        "count": 43,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
-      },
-      Object {
-        "count": 11,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
-    "links": Array [
-      Object {
-        "count": 13,
-        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
-      },
-      Object {
-        "count": 9,
-        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
-      },
-      Object {
-        "count": 7,
-        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle",
       },
     ],
   },
@@ -157,104 +103,128 @@ Array [
     "content": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
     "links": Array [
       Object {
-        "count": 15,
+        "count": 173,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 65,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 63,
         "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
       },
       Object {
-        "count": 10,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+        "count": 33,
+        "link": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
       },
       Object {
-        "count": 9,
-        "link": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
+        "count": 25,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 20,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
       },
     ],
   },
   Object {
-    "content": "modeles-de-courriers/attestation-sur-lhonneur-deplacement-derogatoire",
+    "content": "fiche-ministere-travail/activite-partielle-chomage-partiel",
     "links": Array [
       Object {
-        "count": 14,
+        "count": 218,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 88,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 65,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 47,
+        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+      },
+      Object {
+        "count": 31,
         "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 27,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/securite-et-sante-des-travailleurs-les-obligations-generales-de-lemployeur-et-sa-responsabilite",
+    "links": Array [
+      Object {
+        "count": 19,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
+    "links": Array [
+      Object {
+        "count": 233,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 35,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+      Object {
+        "count": 31,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 20,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 18,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
       },
       Object {
         "count": 13,
+        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/questions-reponses-par-theme",
+    "links": Array [
+      Object {
+        "count": 188,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
       },
       Object {
-        "count": 7,
-        "link": "modeles-de-courriers/justificatif-de-lemployeur-de-deplacement-professionnel",
-      },
-    ],
-  },
-  Object {
-    "content": "modeles-de-courriers/justificatif-de-lemployeur-de-deplacement-professionnel",
-    "links": Array [
-      Object {
-        "count": 10,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+        "count": 54,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
       },
       Object {
-        "count": 7,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-deplacement-derogatoire",
+        "count": 35,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
       },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-employeur",
-    "links": Array [
       Object {
-        "count": 29,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+        "count": 27,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
       },
-    ],
-  },
-  Object {
-    "content": "politique-confidentialite#cookie",
-    "links": Array [
       Object {
-        "count": 7,
+        "count": 18,
         "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
       },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail",
-    "links": Array [
       Object {
-        "count": 6,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/coronavirus-covid-19-questions-reponses-mon-compte-formation",
-    "links": Array [
-      Object {
-        "count": 8,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
-      },
-      Object {
-        "count": 7,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Quels-effets-sur-le-contrat-de-travail",
-    "links": Array [
-      Object {
-        "count": 26,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
-      },
-    ],
-  },
-  Object {
-    "content": "fiche-service-public/arret-maladie-indemnites-journalieres-versees-au-salarie",
-    "links": Array [
-      Object {
-        "count": 6,
-        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+        "count": 15,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
       },
     ],
   },
@@ -262,17 +232,176 @@ Array [
     "content": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries",
     "links": Array [
       Object {
+        "count": 14,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 7,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t2-Les-regles-de-distanciation-pour-les-emplois-non-eligibles-au-nbsp",
+    "links": Array [
+      Object {
+        "count": 17,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t1-Le-teletravail-est-la-regle-imperative-pour-tous-les-postes-qui-le-nbsp",
+      },
+      Object {
         "count": 6,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/teletravail-dans-le-secteur-prive",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t1-Le-teletravail-est-la-regle-imperative-pour-tous-les-postes-qui-le-nbsp",
+    "links": Array [
+      Object {
+        "count": 31,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 22,
+        "link": "fiche-service-public/teletravail-dans-le-secteur-prive",
+      },
+      Object {
+        "count": 18,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+      },
+      Object {
+        "count": 17,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t2-Les-regles-de-distanciation-pour-les-emplois-non-eligibles-au-nbsp",
+      },
+      Object {
+        "count": 14,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t5-Les-solutions-pour-les-parents-d-enfants-de-moins-de-16-ans",
+      },
+      Object {
+        "count": 7,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+    ],
+  },
+  Object {
+    "content": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+    "links": Array [
+      Object {
+        "count": 324,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 88,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 54,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+      Object {
+        "count": 31,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
+      },
+      Object {
+        "count": 30,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 25,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+    "links": Array [
+      Object {
+        "count": 146,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 63,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 47,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 23,
+        "link": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
+      },
+      Object {
+        "count": 21,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+      },
+      Object {
+        "count": 20,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
+    "links": Array [
+      Object {
+        "count": 33,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 23,
+        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+      },
+      Object {
+        "count": 17,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 15,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
       },
     ],
   },
   Object {
-    "content": "fiche-service-public/securite-et-sante-au-travail-obligations-de-lemployeur",
+    "content": "outils/indemnite-licenciement",
     "links": Array [
       Object {
-        "count": 7,
+        "count": 9,
+        "link": "fiche-service-public/indemnite-de-licenciement-du-salarie-en-cdi",
+      },
+      Object {
+        "count": 8,
+        "link": "outils/preavis-demission",
+      },
+      Object {
+        "count": 8,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/indemnite-de-licenciement-du-salarie-en-cdi",
+    "links": Array [
+      Object {
+        "count": 9,
+        "link": "outils/indemnite-licenciement",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/les-creches-a-vocation-dinsertion-professionnelle-vip-en-quoi-cela-consiste#Comment-beneficier-de-ce-dispositif",
+    "links": Array [
+      Object {
+        "count": 12,
+        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
       },
     ],
   },
@@ -280,18 +409,14 @@ Array [
     "content": "outils/simulateur-embauche",
     "links": Array [
       Object {
-        "count": 6,
-        "link": "convention-collective",
+        "count": 7,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
       },
     ],
   },
   Object {
-    "content": "convention-collective",
+    "content": "modeles-de-courriers/affichage-obligatoire-relatif-au-harcelement-sexuel",
     "links": Array [
-      Object {
-        "count": 6,
-        "link": "outils/simulateur-embauche",
-      },
       Object {
         "count": 6,
         "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
@@ -299,715 +424,2285 @@ Array [
     ],
   },
   Object {
-    "content": "fiche-ministere-travail/oppbtp-deux-outils-digitaux-innovants-dans-laccompagnement-a-la-prevention-des-risques-professionnels-aupres-des-tpe-pme#PreventionBTP-en-EnDirect-un-service-d-assistance-en-ligne-pour-obtenir-nbsp",
+    "content": "fiche-service-public/quelles-sont-les-obligations-daffichage-dans-une-entreprise",
     "links": Array [
       Object {
-        "count": 11,
-        "link": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries#Je-suis-salarie",
+        "count": 44,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
       },
       Object {
-        "count": 10,
-        "link": "modeles-de-courriers/attestation-sur-lhonneur-arret-de-travail-pour-la-garde-denfant",
+        "count": 11,
+        "link": "fiche-ministere-travail/fiches-conseils-metiers-et-guides-pour-les-salaries-et-les-employeurs",
       },
     ],
   },
   Object {
-    "content": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle",
+    "content": "fiche-service-public/teletravail-dans-le-secteur-prive",
+    "links": Array [
+      Object {
+        "count": 26,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 22,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t1-Le-teletravail-est-la-regle-imperative-pour-tous-les-postes-qui-le-nbsp",
+      },
+      Object {
+        "count": 6,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 6,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+      },
+      Object {
+        "count": 6,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t2-Les-regles-de-distanciation-pour-les-emplois-non-eligibles-au-nbsp",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/fiche-activite-partielle-chomage-partiel",
+    "links": Array [
+      Object {
+        "count": 25,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 16,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 11,
+        "link": "fiche-service-public/activite-partielle-demarches-de-lemployeur-chomage-partiel-ou-technique",
+      },
+      Object {
+        "count": 9,
+        "link": "fiche-service-public/remuneration-dun-salarie-place-en-activite-partielle-chomage-partiel",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/un-salarie-peut-il-travailler-pendant-un-arret-maladie",
+    "links": Array [
+      Object {
+        "count": 11,
+        "link": "fiche-service-public/un-salarie-peut-il-revenir-travailler-avant-la-fin-de-son-arret-maladie",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/un-salarie-en-arret-de-travail-peut-il-suivre-une-formation",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/un-salarie-en-arret-de-travail-peut-il-suivre-une-formation",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/un-salarie-peut-il-travailler-pendant-un-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/arret-maladie-indemnites-journalieres-versees-au-salarie",
+    "links": Array [
+      Object {
+        "count": 27,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 9,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus/ce-que-changent-les-ordonnances-en-droit-du-travail",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/activite-partielle-chomage-partiel",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/arret-maladie-reprise-du-travail-du-salarie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/un-salarie-peut-il-revenir-travailler-avant-la-fin-de-son-arret-maladie",
+    "links": Array [
+      Object {
+        "count": 11,
+        "link": "fiche-service-public/un-salarie-peut-il-travailler-pendant-un-arret-maladie",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/peut-on-demissionner-pendant-un-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "droit-du-travail",
+    "links": Array [
+      Object {
+        "count": 9,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+    "links": Array [
+      Object {
+        "count": 18,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t1-Le-teletravail-est-la-regle-imperative-pour-tous-les-postes-qui-le-nbsp",
+      },
+      Object {
+        "count": 9,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 6,
+        "link": "fiche-service-public/teletravail-dans-le-secteur-prive",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t5-Les-solutions-pour-les-parents-d-enfants-de-moins-de-16-ans",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/rupture-de-periode-dessai-a-linitiative-de-lemployeur",
+    "links": Array [
+      Object {
+        "count": 15,
+        "link": "modeles-de-courriers/rupture-du-contrat-en-periode-dessai-a-linitiative-du-salarie",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/rupture-du-contrat-en-periode-dessai-a-linitiative-du-salarie",
+    "links": Array [
+      Object {
+        "count": 15,
+        "link": "modeles-de-courriers/rupture-de-periode-dessai-a-linitiative-de-lemployeur",
+      },
+    ],
+  },
+  Object {
+    "content": "convention-collective",
+    "links": Array [
+      Object {
+        "count": 11,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 6,
+        "link": "outils/preavis-demission",
+      },
+      Object {
+        "count": 5,
+        "link": "convention-collective/650-metallurgie-ingenieurs-et-cadres",
+      },
+    ],
+  },
+  Object {
+    "content": "outils/preavis-demission",
+    "links": Array [
+      Object {
+        "count": 8,
+        "link": "outils/indemnite-licenciement",
+      },
+      Object {
+        "count": 6,
+        "link": "convention-collective",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/preavis-de-licenciement",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/convocation-a-un-entretien-prealable-au-licenciement-economique-de-moins-de-10-salaries-pendant-30-jours",
+    "links": Array [
+      Object {
+        "count": 13,
+        "link": "modeles-de-courriers/convocation-a-un-entretien-prealable-au-licenciement-pour-motif-personnel",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/convocation-a-un-entretien-prealable-au-licenciement-pour-motif-personnel",
+    "links": Array [
+      Object {
+        "count": 13,
+        "link": "modeles-de-courriers/convocation-a-un-entretien-prealable-au-licenciement-economique-de-moins-de-10-salaries-pendant-30-jours",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/comment-consulter-une-convention-collective",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/convention-collective",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/convention-collective",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/comment-consulter-une-convention-collective",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/peut-on-demissionner-pendant-un-arret-maladie",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/peut-on-prendre-directement-des-conges-apres-un-arret-maladie",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/arret-maladie-pendant-le-preavis-quelles-consequences",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/un-salarie-peut-il-revenir-travailler-avant-la-fin-de-son-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/peut-on-prendre-directement-des-conges-apres-un-arret-maladie",
+    "links": Array [
+      Object {
+        "count": 6,
+        "link": "fiche-service-public/arret-maladie-et-conges-payes-annuels",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/peut-on-demissionner-pendant-un-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "outils/indemnite-precarite",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/conventions-de-fne-formation",
     "links": Array [
       Object {
         "count": 7,
-        "link": "fiche-service-public/secteur-prive-activite-partielle-du-salarie",
+        "link": "fiche-ministere-travail/formation-professionnelle-des-salaries-en-activite-partielle#Elargissement-du-dispositif-FNE-Formation-a-l-ensemble-des-entreprises-qui-nbsp",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/questions-reponses-par-theme",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/formation-professionnelle-des-salaries-en-activite-partielle#Elargissement-du-dispositif-FNE-Formation-a-l-ensemble-des-entreprises-qui-nbsp",
+    "links": Array [
+      Object {
+        "count": 7,
+        "link": "fiche-ministere-travail/conventions-de-fne-formation",
+      },
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/peut-on-demissionner-pendant-un-conge-maternite",
+    "links": Array [
+      Object {
+        "count": 7,
+        "link": "fiche-service-public/peut-on-demissionner-pendant-un-conge-parental",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/peut-on-demissionner-pendant-un-conge-parental",
+    "links": Array [
+      Object {
+        "count": 7,
+        "link": "fiche-service-public/peut-on-demissionner-pendant-un-conge-maternite",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t5-Les-solutions-pour-les-parents-d-enfants-de-moins-de-16-ans",
+    "links": Array [
+      Object {
+        "count": 14,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#t1-Le-teletravail-est-la-regle-imperative-pour-tous-les-postes-qui-le-nbsp",
+      },
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+      Object {
+        "count": 5,
+        "link": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail#Pour-resumer",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/mesures-exceptionnelles-de-soutien-aux-intermittents-et-salaries-du-secteur-culturel-dans-le-cadre-de-la-crise-sanitaire",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/lemployeur-doit-il-amenager-un-espace-pour-la-pause-dejeuner",
+    "links": Array [
+      Object {
+        "count": 6,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/certificat-de-travail",
+    "links": Array [
+      Object {
+        "count": 9,
+        "link": "modeles-de-courriers/recu-pour-solde-de-tout-compte",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/recu-pour-solde-de-tout-compte",
+    "links": Array [
+      Object {
+        "count": 9,
+        "link": "modeles-de-courriers/certificat-de-travail",
+      },
+    ],
+  },
+  Object {
+    "content": "contribution/quelle-est-la-duree-de-preavis-en-cas-de-depart-a-la-retraite",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "contribution/quelle-est-la-duree-de-preavis-en-cas-de-mise-a-la-retraite",
+      },
+    ],
+  },
+  Object {
+    "content": "contribution/quelle-est-la-duree-de-preavis-en-cas-de-mise-a-la-retraite",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "contribution/quelle-est-la-duree-de-preavis-en-cas-de-depart-a-la-retraite",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/arret-maladie-pendant-le-preavis-quelles-consequences",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/peut-on-demissionner-pendant-un-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/arret-maladie-et-conges-payes-annuels",
+    "links": Array [
+      Object {
+        "count": 6,
+        "link": "fiche-service-public/peut-on-prendre-directement-des-conges-apres-un-arret-maladie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/preavis-de-licenciement",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "outils/preavis-demission",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/rupture-dun-commun-accord-dun-contrat-de-travail-a-duree-determinee",
+    "links": Array [
+      Object {
+        "count": 8,
+        "link": "modeles-de-courriers/rupture-dun-commun-accord-dun-contrat-dapprentissage",
+      },
+    ],
+  },
+  Object {
+    "content": "modeles-de-courriers/rupture-dun-commun-accord-dun-contrat-dapprentissage",
+    "links": Array [
+      Object {
+        "count": 8,
+        "link": "modeles-de-courriers/rupture-dun-commun-accord-dun-contrat-de-travail-a-duree-determinee",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-ministere-travail/les-conges-payes",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/comment-calculer-lindemnite-de-conges-payes-du-salarie",
+    "links": Array [
+      Object {
+        "count": 6,
+        "link": "fiche-service-public/indemnite-compensatrice-de-conges-payes",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/indemnite-compensatrice-de-conges-payes",
+    "links": Array [
+      Object {
+        "count": 6,
+        "link": "fiche-service-public/comment-calculer-lindemnite-de-conges-payes-du-salarie",
+      },
+    ],
+  },
+  Object {
+    "content": "fiche-service-public/arret-maladie-reprise-du-travail-du-salarie",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "fiche-service-public/arret-maladie-indemnites-journalieres-versees-au-salarie",
+      },
+    ],
+  },
+  Object {
+    "content": "convention-collective/650-metallurgie-ingenieurs-et-cadres",
+    "links": Array [
+      Object {
+        "count": 5,
+        "link": "convention-collective",
       },
     ],
   },
 ]
 `;
 
-exports[`Popularity analysis 1`] = `
+exports[`Popularity analysis should match snapshots on actual data 1`] = `
 Object {
-  "end": "2020-03-22T07:59:43.000Z",
-  "pivot": "2020-03-22T03:11:46.800Z",
+  "end": "Mon, 04 May 2020 07:59:56 GMT",
+  "pivot": "Sun, 03 May 2020 17:36:00 GMT",
   "results": Array [
     Object {
-      "abs_diff": 0.09665321831802542,
-      "diff": -0.09665321831802542,
-      "focus_count": 358,
-      "focus_norm_cunt": 0.7732181425485961,
-      "ref_count": 6424,
-      "ref_norm_count": 0.8698713608666215,
-      "url": "fiche-service-public/quelles-sont-les-obligations-du-salarie-dont-le-contrat-de-travail-est-suspendu",
+      "abs_diff": 0.008228796509893416,
+      "diff": 0.008228796509893416,
+      "focus_count": 568,
+      "focus_norm_count": 0.14014310387367382,
+      "ref_count": 1915,
+      "ref_norm_count": 0.1319143073637804,
+      "url": "fiche-service-public/procedure-de-licenciement-pour-motif-personnel",
     },
     Object {
-      "abs_diff": 0.02762619342517597,
-      "diff": 0.02762619342517597,
-      "focus_count": 60,
-      "focus_norm_cunt": 0.12958963282937366,
-      "ref_count": 753,
-      "ref_norm_count": 0.10196343940419769,
-      "url": "fiche-ministere-travail/coronavirus-questions-reponses-pour-les-entreprises-et-les-salaries",
+      "abs_diff": 0.007962639274294303,
+      "diff": -0.007962639274294303,
+      "focus_count": 3141,
+      "focus_norm_count": 0.774981495188749,
+      "ref_count": 11366,
+      "ref_norm_count": 0.7829441344630433,
+      "url": "dossiers/ministere-du-travail-notre-dossier-sur-le-coronavirus",
     },
     Object {
-      "abs_diff": 0.008869768414464553,
-      "diff": 0.008869768414464553,
-      "focus_count": 10,
-      "focus_norm_cunt": 0.02159827213822894,
-      "ref_count": 94,
-      "ref_norm_count": 0.012728503723764387,
-      "url": "code-du-travail/l1254-19",
+      "abs_diff": 0.0021480724479995307,
+      "diff": -0.0021480724479995307,
+      "focus_count": 65,
+      "focus_norm_count": 0.016037503084135207,
+      "ref_count": 264,
+      "ref_norm_count": 0.018185575532134738,
+      "url": "fiche-ministere-travail/garde-denfants-et-personnes-vulnerables",
     },
     Object {
-      "abs_diff": 0.005111932277645276,
-      "diff": 0.005111932277645276,
-      "focus_count": 5,
-      "focus_norm_cunt": 0.01079913606911447,
-      "ref_count": 42,
-      "ref_norm_count": 0.005687203791469194,
-      "url": "fiche-service-public/comment-consulter-un-accord-dentreprise",
+      "abs_diff": 0.0012374781816076475,
+      "diff": -0.0012374781816076475,
+      "focus_count": 31,
+      "focus_norm_count": 0.0076486553170490995,
+      "ref_count": 129,
+      "ref_norm_count": 0.008886133498656747,
+      "url": "modeles-de-courriers/signalement-de-faits-pouvant-relever-du-harcelement-moral-ou-sexuel",
     },
     Object {
-      "abs_diff": 0.004184244813563188,
-      "diff": 0.004184244813563188,
+      "abs_diff": 0.0003807782060257902,
+      "diff": -0.0003807782060257902,
+      "focus_count": 18,
+      "focus_norm_count": 0.0044411547002220575,
+      "ref_count": 70,
+      "ref_norm_count": 0.004821932906247848,
+      "url": "fiche-service-public/harcelement-moral-au-travail",
+    },
+    Object {
+      "abs_diff": 0.00035569212175092505,
+      "diff": 0.00035569212175092505,
       "focus_count": 2,
-      "focus_norm_cunt": 0.004319654427645789,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r5122-26",
-    },
-    Object {
-      "abs_diff": 0.002688012447155886,
-      "diff": 0.002688012447155886,
-      "focus_count": 3,
-      "focus_norm_cunt": 0.0064794816414686825,
-      "ref_count": 28,
-      "ref_norm_count": 0.0037914691943127963,
-      "url": "recherche?slug=1505-commerce-de-detail-des-fruits-et-legumes-epicerie-et-produits-laitiers",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r5122-6",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r3232-1",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/l3121-56",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/l3121-58",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r5122-11",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/l5422-10",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/l5422-9",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/l5122-5",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r3232-2",
-    },
-    Object {
-      "abs_diff": 0.0020244175997402945,
-      "diff": 0.0020244175997402945,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 1,
-      "ref_norm_count": 0.00013540961408259986,
-      "url": "code-du-travail/r5122-1",
-    },
-    Object {
-      "abs_diff": 0.0018890079856576946,
-      "diff": 0.0018890079856576946,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
+      "focus_norm_count": 0.0004934616333580064,
       "ref_count": 2,
-      "ref_norm_count": 0.00027081922816519973,
-      "url": "modeles-de-courriers/justificatif-de-lemployeur-de-deplacement-professionnel",
+      "ref_norm_count": 0.00013776951160708134,
+      "url": "code-du-travail/l2312-35",
     },
     Object {
-      "abs_diff": 0.0017535983715750948,
-      "diff": 0.0017535983715750948,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 3,
-      "ref_norm_count": 0.00040622884224779957,
-      "url": "code-du-travail/l1237-9",
+      "abs_diff": 0.00024800551608321385,
+      "diff": -0.00024800551608321385,
+      "focus_count": 11,
+      "focus_norm_count": 0.002714038983469035,
+      "ref_count": 43,
+      "ref_norm_count": 0.002962044499552249,
+      "url": "modeles-de-courriers/demande-de-paiement-de-salaire",
     },
     Object {
-      "abs_diff": 0.0014827791434098951,
-      "diff": 0.0014827791434098951,
-      "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 5,
-      "ref_norm_count": 0.0006770480704129993,
-      "url": "convention-collective/1059-convention-collective-regionale-des-industries-metallurgiques-electriques",
+      "abs_diff": 0.0002179226101438437,
+      "diff": 0.0002179226101438437,
+      "focus_count": 2,
+      "focus_norm_count": 0.0004934616333580064,
+      "ref_count": 4,
+      "ref_norm_count": 0.0002755390232141627,
+      "url": "code-du-travail/l2315-7",
     },
     Object {
-      "abs_diff": 0.0012119599152446952,
-      "diff": 0.0012119599152446952,
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
       "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
-      "ref_count": 7,
-      "ref_norm_count": 0.0009478672985781991,
-      "url": "fiche-ministere-travail/coronavirus-covid-19-et-monde-du-travail",
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2315-11",
     },
     Object {
-      "abs_diff": 0.000006726611498703537,
-      "diff": -0.000006726611498703537,
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
       "focus_count": 1,
-      "focus_norm_cunt": 0.0021598272138228943,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "fiche-service-public/comite-social-et-economique-cse",
+    },
+    Object {
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
+      "focus_count": 1,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2311-1",
+    },
+    Object {
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
+      "focus_count": 1,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2312-11",
+    },
+    Object {
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
+      "focus_count": 1,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2315-15",
+    },
+    Object {
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
+      "focus_count": 1,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2312-38",
+    },
+    Object {
+      "abs_diff": 0.00017784606087546253,
+      "diff": 0.00017784606087546253,
+      "focus_count": 1,
+      "focus_norm_count": 0.0002467308166790032,
+      "ref_count": 1,
+      "ref_norm_count": 0.00006888475580354067,
+      "url": "code-du-travail/l2312-26",
+    },
+    Object {
+      "abs_diff": 0.00013149799053836526,
+      "diff": 0.00013149799053836526,
+      "focus_count": 5,
+      "focus_norm_count": 0.001233654083395016,
       "ref_count": 16,
-      "ref_norm_count": 0.002166553825321598,
-      "url": "politique-confidentialite",
+      "ref_norm_count": 0.0011021560928566507,
+      "url": "fiche-service-public/paiement-du-salaire",
+    },
+    Object {
+      "abs_diff": 0.00012022964780514353,
+      "diff": 0.00012022964780514353,
+      "focus_count": 3,
+      "focus_norm_count": 0.0007401924500370096,
+      "ref_count": 9,
+      "ref_norm_count": 0.0006199628022318661,
+      "url": "contribution/quelles-sont-les-conditions-de-la-clause-de-non-concurrence",
+    },
+    Object {
+      "abs_diff": 0.0000926961406741947,
+      "diff": -0.0000926961406741947,
+      "focus_count": 8,
+      "focus_norm_count": 0.0019738465334320256,
+      "ref_count": 30,
+      "ref_norm_count": 0.0020665426741062203,
+      "url": "fiche-ministere-travail/le-salaire-fixation-et-paiement",
+    },
+    Object {
+      "abs_diff": 0.00008015309853676232,
+      "diff": 0.00008015309853676232,
+      "focus_count": 2,
+      "focus_norm_count": 0.0004934616333580064,
+      "ref_count": 6,
+      "ref_norm_count": 0.0004133085348212441,
+      "url": "contribution/quelles-sont-les-primes-prevues-par-la-convention-collective",
+    },
+    Object {
+      "abs_diff": 0.0000366603548650965,
+      "diff": -0.0000366603548650965,
+      "focus_count": 183,
+      "focus_norm_count": 0.04515173945225759,
+      "ref_count": 656,
+      "ref_norm_count": 0.045188399807122685,
+      "url": "fiche-service-public/un-salarie-doit-il-recuperer-les-heures-quil-na-pas-pu-effectuer",
     },
   ],
-  "start": "2020-03-21T08:00:02.000Z",
+  "start": "Fri, 01 May 2020 08:00:16 GMT",
 }
 `;
 
-exports[`Suggestions weigths 1`] = `
+exports[`Suggestions weigths should match snapshots on actual data 1`] = `
 Array [
   Object {
-    "count": 18,
+    "count": 20,
     "suggestion": "chômage partiel",
-    "weight": 34.08,
+    "weight": 19.39,
   },
   Object {
-    "count": 6,
-    "suggestion": "droit de retrait",
-    "weight": 19.67,
-  },
-  Object {
-    "count": 6,
-    "suggestion": "congés payés",
-    "weight": 19.67,
-  },
-  Object {
-    "count": 6,
-    "suggestion": "indemnisation chômage partiel",
-    "weight": 19.67,
-  },
-  Object {
-    "count": 5,
-    "suggestion": "rupture conventionnelle cdi",
-    "weight": 17.96,
-  },
-  Object {
-    "count": 5,
-    "suggestion": "l'employeur a t il le droit d'imposer des congés payés",
-    "weight": 17.96,
-  },
-  Object {
-    "count": 3,
-    "suggestion": "licenciement inaptitude",
-    "weight": 13.91,
-  },
-  Object {
-    "count": 3,
+    "count": 13,
     "suggestion": "télétravail",
-    "weight": 13.91,
+    "weight": 15.63,
   },
   Object {
-    "count": 3,
-    "suggestion": "arrêt de travail",
-    "weight": 13.91,
+    "count": 12,
+    "suggestion": "congés payés",
+    "weight": 15.02,
   },
   Object {
-    "count": 3,
+    "count": 10,
+    "suggestion": "arrêt maladie",
+    "weight": 13.71,
+  },
+  Object {
+    "count": 8,
+    "suggestion": "licenciement",
+    "weight": 12.26,
+  },
+  Object {
+    "count": 8,
+    "suggestion": "covid 19",
+    "weight": 12.26,
+  },
+  Object {
+    "count": 6,
+    "suggestion": "licenciement inaptitude",
+    "weight": 10.62,
+  },
+  Object {
+    "count": 6,
+    "suggestion": "licenciement économique",
+    "weight": 10.62,
+  },
+  Object {
+    "count": 6,
     "suggestion": "activité partielle",
-    "weight": 13.91,
+    "weight": 10.62,
+  },
+  Object {
+    "count": 6,
+    "suggestion": "durée du préavis de démission",
+    "weight": 10.62,
+  },
+  Object {
+    "count": 5,
+    "suggestion": "rupture conventionnelle",
+    "weight": 9.69,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "absence injustifiée",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "temps de travail",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "activité partielle et réduction du temps de travail",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "procédure de licenciement",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "indemnisation chômage partiel",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "convention collective",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "indemnités de licenciement",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "période d'essai",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "temps de pause",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "contrat de travail",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 4,
+    "suggestion": "accords d'entreprise",
+    "weight": 8.67,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "coronavirus",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "rupture conventionnelle cdi",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "cse entreprise",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "jours fériés",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "modification du contrat de travail",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "modification horaires de travail",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "l'employeur peut-il m'imposer un changement de mes horaires de travail ?",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "congés payés acquisition",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "heures supplémentaires",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "droit de retrait",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "représentant syndical",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "cdd transformé en cdi",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "repos hebdomadaire",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "consultation cse",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "changement de planning",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "visite de reprise arrêt maladie",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "salarié en mission à l'étranger",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "clause de non concurrence",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "maintien de salaire arrêt maladie",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "règlement intérieur",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 3,
+    "suggestion": "licenciement pour faute grave",
+    "weight": 7.51,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "absences pour maladie",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "maladie professionnelle",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "usages",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "rupture conventionnelle individuelle indemnité de rupture",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "calcul indemnité rupture conventionnelle",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "attestation de travail",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "détachement",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "indemnité de départ à la retraite",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "préavis des cadres",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "modalités de calcul indemnités de licenciement",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "changement des horaires de travail",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "cdd durée",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "astreinte",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "activité partielle durée maximale",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "cdd et après cdi",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "inaptitude au travail",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "élections professionnelles",
+    "weight": 6.13,
+  },
+  Object {
+    "count": 2,
+    "suggestion": "repos compensateur",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
     "suggestion": "mon employeur peut-il m'imposer des congés payés ?",
-    "weight": 11.36,
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "obligation de sécurité de résultat de l'employeur",
-    "weight": 11.36,
+    "suggestion": "démission et chômage",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "activité partielle et réduction du temps de travail",
-    "weight": 11.36,
+    "suggestion": "quelle est la durée de préavis en cas de démission ?",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "congés d'ancienneté",
-    "weight": 11.36,
+    "suggestion": "retraite à taux plein",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "licenciement économique",
-    "weight": 11.36,
+    "suggestion": "démission et préavis",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "règlement intérieur",
-    "weight": 11.36,
+    "suggestion": "prime d'ancienneté cadre",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "droit de retrait salarié",
-    "weight": 11.36,
+    "suggestion": "durée du travail et temps de travail",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "licenciement pour inaptitude",
-    "weight": 11.36,
+    "suggestion": "congé parental et congés payés",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "congés payés et fractionnement",
-    "weight": 11.36,
+    "suggestion": "préavis",
+    "weight": 6.13,
   },
   Object {
     "count": 2,
-    "suggestion": "licenciement abusif",
-    "weight": 11.36,
+    "suggestion": "temps de trajet travail",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "démission cdi",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "délai de prévenance refus congés payés",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "cse entreprise",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "comment calculer l'indemnité rupture conventionnelle",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "suivi médical poste à risque",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "rupture cdd",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "congés imposés par l' employeur",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "contrat de professionnalisation",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "retraite progressive",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "travailler à la retraite",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "discrimination",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "travail de nuit",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "obligation de sécurité",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "congés payés et congé sabbatique",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "comment calculer les indemnités de départ à la retraite ?",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "jours fériés travaillés restauration rapide",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "arrêt de travail et démission",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "promesse d'embauche",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "subrogation congé maternité",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "maintien de salaire congé maternité",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "qui doit faire les entretiens individuels ?",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "préavis de départ à la retraite",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "congés mariage",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "congés",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "promesse d'embauche et lettre d'engagement",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "prime d'ancienneté",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "délégué syndical",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "entretien professionnel",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "licenciement pour motif personnel et préavis",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "versement du salaire",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "jours fériés travaillés",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "quelle est la majoration des heures de nuit ?",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "rupture à l'amiable",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "licenciement suite inaptitude",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "modèle type lettre de licenciement",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "temps de pause",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "le congé de proche aidant",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "visite de reprise",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "aménagement des horaires de travail",
-    "weight": 8.03,
-  },
-  Object {
-    "count": 1,
-    "suggestion": "amiante",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "heures complémentaires",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "période d'essai",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "congé parental",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "décès employeur",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "comment se calcule l'indemnité compensatrice de congés payés ?",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "peut on cumuler deux cdi chez un même employeur",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "harcèlement au travail",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "cumul emploi retraite",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "heures supplémentaires non payées",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "cumul emploi retraite même employeur",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "changement de contrat de travail",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "ancienneté calcul",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "cse",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "calcul de l' ancienneté",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "congés payés et maladie",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "voile au travail",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "accord d'entreprise après fusion",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "solde de tout compte",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "mise à pied conservatoire et procédure disciplinaire",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "rémunération activité partielle",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "préavis démission",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "rupture conventionnelle",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "licenciement pour faute",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "accident du travail prise en charge",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "frais de déplacement trajet domicile travail",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "versement indemnités pendant accident du travail",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "retard dans le paiement du salaire",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "indemnités journalières pendant accident du travail",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "lanceur d'alerte",
+    "weight": 6.13,
   },
   Object {
-    "count": 1,
-    "suggestion": "congés supplémentaires fractionnement",
-    "weight": 8.03,
+    "count": 2,
+    "suggestion": "congés sans solde",
+    "weight": 6.13,
   },
   Object {
     "count": 1,
-    "suggestion": "fin de cdd",
-    "weight": 8.03,
+    "suggestion": "perte de salaire",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "arrêt maladie",
-    "weight": 8.03,
+    "suggestion": "fiche de poste",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "document unique d'évaluation des risques",
-    "weight": 8.03,
+    "suggestion": "mise à la retraite",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "congés payés acquisition",
-    "weight": 8.03,
+    "suggestion": "avantages en nature",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "maintien de salaire et maladie",
-    "weight": 8.03,
+    "suggestion": "qui paye le complément de salaire en arrêt maladie ?",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "vacances annuelles",
-    "weight": 8.03,
+    "suggestion": "différence entre changement des horaires et modification des horaires de travail",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "promesse d'embauche et contrat de travail",
-    "weight": 8.03,
+    "suggestion": "comment demander un congé sans solde",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "cdd transformé en cdi",
-    "weight": 8.03,
+    "suggestion": "risque d'exposition aux fibres d'amiante",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "licenciement",
-    "weight": 8.03,
+    "suggestion": "conception des lieux de travail",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "contrat de travail",
-    "weight": 8.03,
+    "suggestion": "invalidité",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "préavis et prise d'acte de rupture",
-    "weight": 8.03,
+    "suggestion": "harcèlement moral",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "indemnisation activité partielle",
-    "weight": 8.03,
+    "suggestion": "quelle est la différence entre salaire brut et salaire net",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "prévention des risques de chute de hauteur",
-    "weight": 8.03,
+    "suggestion": "l’assomption",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "contester son licenciement",
-    "weight": 8.03,
+    "suggestion": "ai-je droit à une prime d'ancienneté ?",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "assistante maternelle",
-    "weight": 8.03,
+    "suggestion": "période d'essai : rupture et délai de prévenance",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "chômage",
-    "weight": 8.03,
+    "suggestion": "point de départ délai de prévenance rupture période d'essai",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "rupture de période d'essai",
-    "weight": 8.03,
+    "suggestion": "titres restaurant",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "discrimination religieuse au travail",
-    "weight": 8.03,
+    "suggestion": "titre restaurant",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "je travaille dans un magasin. est ce normal que je sois seule ?",
-    "weight": 8.03,
+    "suggestion": "temps partiel",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
     "suggestion": "grève",
-    "weight": 8.03,
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "chômage technique",
-    "weight": 8.03,
+    "suggestion": "droit de retrait salarié",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "maintien de salaire et maladie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment calculer le maintien de salaire en cas de maladie ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "sécurité incendie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnités chômage",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement pour absences injustifiées",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "heures de délégation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "remise solde de tout compte",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "délai de paiement du solde de tout compte",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "salaire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rémunération activité partielle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "activité partielle et réduction des heures de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "la rupture conventionnelle collective diffère-t-elle des plans de départs volontaires autonomes",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "fin de cdd rupture anticipée salarié",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "retraite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture de période d'essai",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnités frais de repas",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "négociation d'un accord collectif dans une entreprise sans délégué syndical",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "transfert de contrat",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "élections cse",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "transfert d'entreprise",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congé pour décès grand parent",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "différence entre invalidité et inaptitude",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "document unique d'évaluation des risques",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés payés et fractionnement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés d'ancienneté",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "prévoyance",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "plan d'épargne salariale",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnité licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "travailler le dimanche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés imposés par l' employeur",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "calcul d'effectif et obligation d'organisation des élections du cse",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis démission congés payés imposés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis cdd",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis rupture conventionnelle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "invalidité et suivi médical",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "accident du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis et congés payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "avenant au contrat de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "date paiement salaire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "1er mai",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "compte personnel de formation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "code du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "relevé d'heures de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés payés et congé parental d'éducation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "heures de recherche d'emploi",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis de départ à la retraite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "suivi médical des travailleurs exposé à des agents biologiques de catégorie 2",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "règle du maintien de salaire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "solde de tout compte",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "calcul solde de tout compte",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "calcul solde de tout compte et primes",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "priorité recrutement interne code du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congé maternité",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "régime d'équivalence et temps de travail effectif",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "fonction publique hospitalière et indemnités",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quels sont les éléments constitutifs d'un contrat de travail ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "décompte heures supplémentaires",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "prime de départ à la retraite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "reports de congés payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement économique individuel obligations",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement économique procédure",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment calculer le montant de l'indemnité de licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "départ volontaire à la retraite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "qui a droit à la prime d'ancienneté ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rôle service de santé au travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "jour férié",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment calculer l'indemnité compensatrice de préavis ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment calculer les indemnités de départ à la retraite ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "prime d'ancienneté",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "prime macron",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment décompter les congés payés en jours ouvrables ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "détachement d'un salarié dans une filiale",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "missions du cse",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "ai je droit à une indemnité de trajet lorsque je prend mon véhicule personnel pour me rendre sur mon lieu de travail ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "cdi",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "arrêt de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture de contrat de professionnalisation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés payés et temps partiel",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture amiable du contrat de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "un salarié peut-il refuser de travailler dans une situation dangereuse ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "refuser mutuelle santé obligatoire?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "calcul des congés payés et maladie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "parcours emploi compétences obligations",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "composition cse central",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "visite médicale travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "visites médicales obligations de l'employeur",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement abusif",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "durée de préavis pour démission",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture du contrat de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "visites médicales périodiques",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "astreinte et temps de travail effectif",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quelle est la majoration des heures de nuit ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "durée du préavis",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis et grève",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "démission sans préavis",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "mise à pied délégué syndical",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "temps de travail et durée légale",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "je travaille dans un magasin. est ce normal que je sois seule ?",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
     "suggestion": "arrêt de travail indemnisation",
-    "weight": 8.03,
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quelles sont les indemnités de rupture conventionnelle?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "négociation accord d'entreprise",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "dimension bureau de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quelle est la procédure à respecter par le salarié qui souhaite demander un congé sabbatique ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "requalification en salarié",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quels sont les motifs de licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "vidéosurveillance",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnités",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "la période d'activité partielle est-elle prise en compte pour le calcul des congés payés ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "repos compensateur de nuit code du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "visite médicale et autorisation de conduite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "heures formation cpf",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "modèle lettre démission cdi",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "modèle lettre de démission simple",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture période essai",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "délégué syndical",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "obligation de sécurité",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "le paiement des heures supplémentaires",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment sont calculés les heures supplémentaires",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "femme enceinte travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "modèle de lettre de licenciement pour motif personnel",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "lettre de licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "démission pour suivi de conjoint",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "suivre mon conjoint",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "chômage après démission",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "droit au chômage",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis et travailleurs handicapés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "demander une visite auprès du médecin du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "horaires individualisés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "affichage obligatoire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "bulletin de salaire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "local aveugle réglementation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "combien de jours de congés en cas de décès d'un proche ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quelle température pour travailler dans un bureau ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "arrêt maladie et rupture conventionnelle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "durée de la période d'essai et cdd",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnité de précarité",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "faute grave",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "motifs cdd",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "mise à pied disciplinaire et arrêt maladie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "prime exceptionnelle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "tickets restaurants",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "durée du travail et temps de pause",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "temps de pause et travail effectif",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "fiche de paie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "ai-je droit à l'indemnité de précarité si mon cdd se transforme en cdi ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "pec",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "fin de contrat cdd congés payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment sont payés les congés payés en fin de contrat ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "cdd usage",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "absence maladie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "travailleur de nuit",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "bulletin de paie",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "promesse d'embauche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rompre la promesse d'embauche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "arrêt maladie longue durée",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congé enfant malade",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "abandon de poste cdi",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "départ à la retraite anticipée",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congés payés décompte en semaines",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "jours fériés travaillés récupération",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "qu'est ce qu'un cdd",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "congé parental d'éducation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "accident du travail et visite de reprise",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "préavis et prise d'acte de rupture",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "chèques vacances",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement pour inaptitude salarié protégé",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "cumuler deux emplois",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "formation professionnelle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "contenu d'un contrat de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "formation salarié obligation de l’employeur",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "salarié protégé",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "maladie pendant période d'essai",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "chômage",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "l'employeur a t il le droit d'imposer des congés payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnités congé payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "mes droits à formation",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "voile accepté recrutement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "calcul congé payé et accident du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "les avantages du travail le dimanche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "délai de carence indemnités journalières accident du travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "démarches départ à la retraite",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "qu'est ce qu'un accord collectif?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "convention collective de branche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "visite médicale d'embauche",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "changement de lieu de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "clause de mobilité",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "lettre licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "fermeture de l'entreprise et congés payés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "je veux démissionner",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "licenciement pour faute grave procédure",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "surveillance des salariés par caméra",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "promesse d'embauche et contrat de travail",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "rupture de contrat en période d' essai",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "comment calculer les congés payés ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quelles sont les nouvelles modalités de remboursement des frais de déplacement domicile-travail ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "salarié protégé suppléant cse",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "demande de renseignements",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "dans quels cas peut-on embaucher sous contrat à durée déterminée ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "démission pendant congé parental",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "travailler pendant ses congés",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "forfait jour",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "quels sont les différents types de contrat de travail ?",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "salarié protégé rupture conventionnelle",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
     "suggestion": "préavis cdi",
-    "weight": 8.03,
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "élections professionnelles",
-    "weight": 8.03,
+    "suggestion": "risque chimique",
+    "weight": 4.34,
   },
   Object {
     "count": 1,
-    "suggestion": "reçu pour solde de tout compte",
-    "weight": 8.03,
+    "suggestion": "préavis de licenciement",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "indemnités rupture conventionnelle",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "accident du travail et maintien de salaire",
+    "weight": 4.34,
+  },
+  Object {
+    "count": 1,
+    "suggestion": "contrat cdd",
+    "weight": 4.34,
   },
 ]
 `;

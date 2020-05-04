@@ -4,6 +4,7 @@ import * as dataForge from "data-forge";
 import "data-forge-fs";
 import { LOG_INDEX_NAME } from "./esConf";
 import { getDocuments } from "./elastic";
+import { actionTypes } from "./util";
 
 // get last n days before ref
 const getLastDays = (n, ref) => {
@@ -16,15 +17,18 @@ const getLastDays = (n, ref) => {
   return [...Array(n).keys()].map(createDate).map(formatDate);
 };
 
+const typesToConsider = Object.values(actionTypes);
+
 export const readFromElastic = async (n, ref = new Date()) => {
   const days = getLastDays(n, ref);
 
   const query = {
     bool: {
-      should: [
-        days.map((d) => {
-          return { match: { logfile: d } };
-        }),
+      must: [
+        {
+          bool: { should: days.map((d) => ({ match: { logfile: d } })) },
+        },
+        { terms: { type: typesToConsider } },
       ],
     },
   };

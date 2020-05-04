@@ -4,6 +4,6 @@ import * as Reader from "../reader";
 
 test("access data", async () => {
   const dataframe = await Reader.readFromFile(logfile);
-  expect(dataframe.count()).toBe(298008);
-  expect(DatasetUtil.getVisits(dataframe).count()).toBe(7444);
+  expect(dataframe.count()).toBe(27015);
+  expect(DatasetUtil.getVisits(dataframe).count()).toBe(14656);
 });
