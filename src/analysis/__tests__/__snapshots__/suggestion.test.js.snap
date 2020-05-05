@@ -4,11 +4,13 @@ exports[`Suggestion should be unique per visit 1`] = `
 Array [
   Object {
     "count": 1,
+    "reportType": "suggestion",
     "suggestion": "q1",
     "weight": 70.71,
   },
   Object {
     "count": 1,
+    "reportType": "suggestion",
     "suggestion": "q2",
     "weight": 70.71,
   },
@@ -19,11 +21,13 @@ exports[`Suggestion should be weighted properly 1`] = `
 Array [
   Object {
     "count": 3,
+    "reportType": "suggestion",
     "suggestion": "q1",
     "weight": 70.71,
   },
   Object {
     "count": 3,
+    "reportType": "suggestion",
     "suggestion": "q2",
     "weight": 70.71,
   },
@@ -34,11 +38,13 @@ exports[`Suggestion should be weighted properly 2`] = `
 Array [
   Object {
     "count": 2,
+    "reportType": "suggestion",
     "suggestion": "q1",
     "weight": 81.65,
   },
   Object {
     "count": 1,
+    "reportType": "suggestion",
     "suggestion": "q2",
     "weight": 57.74,
   },

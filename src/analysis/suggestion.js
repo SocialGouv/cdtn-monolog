@@ -1,6 +1,8 @@
 import * as DatasetUtil from "../dataset";
 import * as DataForge from "data-forge";
 
+export const reportType = "suggestion";
+
 const analyse = (dataset) => {
   // get unique suggestion selection events in visits
   const uniqueSuggs = DataForge.DataFrame.concat(
@@ -22,6 +24,7 @@ const analyse = (dataset) => {
       suggestion: suggGroup.first(),
       count: suggGroup.count(),
       weight: round(normalisation(suggGroup.count())),
+      reportType,
     }))
     .inflate()
     .orderByDescending((r) => r.weight);

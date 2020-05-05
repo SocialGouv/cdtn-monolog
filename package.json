@@ -13,9 +13,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint . --ext .js",
     "test": "jest",
-    "test-one": "jest analysis --watch"
+    "test-one": "jest analysis --watch",
+    "monolog": "node -r esm src/monolog.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.6.1",
@@ -29,6 +30,7 @@
     "@babel/preset-env": "^7.9.5",
     "@socialgouv/eslint-config-recommended": "^0.20.0",
     "babel-jest": "^25.4.0",
+    "prettier": "^2.0.5",
     "eslint": "^6.8.0",
     "jest": "^25.4.0"
   },

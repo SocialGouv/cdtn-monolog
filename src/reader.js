@@ -19,7 +19,7 @@ const getLastDays = (n, ref) => {
 
 const typesToConsider = Object.values(actionTypes);
 
-export const readFromElastic = async (n, ref = new Date()) => {
+export const readFromElastic = async (esClient, n, ref = new Date()) => {
   const days = getLastDays(n, ref);
 
   const query = {
@@ -33,7 +33,7 @@ export const readFromElastic = async (n, ref = new Date()) => {
     },
   };
 
-  const docs = await getDocuments(LOG_INDEX_NAME, query);
+  const docs = await getDocuments(esClient, LOG_INDEX_NAME, query);
 
   // return a Dataframe containing actions
   return new dataForge.DataFrame({ values: docs, considerAllRows: true });

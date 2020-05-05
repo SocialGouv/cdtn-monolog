@@ -1,8 +1,7 @@
-import { esClient } from "./esConf";
 import { logger } from "./logger";
 
 // we ensure index exists otherwise we create it
-const testAndCreateIndex = async (index, mappings) => {
+const testAndCreateIndex = async (esClient, index, mappings) => {
   const { body } = await esClient.indices.exists({ index });
 
   if (!body) {
@@ -32,7 +31,7 @@ const testAndCreateIndex = async (index, mappings) => {
   }
 };
 
-const deleteIfExists = async (index) => {
+const deleteIfExists = async (esClient, index) => {
   const { body } = await esClient.indices.exists({ index });
   if (body) {
     await esClient.indices.delete({ index });
@@ -41,7 +40,7 @@ const deleteIfExists = async (index) => {
 };
 
 // bulk insert
-const insertDocuments = async (index, documents) => {
+const insertDocuments = async (esClient, index, documents) => {
   try {
     const header = { index: { _index: index, _type: "_doc" } };
     const body = documents.flatMap((doc) => {
@@ -66,14 +65,14 @@ const insertDocuments = async (index, documents) => {
   }
 };
 
-const batchInsert = async (index, documents, size = 1000) => {
+const batchInsert = async (esClient, index, documents, size = 1000) => {
   // number of batches
   const n = Math.ceil(documents.length / size);
   logger.info(`${n} batches to insert`);
 
   for (const i of [...Array(n).keys()]) {
     const batch = documents.slice(i * size, (i + 1) * size);
-    await insertDocuments(index, batch);
+    await insertDocuments(esClient, index, batch);
   }
   logger.debug(`${documents.length} documents indexed into ${index}.`);
 };
@@ -81,7 +80,7 @@ const batchInsert = async (index, documents, size = 1000) => {
 const SCROLL_TIMEOUT = "30s";
 const BATCH_SIZE = 500;
 
-const getDocuments = async (index, query) => {
+const getDocuments = async (esClient, index, query) => {
   const initResponse = await esClient.search({
     index,
     scroll: SCROLL_TIMEOUT,

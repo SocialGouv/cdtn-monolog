@@ -105,12 +105,14 @@ const analyse = (dataset, proportion) => {
 
   const toDate = (timestamp) => new Date(timestamp * 1000).toUTCString();
 
-  return {
-    start: toDate(start),
-    end: toDate(end),
-    pivot: toDate(refDate),
-    results: diff.toArray(),
-  };
+  return [
+    {
+      start: toDate(start),
+      end: toDate(end),
+      pivot: toDate(refDate),
+      results: diff.toArray(),
+    },
+  ];
 };
 
 export { analyse };

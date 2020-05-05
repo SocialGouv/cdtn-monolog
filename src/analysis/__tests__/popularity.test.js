@@ -42,7 +42,7 @@ describe("Popularity", () => {
     // console.log(actions.toString());
 
     // we ensure that count are ok for focus and reference periods for url1
-    const res = Popularity.analyse(actions, 0.2).results.filter(
+    const res = Popularity.analyse(actions, 0.2)[0].results.filter(
       (r) => r.url == url(1)
     )[0];
     expect(res.ref_count).toBe(1);
@@ -71,14 +71,14 @@ describe("Popularity", () => {
     ]);
 
     // we ensure that count are ok for focus and reference periods for url1
-    const report1 = Popularity.analyse(actions, 0.3);
+    const [report1] = Popularity.analyse(actions, 0.3);
     const res1 = report1.results.filter((r) => r.url == url(1))[0];
     expect(res1.ref_count).toBe(4);
     expect(res1.focus_count).toBe(2);
     expect(res1).toMatchSnapshot();
 
     // and using a different split
-    const report2 = Popularity.analyse(actions, 0.7);
+    const [report2] = Popularity.analyse(actions, 0.7);
     const res2 = report2.results.filter((r) => r.url == url(1))[0];
     expect(res2.ref_count).toBe(2);
     expect(res2.focus_count).toBe(4);
@@ -96,7 +96,7 @@ describe("Popularity", () => {
     ]);
 
     // we ensure that count are ok for focus and reference periods for url1
-    const report1 = Popularity.analyse(actions, 0.3);
+    const [report1] = Popularity.analyse(actions, 0.3);
     expect(report1).toMatchSnapshot();
     expect(report1.end).toBe(new Date(end * 1000).toUTCString());
     const start = end - 10 * msDay;
