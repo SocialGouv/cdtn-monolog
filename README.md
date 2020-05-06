@@ -58,16 +58,27 @@ In order to reuse log reports, we also provide a query component to access them.
 In the context of the CDTN data management, the reports can be directly incorporated within the data to improve different services.
 
 ```
-import { LogQuerier } from @socialgouv/cdtn-monolog
+import { Queries } from "@socialgouv/cdtn-monolog";
+import { Client } from "@elastic/elasticsearch";
 
-const querier = LogQuerier(ELASTIC_URL, ELASTIC_TOKEN)
+const node = "http://localhost:9200";
 
-const suggestions = querier.getSuggestions()
+const esClient = new Client({ node });
 
-const content = "fiches-mt/some-content"
-const links = querier.getLinks(content)
+const queries = new Queries(esClient, "monolog-reports");
+
+const testContent = "fiche-service-public/teletravail-dans-le-secteur-prive";
+
+queries
+  .getCovisitLinks(testContent)
+  .then((s) => console.log(JSON.stringify(s, null, 2)))
+  .catch((err) => console.log(err));
 ```
 
 ## Kibana
 
 TODO : we'll add some Kibana configuration to visualize log reports and provide business insights.
+
+## Adding a new analysis
+
+TODO : describe how to create an additional report
