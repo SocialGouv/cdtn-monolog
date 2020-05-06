@@ -11,7 +11,7 @@ const index = "test-query-lib";
 
 const reports = [];
 
-const queries = new Queries(esClient, index);
+const queries = Queries(esClient, index);
 
 beforeAll(async () => {
   // we create index, read test data, run analysis and store reports

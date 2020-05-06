@@ -2,16 +2,20 @@ import { logger } from "./logger";
 import { defaultAnalysis } from "./analysis/default";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
-import { REPORT_INDEX_PREFIX } from "./esConf";
+import { REPORT_INDEX_PREFIX, esClient } from "./esConf";
 
 // running analysis including 30 days before today
 const refDate = new Date();
 const defaultPeriod = 30;
 
 const runAnalysis = async () => {
-  const data = await Reader.readFromElastic(defaultPeriod, refDate);
+  const data = await Reader.readFromElastic(esClient, defaultPeriod, refDate);
   const reports = defaultAnalysis(data);
-  const res = await ReportStore.saveReport(REPORT_INDEX_PREFIX, reports);
+  const res = await ReportStore.saveReport(
+    esClient,
+    REPORT_INDEX_PREFIX,
+    reports
+  );
   return res;
 };
 
@@ -26,7 +30,8 @@ const runIngestion = () => {
 const ANALYSE = "analyse";
 const INGEST = "ingest";
 
-const command = process.argv[process.argv.length - 1];
+// const command = process.argv[process.argv.length - 1];
+const command = process.env.MONOLOG_ACTION;
 
 const main = async () => {
   if (command == INGEST) {
@@ -37,16 +42,15 @@ const main = async () => {
     await runAnalysis();
   } else {
     logger.error(
-      `Unrecognized command, valid commands are : ${ANALYSE}, ${INGEST}`
+      `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}`
     );
     process.exit(1);
   }
 };
 
-main()
-  .then(() => {
-    logger.info("Done");
-  })
-  .catch((err) => {
-    logger.error(err);
-  });
+main().then(() => {
+  logger.info("Done");
+});
+// .catch((err) => {
+// logger.error(err);
+// });
