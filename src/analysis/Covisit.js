@@ -1,7 +1,7 @@
-// analyse function takes a dataset and return documents
-// analyser has a mappings
 import * as datasetUtil from "../dataset";
 import * as util from "../util";
+
+const reportType = "covisit";
 
 // number of covisited links to be added to each content report
 const LINK_LIMIT = 6;
@@ -83,7 +83,7 @@ const analyseNoConf = (minOcc, linkLimit) => (dataset) => {
           count,
         };
       });
-    docs.push({ content, links });
+    docs.push({ content, links, reportType });
   });
 
   return docs;
@@ -92,8 +92,4 @@ const analyseNoConf = (minOcc, linkLimit) => (dataset) => {
 // configured function
 const analyse = analyseNoConf(MIN_OCC, LINK_LIMIT);
 
-const query = {
-  match_all: {},
-};
-
-export { analyseNoConf, analyse, query };
+export { analyseNoConf, analyse, reportType };

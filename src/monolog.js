@@ -4,10 +4,12 @@ import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
 import { REPORT_INDEX_PREFIX } from "./esConf";
 
+// running analysis including 30 days before today
+const refDate = new Date();
 const defaultPeriod = 30;
 
 const runAnalysis = async () => {
-  const data = await Reader.readFromElastic(defaultPeriod, new Date());
+  const data = await Reader.readFromElastic(defaultPeriod, refDate);
   const reports = defaultAnalysis(data);
   const res = await ReportStore.saveReport(REPORT_INDEX_PREFIX, reports);
   return res;

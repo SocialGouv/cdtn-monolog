@@ -12,12 +12,12 @@ describe("Popularity", () => {
   });
   const url = (i) => `url${i}`;
 
-  // one day in s
-  const msDay = 60 * 60 * 24;
+  // one day in seconds
+  const sDay = 60 * 60 * 24;
 
   // get date for today - n days
   const getTimestamp = (n) =>
-    Math.floor(new Date(new Date().getTime() - n * msDay).getTime());
+    Math.floor(new Date(new Date().getTime() - n * sDay).getTime());
 
   const generate = (a) =>
     new DataFrame(a.map(([uvi, u, ts]) => toVisitAction(uvi, url(u), ts)));
@@ -87,22 +87,20 @@ describe("Popularity", () => {
 
   it("should generate report as expected, including dates", () => {
     const end = Math.floor(1588608172467 / 1000);
+    const start = end - 10 * sDay;
     const actions = generate([
       [21, 1, end],
-      [12, 1, end - msDay],
-      [22, 1, end - msDay],
-      [13, 1, end - 10 * msDay],
-      [23, 1, end - 10 * msDay],
+      [12, 1, end - sDay],
+      [22, 1, end - sDay],
+      [13, 1, start],
+      [23, 1, start],
     ]);
 
     // we ensure that count are ok for focus and reference periods for url1
     const [report1] = Popularity.analyse(actions, 0.3);
     expect(report1).toMatchSnapshot();
-    expect(report1.end).toBe(new Date(end * 1000).toUTCString());
-    const start = end - 10 * msDay;
-    expect(report1.start).toBe(new Date(start * 1000).toUTCString());
-    expect(report1.pivot).toBe(
-      new Date((start + 0.7 * (end - start)) * 1000).toUTCString()
-    );
+    expect(report1.end).toBe(end);
+    expect(report1.start).toBe(start);
+    expect(report1.pivot).toBe(start + 0.7 * (end - start));
   });
 });

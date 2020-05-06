@@ -2,6 +2,8 @@ import * as dataForge from "data-forge";
 import * as util from "../util";
 import * as datasetUtil from "../dataset";
 
+const reportType = "popularity";
+
 const analyse = (dataset, proportion) => {
   const visits = datasetUtil.getVisits(dataset);
 
@@ -20,8 +22,6 @@ const analyse = (dataset, proportion) => {
   const uniqueViews = dataForge.DataFrame.concat(
     visits.select((visit) => datasetUtil.toUniqueViews(visit)).toArray()
   );
-
-  //   console.log(uniqueViews.take(2).toString());
 
   // clean views
   const noError = (action) =>
@@ -103,16 +103,15 @@ const analyse = (dataset, proportion) => {
     .orderByDescending((r) => r.abs_diff)
     .take(nContent);
 
-  const toDate = (timestamp) => new Date(timestamp * 1000).toUTCString();
-
   return [
     {
-      start: toDate(start),
-      end: toDate(end),
-      pivot: toDate(refDate),
+      start: start,
+      end: end,
+      pivot: refDate,
       results: diff.toArray(),
+      reportType,
     },
   ];
 };
 
-export { analyse };
+export { analyse, reportType };

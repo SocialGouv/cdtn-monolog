@@ -2,8 +2,9 @@
 
 exports[`Popularity should generate report as expected, including dates 1`] = `
 Object {
-  "end": "Mon, 04 May 2020 16:02:52 GMT",
-  "pivot": "Fri, 01 May 2020 16:02:52 GMT",
+  "end": 1588608172,
+  "pivot": 1588348972,
+  "reportType": "popularity",
   "results": Array [
     Object {
       "abs_diff": 0,
@@ -15,7 +16,7 @@ Object {
       "url": "url1",
     },
   ],
-  "start": "Fri, 24 Apr 2020 16:02:52 GMT",
+  "start": 1587744172,
 }
 `;
 

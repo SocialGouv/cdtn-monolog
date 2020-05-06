@@ -26,15 +26,13 @@ describe("Report ", () => {
   }, 10000);
 
   it("should be readable", async () => {
-    const reports = await ReportStore.loadReport(
-      esClient,
-      index,
-      Covisit.query
-    );
+    const reports = await ReportStore.loadReport(esClient, index, {
+      match_all: {},
+    });
     const docs = await getAnalysis();
 
     expect(reports.length).toBe(docs.length);
-    // expect(reports).toStrictEqual(docs);
+    expect(reports).toStrictEqual(docs);
   });
 });
 

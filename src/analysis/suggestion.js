@@ -1,7 +1,7 @@
 import * as DatasetUtil from "../dataset";
 import * as DataForge from "data-forge";
 
-export const reportType = "suggestion";
+const reportType = "suggestion";
 
 const analyse = (dataset) => {
   // get unique suggestion selection events in visits
@@ -32,4 +32,4 @@ const analyse = (dataset) => {
   return counts.toArray();
 };
 
-export { analyse };
+export { analyse, reportType };
