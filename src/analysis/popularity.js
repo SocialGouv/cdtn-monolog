@@ -44,7 +44,7 @@ const analyse = (dataset, proportion) => {
   const dates = uniqueViews.deflate((r) => r.timestamp);
   const start = dates.min();
   const end = dates.max();
-  const refDate = start + (1 - proportion) * (end - start);
+  const refDate = Math.floor(start + (1 - proportion) * (end - start));
 
   const afterRef = (a) => a.timestamp > refDate;
 

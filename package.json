@@ -17,7 +17,9 @@
     "lint": "eslint . --ext .js",
     "test": "jest",
     "test-one": "jest analysis --watch",
-    "monolog": "node -r esm src/monolog.js"
+    "monolog": "node -r esm src/index.js",
+    "build": "yarn run ncc build src/index.js -o dist",
+    "start": "node ./dist/index.js"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.6.1",

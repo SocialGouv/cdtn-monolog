@@ -1,0 +1,19 @@
+#!/bin/bash
+ALLDATES=""
+for i in {0..20}
+do
+   #DATE=`date --date="$i days ago" "+%Y-%m-%d"`
+   DATE=`date -v -${i}d "+%Y-%m-%d"`
+   #ALLDATES="${ALLDATES} \"${DATE}\""
+   ALLDATES="${ALLDATES}${DATE},"
+
+   az storage blob download \
+      --account-key "$AZ_STORAGE_TOKEN" \
+      --account-name=cdtndata \
+      --container logs \
+      --name matomo-dump-$DATE \
+      --file ~/tmp/ingest-test/$DATE.json
+
+done
+
+echo "$ALLDATES"

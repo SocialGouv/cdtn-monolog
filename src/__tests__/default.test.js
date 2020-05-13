@@ -13,6 +13,7 @@ beforeAll(async () => {
 describe("Default analysis", () => {
   it("should match snapshots on actual data", async () => {
     const reports = await defaultAnalysis(testDataset);
+
     const counts = reports.reduce((acc, e) => {
       const rt = e.reportType;
       if (!acc.has(rt)) {
