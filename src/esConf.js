@@ -10,9 +10,9 @@ const esClientConfig = {
   auth,
 };
 
-const LOG_INDEX_NAME = "logs";
+const LOG_INDEX = "logs";
 const REPORT_INDEX = "log_reports";
 
 const esClient = new Client(esClientConfig);
 
-export { ELASTICSEARCH_URL, LOG_INDEX_NAME, REPORT_INDEX, esClient };
+export { ELASTICSEARCH_URL, LOG_INDEX, REPORT_INDEX, esClient };

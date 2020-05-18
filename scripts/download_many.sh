@@ -1,6 +1,6 @@
 #!/bin/bash
 ALLDATES=""
-for i in {0..20}
+for i in {60..90}
 do
    #DATE=`date --date="$i days ago" "+%Y-%m-%d"`
    DATE=`date -v -${i}d "+%Y-%m-%d"`
@@ -12,7 +12,7 @@ do
       --account-name=cdtndata \
       --container logs \
       --name matomo-dump-$DATE \
-      --file ~/tmp/ingest-test/$DATE.json
+      --file ~/tmp/reingestion/$DATE.json
 
 done
 

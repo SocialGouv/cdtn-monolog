@@ -1,8 +1,10 @@
 import { logger } from "./logger";
+import * as fs from "fs";
 import { defaultAnalysis } from "./analysis/default";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
-import { REPORT_INDEX, ELASTICSEARCH_URL, esClient } from "./esConf";
+import { ingest, checkIndex } from "./ingestion/ingester";
+import { REPORT_INDEX, ELASTICSEARCH_URL, esClient, LOG_INDEX } from "./esConf";
 import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 
 // running analysis including 30 days before today
@@ -18,10 +20,18 @@ const runAnalysis = async () => {
 };
 
 // TODO
-const runIngestion = () => {
-  // read dump file in default location
-  // convert data
-  // save data to Elastic
+const runIngestion = async (dataPath) => {
+  await checkIndex(esClient, LOG_INDEX);
+  // read dump files in default location
+  fs.readdirSync(dataPath).forEach(async (f) => {
+    // convert data
+    // save actions to Elastic
+    try {
+      await ingest(esClient, dataPath + f, LOG_INDEX);
+    } catch (err) {
+      logger.error(JSON.stringify(err, null, 2));
+    }
+  });
 };
 
 // poors man CLI, might move to commander if needed
@@ -35,7 +45,8 @@ const main = async () => {
   try {
     if (command == INGEST) {
       logger.info("Running ingestion");
-      await runIngestion();
+      const dataPath = process.env.DATA ? process.env.DATA : "/data/";
+      await runIngestion(dataPath);
     } else if (command == ANALYSE) {
       logger.info("Running analysis");
       await runAnalysis();

@@ -2,7 +2,6 @@
 
 import * as dataForge from "data-forge";
 import "data-forge-fs";
-import { LOG_INDEX_NAME } from "./esConf";
 import { getDocuments } from "./elastic";
 import { actionTypes } from "./util";
 
@@ -19,7 +18,7 @@ const getLastDays = (n, ref) => {
 
 const typesToConsider = Object.values(actionTypes);
 
-export const readFromElastic = async (esClient, n, ref = new Date()) => {
+export const readFromElastic = async (esClient, n, ref = new Date(), index) => {
   const days = getLastDays(n, ref);
 
   const query = {
@@ -33,7 +32,7 @@ export const readFromElastic = async (esClient, n, ref = new Date()) => {
     },
   };
 
-  const docs = await getDocuments(esClient, LOG_INDEX_NAME, query);
+  const docs = await getDocuments(esClient, index, query);
 
   // return a Dataframe containing actions
   return new dataForge.DataFrame({ values: docs, considerAllRows: true });

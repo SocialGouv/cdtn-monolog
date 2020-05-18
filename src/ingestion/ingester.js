@@ -1,7 +1,7 @@
 import { logger } from "../logger";
 import * as fs from "fs";
 import * as elastic from "../elastic";
-import { mapAction } from "./mappings";
+import { mapAction, mappings } from "./mappings";
 
 // takes a file, return the content properly formatted
 const whitelistNames = [
@@ -149,12 +149,20 @@ const parse = (dumpPath) => {
   });
 };
 
+const checkIndex = async (esClient, index) => {
+  await elastic.testAndCreateIndex(esClient, index, mappings);
+};
+
 const ingest = async (esClient, dumpPath, index) => {
   logger.info(`Ingesting dump ${dumpPath} to ES.`);
   const actions = parse(dumpPath);
-  const actionDocs = actions.map(mapAction);
+  const date = dumpPath.slice(
+    dumpPath.lastIndexOf("/") + 1,
+    dumpPath.lastIndexOf(".")
+  );
+  const actionDocs = actions.map((a) => mapAction(a, date));
   await elastic.batchInsert(esClient, index, actionDocs);
   return;
 };
 
-export { ingest };
+export { ingest, checkIndex };
