@@ -97,7 +97,7 @@ describe("Popularity", () => {
     ]);
 
     // we ensure that count are ok for focus and reference periods for url1
-    const report1 = Popularity.analyse(actions, 0.3)[0];
+    const report1 = Popularity.analyse(actions, 0.3, 45)[0];
     expect(report1).toMatchSnapshot();
     expect(report1.end).toBe(end);
     expect(report1.start).toBe(start);

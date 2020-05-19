@@ -12,7 +12,7 @@ describe("Covisit", () => {
 
   const url = (i) => `url${i}`;
 
-  const analyse = Covisit.analyseNoConf(1, 3);
+  const analyse = (dataset) => Covisit.analyse(dataset, 1, 3);
 
   // takes tuples and generate data : [1,3] =>  visit id 1 / content viewed 3
   const generate = (a) =>
@@ -58,16 +58,16 @@ describe("Covisit", () => {
     const dataMinOcc = generate(rawMinOcc);
 
     // try with minoccurence 2
-    expect(Covisit.analyseNoConf(2, 2)(dataMinOcc)).toMatchSnapshot();
+    expect(Covisit.analyse(dataMinOcc, 2, 2)).toMatchSnapshot();
 
     // try with minoccurence 3
-    expect(Covisit.analyseNoConf(3, 2)(dataMinOcc)).toStrictEqual([]);
+    expect(Covisit.analyse(dataMinOcc, 3, 2)).toStrictEqual([]);
     // add content so it passes limitation
     [
       [3, 1],
       [3, 2],
     ].forEach((a) => rawMinOcc.push(a));
-    expect(Covisit.analyseNoConf(3, 2)(generate(rawMinOcc))).toMatchSnapshot();
+    expect(Covisit.analyse(generate(rawMinOcc), 3, 2)).toMatchSnapshot();
   });
 
   it("should respect link limit setting", () => {
@@ -84,9 +84,9 @@ describe("Covisit", () => {
     ]);
 
     // try with link limit 2
-    expect(Covisit.analyseNoConf(1, 2)(linkLimit)).toMatchSnapshot();
+    expect(Covisit.analyse(linkLimit, 1, 2)).toMatchSnapshot();
 
     // try with link limit 3
-    expect(Covisit.analyseNoConf(1, 1)(linkLimit)).toMatchSnapshot();
+    expect(Covisit.analyse(linkLimit, 1, 1)).toMatchSnapshot();
   });
 });

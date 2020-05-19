@@ -10,8 +10,7 @@ const LINK_LIMIT = 6;
 // 5 means : a minimum of 5 unique visits where two contents were viewed
 const MIN_OCC = 5;
 
-// we provide a configurable function
-const analyseNoConf = (minOcc, linkLimit) => (dataset) => {
+const analyse = (dataset, minOcc = MIN_OCC, linkLimit = LINK_LIMIT) => {
   // FIXME avoid using to array
   const visits = datasetUtil.getVisits(dataset).toArray();
 
@@ -90,6 +89,5 @@ const analyseNoConf = (minOcc, linkLimit) => (dataset) => {
 };
 
 // configured function
-const analyse = analyseNoConf(MIN_OCC, LINK_LIMIT);
 
-export { analyseNoConf, analyse, reportType };
+export { analyse, reportType };

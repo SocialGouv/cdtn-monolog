@@ -33,12 +33,12 @@ const analyse = (dataset, proportion, reportId) => {
 
   const filteredVisitViews = uniqueViews.where(noError);
 
-  const removeSection = (url) => {
+  const removeAnchor = (url) => {
     return url.split("#")[0];
   };
 
   const cleanedViews = filteredVisitViews.transformSeries({
-    url: (u) => util.urlToPath(removeSection(u)),
+    url: (u) => util.urlToPath(removeAnchor(u)),
   });
 
   const dates = uniqueViews.deflate((r) => r.timestamp);
