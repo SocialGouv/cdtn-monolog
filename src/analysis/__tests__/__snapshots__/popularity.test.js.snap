@@ -2,20 +2,19 @@
 
 exports[`Popularity should generate report as expected, including dates 1`] = `
 Object {
+  "doc": Object {
+    "abs_diff": 0,
+    "diff": 0,
+    "focus_count": 3,
+    "focus_norm_count": 1,
+    "ref_count": 2,
+    "ref_norm_count": 1,
+    "url": "url1",
+  },
   "end": 1588608172,
   "pivot": 1588348972,
+  "reportId": 45,
   "reportType": "popularity",
-  "results": Array [
-    Object {
-      "abs_diff": 0,
-      "diff": 0,
-      "focus_count": 3,
-      "focus_norm_count": 1,
-      "ref_count": 2,
-      "ref_norm_count": 1,
-      "url": "url1",
-    },
-  ],
   "start": 1587744172,
 }
 `;

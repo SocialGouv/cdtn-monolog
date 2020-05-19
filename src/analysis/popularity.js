@@ -4,7 +4,7 @@ import * as datasetUtil from "../dataset";
 
 const reportType = "popularity";
 
-const analyse = (dataset, proportion) => {
+const analyse = (dataset, proportion, reportId) => {
   const visits = datasetUtil.getVisits(dataset);
 
   // FIXME for unkwown reason this doesn't work
@@ -103,15 +103,14 @@ const analyse = (dataset, proportion) => {
     .orderByDescending((r) => r.abs_diff)
     .take(nContent);
 
-  return [
-    {
-      start: start,
-      end: end,
-      pivot: refDate,
-      results: diff.toArray(),
-      reportType,
-    },
-  ];
+  return diff.toArray().map((doc) => ({
+    doc,
+    start: start,
+    end: end,
+    pivot: refDate,
+    reportType,
+    reportId,
+  }));
 };
 
 export { analyse, reportType };
