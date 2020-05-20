@@ -1,9 +1,8 @@
-name: Node.js CI
+name: Release
 
 on:
-  pull_request:
-    branches:
-      - master
+  push:
+    branches: [master]
 
 jobs:
   build:
@@ -11,8 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version:
-          - 12.x
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -21,9 +19,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn --frozen-lockfile
-      - run: yarn lint
       - run: yarn test --coverage
         env:
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
-      - uses: codecov/codecov-action@v1
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
