@@ -27,6 +27,6 @@ jobs:
       - run: yarn lint
       - run: yarn test --coverage
         env:
-          ELASTIC_URL: ${{ secrets.ELASTIC_URL }}
+          ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
       - uses: codecov/codecov-action@v1
