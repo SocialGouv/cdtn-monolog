@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Popularity should generate report as expected, including dates 1`] = `
+Object {
+  "doc": Object {
+    "abs_diff": 0,
+    "diff": 0,
+    "focus_count": 3,
+    "focus_norm_count": 1,
+    "ref_count": 2,
+    "ref_norm_count": 1,
+    "url": "url1",
+  },
+  "end": 1588608172,
+  "pivot": 1588348972,
+  "reportId": 45,
+  "reportType": "popularity",
+  "start": 1587744172,
+}
+`;
+
+exports[`Popularity should respect proportion between reference and focus period 1`] = `
+Object {
+  "abs_diff": 0,
+  "diff": 0,
+  "focus_count": 2,
+  "focus_norm_count": 0.5,
+  "ref_count": 4,
+  "ref_norm_count": 0.5,
+  "url": "url1",
+}
+`;
+
+exports[`Popularity should respect proportion between reference and focus period 2`] = `
+Object {
+  "abs_diff": 0,
+  "diff": 0,
+  "focus_count": 4,
+  "focus_norm_count": 0.5,
+  "ref_count": 2,
+  "ref_norm_count": 0.5,
+  "url": "url1",
+}
+`;

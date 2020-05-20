@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Covisit should link covisits 1`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url3",
+      },
+      Object {
+        "count": 1,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 2,
+        "link": "url3",
+      },
+      Object {
+        "count": 1,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url3",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+      Object {
+        "count": 2,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;
+
+exports[`Covisit should only count unique visits 1`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 1,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 1,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;
+
+exports[`Covisit should respect link limit setting 1`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url2",
+      },
+      Object {
+        "count": 3,
+        "link": "url3",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+      Object {
+        "count": 3,
+        "link": "url3",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url3",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+      Object {
+        "count": 3,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;
+
+exports[`Covisit should respect link limit setting 2`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url3",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;
+
+exports[`Covisit should respect minimum occurences setting 1`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 2,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 2,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;
+
+exports[`Covisit should respect minimum occurences setting 2`] = `
+Array [
+  Object {
+    "content": "url1",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url2",
+      },
+    ],
+    "reportType": "covisit",
+  },
+  Object {
+    "content": "url2",
+    "links": Array [
+      Object {
+        "count": 3,
+        "link": "url1",
+      },
+    ],
+    "reportType": "covisit",
+  },
+]
+`;

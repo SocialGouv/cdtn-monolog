@@ -1,59 +1,84 @@
-# CDTN Monolog
+# Code du travail numérique : Monolog
 
-Require an Elastic Search instance with logs, check https://github.com/SocialGouv/cdtn-elk
+> Tooling for CDTN log management : storage, analysis, interpretation. The reports produced by Monolog can be reused in order to drive some of the CDTN features (suggestions, relations between documents...).
 
-Write JSON file containing all searches request in Logstash :
+## Usage
 
-`yarn run write-searches`
+Monolog can be used as a docker image to run log ingestion and log analysis, or as a JS library for accessing the log reports.
+Logs are structured as a list of typed _actions_ describing user behaviour during a _visit_.
 
-Display specific sessions:
+### ENV variable
 
-- with visit ids :
-  `yarn run print-visits -i 62120,43023`
-
-- random n sessions :
-  `yarn run print-visits -n 10`
-
-- display only `suggestion|search|all` related logs :
-  `yarn run print-visits -n 10 -t suggestion`
-
-Example for display :
+As this project lies between different services, it can be useful to describe the different environment variable :
 
 ```
-yarn run print-visits --ids 61637 -t all
-yarn run v1.19.1
-$ node -r esm src/printer.js --ids 61637 -t all
-┌─────────┬─────────┬─────────────────────────┬─────────────────┬───────────────────────────┬──────────────────────────────────────────────┬────────┐
-│ (index) │ idVisit │          type           │ timeSpentPretty │          param1           │                    param2                    │ param3 │
-├─────────┼─────────┼─────────────────────────┼─────────────────┼───────────────────────────┼──────────────────────────────────────────────┼────────┤
-│    0    │  61637  │         'home'          │      '34s'      │                           │                                              │        │
-│    1    │  61637  │         'visit'         │   '2 min 30s'   │         'outils'          │             'preavis-demission'              │        │
-│    2    │  61637  │         'home'          │      '14s'      │                           │                                              │        │
-│    3    │  61637  │   'select_suggestion'   │      '0s'       │          'Amia'           │          'amiante sur un chantier'           │   1    │
-│    4    │  61637  │ 'suggestion_candidates' │      '1s'       │                           │                                              │        │
-│    5    │  61637  │   'result_candidates'   │      '0s'       │                           │                                              │        │
-│    6    │  61637  │        'search'         │      '46s'      │                           │          'amiante sur un chantier'           │        │
-│    7    │  61637  │     'select_result'     │      '6s'       │ 'fiche-ministere-travail' │        'amiante#Professionnalisation'        │   1    │
-│    8    │  61637  │         'visit'         │   '3 min 39s'   │ 'fiche-ministere-travail' │                  'amiante'                   │        │
-│    9    │  61637  │        'outlink'        │   '4 min 36s'   │                           │                                              │        │
-│   10    │  61637  │        'search'         │      '53s'      │                           │          'amiante sur un chantier'           │        │
-│   11    │  61637  │        'outlink'        │   '2 min 52s'   │                           │                                              │        │
-│   12    │  61637  │        'search'         │   '1 min 28s'   │                           │          'amiante sur un chantier'           │        │
-│   13    │  61637  │        'outlink'        │      '37s'      │                           │                                              │        │
-│   14    │  61637  │        'search'         │      '43s'      │                           │          'amiante sur un chantier'           │        │
-│   15    │  61637  │        'outlink'        │   '1 min 9s'    │                           │                                              │        │
-│   16    │  61637  │        'search'         │      '17s'      │                           │          'amiante sur un chantier'           │        │
-│   17    │  61637  │   'result_candidates'   │      '0s'       │                           │                                              │        │
-│   18    │  61637  │        'search'         │      '11s'      │                           │          'amiante sur un chantier'           │        │
-│   19    │  61637  │ 'suggestion_candidates' │      '11s'      │                           │                                              │        │
-│   20    │  61637  │   'select_suggestion'   │      '0s'       │        'Agent de'         │             'agent de contrôle'              │   0    │
-│   21    │  61637  │   'result_candidates'   │      '0s'       │                           │                                              │        │
-│   22    │  61637  │        'search'         │      '32s'      │                           │             'agent de contrôle'              │        │
-│   23    │  61637  │     'select_result'     │      '2s'       │ 'fiche-ministere-travail' │ 'linspection-du-travail#Quelles-sont-les...' │   4    │
-│   24    │  61637  │         'visit'         │   '5 min 6s'    │ 'fiche-ministere-travail' │           'linspection-du-travail'           │        │
-│   25    │  61637  │        'outlink'        │      '59s'      │                           │                                              │        │
-│   26    │  61637  │        'search'         │                 │                           │             'agent de contrôle'              │        │
-│   27    │         │                         │                 │                           │                                              │        │
-└─────────┴─────────┴─────────────────────────┴─────────────────┴───────────────────────────┴──────────────────────────────────────────────┴────────┘
-✨  Done in 0.27s.
+MATOMO_URL # URL of the Matomo server where raw logs can be found
+AZ_STORAGE_TOKEN # Azure token to push dump to Azure blob
+ELASTIC_URL # URL of the Elastic instance where the logs are stored eventually
+ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
 ```
+
+## Log storage
+
+### Backup
+
+We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure is done through a bash script `download-dump.sh` executed from the Azure Docker image.
+
+### Ingestion
+
+The `ingest` task takes a Matomo dump file, convert it, and push the actions to Elastic.
+
+```
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy AZURE_TOKEN=xxxx yarn run monolog --ingest
+```
+
+### Script
+
+These two steps can be found in the bash script `log-backup.sh`, which relies on Docker commands. It's called daily as a cron job.
+
+## Analysis
+
+The default `analyse` task run the standard analysis using logs of the last 30 days :
+
+- suggestions : store the list of suggestions along with their respective weights (computed from frequency in the logs)
+- covisit : for each matching document, store the list of their identified links (using visits similarity)
+- popularity : store the list of most significant changes in content popularity (up or down)
+
+Analysis results are stored in Elastic Search and available for Kibana visualisation or directly from code using the query lib described below.
+
+```
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn run monolog --analyse
+```
+
+By default this task is performed on a weekly basis using the `run-analysis.sh` script as a cron job.
+
+## Query lib
+
+In order to reuse log reports, we also provide a query component to access them.
+In the context of the CDTN data management, the reports can be directly incorporated within the data to improve different services.
+
+```
+import { Queries } from "@socialgouv/cdtn-monolog";
+import { Client } from "@elastic/elasticsearch";
+
+const node = "http://localhost:9200";
+
+const esClient = new Client({ node });
+
+const queries = new Queries(esClient, "monolog-reports");
+
+const testContent = "fiche-service-public/teletravail-dans-le-secteur-prive";
+
+queries
+  .getCovisitLinks(testContent)
+  .then((s) => console.log(JSON.stringify(s, null, 2)))
+  .catch((err) => console.log(err));
+```
+
+## Kibana
+
+TODO : we'll add some Kibana configuration to visualize log reports and provide business insights.
+
+## Adding a new analysis
+
+TODO : describe how to create an additional report

@@ -1,270 +1,168 @@
-import { convertLogs } from "./matomo_converter";
 import { logger } from "../logger";
-import { Client } from "@elastic/elasticsearch";
+import * as fs from "fs";
+import * as elastic from "../elastic";
+import { mapAction, mappings } from "./mappings";
 
-import commander from "commander";
-import { commaSeparatedList } from "../utils";
+// takes a file, return the content properly formatted
+const whitelistNames = [
+  "idVisit",
+  "timestamp",
+  "serverTimePretty",
+  "referrerTypeName",
+  "referrerName",
+  "lastActionTimestamp",
+  "lastActionDateTime",
+  "referrerTypeName",
+  "referrerName",
+];
 
-async function main(path, date) {
-  const ELASTICSEARCH_URL =
-    process.env.ELASTICSEARCH_URL || "http://localhost:9200";
-  const LOG_INDEX_NAME = "logs";
-  const API_KEY = process.env.API_KEY || null;
+const parseAction = (action, visit) => {
+  const parsedAction = {};
+  parsedAction["timeSpent"] = action["timeSpent"];
+  parsedAction["url"] = action["url"];
 
-  // convert matomo logs to actions
-  const logPath = `${path}${date}.json`;
-  const actions = convertLogs(logPath);
+  whitelistNames.forEach((key) => {
+    parsedAction[key] = visit[key];
+  });
 
-  // push actions as batches to ES
-  const auth = API_KEY ? { apiKey: API_KEY } : null;
-  const esClientConfig = {
-    node: `${ELASTICSEARCH_URL}`,
-    auth,
-  };
-  const client = new Client(esClientConfig);
-
-  // we ensure index exists other we create it
-  const { body } = await client.indices.exists({ index: LOG_INDEX_NAME });
-
-  const mappings = {
-    properties: {
-      logfile: {
-        type: "keyword",
-      },
-
-      type: {
-        type: "keyword",
-      },
-
-      // unique visit id
-      uvi: {
-        type: "keyword",
-      },
-
-      idVisit: {
-        type: "keyword",
-      },
-
-      feedbackType: {
-        type: "keyword",
-      },
-
-      outilEvent: {
-        type: "keyword",
-      },
-
-      outilAction: {
-        type: "keyword",
-      },
-
-      outil: {
-        type: "keyword",
-      },
-
-      lastActionDateTime: {
-        type: "keyword",
-      },
-
-      lastActionTimestamp: {
-        type: "date",
-      },
-
-      query: {
-        type: "keyword",
-      },
-
-      referrerName: {
-        type: "keyword",
-      },
-
-      referrerTypeName: {
-        type: "keyword",
-      },
-
-      resultSelection: {
-        type: "object",
-      },
-
-      suggestionSelection: {
-        type: "keyword",
-      },
-
-      suggestionPrefix: {
-        type: "keyword",
-      },
-
-      // todo we might be able to use date type ?
-      serverTimePretty: {
-        type: "keyword",
-      },
-      timeSpent: {
-        type: "long",
-      },
-
-      timestamp: {
-        type: "date",
-      },
-
-      url: {
-        type: "keyword",
-      },
-
-      visited: {
-        type: "keyword",
-      },
-    },
-  };
-
-  if (!body) {
-    try {
-      await client.indices.create({
-        index: LOG_INDEX_NAME,
-        body: {
-          settings: {},
-          mappings: mappings,
-        },
-      });
-      logger.info(`Index ${LOG_INDEX_NAME} created.`);
-    } catch (error) {
-      logger.error("Index creation", error);
+  if (action.type == "search") {
+    parsedAction["type"] = "search";
+    parsedAction["query"] = action.subtitle;
+  } else if (action.type == "action") {
+    if (action.url.endsWith("gouv.fr/")) {
+      parsedAction["type"] = "home";
+    } else if (
+      action.url.includes("/themes/") ||
+      action.url.endsWith("/themes")
+    ) {
+      parsedAction["type"] = "themes";
+    } else if (action.url.endsWith("/outils")) {
+      parsedAction["type"] = "outils";
+    } else if (action.url.endsWith("/recherche")) {
+      parsedAction["type"] = "external_search";
+    } else if (action.url.endsWith("/modeles-de-courriers")) {
+      parsedAction["type"] = "modeles_courriers";
+    } else if (action.url.includes("?dclid=")) {
+      parsedAction["type"] = "unknown";
+    } else {
+      parsedAction["type"] = "visit_content";
+    }
+  } else if (action.type == "event") {
+    switch (action.eventCategory) {
+      case "selectedSuggestion": {
+        parsedAction["type"] = "select_suggestion";
+        parsedAction["suggestionPrefix"] = action.eventAction;
+        parsedAction["suggestionSelection"] = action.eventName;
+        break;
+      }
+      case "feedback": {
+        parsedAction["type"] = "feedback";
+        parsedAction["feedbackType"] = action.eventAction;
+        parsedAction["visited"] = action.eventName;
+        break;
+      }
+      case "candidateSuggestions": {
+        parsedAction["type"] = "suggestion_candidates";
+        parsedAction["suggestionCandidates"] = action.eventAction.split("###");
+        break;
+      }
+      case "candidateResults": {
+        parsedAction["type"] = "result_candidates";
+        parsedAction["query"] = action.eventAction;
+        break;
+      }
+      case "nextResultPage": {
+        parsedAction["type"] = "next_result_page";
+        parsedAction["query"] = action.eventAction;
+        break;
+      }
+      case "selectResult": {
+        parsedAction["type"] = "select_result";
+        parsedAction["resultSelection"] = JSON.parse(action.eventAction);
+        break;
+      }
+      case "themeResults": {
+        parsedAction["type"] = "theme_candidates";
+        parsedAction["query"] = action.eventAction;
+        break;
+      }
+      case "outil": {
+        parsedAction["outilAction"] = action.eventAction.startsWith(
+          "view_step_"
+        )
+          ? "view_step"
+          : "click_previous";
+        parsedAction["outil"] = action.eventAction.slice(
+          action.eventAction.lastIndexOf("_") + 1
+        );
+        parsedAction["outilEvent"] = action.eventName;
+        break;
+      }
+      case "cc_search": {
+        parsedAction["type"] = action.eventCategory;
+        parsedAction["query"] = action.eventName;
+        parsedAction["ccAction"] = action.eventAction;
+        break;
+      }
+      case "cc_select": {
+        parsedAction["type"] = action.eventCategory;
+        parsedAction["cc"] = action.eventName;
+        parsedAction["ccAction"] = action.eventAction;
+        break;
+      }
+      default: {
+        parsedAction["type"] = action.eventCategory;
+        break;
+      }
     }
   } else {
-    logger.info(`Index ${LOG_INDEX_NAME} found.`);
-    try {
-      await client.indices.putMapping({
-        index: LOG_INDEX_NAME,
-        body: mappings,
-      });
-      logger.info(`Mapping updated for ${LOG_INDEX_NAME}.`);
-    } catch (error) {
-      logger.error("Index mapping update", error);
-    }
+    parsedAction["type"] = action.type;
   }
 
-  // shameless copy paste from stack overflow as non critical and
-  // to avoid adding yet another dependency
-  function hash(s) {
-    return s.split("").reduce(function (a, b) {
-      a = (a << 5) - a + b.charCodeAt(0);
-      return a & a;
-    }, 0);
-  }
+  // correct broken timezone on Matomo server
+  parsedAction["timestamp"] = action.timestamp + 28800;
 
-  function mapAction({
-    idVisit,
-    feedbackType,
-    lastActionDateTime,
-    lastActionTimestamp,
-    outilEvent,
-    outil,
-    outilAction,
-    suggestionPrefix,
-    query,
-    referrerName,
-    referrerTypeName,
-    resultSelection,
-    serverTimePretty,
-    suggestionSelection,
-    timeSpent,
-    timestamp,
-    type,
-    url,
-    visited,
-  }) {
-    const header = { index: { _index: LOG_INDEX_NAME, _type: "_doc" } };
-    // unique visit id
-    const uvi = hash(`${idVisit}-${lastActionDateTime}`);
-    const obj = {
-      type,
-      uvi,
-      idVisit,
-      feedbackType,
-      lastActionDateTime,
-      lastActionTimestamp,
-      outilEvent,
-      outilAction,
-      outil,
-      suggestionPrefix,
-      query,
-      referrerName,
-      referrerTypeName,
-      resultSelection,
-      serverTimePretty,
-      suggestionSelection,
-      timeSpent,
-      timestamp,
-      url,
-      visited,
-      logfile: date,
-    };
+  return parsedAction;
+};
 
-    // logger.info(JSON.stringify(obj, null, 2));
-
-    return [header, obj];
-  }
-
-  // bulk insert
-  async function insertActions(actions) {
-    try {
-      const resp = await client.bulk({
-        index: LOG_INDEX_NAME,
-        body: actions.flatMap(mapAction),
-      });
-
-      if (resp.body.errors) {
-        resp.body.items.forEach((element) => {
-          if (element.index.status == 400) {
-            logger.error(
-              `Error during insertion : ${element.index.error.reason}`
-            );
-          }
-        });
-      }
-    } catch (error) {
-      logger.error("Index actions", error);
-    }
-  }
-
-  async function batchInsert(actions, size = 1000) {
-    // number of batches
-    const n = Math.ceil(actions.length / size);
-    for (const i of [...Array(n).keys()]) {
-      const batch = actions.slice(i * size, (i + 1) * size);
-      await insertActions(batch);
-    }
-    logger.info(`${actions.length} actions indexed.`);
-  }
-
-  // split actions and insert as batches
-  await batchInsert(actions);
-}
-
-async function ingestMany(days, path) {
-  for (const day of days) {
-    logger.info("Indexing " + day);
-    await main(path, day).catch((response) => {
-      if (response.body) {
-        logger.info(response.meta.statusCode);
-        logger.info(response.name);
-        logger.info(JSON.stringify(response.meta.meta.request, 2, null));
-      } else {
-        logger.info(response);
-      }
-      process.exit(-1);
+const parseVisit = (visit) => {
+  if (visit.actionDetails !== undefined) {
+    return visit.actionDetails.flatMap((action) => {
+      return parseAction(action, visit);
     });
+  } else {
+    return [];
   }
-}
+};
 
-const cli = new commander.Command();
+const parse = (dumpPath) => {
+  const rawData = fs.readFileSync(dumpPath);
+  const rawVisits = JSON.parse(rawData);
 
-cli
-  .option("-p, --path <path>", "JSON dump path", "/data/")
-  .requiredOption(
-    "-d, --days <days>",
-    "Days to dump from Matomo, separated by commas, example : -d 2019-11-19,2019-11-20",
-    commaSeparatedList,
-    [new Date(Date.now() - 86400000).toISOString().split("T")[0]]
+  fs.writeFileSync(
+    "test-dump.json",
+    JSON.stringify(rawVisits.slice(0, 100), null, 2)
   );
 
-cli.parse(process.argv);
-ingestMany(cli.days, cli.path);
+  return rawVisits.flatMap((visit) => {
+    return parseVisit(visit);
+  });
+};
+
+const checkIndex = async (esClient, index) => {
+  await elastic.testAndCreateIndex(esClient, index, mappings);
+};
+
+const ingest = async (esClient, dumpPath, index) => {
+  logger.info(`Ingesting dump ${dumpPath} to ES.`);
+  const actions = parse(dumpPath);
+  const date = dumpPath.slice(
+    dumpPath.lastIndexOf("/") + 1,
+    dumpPath.lastIndexOf(".")
+  );
+  const actionDocs = actions.map((a) => mapAction(a, date));
+  await elastic.batchInsert(esClient, index, actionDocs);
+  return;
+};
+
+export { ingest, checkIndex };

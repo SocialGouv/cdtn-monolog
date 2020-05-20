@@ -1,31 +1,67 @@
 {
-  "name": "cdtn-monolog",
-  "version": "1.0.0",
-  "description": "\"CDTN log analysis\"",
+  "name": "@socialgouv/cdtn-monolog",
+  "description": "CDTN log management : index logs and generate reports.",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "index.js",
-  "author": "SocialGouv",
-  "license": "MIT",
+  "version": "1.0.0",
+  "homepage": "https://github.com/SocialGouv/cdtn-monolog",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SocialGouv/cdtn-monolog.git"
+  },
+  "license": "Apache-2.0",
   "scripts": {
-    "convert": "node -r esm src/matomo_converter.js",
-    "ingest": "node -r esm src/ingester.js"
+    "dev": "jest --watch",
+    "lint": "eslint . --ext .js",
+    "test": "jest",
+    "test-one": "jest analysis --watch",
+    "monolog": "node -r esm src/index.js",
+    "build": "yarn run ncc build src/index.js -o dist",
+    "start": "node ./dist/index.js"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.4.0",
-    "big-json": "^3.1.0",
-    "commander": "^4.0.1",
+    "@elastic/elasticsearch": "^7.6.1",
     "data-forge": "^1.8.5",
-    "data-forge-fs": "^0.0.7",
+    "data-forge-fs": "^0.0.8",
     "esm": "^3.2.25",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.8",
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@socialgouv/eslint-config-recommended": "^0.10.3",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "prettier": "^2.0.2",
-    "watch": "^1.0.2"
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@socialgouv/eslint-config-recommended": "^0.20.0",
+    "@zeit/ncc": "^0.22.1",
+    "babel-jest": "^25.4.0",
+    "eslint": "^6.8.0",
+    "jest": "^25.4.0",
+    "prettier": "^2.0.5",
+    "husky": "^4.2.5"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testRegex": "src/.*\\.test\\.js$"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "eslint . --ext .ts"
+    }
+  },
+  "release": {
+    "branches": [
+      "master"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
   }
 }
