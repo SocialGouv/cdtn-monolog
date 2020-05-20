@@ -29,8 +29,8 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
     "@socialgouv/eslint-config-recommended": "^0.20.0",
     "@zeit/ncc": "^0.22.1",
     "babel-jest": "^25.4.0",
