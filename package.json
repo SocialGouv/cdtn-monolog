@@ -50,7 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --ext .ts"
+      "pre-commit": "eslint . --ext .js"
     }
   },
   "release": {
