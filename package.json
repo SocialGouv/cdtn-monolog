@@ -34,7 +34,7 @@
     "@socialgouv/eslint-config-recommended": "^0.22.1",
     "@zeit/ncc": "^0.22.2",
     "babel-jest": "^26.0.1",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "jest": "^26.0.1",
     "prettier": "^2.0.5",
     "husky": "^4.2.5"
