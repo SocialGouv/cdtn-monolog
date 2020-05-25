@@ -4,5 +4,5 @@ include:
       ref: v15.7.0
     - /.gitlab-ci/stages/register.yml
     #
-  stages:
+ stages:
     - register
