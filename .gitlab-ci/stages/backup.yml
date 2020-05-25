@@ -1,0 +1,9 @@
+Backup Matomo data:
+  stage: backup
+  image: mcr.microsoft.com/azure-cli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+  script:
+    - bash ./scripts/dump_matomo_yesterday.sh

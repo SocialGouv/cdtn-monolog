@@ -3,6 +3,8 @@ include:
     file: /base_register_stage.yml
     ref: v15.7.0
   - /.gitlab-ci/stages/register.yml
+  - /.gitlab-ci/stages/backup.yml
   #
 stages:
   - register
+  - backup
