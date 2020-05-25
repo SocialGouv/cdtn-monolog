@@ -9,5 +9,5 @@ Download dump from Azure:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
   artifacts:
     paths:
-      - ./data
+      - data/
     expire_in: 1 hour
