@@ -1,8 +1,3 @@
-include:
-  - project: SocialGouv/gitlab-ci-yml
-    file: /base_register_stage.yml
-    ref: v15.7.0
-
 Register image:
   stage: register
   extends: .base_register_stage
