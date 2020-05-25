@@ -10,8 +10,8 @@ const esClientConfig = {
   auth,
 };
 
-const LOG_INDEX = "logs";
-const REPORT_INDEX = "log_reports";
+const LOG_INDEX = process.env.LOG_INDEX || "logs";
+const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
 
 const esClient = new Client(esClientConfig);
 
