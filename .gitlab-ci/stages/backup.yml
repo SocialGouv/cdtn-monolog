@@ -6,4 +6,4 @@ Backup Matomo data:
       when: always
     - when: manual
   script:
-    - bash ./scripts/dump_matomo_yesterday.sh
+    - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
