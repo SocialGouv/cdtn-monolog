@@ -4,7 +4,10 @@ include:
     ref: v15.7.0
   - /.gitlab-ci/stages/register.yml
   - /.gitlab-ci/stages/backup.yml
+  - /.gitlab-ci/stages/download.yml
   #
 stages:
   - register
   - backup
+  - download
+  - ingest

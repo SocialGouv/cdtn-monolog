@@ -1,0 +1,13 @@
+Download dump from Azure:
+  stage: download
+  image: mcr.microsoft.com/azure-cli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+  script:
+    - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
+  artifacts:
+    paths:
+      - ./data
+    expire_in: 1 hour
