@@ -19,8 +19,7 @@ while [ "$finished" = false ]; do
 
   out=$prefix-$offset.json
 
-  res=$(curl $url)
-
+  res=$(curl --silent $url)
   
   offset=$((offset + limit))
 
