@@ -13,8 +13,8 @@ stages:
 Register image:
   stage: register
   extends: .base_register_stage
-  #   only:
-  # - master
+  only:
+    - master
   variables:
     CONTEXT: . # The folder where the Dockerfile is
     IMAGE_NAME: $CI_REGISTRY_IMAGE # The image name
@@ -23,7 +23,7 @@ Backup Matomo data:
   stage: backup
   image: mcr.microsoft.com/azure-cli
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
       when: always
     - when: manual
   script:
@@ -33,7 +33,7 @@ Download dump from Azure:
   stage: download
   image: mcr.microsoft.com/azure-cli
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
       when: always
     - when: manual
   script:
@@ -45,9 +45,9 @@ Download dump from Azure:
 
 Ingest to ES:
   stage: ingest
-  image: $CI_REGISTRY_IMAGE:ci-xp
+  image: $CI_REGISTRY_IMAGE:master
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
       when: always
     - when: manual
   artifacts:
@@ -61,9 +61,9 @@ Ingest to ES:
 
 Run analysis:
   stage: analyse
-  image: $CI_REGISTRY_IMAGE:ci-xp
+  image: $CI_REGISTRY_IMAGE:master
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "analysis"'
       when: always
     - when: manual
   script:
