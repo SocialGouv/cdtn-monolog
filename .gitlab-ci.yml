@@ -51,7 +51,7 @@ Ingest to ES:
     - when: manual
   artifacts:
     paths:
-      - ./data
+      - data/
     expire_in: 1 hour
   script:
     - yarn install
