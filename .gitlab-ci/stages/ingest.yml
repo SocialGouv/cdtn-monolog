@@ -11,5 +11,5 @@ Ingest to ES:
     paths:
       - ./data
     expire_in: 1 hour
-  # script:
+  entrypoint: ["node", "index.js"]
   # - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest node index.js
