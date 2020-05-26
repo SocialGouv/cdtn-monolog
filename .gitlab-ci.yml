@@ -56,4 +56,4 @@ Ingest to ES:
   script:
     - yarn install
     - yarn build
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest node index.js
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest node dist/index.js
