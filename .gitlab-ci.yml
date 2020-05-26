@@ -57,3 +57,15 @@ Ingest to ES:
     - yarn install
     - yarn build
     - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
+
+Run analysis:
+  stage: analyse
+  image: $CI_REGISTRY_IMAGE:ci-xp
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      when: always
+    - when: manual
+  script:
+    - yarn install
+    - yarn build
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=analyse node dist/index.js
