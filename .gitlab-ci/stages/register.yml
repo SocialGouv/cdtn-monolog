@@ -1,8 +1,0 @@
-Register image:
-  stage: register
-  extends: .base_register_stage
-  only:
-    - master
-  variables:
-    CONTEXT: . # The folder where the Dockerfile is
-    IMAGE_NAME: $CI_REGISTRY_IMAGE # The image name

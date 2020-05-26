@@ -2,7 +2,71 @@ include:
   - project: SocialGouv/gitlab-ci-yml
     file: /base_register_stage.yml
     ref: v15.7.0
-  - /.gitlab-ci/stages/register.yml
   #
 stages:
   - register
+  - backup
+  - download
+  - ingest
+  - analyse
+
+Register image:
+  stage: register
+  extends: .base_register_stage
+  only:
+    - master
+  variables:
+    CONTEXT: . # The folder where the Dockerfile is
+    IMAGE_NAME: $CI_REGISTRY_IMAGE # The image name
+
+Backup Matomo data:
+  stage: backup
+  image: mcr.microsoft.com/azure-cli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
+      when: always
+    - when: manual
+  script:
+    - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
+
+Download dump from Azure:
+  stage: download
+  image: mcr.microsoft.com/azure-cli
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
+      when: always
+    - when: manual
+  script:
+    - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
+  artifacts:
+    paths:
+      - data/
+    expire_in: 1 hour
+
+Ingest to ES:
+  stage: ingest
+  image: $CI_REGISTRY_IMAGE:master
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "ingestion"'
+      when: always
+    - when: manual
+  artifacts:
+    paths:
+      - data/
+    expire_in: 1 hour
+  script:
+    - yarn install
+    - yarn build
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
+
+Run analysis:
+  stage: analyse
+  image: $CI_REGISTRY_IMAGE:master
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TYPE == "analysis"'
+      when: always
+    - when: manual
+  script:
+    - yarn install
+    - yarn build
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=analyse node dist/index.js

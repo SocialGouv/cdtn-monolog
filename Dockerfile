@@ -12,4 +12,4 @@ FROM node:14.3-alpine3.10
 WORKDIR /app
 COPY --from=builder /app/dist/ .
 
-CMD ["node", "index.js"]
+ENTRYPOINT ["node", "index.js"]
