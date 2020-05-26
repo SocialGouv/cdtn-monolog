@@ -54,4 +54,6 @@ Ingest to ES:
       - ./data
     expire_in: 1 hour
   script:
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest  node index.js
+    - yarn install
+    - yarn build
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest node index.js
