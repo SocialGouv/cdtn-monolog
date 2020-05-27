@@ -55,7 +55,7 @@ Download dump from Azure:
 
 Ingest to ES:
   stage: ingest
-  image: $CI_REGISTRY_IMAGE:master
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
@@ -70,13 +70,14 @@ Ingest to ES:
         echo "Skipping ingestion"
         exit 0
       fi
-    - yarn install
-    - yarn build
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
+    # - yarn install
+    # - yarn build
+    # - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node index.js
 
 Run analysis:
   stage: analyse
-  image: $CI_REGISTRY_IMAGE:master
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
