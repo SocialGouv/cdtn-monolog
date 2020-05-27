@@ -58,13 +58,88 @@ const buildGraph = (dataset) => {
 
   const uniqueViews = matchingVisites.map((v) => datasetUtil.toUniqueViews(v));
 
-  const counts = dataForge.DataFrame.concat(uniqueViews)
+  const nodes = dataForge.DataFrame.concat(uniqueViews)
     .groupBy((a) => a.url)
     .select((group) => ({
       url: group.first().url.slice("https://code.travail.gouv.fr/".length),
       count: group.count(),
     }))
-    .inflate();
+    .inflate()
+    .toArray()
+    .map((content, i) => {
+      content.id = i;
+      return content;
+    });
+
+  const edges = new Map();
+
+  const toKey = (a, b) => (a < b ? `${a}__${b}` : `${b}__${a}`);
+
+  uniqueViews.forEach((vv) => {
+    const visitViews = vv.deflate((a) => a.url).toArray();
+    if (visitViews.length > 1) {
+      // visitViews.map((v) => console.log(v.toString()));
+      // get all pairs of contents A/B
+      const covisits = visitViews.reduce((acc, a, i) => {
+        acc.push(...visitViews.slice(i + 1).map((b) => [a, b]));
+        return acc;
+      }, []);
+
+      covisits.forEach(([a, b]) => {
+        const key = toKey(a, b);
+        if (!edges.has(key)) {
+          edges.set(key, { nodes: [a, b], count: 1 });
+        } else {
+          edges.get(key).count++;
+        }
+      });
+    }
+  });
+
+  const nodesMap = new Map();
+  nodes.forEach((node) => {
+    nodesMap.set(node.url, node);
+  });
+
+  const lines = [];
+  lines.push("graph");
+  lines.push("[");
+
+  nodes
+    .filter((c) => c.count >= 2)
+    .forEach((content) => {
+      lines.push("  node");
+      lines.push("  [");
+      lines.push(`    id ${content.id}`);
+      lines.push(`    label "${content.url}"`);
+      lines.push(`    weight ${content.count}`);
+      lines.push("  ]");
+    });
+  // console.log(nodesMap);
+
+  edges.forEach((edge) => {
+    const [a, b] = edge.nodes;
+    // console.log(a);
+    lines.push("  edge");
+    lines.push("  [");
+    lines.push(
+      `    source ${
+        nodesMap.get(a.slice("https://code.travail.gouv.fr/".length)).id
+      }`
+    );
+    lines.push(
+      `    target ${
+        nodesMap.get(b.slice("https://code.travail.gouv.fr/".length)).id
+      }`
+    );
+    lines.push(`    value ${edge.count}`);
+    lines.push("  ]");
+  });
+  lines.push("]");
+
+  console.log(lines.join("\n"));
+
+  /*
 
   const output = counts
     .where((content) => content.count > 3)
@@ -82,6 +157,7 @@ const buildGraph = (dataset) => {
   // Array.from(Array(20).keys()).forEach((i) =>
   // console.log(uniqueViews[i].toString())
   // );
+  */
 };
 
 const main = async () => {
