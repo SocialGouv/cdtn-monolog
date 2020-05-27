@@ -135,14 +135,9 @@ const parseVisit = (visit) => {
   }
 };
 
-const parse = (dumpPath) => {
+export const parse = (dumpPath) => {
   const rawData = fs.readFileSync(dumpPath);
   const rawVisits = JSON.parse(rawData);
-
-  fs.writeFileSync(
-    "test-dump.json",
-    JSON.stringify(rawVisits.slice(0, 100), null, 2)
-  );
 
   return rawVisits.flatMap((visit) => {
     return parseVisit(visit);
