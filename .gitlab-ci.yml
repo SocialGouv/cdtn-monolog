@@ -57,4 +57,18 @@ Ingest to ES:
     MONOLOG_ACTION: $TYPE
     DATA: "data/"
   script:
-    - docker run -e ELASTICSEARCH_URL=$ELASTICSEARCH_URL -e API_KEY=$API_KEY -e MONOLOG_ACTION=ingest -v $DATA:/data/ --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - yarn install
+    - yarn build
+    - MONOLOG_ACTION=$TYPE DATA=data/ node dist/index.js
+
+Run analysis:
+  stage: analyse
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  only:
+    variables:
+      - $TYPE == "analyse"
+      - $CI_PIPELINE_SOURCE == "schedule"
+  script:
+    - yarn install
+    - yarn build
+    - MONOLOG_ACTION=$TYPE node dist/index.js
