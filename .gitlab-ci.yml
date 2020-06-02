@@ -54,8 +54,6 @@ Ingest to ES:
     paths:
       - data/
     expire_in: 1 hour
-  variables:
-    DATA: "data/"
   script:
     - yarn install
     - yarn build

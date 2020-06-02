@@ -45,7 +45,7 @@ const main = async () => {
   try {
     if (command == INGEST) {
       logger.info("Running ingestion");
-      const dataPath = process.env.DATA ? process.env.DATA : "/data/";
+      const dataPath = process.env.DATA ? process.env.DATA : "data/";
       await runIngestion(dataPath);
     } else if (command == ANALYSE) {
       logger.info("Running analysis");
