@@ -66,6 +66,8 @@ Ingest to ES:
   variables:
     MONOLOG_ACTION: $TYPE
     DATA: "data/"
+  script:
+    - echo "fake script"
 
 Run analysis:
   stage: analyse
@@ -79,3 +81,5 @@ Run analysis:
       - $TYPE == "analyse"
   variables:
     MONOLOG_ACTION: $TYPE
+  script:
+    - echo "fake script"
