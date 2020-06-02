@@ -48,7 +48,7 @@ Ingest to ES:
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
     variables:
-      - $TYPE == "ingestion"
+      - $TYPE == "ingest"
       - $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     paths:
@@ -60,7 +60,7 @@ Ingest to ES:
   script:
     - yarn install
     - yarn build
-    - MONOLOG_ACTION=$TYPE DATA=data/ node dist/index.js
+    - DATA=data/ node dist/index.js
 
 Run analysis:
   stage: analyse
@@ -72,4 +72,4 @@ Run analysis:
   script:
     - yarn install
     - yarn build
-    - MONOLOG_ACTION=$TYPE node dist/index.js
+    - node dist/index.js
