@@ -57,4 +57,4 @@ Ingest to ES:
     MONOLOG_ACTION: $TYPE
     DATA: "data/"
   script:
-    - echo "fake script"
+    - docker run -e ELASTICSEARCH_URL=$ELASTICSEARCH_URL -e API_KEY=$API_KEY -e MONOLOG_ACTION=ingest -v $DATA:/data/ --rm $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
