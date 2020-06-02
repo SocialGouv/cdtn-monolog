@@ -24,7 +24,7 @@ Backup Matomo data:
   image: mcr.microsoft.com/azure-cli
   only:
     variables:
-      - $TYPE == "ingestion"
+      - $MONOLOG_ACTION == "ingest"
       - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
@@ -34,7 +34,7 @@ Download dump from Azure:
   image: mcr.microsoft.com/azure-cli
   only:
     variables:
-      - $TYPE == "ingestion"
+      - $MONOLOG_ACTION == "ingest"
       - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
@@ -48,7 +48,7 @@ Ingest to ES:
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
     variables:
-      - $TYPE == "ingest"
+      - $MONOLOG_ACTION == "ingest"
       - $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     paths:
@@ -64,7 +64,7 @@ Run analysis:
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
     variables:
-      - $TYPE == "analyse"
+      - $MONOLOG_ACTION == "analyse"
       - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - yarn install
