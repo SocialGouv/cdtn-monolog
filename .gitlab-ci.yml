@@ -55,12 +55,11 @@ Ingest to ES:
       - data/
     expire_in: 1 hour
   variables:
-    MONOLOG_ACTION: $TYPE
     DATA: "data/"
   script:
     - yarn install
     - yarn build
-    - DATA=data/ node dist/index.js
+    - node dist/index.js
 
 Run analysis:
   stage: analyse
