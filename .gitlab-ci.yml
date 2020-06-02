@@ -8,7 +8,6 @@ stages:
   - backup
   - download
   - ingest
-  - analyse
 
 Register image:
   stage: register
@@ -22,26 +21,20 @@ Register image:
 Backup Matomo data:
   stage: backup
   image: mcr.microsoft.com/azure-cli
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - when: manual
   only:
     variables:
       - $TYPE == "ingestion"
+      - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
 
 Download dump from Azure:
   stage: download
   image: mcr.microsoft.com/azure-cli
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - when: manual
   only:
     variables:
       - $TYPE == "ingestion"
+      - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
   artifacts:
@@ -52,13 +45,10 @@ Download dump from Azure:
 Ingest to ES:
   stage: ingest
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - when: manual
   only:
     variables:
       - $TYPE == "ingestion"
+      - $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     paths:
       - data/
@@ -66,20 +56,5 @@ Ingest to ES:
   variables:
     MONOLOG_ACTION: $TYPE
     DATA: "data/"
-  script:
-    - echo "fake script"
-
-Run analysis:
-  stage: analyse
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      when: always
-    - when: manual
-  only:
-    variables:
-      - $TYPE == "analyse"
-  variables:
-    MONOLOG_ACTION: $TYPE
   script:
     - echo "fake script"
