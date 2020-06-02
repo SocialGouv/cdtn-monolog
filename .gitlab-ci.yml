@@ -26,12 +26,10 @@ Backup Matomo data:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
     - when: manual
+  only:
+    variables:
+      - $TYPE: $TYPE == "ingestion"
   script:
-    - |
-      if [ "$TYPE" != "ingestion" ]; then
-        echo "Skipping backup"
-        exit 0
-      fi
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
 
 Download dump from Azure:
@@ -41,12 +39,10 @@ Download dump from Azure:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
     - when: manual
+  only:
+    variables:
+      - $TYPE: $TYPE == "ingestion"
   script:
-    - |
-      if [ "$TYPE" != "ingestion" ]; then
-        echo "Skipping download"
-        exit 0
-      fi
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
   artifacts:
     paths:
@@ -60,21 +56,16 @@ Ingest to ES:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
     - when: manual
+  only:
+    variables:
+      - $TYPE == "ingestion"
   artifacts:
     paths:
       - data/
     expire_in: 1 hour
-  script:
-    - |
-      if [ "$TYPE" != "ingestion" ]; then
-        echo "Skipping ingestion"
-        exit 0
-      fi
-    - yarn install
-    - yarn build
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
-    # cannot get this to work, for now, we need install/build...
-    # - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node index.js
+  variables:
+    MONOLOG_ACTION: $TYPE
+    DATA: "data/"
 
 Run analysis:
   stage: analyse
@@ -83,12 +74,8 @@ Run analysis:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
       when: always
     - when: manual
-  script:
-    - |
-      if [ "$TYPE" != "analysis" ]; then
-        echo "Skipping analysis"
-        exit 0
-      fi
-    - yarn install
-    - yarn build
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=analyse node dist/index.js
+  only:
+    variables:
+      - $TYPE == "analyse"
+  variables:
+    MONOLOG_ACTION: $TYPE
