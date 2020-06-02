@@ -8,6 +8,7 @@ stages:
   - backup
   - download
   - ingest
+  - analyse
 
 Register image:
   stage: register
