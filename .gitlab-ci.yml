@@ -28,7 +28,7 @@ Backup Matomo data:
     - when: manual
   only:
     variables:
-      - $TYPE: $TYPE == "ingestion"
+      - $TYPE == "ingestion"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
 
@@ -41,7 +41,7 @@ Download dump from Azure:
     - when: manual
   only:
     variables:
-      - $TYPE: $TYPE == "ingestion"
+      - $TYPE == "ingestion"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
   artifacts:
