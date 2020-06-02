@@ -70,10 +70,11 @@ Ingest to ES:
         echo "Skipping ingestion"
         exit 0
       fi
-    # - yarn install
-    # - yarn build
-    # - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
-    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node index.js
+    - yarn install
+    - yarn build
+    - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node dist/index.js
+    # cannot get this to work, for now, we need install/build...
+    # - ELASTICSEARCH_URL=$ELASTICSEARCH_URL API_KEY=$API_KEY MONOLOG_ACTION=ingest DATA=data/ node index.js
 
 Run analysis:
   stage: analyse
