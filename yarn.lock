@@ -1834,10 +1834,10 @@ data-forge-fs@^0.0.8:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.8:
-  version "1.8.8"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.8.tgz#28523d6027d09271b4b5c6597b0a643b57f2b8a7"
-  integrity sha512-CosuJHrQ6eDP08cxVSl3f7EIh2NgeLphJqqcPes4XS8mp7YOfUy6xZwPePYCxizpQ6NFIZJ1C7qn03hCZXdZKA==
+data-forge@^1.8.9:
+  version "1.8.9"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.9.tgz#123994c11df38bbfe06731ea75a96c9a941d1a56"
+  integrity sha512-nQgW60mfSabcHOMUmboUQva9x6fkkYhzolYXpbdxQo1X+yLQMxBFhLMEnp7Rs1JRdSlI4tOUi1XULe65CObkeA==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
