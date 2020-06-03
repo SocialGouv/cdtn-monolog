@@ -40,9 +40,10 @@ Download dump from Azure:
   stage: download
   image: mcr.microsoft.com/azure-cli
   only:
+    refs:
+      - schedules
     variables:
       - $MONOLOG_ACTION == "ingest"
-      - $CI_PIPELINE_SOURCE == "schedule"
   script:
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/download_dump.sh
   artifacts:
@@ -54,9 +55,10 @@ Ingest to ES:
   stage: ingest
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
+    refs:
+      - schedules
     variables:
       - $MONOLOG_ACTION == "ingest"
-      - $CI_PIPELINE_SOURCE == "schedule"
   artifacts:
     paths:
       - data/
@@ -70,10 +72,12 @@ Run analysis:
   stage: analyse
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
+    refs:
+      - schedules
     variables:
       - $MONOLOG_ACTION == "analyse"
-      - $CI_PIPELINE_SOURCE == "schedule"
   script:
+    - echo $MONOLOG_ACTION
     - yarn install
     - yarn build
     - node dist/index.js
