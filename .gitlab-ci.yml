@@ -15,8 +15,10 @@ Register image:
   extends: .base_register_stage
   only:
     - master
-    variables:
-      - $CI_PIPELINE_SOURCE != "schedule"
+  #  variables:
+  #    - $CI_PIPELINE_SOURCE != "schedule"
+  except:
+    - schedules
   variables:
     CONTEXT: . # The folder where the Dockerfile is
     IMAGE_NAME: $CI_REGISTRY_IMAGE # The image name
@@ -25,9 +27,11 @@ Backup Matomo data:
   stage: backup
   image: mcr.microsoft.com/azure-cli
   only:
+    refs:
+      - schedules
     variables:
       - $MONOLOG_ACTION == "ingest"
-      - $CI_PIPELINE_SOURCE == "schedule"
+      #- $CI_PIPELINE_SOURCE == "schedule"
   script:
     - echo $MONOLOG_ACTION
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
