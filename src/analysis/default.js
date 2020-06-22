@@ -4,7 +4,7 @@ import * as Suggestion from "../analysis/suggestion";
 
 export const defaultAnalysis = (
   data,
-  popularityReportId = new Date().getSeconds()
+  popularityReportId = new Date().getTime()
 ) => {
   // then we run the different analysis and store reports
   const covisits = Covisit.analyse(data);
