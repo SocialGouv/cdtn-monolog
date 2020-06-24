@@ -9,14 +9,14 @@ import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 
 // running analysis including 30 days before today
 const refDate = new Date();
-const defaultPeriod = 30;
+const defaultPeriod = 2;
 
 const runAnalysis = async () => {
   ReportStore.resetReportIndex(esClient, REPORT_INDEX);
   const data = await Reader.readFromElastic(esClient, defaultPeriod, refDate);
   const reports = defaultAnalysis(data);
-  const res = await ReportStore.saveReport(esClient, REPORT_INDEX, reports);
-  return res;
+  //const res = await ReportStore.saveReport(esClient, REPORT_INDEX, reports);
+  return reports;
 };
 
 // TODO
@@ -40,7 +40,6 @@ const INGEST = "ingest";
 
 // const command = process.argv[process.argv.length - 1];
 const command = process.env.MONOLOG_ACTION;
-
 const main = async () => {
   try {
     if (command == INGEST) {
@@ -60,6 +59,7 @@ const main = async () => {
     if (err.name != undefined && err.name == ConnectionError.name) {
       logger.error("Cannot access Elastic on URL : " + ELASTICSEARCH_URL);
     } else {
+      console.log(err)
       logger.error(JSON.stringify(err, null, 2));
     }
     process.exit(1);
