@@ -9,7 +9,7 @@ import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 
 // running analysis including 30 days before today
 const refDate = new Date();
-const defaultPeriod = 2;
+const defaultPeriod = 100;
 
 const runAnalysis = async () => {
   ReportStore.resetReportIndex(esClient, REPORT_INDEX);
