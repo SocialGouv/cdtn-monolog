@@ -10,7 +10,7 @@ import * as ReportStore from "./reportStore";
 
 // running analysis including 30 days before today
 const refDate = new Date();
-const defaultPeriod = 100;
+const defaultPeriod = 30;
 
 const runAnalysis = async () => {
   ReportStore.resetReportIndex(esClient, REPORT_INDEX);

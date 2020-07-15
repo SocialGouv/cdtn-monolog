@@ -11,4 +11,8 @@ export const urlToPath = (url) => {
 export const actionTypes = {
   selectSuggestionType: "select_suggestion",
   visitType: "visit_content",
+  search: "search",
+  home: "home",
+  themes: "themes",
+  selectRelated: "selectRelated"
 };
