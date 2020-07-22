@@ -42,7 +42,6 @@ const typeCounts = (visit) => {
 const isExploVisit = (x) => {
     // if more than 2 contents visited --> explo
     // else: if search or themes used --> explo
-
     if(x.type == "visit_content") {
         return x.count > 2 ? true : false
     }else{
@@ -132,7 +131,7 @@ const analyse = (dataset, reportId) => {
         "visitorWasRedirected": visitorWasRedirected.reduce(add),
         "reportId": reportId,
     }
-    return metricsAnalysis
+    return Array(metricsAnalysis)
 }
 
-export { analyse, reportType };
+export { analyse, reportType, removeAnchor, removeQuery, add, avg, valueCounts, typeCounts , isExploVisit};
