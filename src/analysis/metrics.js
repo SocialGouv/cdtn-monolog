@@ -18,7 +18,6 @@ const avg = array => {
     return sum / array.length;
   };
 
-
 const valueCounts = arr => {
     var counts = {};
   
@@ -33,14 +32,15 @@ const typeCounts = (visit) => {
     return visit.groupBy(row => row.type).select(group => {
         return {
             type: group.first().type,
-            count: group.count()
+            count: group.count(),
+            referrerTypeName: group.first().referrerTypeName
 
         };
     })
 };
 
 const isExploVisit = (x) => {
-    // if more than one contents visited --> explo
+    // if more than 2 contents visited --> explo
     // else: if search or themes used --> explo
 
     if(x.type == "visit_content") {
@@ -54,6 +54,15 @@ const isExploVisit = (x) => {
         }
     };
 };
+
+const isRedirected = (x) => {
+    // if a user comes from a search engine and select related return true
+    if (x.referrerTypeName == "Search Engines" && x.type == "selectRelated"){
+        return true
+    }else{
+        return false
+    }
+}
 const hasSelectedRelated = (x) => {
 
     return x.type == "selectRelated" ? true : false
@@ -70,7 +79,8 @@ const getSelectRelated = (relatedCount) => {
 
     return {
         "visitorSelectedRelated": relatedCount.some(hasSelectedRelated),
-        "SelectRelatedCount" : relatedCount.map(x => countSelectRelated(x)).reduce(add)
+        "selectRelatedCount" : relatedCount.map(x => countSelectRelated(x)).reduce(add),
+        "visitorWasRedirected" : relatedCount.some(isRedirected)
     }
 
 }
@@ -83,54 +93,46 @@ const getUserType = (visitCount) => {
 const analyse = (dataset, reportId) => {
 
     const visits = datasetUtil.getVisits(dataset) //series of dataframes
-    
-    //console.log(visits.toArray()[32].toArray()) 
+
     const seriesOfVisits = visits.toArray()
-    // clean urls
+
+    // CLEANING
+    // remove sections and remove queries from urls
     const cleanSeriesOfVisits = seriesOfVisits.map(x => x.transformSeries({
         url: (u) => util.urlToPath(removeQuery(removeAnchor(u))),
     }))
-    // deduplicates urls within user session (reloads)
 
-    console.log(cleanSeriesOfVisits[135].distinct(x => x.url).toArray())
-    const uniqueSeriesOfVisits = cleanSeriesOfVisits.map(x => x.distinct(x => x.url))
+    // deduplicates urls within user session (reloads)
+    const uniqueSeriesOfVisits = cleanSeriesOfVisits.map(x => x.distinct(x => {x.url, x.type}))
     // count visits by type of events (give a list of dict [{'type':visit_content, 'count': 2}, {}])
     const visitsTypesArray = uniqueSeriesOfVisits.map(visit => typeCounts(visit).toArray())
+
+    // ANALYSIS
     const nbVisitsAnalyzed = visitsTypesArray.length
-    ///*
-    var fs = require('fs');
-    const res = visits.toArray()
-    const resjson = JSON.stringify(res)
-    const callback = function(err) {
-        if (err) throw err;
-        console.log('complete');
-        }
-    fs.writeFile('myjsonfile.json', resjson, 'utf8', callback);
-    //*/
-    const isLongVisitArray = visitsTypesArray.map(x => getUserType(x)) // return false true array if user is long
 
+    // SelectRelated
     const selectRelatedStats = visitsTypesArray.map(x => getSelectRelated(x))
-    const visitorSelectedRelated = avg(selectRelatedStats.map(x => x["visitorSelectedRelated"]))
-    const SelectRelatedCount = selectRelatedStats.map(x => x["SelectRelatedCount"])
-    console.log(visitorSelectedRelated, SelectRelatedCount.reduce(add))
 
+    const visitorSelectedRelated = selectRelatedStats.map(x => x["visitorSelectedRelated"])
+    const SelectRelatedCount = selectRelatedStats.map(x => x["selectRelatedCount"])
+    const visitorWasRedirected = selectRelatedStats.map(x => x["visitorWasRedirected"])
+    
+    //visitorTypes
+    const isLongVisitArray = visitsTypesArray.map(x => getUserType(x)) // return false true array if user is long
     const LongVisitRatio = avg(isLongVisitArray) // simple average of the visitcount array
     const visitsTypesCount = valueCounts(isLongVisitArray)
 
-    //console.log(visitsTypesCount[0])
     const metricsAnalysis = {
         "nbVisitsAnalyzed" : nbVisitsAnalyzed,
         "longVisitsRatio" : LongVisitRatio,
         "longVisitsNb": visitsTypesCount[false],
         "shortVisitsNb" : visitsTypesCount[true],
-        "visitorSelectedRelatedRatio" : visitorSelectedRelated,
+        "visitorSelectedRelatedRatio" : avg(visitorSelectedRelated),
         "SelectRelatedCount" : SelectRelatedCount.reduce(add),
+        "visitorWasRedirected": visitorWasRedirected.reduce(add),
         "reportId": reportId,
     }
-    console.log(metricsAnalysis)
-
-    return dataset
+    return metricsAnalysis
 }
-
 
 export { analyse, reportType };

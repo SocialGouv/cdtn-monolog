@@ -43,6 +43,9 @@ The default `analyse` task run the standard analysis using logs of the last 30 d
 - suggestions : store the list of suggestions along with their respective weights (computed from frequency in the logs)
 - covisit : for each matching document, store the list of their identified links (using visits similarity)
 - popularity : store the list of most significant changes in content popularity (up or down)
+- metrics: 
+Compute [different Metrics](./metrics.md) on user sessions
+
 
 Analysis results are stored in Elastic Search and available for Kibana visualisation or directly from code using the query lib described below.
 
