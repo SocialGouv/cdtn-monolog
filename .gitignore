@@ -10,3 +10,4 @@ package-lock.json
 yarn-error.log
 legacy
 *.log
+myjsonfile.json

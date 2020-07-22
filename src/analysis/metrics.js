@@ -1,9 +1,9 @@
 import * as dataForge from "data-forge";
 import * as datasetUtil from "../dataset";
 import * as util from "../util";
-var fs = require('fs');
 
-const reportType = "popularity";
+const reportType = "metrics";
+
 const removeAnchor = (url) => {
     return url.split("#")[0];
   };
@@ -11,6 +11,23 @@ const removeAnchor = (url) => {
 const removeQuery = (url) => {
     return url.split("?q=")[0];
 };
+
+const add = (a, b) => a + b;
+const avg = array => {
+    const sum = array.reduce((previous, current) => (current += previous));
+    return sum / array.length;
+  };
+
+
+const valueCounts = arr => {
+    var counts = {};
+  
+    for (var i = 0; i < arr.length; i++) {
+      var num = arr[i];
+      counts[num] = counts[num] ? counts[num] + 1 : 1;
+    }
+    return counts;
+  };
 
 const typeCounts = (visit) => {
     return visit.groupBy(row => row.type).select(group => {
@@ -21,20 +38,6 @@ const typeCounts = (visit) => {
         };
     })
 };
-const add = (a, b) => a + b;
-const avg = array => {
-    const sum = array.reduce((previous, current) => (current += previous));
-    return sum / array.length;
-  };
-const valueCounts = arr => {
-    var counts = {};
-  
-    for (var i = 0; i < arr.length; i++) {
-      var num = arr[i];
-      counts[num] = counts[num] ? counts[num] + 1 : 1;
-    }
-    return counts;
-  };
 
 const isExploVisit = (x) => {
     // if more than one contents visited --> explo
@@ -89,20 +92,21 @@ const analyse = (dataset, reportId) => {
     }))
     // deduplicates urls within user session (reloads)
 
-    //console.log(cleanSeriesOfVisits[30].toArray())
+    console.log(cleanSeriesOfVisits[135].distinct(x => x.url).toArray())
     const uniqueSeriesOfVisits = cleanSeriesOfVisits.map(x => x.distinct(x => x.url))
     // count visits by type of events (give a list of dict [{'type':visit_content, 'count': 2}, {}])
     const visitsTypesArray = uniqueSeriesOfVisits.map(visit => typeCounts(visit).toArray())
     const nbVisitsAnalyzed = visitsTypesArray.length
-    const res = visitsTypesArray
+    ///*
+    var fs = require('fs');
+    const res = visits.toArray()
     const resjson = JSON.stringify(res)
     const callback = function(err) {
         if (err) throw err;
         console.log('complete');
         }
     fs.writeFile('myjsonfile.json', resjson, 'utf8', callback);
-
-
+    //*/
     const isLongVisitArray = visitsTypesArray.map(x => getUserType(x)) // return false true array if user is long
 
     const selectRelatedStats = visitsTypesArray.map(x => getSelectRelated(x))
@@ -119,7 +123,7 @@ const analyse = (dataset, reportId) => {
         "longVisitsRatio" : LongVisitRatio,
         "longVisitsNb": visitsTypesCount[false],
         "shortVisitsNb" : visitsTypesCount[true],
-        "visitorSelectedRelatedRatio" : avg(visitorSelectedRelated),
+        "visitorSelectedRelatedRatio" : visitorSelectedRelated,
         "SelectRelatedCount" : SelectRelatedCount.reduce(add),
         "reportId": reportId,
     }
