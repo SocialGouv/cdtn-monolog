@@ -9,6 +9,8 @@ Build a graph of coocurrences of visited pages among user sessions
 Compute different Metrics on user sessions:
 - Exploratory vs targeted sessions
 
+:warning: gap dans les selectRelated x30
+
 ## Popularity
 - Top contents (raw and relative to their share on the website)
 
