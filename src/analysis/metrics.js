@@ -1,4 +1,3 @@
-import * as dataForge from "data-forge";
 import * as datasetUtil from "../dataset";
 import * as util from "../util";
 
@@ -51,7 +50,7 @@ const isExploVisit = (x) => {
         }else{
             return false
         }
-    };
+    }
 };
 
 const isRedirected = (x) => {
@@ -89,22 +88,24 @@ const getUserType = (visitCount) => {
     return visitCount.some(isExploVisit)
 
 }
-const analyse = (dataset, reportId) => {
-
-    const visits = datasetUtil.getVisits(dataset) //series of dataframes
-
+const clean = (visits) => {
     const seriesOfVisits = visits.toArray()
-
-    // CLEANING
     // remove sections and remove queries from urls
     const cleanSeriesOfVisits = seriesOfVisits.map(x => x.transformSeries({
         url: (u) => util.urlToPath(removeQuery(removeAnchor(u))),
     }))
-
     // deduplicates urls within user session (reloads)
     const uniqueSeriesOfVisits = cleanSeriesOfVisits.map(x => x.distinct(x => {x.url, x.type}))
+    return uniqueSeriesOfVisits.map(visit => typeCounts(visit).toArray())
+}
+const analyse = (dataset, reportId) => {
+
+    const visits = datasetUtil.getVisits(dataset) //series of dataframes
+
+    // CLEANING
+
     // count visits by type of events (give a list of dict [{'type':visit_content, 'count': 2}, {}])
-    const visitsTypesArray = uniqueSeriesOfVisits.map(visit => typeCounts(visit).toArray())
+    const visitsTypesArray = clean(visits)
 
     // ANALYSIS
     const nbVisitsAnalyzed = visitsTypesArray.length
@@ -134,4 +135,6 @@ const analyse = (dataset, reportId) => {
     return Array(metricsAnalysis)
 }
 
-export { analyse, reportType, removeAnchor, removeQuery, add, avg, valueCounts, typeCounts , isExploVisit};
+export { analyse, reportType, removeAnchor, removeQuery, add, avg,
+    valueCounts, typeCounts , isExploVisit, isRedirected, hasSelectedRelated,
+    countSelectRelated, getSelectRelated, getUserType, clean};
