@@ -1,5 +1,4 @@
 import * as Metrics from "../metrics"
-import { internals } from "@elastic/elasticsearch/lib/pool"
 import * as dataForge from "data-forge";
 
 // test minimal utils
@@ -26,6 +25,15 @@ describe("Cleaning", () => {
     });
   });
 
+
+describe("Cleaning pipe", () => {
+  const dirtyVisits = new dataForge.DataFrame([
+    {type:"visit_content", referrerTypeName:null},
+    {type:"visit_content", referrerTypeName:null},
+    {type:"visit_content", referrerTypeName:null}
+  ]);
+  const cleanedSeries = Metrics.clean(dirtyVisits)
+});
 
   describe("Basic arithmetic", () => {
   
@@ -101,11 +109,65 @@ describe("Cleaning", () => {
             const  isExplo = Metrics.isExploVisit(sessionCount)
             expect(isExplo).toBe(false)
         });
-    it("it should detect noise visits", () => {
+    it("it should not detect visits with noise", () => {
 
         const sessionCount = {type:"whatever", count: 100, referrerTypeName:null}
                 const  isExplo = Metrics.isExploVisit(sessionCount)
                 expect(isExplo).toBe(false)
             });
+    it("it should detect redirected user", () => {
+
+        const sessionCount = {type:"selectRelated", count: 1, referrerTypeName:"Search Engines"}
+                const  isRedirect = Metrics.isRedirected(sessionCount)
+                expect(isRedirect).toBe(true)
+            });
+    it("it shouldnot has selected related", () => {
+
+        const sessionCount = {type:"selectRelated", count: 1, referrerTypeName:"Direct Entry"}
+                const  isRedirect = Metrics.hasSelectedRelated(sessionCount)
+                expect(isRedirect).toBe(true)
+            });
+    it("it should count selectRelated", () => {
+
+        const sessionCount = {type:"selectRelated", count: 8, referrerTypeName:"Direct Entry"}
+                const  countrelated = Metrics.countSelectRelated(sessionCount)
+                expect(countrelated).toBe(8)
+            });
+    it("it should get stats of selectRelated", () => {
+
+        const sessionCountArray = [
+            {type:"selectRelated", count: 8, referrerTypeName:"Search Engines"},
+            {type:"visit_content", count: 3, referrerTypeName:"whatsoever"},
+            {type:"whoever", count: 1, referrerTypeName:"whatsoever"}
+        ]
+                const  countrelated = Metrics.getSelectRelated(sessionCountArray)
+
+                expect(countrelated).toStrictEqual({
+                    visitorSelectedRelated: true,
+                    selectRelatedCount: 8,
+                    visitorWasRedirected: true
+                  })
+            });
+    it("it should get user session Type", () => {
+
+        const sessionCountArray = [
+            {type:"selectRelated", count: 8, referrerTypeName:"Search Engines"},
+            {type:"visit_content", count: 3, referrerTypeName:"whatsoever"},
+            {type:"whoever", count: 1, referrerTypeName:"whatsoever"}
+        ]
+                const  countrelated = Metrics.getUserType(sessionCountArray)
+                expect(countrelated).toBe(true)
+                console.log(countrelated)
+            });
+    it("it should get user session Type", () => {
+
+        const sessionCountArray = [
+            {type:"visit_content", count: 2, referrerTypeName:"whatsoever"},
+            {type:"whoever", count: 1, referrerTypeName:"whatsoever"}
+        ]
+                const  countrelated = Metrics.getUserType(sessionCountArray)
+                expect(countrelated).toBe(false)
+            });
   });
+
   
