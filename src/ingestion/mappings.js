@@ -27,6 +27,8 @@ const mapAction = (
     type,
     url,
     visited,
+    recoType,
+    recoSelection,
   },
   logfile
 ) => {
@@ -54,6 +56,8 @@ const mapAction = (
     url,
     visited,
     logfile,
+    recoType,
+    recoSelection,
   };
   return obj;
 };
@@ -151,6 +155,14 @@ const mappings = {
     },
 
     ccAction: {
+      type: "keyword",
+    },
+
+    recoSelection: {
+      type: "keyword",
+    },
+
+    recoType: {
       type: "keyword",
     },
   },

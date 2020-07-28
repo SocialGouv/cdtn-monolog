@@ -81,6 +81,19 @@ const parseAction = (action, visit) => {
         parsedAction["resultSelection"] = JSON.parse(action.eventAction);
         break;
       }
+      case "selectRelated": {
+        parsedAction["type"] = "select_related";
+        // for now we have to deal with several formats
+        try {
+          const actionParsed = JSON.parse(action.eventAction);
+          parsedAction["recoSelection"] = actionParsed.selection;
+          parsedAction["recoType"] = actionParsed.reco;
+        } catch (err) {
+          parsedAction["recoSelection"] = action.eventAction;
+          parsedAction["recoType"] = "search";
+        }
+        break;
+      }
       case "themeResults": {
         parsedAction["type"] = "theme_candidates";
         parsedAction["query"] = action.eventAction;
