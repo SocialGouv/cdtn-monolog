@@ -25,6 +25,8 @@ describe("Cleaning", () => {
   });
 });
 
+// nothing tested here :
+/*
 describe("Cleaning pipe", () => {
   const dirtyVisits = new dataForge.DataFrame([
     { referrerTypeName: null, type: "visit_content" },
@@ -33,6 +35,7 @@ describe("Cleaning pipe", () => {
   ]);
   const cleanedSeries = Metrics.clean(dirtyVisits);
 });
+*/
 
 describe("Basic arithmetic", () => {
   it("should sum bolean elements of array", () => {
@@ -171,7 +174,7 @@ describe("Business logic", () => {
     expect(countrelated).toBe(true);
     console.log(countrelated);
   });
-  it("it should get user session Type", () => {
+  it("it should get user session Type 2", () => {
     const sessionCountArray = [
       { count: 2, referrerTypeName: "whatsoever", type: "visit_content" },
       { count: 1, referrerTypeName: "whatsoever", type: "whoever" },

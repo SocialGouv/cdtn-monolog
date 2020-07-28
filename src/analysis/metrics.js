@@ -138,6 +138,7 @@ const analyse = (dataset, reportId) => {
     longVisitsRatio: LongVisitRatio,
     nbVisitsAnalyzed: nbVisitsAnalyzed,
     reportId: reportId,
+    reportType,
     shortVisitsNb: visitsTypesCount[true],
     visitorSelectedRelatedRatio: avg(visitorSelectedRelated),
     visitorWasRedirected: visitorWasRedirected.reduce(add),

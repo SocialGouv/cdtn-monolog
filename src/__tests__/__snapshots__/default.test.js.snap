@@ -6,7 +6,7 @@ Array [
     "covisit" => 62,
     "popularity" => 20,
     "suggestion" => 321,
-    undefined => 1,
+    "metrics" => 1,
   },
   Array [
     Object {
@@ -3225,6 +3225,7 @@ Array [
       "longVisitsRatio": 0.1341430131004367,
       "nbVisitsAnalyzed": 14656,
       "reportId": 42,
+      "reportType": "metrics",
       "shortVisitsNb": 1966,
       "visitorSelectedRelatedRatio": 0,
       "visitorWasRedirected": 0,
