@@ -9,10 +9,11 @@ export const urlToPath = (url) => {
 };
 
 export const actionTypes = {
-  selectSuggestionType: "select_suggestion",
-  visitType: "visit_content",
-  search: "search",
   home: "home",
+  search: "search",
+  // FIXME: 28/07 should be changed to select_related in the near future
+  selectRelated: "selectRelated",
+  selectSuggestionType: "select_suggestion",
   themes: "themes",
-  selectRelated: "selectRelated"
+  visitType: "visit_content",
 };
