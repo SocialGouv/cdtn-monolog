@@ -1,5 +1,6 @@
-import * as DatasetUtil from "../dataset";
 import * as DataForge from "data-forge";
+
+import * as DatasetUtil from "../dataset";
 
 const reportType = "suggestion";
 
@@ -21,10 +22,10 @@ const analyse = (dataset) => {
   const counts = uniqueSuggs
     .groupBy((value) => value)
     .select((suggGroup) => ({
-      suggestion: suggGroup.first(),
       count: suggGroup.count(),
-      weight: round(normalisation(suggGroup.count())),
       reportType,
+      suggestion: suggGroup.first(),
+      weight: round(normalisation(suggGroup.count())),
     }))
     .inflate()
     .orderByDescending((r) => r.weight);

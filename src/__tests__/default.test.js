@@ -1,7 +1,7 @@
 // test analysis are stable on actual data
-import { logfile } from "./util";
-import * as Reader from "../reader";
 import { defaultAnalysis } from "../analysis/default";
+import * as Reader from "../reader";
+import { logfile } from "./util";
 
 // assigned in before all (is there a better way to do this ?)
 let testDataset = null;

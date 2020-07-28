@@ -1,11 +1,10 @@
 // FIXME ES import and management should be improved
-import { esClient } from "../esConf";
-
-import { wait, readLogfile } from "./util";
-import * as Suggestion from "../analysis/suggestion";
-import * as ReportStore from "../reportStore";
 import { defaultAnalysis } from "../analysis/default";
+import * as Suggestion from "../analysis/suggestion";
+import { esClient } from "../esConf";
 import { Queries } from "../queries";
+import * as ReportStore from "../reportStore";
+import { readLogfile, wait } from "./util";
 
 const index = "test-query-lib";
 
@@ -50,5 +49,5 @@ describe("Query lib", () => {
 
 afterAll(
   async () =>
-    await esClient.deleteByQuery({ index, body: { query: { match_all: {} } } })
+    await esClient.deleteByQuery({ body: { query: { match_all: {} } }, index })
 );

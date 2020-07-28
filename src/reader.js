@@ -1,7 +1,9 @@
 // read data from file system or ES and create Dataframe
 
-import * as dataForge from "data-forge";
 import "data-forge-fs";
+
+import * as dataForge from "data-forge";
+
 import { getDocuments } from "./elastic";
 import { actionTypes } from "./util";
 
@@ -35,7 +37,7 @@ export const readFromElastic = async (esClient, n, ref = new Date(), index) => {
   const docs = await getDocuments(esClient, index, query);
 
   // return a Dataframe containing actions
-  return new dataForge.DataFrame({ values: docs, considerAllRows: true });
+  return new dataForge.DataFrame({ considerAllRows: true, values: docs });
 };
 
 export const readFromFile = async (path) => dataForge.readFile(path).parseCSV();

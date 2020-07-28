@@ -1,8 +1,8 @@
-import { esClient } from "../esConf";
 import * as elastic from "../elastic";
+import { esClient } from "../esConf";
 import { ingest } from "../ingestion/ingester";
 import { mappings } from "../ingestion/mappings";
-import { wait, LOGS_TEST_INDEX, dumpfile } from "./util";
+import { dumpfile, LOGS_TEST_INDEX, wait } from "./util";
 
 const index = LOGS_TEST_INDEX;
 
@@ -11,7 +11,7 @@ beforeAll(async () => {
   await elastic
     .deleteIfExists(esClient, index)
     .then(() => elastic.testAndCreateIndex(esClient, index, mappings));
-  await esClient.deleteByQuery({ index, body: { query: { match_all: {} } } });
+  await esClient.deleteByQuery({ body: { query: { match_all: {} } }, index });
   await wait(5000);
 }, 10000);
 
@@ -27,6 +27,6 @@ test("ingest Matomo dump to ES", async () => {
 });
 
 afterAll(async () => {
-  await esClient.deleteByQuery({ index, body: { query: { match_all: {} } } });
+  await esClient.deleteByQuery({ body: { query: { match_all: {} } }, index });
   await wait(2000);
 });

@@ -1,14 +1,15 @@
-import * as Popularity from "../popularity";
-import * as util from "../../util";
 import { DataFrame } from "data-forge";
+
+import * as util from "../../util";
+import * as Popularity from "../popularity";
 
 describe("Popularity", () => {
   // FIXME : move as duplicated with covisit
   const toVisitAction = (uvi, url, timestamp) => ({
-    uvi,
-    url,
     timestamp,
     type: util.actionTypes.visitType,
+    url,
+    uvi,
   });
   const url = (i) => `url${i}`;
 

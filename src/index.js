@@ -1,11 +1,12 @@
-import { logger } from "./logger";
+import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import * as fs from "fs";
+
 import { defaultAnalysis } from "./analysis/default";
+import { ELASTICSEARCH_URL, esClient, LOG_INDEX, REPORT_INDEX } from "./esConf";
+import { checkIndex, ingest } from "./ingestion/ingester";
+import { logger } from "./logger";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
-import { ingest, checkIndex } from "./ingestion/ingester";
-import { REPORT_INDEX, ELASTICSEARCH_URL, esClient, LOG_INDEX } from "./esConf";
-import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 
 // running analysis including 30 days before today
 const refDate = new Date();

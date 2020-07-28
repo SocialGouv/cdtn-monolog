@@ -1,13 +1,14 @@
 // unitish test for covisit
-import * as Covisit from "../covisit";
-import * as util from "../../util";
 import { DataFrame } from "data-forge";
+
+import * as util from "../../util";
+import * as Covisit from "../covisit";
 
 describe("Covisit", () => {
   const toVisitAction = (uvi, url) => ({
-    uvi,
-    url,
     type: util.actionTypes.visitType,
+    url,
+    uvi,
   });
 
   const url = (i) => `url${i}`;

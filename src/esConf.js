@@ -6,8 +6,8 @@ const API_KEY = process.env.API_KEY || null;
 
 const auth = API_KEY ? { apiKey: API_KEY } : null;
 const esClientConfig = {
-  node: `${ELASTICSEARCH_URL}`,
   auth,
+  node: `${ELASTICSEARCH_URL}`,
 };
 
 const LOG_INDEX = process.env.LOG_INDEX || "logs";

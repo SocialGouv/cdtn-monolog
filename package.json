@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
-    "lint": "eslint . --ext .js",
+    "lint": "eslint src/ --ext .js",
     "test": "jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r esm src/index.js",
@@ -50,7 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --ext .js"
+      "pre-commit": "eslint src/ --ext .js"
     }
   },
   "release": {

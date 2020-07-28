@@ -1,6 +1,7 @@
-import { logger } from "../logger";
 import * as fs from "fs";
+
 import * as elastic from "../elastic";
+import { logger } from "../logger";
 import { mapAction, mappings } from "./mappings";
 
 // takes a file, return the content properly formatted

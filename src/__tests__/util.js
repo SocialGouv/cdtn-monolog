@@ -1,4 +1,5 @@
 import * as path from "path";
+
 import * as Reader from "../reader";
 
 export const logfile = path.join(__dirname, "__fixtures__/logs.csv");

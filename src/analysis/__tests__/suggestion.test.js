@@ -1,12 +1,13 @@
-import * as Suggestion from "../suggestion";
-import * as util from "../../util";
 import { DataFrame } from "data-forge";
+
+import * as util from "../../util";
+import * as Suggestion from "../suggestion";
 
 describe("Suggestion", () => {
   const toSuggestionSelectionAction = (uvi, suggestionSelection) => ({
-    uvi,
     suggestionSelection,
     type: util.actionTypes.selectSuggestionType,
+    uvi,
   });
 
   const generate = (a) =>

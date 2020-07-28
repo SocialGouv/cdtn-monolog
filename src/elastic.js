@@ -7,11 +7,11 @@ const testAndCreateIndex = async (esClient, index, mappings) => {
   if (!body) {
     try {
       await esClient.indices.create({
-        index,
         body: {
-          settings: {},
           mappings: mappings,
+          settings: {},
         },
+        index,
       });
       logger.debug(`Index ${index} created.`);
     } catch (error) {
@@ -21,8 +21,8 @@ const testAndCreateIndex = async (esClient, index, mappings) => {
     logger.debug(`Index ${index} found.`);
     try {
       await esClient.indices.putMapping({
-        index,
         body: mappings,
+        index,
       });
       logger.debug(`Mapping updated for ${index}.`);
     } catch (error) {
@@ -47,8 +47,8 @@ const insertDocuments = async (esClient, index, documents) => {
       return [header, doc];
     });
     const resp = await esClient.bulk({
-      index,
       body,
+      index,
     });
 
     if (resp.body.errors) {
@@ -82,9 +82,9 @@ const BATCH_SIZE = 500;
 
 const getDocuments = async (esClient, index, query) => {
   const initResponse = await esClient.search({
+    body: { query },
     index,
     scroll: SCROLL_TIMEOUT,
-    body: { query },
     size: BATCH_SIZE,
   });
 
@@ -110,8 +110,8 @@ const getDocuments = async (esClient, index, query) => {
   while (docs.length < total) {
     // scroll
     const response = await esClient.scroll({
-      scrollId,
       scroll: SCROLL_TIMEOUT,
+      scrollId,
     });
     if (docs.length % 50000 == 0) {
       logger.debug(docs.length);

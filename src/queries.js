@@ -1,16 +1,9 @@
-import * as es from "./elastic";
-import * as Suggestion from "./analysis/suggestion";
 import * as Covisit from "./analysis/covisit";
+import * as Suggestion from "./analysis/suggestion";
+import * as es from "./elastic";
 
 const Queries = (esClient, index) => {
   return {
-    getSuggestions: async () => {
-      const suggestionsQuery = {
-        term: { reportType: Suggestion.reportType },
-      };
-      return es.getDocuments(esClient, index, suggestionsQuery);
-    },
-
     getCovisitLinks: async (content) => {
       const covisitQuery = {
         bool: {
@@ -37,6 +30,13 @@ const Queries = (esClient, index) => {
       } else {
         throw new Error(`Covisit query failed for content : ${content}`);
       }
+    },
+
+    getSuggestions: async () => {
+      const suggestionsQuery = {
+        term: { reportType: Suggestion.reportType },
+      };
+      return es.getDocuments(esClient, index, suggestionsQuery);
     },
   };
 };
