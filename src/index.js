@@ -41,6 +41,7 @@ const INGEST = "ingest";
 
 // const command = process.argv[process.argv.length - 1];
 const command = process.env.MONOLOG_ACTION;
+
 const main = async () => {
   try {
     if (command == INGEST) {
