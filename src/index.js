@@ -41,7 +41,6 @@ const INGEST = "ingest";
 
 // const command = process.argv[process.argv.length - 1];
 const command = process.env.MONOLOG_ACTION;
-
 const main = async () => {
   try {
     if (command == INGEST) {
@@ -61,6 +60,7 @@ const main = async () => {
     if (err.name != undefined && err.name == ConnectionError.name) {
       logger.error("Cannot access Elastic on URL : " + ELASTICSEARCH_URL);
     } else {
+      console.log(err);
       logger.error(JSON.stringify(err, null, 2));
     }
     process.exit(1);
