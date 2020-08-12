@@ -3,42 +3,48 @@ import * as es from "./elastic";
 
 const mappings = {
   properties: {
+    // covisit
+    content: {
+      type: "keyword",
+    },
+
+    count: {
+      type: "integer",
+    },
+
+    end: {
+      type: "date",
+    },
+
+    links: {
+      type: "object",
+    },
+
+    pivot: {
+      type: "date",
+    },
+
     // default
     reportType: {
       type: "keyword",
     },
 
-    // covisit
-    content: {
-      type: "keyword",
-    },
-    links: {
+    results: {
       type: "object",
-    },
-
-    // suggestions
-    suggestion: {
-      type: "keyword",
-    },
-    weight: {
-      type: "integer",
-    },
-    count: {
-      type: "integer",
     },
 
     // popularity
     start: {
       type: "date",
     },
-    end: {
-      type: "date",
+
+    // suggestions
+    suggestion: {
+      type: "keyword",
     },
-    pivot: {
-      type: "date",
-    },
-    results: {
-      type: "object",
+
+    weight: {
+      type: "integer",
     },
   },
 };

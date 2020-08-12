@@ -1,10 +1,9 @@
 // test reports are saved properly
-import { wait, readLogfile } from "./util";
 import * as Covisit from "../analysis/covisit";
-import * as ReportStore from "../reportStore";
 import * as es from "../elastic";
-
 import { esClient } from "../esConf";
+import * as ReportStore from "../reportStore";
+import { readLogfile, wait } from "./util";
 
 const getAnalysis = async () => readLogfile().then((d) => Covisit.analyse(d));
 
@@ -38,5 +37,5 @@ describe("Report ", () => {
 
 afterAll(
   async () =>
-    await esClient.deleteByQuery({ index, body: { query: { match_all: {} } } })
+    await esClient.deleteByQuery({ body: { query: { match_all: {} } }, index })
 );

@@ -36,7 +36,7 @@ const analyse = (dataset, minOcc = MIN_OCC, linkLimit = LINK_LIMIT) => {
       covisits.forEach(([a, b]) => {
         const key = toKey(a, b);
         if (!graph.has(key)) {
-          graph.set(key, { nodes: [a, b], count: 1 });
+          graph.set(key, { count: 1, nodes: [a, b] });
         } else {
           graph.get(key).count++;
         }
@@ -78,8 +78,8 @@ const analyse = (dataset, minOcc = MIN_OCC, linkLimit = LINK_LIMIT) => {
       .slice(0, linkLimit)
       .map(([link, count]) => {
         return {
-          link: util.urlToPath(link),
           count,
+          link: util.urlToPath(link),
         };
       });
     docs.push({ content, links, reportType });

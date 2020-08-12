@@ -1,6 +1,7 @@
 import * as dataForge from "data-forge";
-import * as util from "../util";
+
 import * as datasetUtil from "../dataset";
+import * as util from "../util";
 
 const reportType = "popularity";
 
@@ -57,8 +58,8 @@ const analyse = (dataset, proportion, reportId) => {
       .groupBy((value) => value)
       .select((group) => {
         return {
-          url: group.first(),
           count: group.count(),
+          url: group.first(),
         };
       })
       .inflate()
@@ -82,11 +83,11 @@ const analyse = (dataset, proportion, reportId) => {
     (right) => right.url,
     (left, right) => {
       return {
-        url: left.url,
-        ref_norm_count: left.normalized_count,
+        focus_count: right.count,
         focus_norm_count: right.normalized_count,
         ref_count: left.count,
-        focus_count: right.count,
+        ref_norm_count: left.normalized_count,
+        url: left.url,
       };
     }
   );
@@ -105,11 +106,11 @@ const analyse = (dataset, proportion, reportId) => {
 
   return diff.toArray().map((doc) => ({
     doc,
-    start: start,
     end: end,
     pivot: refDate,
-    reportType,
     reportId,
+    reportType,
+    start: start,
   }));
 };
 

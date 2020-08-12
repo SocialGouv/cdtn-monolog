@@ -1,7 +1,7 @@
-import * as Reader from "../reader";
 import { esClient } from "../esConf";
-import { LOGS_TEST_INDEX, logfile, dumpfile, wait } from "./util";
 import { ingest } from "../ingestion/ingester";
+import * as Reader from "../reader";
+import { dumpfile, logfile, LOGS_TEST_INDEX, wait } from "./util";
 
 test("read data from file", async () => {
   const data = await Reader.readFromFile(logfile);
@@ -27,8 +27,8 @@ test("read data from Elastic", async () => {
 
 afterAll(async () => {
   await esClient.deleteByQuery({
-    index: LOGS_TEST_INDEX,
     body: { query: { match_all: {} } },
+    index: LOGS_TEST_INDEX,
   });
   await wait(2000);
 });

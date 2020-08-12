@@ -27,53 +27,48 @@ const mapAction = (
     type,
     url,
     visited,
+    recoType,
+    recoSelection,
   },
   logfile
 ) => {
   // unique visit id
   const uvi = hash(`${idVisit}-${lastActionDateTime}`);
   const obj = {
-    type,
-    uvi,
-    idVisit,
     feedbackType,
+    idVisit,
     lastActionDateTime,
     lastActionTimestamp,
-    outilEvent,
-    outilAction,
+    logfile,
     outil,
-    suggestionPrefix,
+    outilAction,
+    outilEvent,
     query,
+    recoSelection,
+    recoType,
     referrerName,
     referrerTypeName,
     resultSelection,
     serverTimePretty,
+    suggestionPrefix,
     suggestionSelection,
     timeSpent,
     timestamp,
+    type,
     url,
+    uvi,
     visited,
-    logfile,
   };
   return obj;
 };
 
 const mappings = {
   properties: {
-    logfile: {
+    cc: {
       type: "keyword",
     },
 
-    type: {
-      type: "keyword",
-    },
-
-    // unique visit id
-    uvi: {
-      type: "keyword",
-    },
-
-    idVisit: {
+    ccAction: {
       type: "keyword",
     },
 
@@ -81,15 +76,7 @@ const mappings = {
       type: "keyword",
     },
 
-    outilEvent: {
-      type: "keyword",
-    },
-
-    outilAction: {
-      type: "keyword",
-    },
-
-    outil: {
+    idVisit: {
       type: "keyword",
     },
 
@@ -101,7 +88,31 @@ const mappings = {
       type: "date",
     },
 
+    logfile: {
+      type: "keyword",
+    },
+
+    outil: {
+      type: "keyword",
+    },
+
+    outilAction: {
+      type: "keyword",
+    },
+
+    outilEvent: {
+      type: "keyword",
+    },
+
     query: {
+      type: "keyword",
+    },
+
+    recoSelection: {
+      type: "keyword",
+    },
+
+    recoType: {
       type: "keyword",
     },
 
@@ -117,7 +128,8 @@ const mappings = {
       type: "object",
     },
 
-    suggestionSelection: {
+    // todo we might be able to use date type ?
+    serverTimePretty: {
       type: "keyword",
     },
 
@@ -125,8 +137,7 @@ const mappings = {
       type: "keyword",
     },
 
-    // todo we might be able to use date type ?
-    serverTimePretty: {
+    suggestionSelection: {
       type: "keyword",
     },
 
@@ -138,19 +149,20 @@ const mappings = {
       type: "date",
     },
 
+    type: {
+      type: "keyword",
+    },
+
     url: {
       type: "keyword",
     },
 
+    // unique visit id
+    uvi: {
+      type: "keyword",
+    },
+
     visited: {
-      type: "keyword",
-    },
-
-    cc: {
-      type: "keyword",
-    },
-
-    ccAction: {
       type: "keyword",
     },
   },

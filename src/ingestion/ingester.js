@@ -1,6 +1,7 @@
-import { logger } from "../logger";
 import * as fs from "fs";
+
 import * as elastic from "../elastic";
+import { logger } from "../logger";
 import { mapAction, mappings } from "./mappings";
 
 // takes a file, return the content properly formatted
@@ -79,6 +80,19 @@ const parseAction = (action, visit) => {
       case "selectResult": {
         parsedAction["type"] = "select_result";
         parsedAction["resultSelection"] = JSON.parse(action.eventAction);
+        break;
+      }
+      case "selectRelated": {
+        parsedAction["type"] = "select_related";
+        // for now we have to deal with several formats
+        try {
+          const actionParsed = JSON.parse(action.eventAction);
+          parsedAction["recoSelection"] = actionParsed.selection;
+          parsedAction["recoType"] = actionParsed.reco;
+        } catch (err) {
+          parsedAction["recoSelection"] = action.eventAction;
+          parsedAction["recoType"] = "search";
+        }
         break;
       }
       case "themeResults": {

@@ -1,5 +1,6 @@
-import * as Metrics from "../metrics";
 import * as dataForge from "data-forge";
+
+import * as Metrics from "../metrics";
 
 // test minimal utils
 
@@ -76,60 +77,60 @@ describe("Basic arithmetic", () => {
   it("should count nb of elements of each value  in array", () => {
     const arr = Array(true, false, true, "whatever");
     const values = Metrics.valueCounts(arr);
-    expect(values).toStrictEqual({ true: 2, false: 1, whatever: 1 });
+    expect(values).toStrictEqual({ false: 1, true: 2, whatever: 1 });
   });
 });
 
 describe("Business logic", () => {
   it("it should aggregates user sessions", () => {
     const session = new dataForge.DataFrame([
-      { type: "visit_content", referrerTypeName: null },
-      { type: "visit_content", referrerTypeName: null },
-      { type: "visit_content", referrerTypeName: null },
+      { referrerTypeName: null, type: "visit_content" },
+      { referrerTypeName: null, type: "visit_content" },
+      { referrerTypeName: null, type: "visit_content" },
     ]);
     const sessionsCounts = Metrics.typeCounts(session);
     expect(sessionsCounts.toArray()).toStrictEqual([
-      { type: "visit_content", count: 3, referrerTypeName: null },
+      { count: 3, referrerTypeName: null, type: "visit_content" },
     ]);
   });
   it("it should aggregates user having different content types", () => {
     const session = new dataForge.DataFrame([
-      { type: "visit_content", referrerTypeName: null },
-      { type: "visit_content", referrerTypeName: null },
-      { type: "selectRelated", referrerTypeName: null },
-      { type: "selectRelated", referrerTypeName: null },
-      { type: "selectRelated", referrerTypeName: null },
+      { referrerTypeName: null, type: "visit_content" },
+      { referrerTypeName: null, type: "visit_content" },
+      { referrerTypeName: null, type: "selectRelated" },
+      { referrerTypeName: null, type: "selectRelated" },
+      { referrerTypeName: null, type: "selectRelated" },
     ]);
     const sessionsCounts = Metrics.typeCounts(session);
     expect(sessionsCounts.toArray()).toStrictEqual([
-      { type: "visit_content", count: 2, referrerTypeName: null },
-      { type: "selectRelated", count: 3, referrerTypeName: null },
+      { count: 2, referrerTypeName: null, type: "visit_content" },
+      { count: 3, referrerTypeName: null, type: "selectRelated" },
     ]);
   });
   it("it should detect exploratory visits", () => {
     const sessionCount = {
-      type: "visit_content",
       count: 5,
       referrerTypeName: null,
+      type: "visit_content",
     };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
   it("it should detect exploratory visits search", () => {
-    const sessionCount = { type: "search", count: 1, referrerTypeName: null };
+    const sessionCount = { count: 1, referrerTypeName: null, type: "search" };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
   it("it should detect exploratory visits themes", () => {
-    const sessionCount = { type: "themes", count: 1, referrerTypeName: null };
+    const sessionCount = { count: 1, referrerTypeName: null, type: "themes" };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
   it("it should detect exploratory visits selectResult", () => {
     const sessionCount = {
-      type: "selectRelated",
       count: 1,
       referrerTypeName: null,
+      type: "selectRelated",
     };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
@@ -141,67 +142,68 @@ describe("Business logic", () => {
   });
   it("it should not detect visits with noise", () => {
     const sessionCount = {
-      type: "whatever",
       count: 100,
       referrerTypeName: null,
+      type: "whatever",
     };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(false);
   });
   it("it should detect redirected user", () => {
     const sessionCount = {
-      type: "selectRelated",
       count: 1,
       referrerTypeName: "Search Engines",
+      type: "selectRelated",
     };
     const isRedirect = Metrics.isRedirected(sessionCount);
     expect(isRedirect).toBe(true);
   });
   it("it shouldnot has selected related", () => {
     const sessionCount = {
-      type: "selectRelated",
       count: 1,
       referrerTypeName: "Direct Entry",
+      type: "selectRelated",
     };
     const isRedirect = Metrics.hasSelectedRelated(sessionCount);
     expect(isRedirect).toBe(true);
   });
   it("it should count selectRelated", () => {
     const sessionCount = {
-      type: "selectRelated",
       count: 8,
       referrerTypeName: "Direct Entry",
+      type: "selectRelated",
     };
     const countrelated = Metrics.countSelectRelated(sessionCount);
     expect(countrelated).toBe(8);
   });
   it("it should get stats of selectRelated", () => {
     const sessionCountArray = [
-      { type: "selectRelated", count: 8, referrerTypeName: "Search Engines" },
-      { type: "visit_content", count: 3, referrerTypeName: "whatsoever" },
-      { type: "whoever", count: 1, referrerTypeName: "whatsoever" },
+      { count: 8, referrerTypeName: "Search Engines", type: "selectRelated" },
+      { count: 3, referrerTypeName: "whatsoever", type: "visit_content" },
+      { count: 1, referrerTypeName: "whatsoever", type: "whoever" },
     ];
     const countrelated = Metrics.getSelectRelated(sessionCountArray);
 
     expect(countrelated).toStrictEqual({
-      visitorSelectedRelated: true,
       selectRelatedCount: 8,
+      visitorSelectedRelated: true,
       visitorWasRedirected: true,
     });
   });
   it("it should get user session Type", () => {
     const sessionCountArray = [
-      { type: "selectRelated", count: 8, referrerTypeName: "Search Engines" },
-      { type: "visit_content", count: 3, referrerTypeName: "whatsoever" },
-      { type: "whoever", count: 1, referrerTypeName: "whatsoever" },
+      { count: 8, referrerTypeName: "Search Engines", type: "selectRelated" },
+      { count: 3, referrerTypeName: "whatsoever", type: "visit_content" },
+      { count: 1, referrerTypeName: "whatsoever", type: "whoever" },
     ];
     const countrelated = Metrics.getUserType(sessionCountArray);
     expect(countrelated).toBe(true);
+    console.log(countrelated);
   });
-  it("should perform analysis", () => {
+  it("it should get user session Type 2", () => {
     const sessionCountArray = [
-      { type: "visit_content", count: 2, referrerTypeName: "whatsoever" },
-      { type: "whoever", count: 1, referrerTypeName: "whatsoever" },
+      { count: 2, referrerTypeName: "whatsoever", type: "visit_content" },
+      { count: 1, referrerTypeName: "whatsoever", type: "whoever" },
     ];
     const countrelated = Metrics.getUserType(sessionCountArray);
     expect(countrelated).toBe(false);

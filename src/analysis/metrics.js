@@ -32,9 +32,9 @@ const typeCounts = (visit) => {
     .groupBy((row) => row.type)
     .select((group) => {
       return {
-        type: group.first().type,
         count: group.count(),
         referrerTypeName: group.first().referrerTypeName,
+        type: group.first().type,
       };
     });
 };
@@ -75,10 +75,10 @@ const getSelectRelated = (relatedCount) => {
   // SelectRelatedCount: the nb of times the user selected related contents
 
   return {
-    visitorSelectedRelated: relatedCount.some(hasSelectedRelated),
     selectRelatedCount: relatedCount
       .map((x) => countSelectRelated(x))
       .reduce(add),
+    visitorSelectedRelated: relatedCount.some(hasSelectedRelated),
     visitorWasRedirected: relatedCount.some(isRedirected),
   };
 };
@@ -96,13 +96,11 @@ const clean = (visits) => {
     })
   );
   // deduplicates urls within user session (reloads)
-  console.log(cleanSeriesOfVisits[0].toArray())
   const uniqueSeriesOfVisits = cleanSeriesOfVisits.map((x) =>
     x.distinct((x) => {
       x.url, x.type;
     })
   );
-  console.log(uniqueSeriesOfVisits[0].toArray())
   return uniqueSeriesOfVisits.map((visit) => typeCounts(visit).toArray());
 };
 const analyse = (dataset, reportId) => {
@@ -135,14 +133,15 @@ const analyse = (dataset, reportId) => {
   const visitsTypesCount = valueCounts(isLongVisitArray);
 
   const metricsAnalysis = {
-    nbVisitsAnalyzed: nbVisitsAnalyzed,
-    longVisitsRatio: LongVisitRatio,
+    SelectRelatedCount: SelectRelatedCount.reduce(add),
     longVisitsNb: visitsTypesCount[false],
+    longVisitsRatio: LongVisitRatio,
+    nbVisitsAnalyzed: nbVisitsAnalyzed,
+    reportId: reportId,
+    reportType,
     shortVisitsNb: visitsTypesCount[true],
     visitorSelectedRelatedRatio: avg(visitorSelectedRelated),
-    SelectRelatedCount: SelectRelatedCount.reduce(add),
     visitorWasRedirected: visitorWasRedirected.reduce(add),
-    reportId: reportId,
   };
   return Array(metricsAnalysis);
 };

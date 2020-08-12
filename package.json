@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
-    "lint": "eslint . --ext .js",
+    "lint": "eslint src/ --ext .js",
     "test": "jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r esm src/index.js",
@@ -34,7 +34,7 @@
     "@socialgouv/eslint-config-recommended": "^0.35.0",
     "@zeit/ncc": "^0.22.3",
     "babel-jest": "^26.1.0",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "jest": "^26.1.0",
     "prettier": "^2.0.5",
     "husky": "^4.2.5"
@@ -50,7 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint . --ext .js"
+      "pre-commit": "eslint src/ --ext .js"
     }
   },
   "release": {
