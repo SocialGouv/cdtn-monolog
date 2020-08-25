@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.9.0",
-    "data-forge": "^1.8.9",
+    "data-forge": "^1.8.10",
     "data-forge-fs": "^0.0.8",
     "esm": "^3.2.25",
     "winston": "^3.3.3"
