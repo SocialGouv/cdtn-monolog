@@ -1831,17 +1831,17 @@ data-forge-fs@^0.0.8:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.9:
-  version "1.8.9"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.9.tgz#123994c11df38bbfe06731ea75a96c9a941d1a56"
-  integrity sha512-nQgW60mfSabcHOMUmboUQva9x6fkkYhzolYXpbdxQo1X+yLQMxBFhLMEnp7Rs1JRdSlI4tOUi1XULe65CObkeA==
+data-forge@^1.8.10:
+  version "1.8.10"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.10.tgz#cce2619219f98af6e5f6dcb5a16d9a1ffc2e4fbe"
+  integrity sha512-n2qYrhst7LqjOujg42iZizSU5OUHMhn+IW95eg+i/lDi52Q1pbh+Fzv+0vCZv/Is6p5lC45yp2KX7w5iLAiC2w==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
     easy-table "1.1.0"
     json5 "^2.1.0"
     numeral "^2.0.6"
-    papaparse "4.4.0"
+    papaparse "5.2.0"
     typy "^3.0.1"
 
 data-urls@^2.0.0:
@@ -4011,10 +4011,10 @@ p-try@^2.0.0:
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
 
-papaparse@4.4.0:
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-4.4.0.tgz#6bcdbda80873e00cfb0bdcd7a4571c72a9a40168"
-  integrity sha1-a829qAhz4Az7C9zXpFcccqmkAWg=
+papaparse@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.2.0.tgz#97976a1b135c46612773029153dc64995caa3b7b"
+  integrity sha512-ylq1wgUSnagU+MKQtNeVqrPhZuMYBvOSL00DHycFTCxownF95gpLAk1HiHdUW77N8yxRq1qHXLdlIPyBSG9NSA==
 
 parent-module@^1.0.0:
   version "1.0.1"
