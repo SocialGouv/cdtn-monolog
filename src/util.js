@@ -13,6 +13,7 @@ export const actionTypes = {
   search: "search",
   // FIXME: 28/07 should be changed to select_related in the near future
   selectRelated: "selectRelated",
+  select_related: "select_related",
   selectSuggestionType: "select_suggestion",
   themes: "themes",
   visitType: "visit_content",
