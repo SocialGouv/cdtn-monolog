@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.9.0",
+    "@socialgouv/cdtn-sources": "^4.30.1-alpha.0",
     "data-forge": "^1.8.10",
     "data-forge-fs": "^0.0.8",
     "esm": "^3.2.25",

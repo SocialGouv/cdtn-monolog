@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import { getRouteBySource } from "@socialgouv/cdtn-sources";
+import { count } from "console";
 import * as dataForge from "data-forge";
 import * as fs from "fs";
 import fetch from "node-fetch";
@@ -10,18 +13,32 @@ import { esClient } from "../esConf";
 import * as Reader from "../reader";
 
 // const logFile = "/Users/remim/tmp/logs-30.csv";
-const logFile = "/Users/remim/tmp/3months/logs-may.csv";
+const logFile = "/Users/remim/tmp/3months/logs-august.csv";
 
 // const dumpFile = "/Users/remim/tmp/ingest-test/2020-04-23.json";
 
-// eslint-disable-next-line no-unused-vars
 const main = async () => {
-  const data = await Reader.readFromElastic(
-    esClient,
-    31,
-    new Date("2020-06-01")
-  );
+  let data = await Reader.readFromElastic(esClient, 31, new Date("2020-09-01"));
   console.log(data.count());
+
+  // we unfold the result selection object in two columns
+  const resultSelection = data
+    .where((a) => a.type == selectResultType)
+    .getSeries("resultSelection");
+
+  data = data.withSeries({
+    resultSelectionAlgo: (df) =>
+      df.select((row) =>
+        row.resultSelection ? row.resultSelection.algo : undefined
+      ),
+    resultSelectionUrl: (df) =>
+      df.select((row) =>
+        row.resultSelection ? row.resultSelection.url : undefined
+      ),
+  });
+
+  // console.log(data.getSeries("resultSelectionAlgo").toString());
+
   data.asCSV().writeFileSync(logFile);
 
   // const data = await Reader.readFromFile(logFile);
@@ -51,7 +68,6 @@ const main = async () => {
 const read = (m) =>
   Reader.readFromFile(`/Users/remim/tmp/3months/logs-${m}.csv`);
 
-// eslint-disable-next-line no-unused-vars
 const covisiteAnalysis = async () => {
   const m = "may";
   console.log(m);
@@ -141,7 +157,6 @@ const covisitsRatios = async (data, n) => {
   );
 };
 
-// eslint-disable-next-line no-unused-vars
 const analyseAugust = async () => {
   const data = await read("august");
 
@@ -178,8 +193,10 @@ const knownSearches = new Map();
 
 const searchType = "search";
 const visitType = "visit_content";
+const selectResultType = "select_result";
 
-const host = "https://api-master-code-travail.dev.fabrique.social.gouv.fr";
+// const host = "https://api-master-code-travail.dev.fabrique.social.gouv.fr";
+const host = "http://localhost:1337";
 const path = "/api/v1/search";
 
 const triggerSearch = (query) => {
@@ -193,9 +210,10 @@ const triggerSearch = (query) => {
   // return { docs, query };
 };
 
-// eslint-disable-next-line no-unused-vars
 const treatSearchVisit = async (visit) => {
-  const actions = visit.where((a) => [searchType, visitType].includes(a.type));
+  const actions = visit.where((a) =>
+    [searchType /*, selectResultType*/].includes(a.type)
+  );
 
   // if search is not known already,
   // we trigger a call to our seach engine in order
@@ -254,7 +272,8 @@ const buildCache = async (data) => {
       .getSeries("query")
       .toArray()
       .filter((a) => a)
-    // .slice(0, 10)
+      .map((q) => q.toLowerCase())
+    // .slice(0, 100)
   );
 
   const pSearches = Array.from(searches).map((query) =>
@@ -279,38 +298,194 @@ const buildCache = async (data) => {
 const readCache = (file) => {
   const cacheB64 = JSON.parse(fs.readFileSync(file));
 
-  return cacheB64.map(({ query, documents }) => ({
+  const cacheObj = cacheB64.map(({ query, documents }) => ({
     documents: JSON.parse(new Buffer(documents, "base64")),
     query,
   }));
+
+  const groups = new Map();
+
+  cacheB64.forEach(({ query, documents }) => {
+    if (!groups.has(documents)) {
+      groups.set(documents, [query]);
+    } else {
+      groups.get(documents).push(query);
+    }
+  });
+
+  const queryGroups = [...groups.values()];
+
+  const resultCache = new Map();
+  cacheObj.forEach(({ query, documents }) => resultCache.set(query, documents));
+
+  return { queryGroups, resultCache };
+};
+
+const printQueryGroup = (queryGroup) => {
+  console.log(
+    JSON.stringify(
+      {
+        dcg: queryGroup.dcg,
+        idcg: queryGroup.idcg,
+        ndcg: queryGroup.ndcg,
+        queries: Array.from(queryGroup.queries),
+        queriesCount: queryGroup.queriesCount,
+        results: Array.from(queryGroup.results),
+        selectionsCount: queryGroup.selectionsCount,
+      },
+      null,
+      2
+    )
+  );
+};
+
+const computeNDCG = (results) => {
+  const dcg = [...results.values()].reduce(
+    (acc, count, index) => acc + count / Math.log2(index + 1 + 1),
+    0
+  );
+
+  const idcg = [...results.values()]
+    .sort((a, b) => b - a)
+    .reduce((acc, count, i) => acc + count / Math.log2(i + 1 + 1), 0);
+
+  const ndcg = dcg / idcg;
+
+  return { dcg, idcg, ndcg };
 };
 
 const evaluate = async () => {
   // todo : use june to september
   const data = await read("august");
 
-  const cache = await buildCache(data);
-
   const f = "cache-master.json";
 
-  fs.writeFileSync(f, JSON.stringify(cache, null, 2));
-
-  const cacheR = readCache(f);
-
-  console.log(cacheR[0]);
-
   /*
+  const cache = await buildCache(data);
+
+  fs.writeFileSync(f, JSON.stringify(cache, null, 2));
+  */
+
+  const { queryGroups, resultCache } = readCache(f);
+
+  // console.log(Array.from(resultCache)[0]);
+
+  // -- Create map of [query group] / number of searches / results with clicks
+
   const visits = datasetUtil.getVisits(data);
+
+  // we init the utility structures
+
+  // a map to get the query group id from a raw query
+  // console.log(queryGroups);
+  const queryMap = new Map(
+    queryGroups.flatMap((queryGroup, i) =>
+      queryGroup.map((query) => [query, i])
+    )
+  );
+
+  // console.log([...queryMap]);
+  // console.log(resultCache.get("automobile"));
+
+  console.log(queryMap.get("mannequins"));
+
+  // a map that store each query group with : queries and occurences / results and clicks
+  const counts = new Map(
+    queryGroups.map((queryGroup, i) => [
+      i,
+      {
+        queries: new Map(queryGroup.map((q) => [q, 0])),
+        results: new Map(
+          resultCache
+            .get(queryGroup[0])
+            .map((r) => ["/" + getRouteBySource(r.source) + "/" + r.slug, 0])
+        ),
+      },
+    ])
+  );
+
+  // console.log(counts.get(1));
+  // console.log(JSON.stringify([...counts.get(1).queries], null, 2));
+
+  const basePath = "https://code.travail.gouv.fr/";
 
   await visits
     .toArray()
-    // at least on search
-    .filter((v) => v.where((a) => a.type == "search").count() > 0)
-    .slice(0, 10)
-    .forEach(async (v) => await treatSearchVisit(v));
+    // at least one search
+    .filter((v) => v.where((a) => a.type == searchType).count() > 0)
+    // .slice(0, 10)
+    // to build the cache
+    // .forEach(async (v) => await treatSearchVisit(v));
+    // to count and evaluate
+    .forEach((v) => {
+      const actions = v.where((a) =>
+        [searchType, selectResultType].includes(a.type)
+      );
 
-  console.log(JSON.stringify(knownSearches, null, 2));
-  */
+      // remove duplicates
+      const searches = Array.from(
+        new Set(
+          actions
+            .getSeries("query")
+            .toArray()
+            .filter((q) => q)
+            .map((q) => q.toLowerCase())
+        )
+      );
+
+      // we increment query count and retrieve results lists
+      const results = searches.map((q) => {
+        const group = queryMap.get(q);
+        const count = counts.get(group);
+
+        if (!count) {
+          console.log("Cannot find results for query : " + q);
+          console.log(group);
+          return new Map();
+        }
+
+        count.queries.set(q, count.queries.get(q) + 1);
+
+        return count.results;
+      });
+
+      const urlSelected = new Set(
+        actions
+          .where((a) => a.type == selectResultType)
+          .getSeries("resultSelectionUrl")
+          .toArray()
+          .filter((q) => q)
+      );
+
+      urlSelected.forEach((url) => {
+        for (const r of results) {
+          if (r.has(url)) {
+            r.set(url, r.get(url) + 1);
+          }
+        }
+
+        if (url == "/information/elections-du-cse-nouveautes-covid-19") {
+          console.log("selection not in results : " + url);
+          console.log(results.map((r) => r.keys()));
+          console.log(url);
+        }
+      });
+    });
+
+  // count queries and results
+  [...counts.values()].forEach((obj) => {
+    obj.queriesCount = [...obj.queries.values()].reduce((i, acc) => i + acc, 0);
+    obj.selectionsCount = [...obj.results.values()].reduce(
+      (i, acc) => i + acc,
+      0
+    );
+    Object.assign(obj, computeNDCG(obj.results));
+  });
+
+  printQueryGroup(counts.get(1));
+  printQueryGroup(counts.get(10));
+  printQueryGroup(counts.get(20));
+  printQueryGroup(counts.get(30));
 };
 
 // main()
