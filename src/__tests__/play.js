@@ -387,7 +387,7 @@ const evaluate = async () => {
   // console.log([...queryMap]);
   // console.log(resultCache.get("automobile"));
 
-  console.log(queryMap.get("mannequins"));
+  // console.log(queryMap.get("mannequins"));
 
   // a map that store each query group with : queries and occurences / results and clicks
   const counts = new Map(
@@ -398,14 +398,17 @@ const evaluate = async () => {
         results: new Map(
           resultCache
             .get(queryGroup[0])
-            .map((r) => ["/" + getRouteBySource(r.source) + "/" + r.slug, 0])
+            .map(({ algo, source, slug }) => [
+              "/" + getRouteBySource(source) + "/" + slug,
+              { algo, count: 0 },
+            ])
         ),
       },
     ])
   );
 
   // console.log(counts.get(1));
-  // console.log(JSON.stringify([...counts.get(1).queries], null, 2));
+  // console.log(JSON.stringify([...counts.get(1).results], null, 2));
 
   const basePath = "https://code.travail.gouv.fr/";
 
@@ -460,23 +463,24 @@ const evaluate = async () => {
       urlSelected.forEach((url) => {
         for (const r of results) {
           if (r.has(url)) {
-            r.set(url, r.get(url) + 1);
+            const obj = r.get(url);
+            r.set(url, { algo: obj.algo, count: obj.count + 1 });
           }
         }
 
         if (url == "/information/elections-du-cse-nouveautes-covid-19") {
           console.log("selection not in results : " + url);
-          console.log(results.map((r) => r.keys()));
-          console.log(url);
+          // console.log(results.map((r) => r.keys()));
+          // console.log(url);
         }
       });
     });
 
   // count queries and results
   [...counts.values()].forEach((obj) => {
-    obj.queriesCount = [...obj.queries.values()].reduce((i, acc) => i + acc, 0);
+    obj.queriesCount = [...obj.queries.values()].reduce((acc, i) => i + acc, 0);
     obj.selectionsCount = [...obj.results.values()].reduce(
-      (i, acc) => i + acc,
+      (acc, i) => i.count + acc,
       0
     );
     Object.assign(obj, computeNDCG(obj.results));
