@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
-import { count } from "console";
 import * as dataForge from "data-forge";
 import * as fs from "fs";
 import fetch from "node-fetch";
 import PQueue from "p-queue";
+import { exit } from "process";
+import * as readline from "readline";
 
 // import { ingest } from "../ingestion/ingester";
 import * as datasetUtil from "../dataset";
@@ -13,13 +14,19 @@ import { esClient } from "../esConf";
 import * as Reader from "../reader";
 
 // const logFile = "/Users/remim/tmp/logs-30.csv";
-const logFile = "/Users/remim/tmp/3months/logs-august.csv";
+const logFile = "/Users/remim/tmp/3months/logs-3months.csv";
 
 // const dumpFile = "/Users/remim/tmp/ingest-test/2020-04-23.json";
 
 const main = async () => {
-  let data = await Reader.readFromElastic(esClient, 31, new Date("2020-09-01"));
-  console.log(data.count());
+  console.log(new Date());
+
+  let data = await Reader.readFromElastic(
+    esClient,
+    103,
+    new Date("2020-09-12")
+  );
+  // console.log(data.count());
 
   // we unfold the result selection object in two columns
   const resultSelection = data
@@ -295,8 +302,17 @@ const buildCache = async (data) => {
   return results;
 };
 
-const readCache = (file) => {
-  const cacheB64 = JSON.parse(fs.readFileSync(file));
+const readCache = async (file) => {
+  const readInterface = readline.createInterface({
+    crlfDelay: Infinity,
+    input: fs.createReadStream(file),
+  });
+
+  const cacheB64 = [];
+
+  for await (const line of readInterface) {
+    cacheB64.push(JSON.parse(line));
+  }
 
   const cacheObj = cacheB64.map(({ query, documents }) => ({
     documents: JSON.parse(new Buffer(documents, "base64")),
@@ -356,17 +372,27 @@ const computeNDCG = (results) => {
 
 const evaluate = async () => {
   // todo : use june to september
-  const data = await read("august");
+  const data = await read("3months");
+  // const data = await read("august");
 
-  const f = "cache-master.json";
+  const f = "cache-master-3months.json";
 
-  /*
   const cache = await buildCache(data);
 
-  fs.writeFileSync(f, JSON.stringify(cache, null, 2));
-  */
+  var writer = fs.createWriteStream(f);
 
-  const { queryGroups, resultCache } = readCache(f);
+  cache.forEach((entry) => {
+    writer.write(JSON.stringify(entry));
+    writer.write("\n");
+  });
+
+  writer.end();
+
+  // give some time to write the file
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  // exit(1);
+
+  const { queryGroups, resultCache } = await readCache(f);
 
   // console.log(Array.from(resultCache)[0]);
 
@@ -490,11 +516,14 @@ const evaluate = async () => {
   printQueryGroup(counts.get(10));
   printQueryGroup(counts.get(20));
   printQueryGroup(counts.get(30));
+
+  console.log(new Date());
 };
 
 // main()
 // .then(() => covisiteAnalysis())
 // analyseAugust()
+// .then(() => evaluate())
 evaluate()
   .then(() => console.log("done"))
   .catch((err) => console.log(err));
