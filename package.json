@@ -22,21 +22,21 @@
     "start": "node ./dist/index.js"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.9.0",
-    "data-forge": "^1.8.10",
+    "@elastic/elasticsearch": "^7.9.1",
+    "data-forge": "^1.8.11",
     "data-forge-fs": "^0.0.8",
     "esm": "^3.2.25",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.4",
-    "@babel/preset-env": "^7.11.0",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
     "@socialgouv/eslint-config-recommended": "^1.27.0",
     "@zeit/ncc": "^0.22.3",
     "babel-jest": "^26.3.0",
     "eslint": "^7.7.0",
     "jest": "^26.4.2",
-    "prettier": "^2.1.0",
+    "prettier": "^2.1.2",
     "husky": "^4.2.5"
   },
   "jest": {
