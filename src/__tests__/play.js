@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
+import "data-forge-fs";
+
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
 import * as dataForge from "data-forge";
 import * as fs from "fs";
 import fetch from "node-fetch";
 import PQueue from "p-queue";
-import { exit } from "process";
 import * as readline from "readline";
 
 // import { ingest } from "../ingestion/ingester";
@@ -23,7 +24,7 @@ const main = async () => {
 
   let data = await Reader.readFromElastic(
     esClient,
-    103,
+    104,
     new Date("2020-09-12")
   );
   // console.log(data.count());
@@ -76,7 +77,7 @@ const read = (m) =>
   Reader.readFromFile(`/Users/remim/tmp/3months/logs-${m}.csv`);
 
 const covisiteAnalysis = async () => {
-  const m = "may";
+  const m = "3months";
   console.log(m);
   const data = await read(m);
   // const data = await read("july");
@@ -117,7 +118,7 @@ const covisitsRatios = async (data, n) => {
   const relatedActions = data.where((a) => a.type == "select_related");
 
   const min = 5;
-  const mostRelatedUrls = relatedActions
+  const structuredURL = relatedActions
     .groupBy((row) => row.url)
     .select((group) => {
       const covisits = group.where((a) => a.recoType == "covisits").count();
@@ -131,11 +132,38 @@ const covisitsRatios = async (data, n) => {
         url: group.first().url,
       };
     })
-    .inflate()
+    .inflate();
+
+  const mostRelatedUrls = structuredURL
     .where((g) => g.total > min && g.covisits > 0)
     .orderByDescending((r) => r.total);
 
   console.log(mostRelatedUrls.head(n).toString());
+
+  const anomalies = structuredURL
+    .where((g) => {
+      const covRatio = g.covisits / g.total || 0;
+      return g.total > min && (covRatio < 0.3 || covRatio > 0.7);
+    })
+    .orderByDescending((r) => r.total);
+
+  console.log(anomalies.head(n).toString());
+
+  const toCheckCov = structuredURL
+    .where((g) => {
+      const covRatio = g.covisits / g.total || 0;
+      return g.total > 5 && g.search + g.covisits && covRatio < 0.25;
+    })
+    .orderByDescending((r) => r.total);
+  console.log(toCheckCov.head(n).toString());
+
+  const toCheckSearch = structuredURL
+    .where((g) => {
+      const searchRatio = g.search / g.total || 0;
+      return g.total > 5 && g.search + g.covisits && searchRatio < 0.25;
+    })
+    .orderByDescending((r) => r.total);
+  console.log(toCheckSearch.head(n).toString());
 
   const covisitsCount = mostRelatedUrls.getSeries("covisits").sum();
   const searchesCount = mostRelatedUrls.getSeries("search").sum();
@@ -165,7 +193,7 @@ const covisitsRatios = async (data, n) => {
 };
 
 const analyseAugust = async () => {
-  const data = await read("august");
+  const data = await read("3months");
 
   /*
   data.where(
@@ -189,11 +217,18 @@ const analyseAugust = async () => {
     covisitsRatios(range, n);
   };
 
-  runOnPeriod("2020/07/30", "2020/08/26", 200);
+  // runOnPeriod("2020/07/30", "2020/09/12", 200);
+  runOnPeriod("2020/07/30", "2020/08/22");
+  runOnPeriod("2020/08/23", "2020/09/12");
+
+  /*
   runOnPeriod("2020/07/30", "2020/08/08");
   runOnPeriod("2020/08/09", "2020/08/15");
   runOnPeriod("2020/08/16", "2020/08/22");
-  runOnPeriod("2020/08/23", "2020/08/25");
+  runOnPeriod("2020/08/23", "2020/08/29");
+  runOnPeriod("2020/08/30", "2020/09/05");
+  runOnPeriod("2020/09/06", "2020/09/12");
+  */
 };
 
 const knownSearches = new Map();
@@ -207,7 +242,7 @@ const host = "http://localhost:1337";
 const path = "/api/v1/search";
 
 const triggerSearch = (query) => {
-  const url = `${host}${path}?q=${escape(query)}`;
+  const url = `${host}${path}?q=${encodeURIComponent(query)}`;
 
   return fetch(url)
     .then((res) => res.json())
@@ -357,13 +392,13 @@ const printQueryGroup = (queryGroup) => {
 
 const computeNDCG = (results) => {
   const dcg = [...results.values()].reduce(
-    (acc, count, index) => acc + count / Math.log2(index + 1 + 1),
+    (acc, val, index) => acc + val.count / Math.log2(index + 1 + 1),
     0
   );
 
   const idcg = [...results.values()]
-    .sort((a, b) => b - a)
-    .reduce((acc, count, i) => acc + count / Math.log2(i + 1 + 1), 0);
+    .sort((a, b) => b.count - a.count)
+    .reduce((acc, val, i) => acc + val.count / Math.log2(i + 1 + 1), 0);
 
   const ndcg = dcg / idcg;
 
@@ -377,6 +412,8 @@ const evaluate = async () => {
 
   const f = "cache-master-3months.json";
 
+  /*
+
   const cache = await buildCache(data);
 
   var writer = fs.createWriteStream(f);
@@ -387,6 +424,7 @@ const evaluate = async () => {
   });
 
   writer.end();
+  */
 
   // give some time to write the file
   await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -411,7 +449,9 @@ const evaluate = async () => {
   );
 
   // console.log([...queryMap]);
-  // console.log(resultCache.get("automobile"));
+  console.log(resultCache.get("départ de l'entreprise"));
+
+  // return;
 
   // console.log(queryMap.get("mannequins"));
 
@@ -512,18 +552,132 @@ const evaluate = async () => {
     Object.assign(obj, computeNDCG(obj.results));
   });
 
+  /*
+  const totalPQ = [...counts.values()]
+    .map((obj) => {
+      const v = obj.results.values().next().value;
+      if (v && v.algo != "pre-qualified") {
+        return obj.queriesCount;
+      } else {
+        return 0;
+      }
+    })
+    .reduce((acc, a) => acc + a, 0);
+
+  console.log("Total PQ : " + totalPQ);
+  */
+
+  const groups = [...counts.values()].map((queryGroup) => {
+    const { dcg, idcg, ndcg, queriesCount, selectionsCount } = queryGroup;
+    const v = queryGroup.results.values().next().value;
+    const type = v && v.algo != "pre-qualified" ? "search" : "pre-qualified";
+
+    const queries = (Array.from(queryGroup.queries) || [])
+      .map((q) => `${q[0]} - ${q[1]}`)
+      .join(",");
+
+    const results = (Array.from(queryGroup.results) || [])
+      .map((r) => `${r[0]} - ${JSON.stringify(r[1])}`)
+      .join(",");
+
+    return {
+      dcg,
+      idcg,
+      ndcg,
+      queries,
+      queriesCount,
+      results,
+      selectionsCount,
+      type,
+    };
+  });
+
+  const queryClusters = new dataForge.DataFrame(groups);
+
+  /*
   printQueryGroup(counts.get(1));
   printQueryGroup(counts.get(10));
   printQueryGroup(counts.get(20));
   printQueryGroup(counts.get(30));
+  */
 
-  console.log(new Date());
+  // console.log(new Date());
+
+  queryClusters.asCSV().writeFileSync("queryClusters.csv");
 };
 
+const play = () =>
+  new Promise((resolve) => {
+    const df = dataForge.readFileSync("queryClusters.csv").parseCSV();
+
+    const sum = (type, column) =>
+      df
+        .where((row) => row.type == type)
+        .getSeries(column)
+        .parseInts()
+        .sum();
+
+    const prequalifiedRequests = sum("pre-qualified", "queriesCount");
+    const prequalifiedSelections = sum("pre-qualified", "selectionsCount");
+    const prequalifiedTauxSelection = formatToPercent(
+      prequalifiedSelections / prequalifiedRequests
+    );
+
+    const searchRequests = sum("search", "queriesCount");
+    const searchSelections = sum("search", "selectionsCount");
+    const searchTauxSelection = formatToPercent(
+      searchSelections / searchRequests
+    );
+
+    // .where((row) => row.type == "search")
+    // .where((row) => row.type == "pre-qualified")
+    // .getSeries("queriesCount")
+    // .forEach((count) => parseInt(count))
+    // .parseInts()
+    // .head(5)
+    // .sum();
+
+    // const prequalifiedSelections = df;
+
+    // const searchSelections;
+    // const searchRequests;
+
+    /*
+    console.log(
+      df
+        .where((row) => row.type == "pre-qualified")
+        .head(3)
+        .toString()
+
+    );
+    */
+
+    console.log({
+      prequalifiedRequests,
+      prequalifiedSelections,
+      prequalifiedTauxSelection,
+      searchRequests,
+      searchSelections,
+      searchTauxSelection,
+    });
+
+    df.where((row) => row.queries.split(",").length > 2)
+      .orderByDescending((row) => row.queriesCount)
+      .head(100)
+      .forEach((row) => {
+        console.log(JSON.stringify(row.queries, null, 2));
+      });
+
+    console.log(df.count());
+
+    resolve();
+  });
+
 // main()
-// .then(() => covisiteAnalysis())
+// covisiteAnalysis()
 // analyseAugust()
 // .then(() => evaluate())
-evaluate()
+// evaluate()
+play()
   .then(() => console.log("done"))
   .catch((err) => console.log(err));
