@@ -29,30 +29,30 @@ describe("Cleaning pipe", () => {
   it("shodl clean the user logs correctly", () => {
     const dirtyVisits1 = new dataForge.DataFrame([
       {
-        type: "visit_content",
         referrerTypeName: "Search Engines",
+        type: "visit_content",
         url: "https://whatever.com/content#anchor?q=somequery",
       },
       {
-        type: "visit_content",
         referrerTypeName: "Search Engines",
+        type: "visit_content",
         url: "https://whatever.com/duplicate?q=somequery",
       },
       {
-        type: "visit_content",
         referrerTypeName: "Search Engines",
+        type: "visit_content",
         url: "https://whatever.com/notduplicate?q=somequery",
       },
       {
-        type: "outils",
         referrerTypeName: "Search Engines",
+        type: "outils",
         url: "https://whatever.com/duplicate#anothersection?q=anotherquery",
       },
     ]);
     const dirtyVisits2 = new dataForge.DataFrame([
       {
-        type: "visit_content",
         referrerTypeName: "Search Engines",
+        type: "visit_content",
         url: "another-user.com/content",
       },
     ]);
