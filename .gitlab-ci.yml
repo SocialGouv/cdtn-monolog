@@ -32,6 +32,7 @@ Backup Matomo data:
   script:
     - echo $MONOLOG_ACTION
     - AZ_STORAGE_TOKEN=$AZ_STORAGE_TOKEN bash ./scripts/dump_matomo_yesterday.sh
+  retry: 3
 
 Download dump from Azure:
   stage: download
