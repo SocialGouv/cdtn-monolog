@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
-    "lint": "eslint src/ --ext .js",
+    "lint": "eslint src/ --ext .js --fix",
     "test": "jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r esm src/index.js",
