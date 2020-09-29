@@ -18,10 +18,17 @@ const getLastDays = (n, ref) => {
   return [...Array(n).keys()].map(createDate).map(formatDate);
 };
 
-const typesToConsider = Object.values(actionTypes);
+const defaultTypesToConsider = Object.values(actionTypes);
 
-export const readFromElastic = async (esClient, n, ref = new Date(), index) => {
-  const days = getLastDays(n, ref);
+// read logs in Elastic : nDays before referenceDate
+export const readFromElastic = async (
+  esClient,
+  index,
+  referenceDate,
+  nDays,
+  type = defaultTypesToConsider
+) => {
+  const days = getLastDays(nDays, referenceDate);
 
   const query = {
     bool: {
@@ -29,7 +36,7 @@ export const readFromElastic = async (esClient, n, ref = new Date(), index) => {
         {
           bool: { should: days.map((d) => ({ match: { logfile: d } })) },
         },
-        { terms: { type: typesToConsider } },
+        { terms: { type } },
       ],
     },
   };

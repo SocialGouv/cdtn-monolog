@@ -13,9 +13,9 @@ test("read data from Elastic", async () => {
   await wait(2000);
   const data = await Reader.readFromElastic(
     esClient,
-    1,
+    LOGS_TEST_INDEX,
     new Date("2020-04-25"),
-    LOGS_TEST_INDEX
+    1
   );
   // kept here to recreate local data export
   //*

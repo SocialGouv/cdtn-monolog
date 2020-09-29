@@ -2,22 +2,42 @@ import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import * as fs from "fs";
 
 import { defaultAnalysis } from "./analysis/default";
+import { analyse as queryAnalysis } from "./analysis/queries";
 import { ELASTICSEARCH_URL, esClient, LOG_INDEX, REPORT_INDEX } from "./esConf";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import { logger } from "./logger";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
+import { actionTypes } from "./util";
 
 // running analysis including 30 days before today
 const refDate = new Date();
-const defaultPeriod = 30;
+const defaultPeriod = 3;
 
-const runAnalysis = async () => {
+const runDefaultAnalysis = async () => {
   ReportStore.resetReportIndex(esClient, REPORT_INDEX);
-  const data = await Reader.readFromElastic(esClient, defaultPeriod, refDate);
+  const data = await Reader.readFromElastic(
+    esClient,
+    LOG_INDEX,
+    refDate,
+    defaultPeriod
+  );
   const reports = defaultAnalysis(data);
   const res = await ReportStore.saveReport(esClient, REPORT_INDEX, reports);
   return res;
+};
+
+const runQueryAnalysis = async (period) => {
+  // period should match with latest search update or release ?
+  const data = await Reader.readFromElastic(
+    esClient,
+    LOG_INDEX,
+    refDate,
+    period,
+    [actionTypes.search, actionTypes.selectResult]
+  );
+  const reports = queryAnalysis(data);
+  console.log(reports);
 };
 
 // TODO
@@ -37,6 +57,7 @@ const runIngestion = async (dataPath) => {
 
 // poors man CLI, might move to commander if needed
 const ANALYSE = "analyse";
+const QUERIES = "queries";
 const INGEST = "ingest";
 
 // const command = process.argv[process.argv.length - 1];
@@ -49,10 +70,13 @@ const main = async () => {
       await runIngestion(dataPath);
     } else if (command == ANALYSE) {
       logger.info("Running analysis");
-      await runAnalysis();
+      await runDefaultAnalysis();
+    } else if (command == QUERIES) {
+      logger.info("Running query analysis");
+      await runQueryAnalysis();
     } else {
       logger.error(
-        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}`
+        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}, ${QUERIES}`
       );
       process.exit(1);
     }

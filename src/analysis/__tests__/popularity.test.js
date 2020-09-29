@@ -7,7 +7,7 @@ describe("Popularity", () => {
   // FIXME : move as duplicated with covisit
   const toVisitAction = (uvi, url, timestamp) => ({
     timestamp,
-    type: util.actionTypes.visitType,
+    type: util.actionTypes.visit,
     url,
     uvi,
   });

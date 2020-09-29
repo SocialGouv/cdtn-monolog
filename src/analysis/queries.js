@@ -1,0 +1,174 @@
+// here we analyze search queries
+import { getRouteBySource } from "@socialgouv/cdtn-sources";
+import fetch from "node-fetch";
+import PQueue from "p-queue";
+
+import * as datasetUtil from "../dataset";
+import { actionTypes } from "../util";
+
+const CDTN_API =
+  process.env.CDTN_API ||
+  "https://api-master-code-travail.dev2.fabrique.social.gouv.fr";
+
+const path = "/api/v1/search";
+
+const triggerSearch = (query) => {
+  const url = `${CDTN_API}${path}?q=${encodeURIComponent(query)}`;
+
+  return fetch(url)
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+
+  // const docs = result.documents;
+  // return { docs, query };
+};
+
+const deduplicateQueries = (dataset) =>
+  // get searches and deduplicate them
+  new Set(
+    dataset
+      .where((a) => a.type == actionTypes.search)
+      .getSeries("query")
+      .toArray()
+      .filter((a) => a)
+      .map((q) => q.toLowerCase())
+  );
+
+// get all search queries and build a cache of the responses
+export const buildCache = async (dataset) => {
+  const pqueue = new PQueue({ concurrency: 20 });
+
+  // we get all unique queries
+  const searches = deduplicateQueries(dataset);
+
+  const pSearches = Array.from(searches).map((query) =>
+    pqueue.add(() =>
+      triggerSearch(query).then((json) => ({
+        // use base64 to reduce cache size and ease comparison
+        // documents: Buffer.from(JSON.stringify(json.documents)).toString(
+        //   "base64"
+        // ),
+        documents: json.documents,
+        query,
+      }))
+    )
+  );
+
+  const results = await Promise.all(pSearches);
+
+  await pqueue.onIdle();
+
+  const groups = new Map();
+  const resultCache = new Map();
+
+  results.forEach(({ query, documents }) => {
+    if (!groups.has(documents)) {
+      groups.set(documents, [query]);
+    } else {
+      groups.get(documents).push(query);
+    }
+
+    resultCache.set(query, documents);
+  });
+
+  const queryClusters = [...groups.values()];
+
+  return { queryClusters, resultCache };
+};
+
+export const analyseVisit = (queryMap, counts) => (v) => {
+  const actions = v.where((a) =>
+    [actionTypes.search, actionTypes.selectResult].includes(a.type)
+  );
+
+  // remove duplicates
+  const searches = Array.from(
+    new Set(
+      actions
+        .getSeries("query")
+        .toArray()
+        .filter((q) => q)
+        .map((q) => q.toLowerCase())
+    )
+  );
+
+  // we increment query count and retrieve results lists
+  const results = searches.map((q) => {
+    const group = queryMap.get(q);
+    const count = counts.get(group);
+
+    if (!count) {
+      console.log("Cannot find results for query : " + q);
+      console.log(group);
+      return new Map();
+    }
+
+    count.queries.set(q, count.queries.get(q) + 1);
+
+    return count.results;
+  });
+
+  const urlSelected = new Set(
+    actions
+      .where((a) => a.type == actionTypes.selectResult)
+      .getSeries("resultSelectionUrl")
+      .toArray()
+      .filter((q) => q)
+  );
+
+  urlSelected.forEach((url) => {
+    for (const r of results) {
+      if (r.has(url)) {
+        const obj = r.get(url);
+        r.set(url, { algo: obj.algo, count: obj.count + 1 });
+      }
+    }
+
+    if (url == "/information/elections-du-cse-nouveautes-covid-19") {
+      console.log("selection not in results : " + url);
+      // console.log(results.map((r) => r.keys()));
+      // console.log(url);
+    }
+  });
+};
+
+export const analyse = async (dataset) => {
+  // get all search queries and build cache for each request using CDTN API
+  const { queryClusters, resultCache } = await buildCache(dataset);
+
+  // go through each visit and count queries and selection
+  const visits = datasetUtil.getVisits(dataset).toArray();
+
+  // a map to get the query group id from any query
+  const queryMap = new Map(
+    queryClusters.flatMap((queryCluster, i) =>
+      queryCluster.map((query) => [query, i])
+    )
+  );
+
+  // a map that store each query group with : queries and occurences / results and clicks
+  const counts = new Map(
+    queryClusters.map((queryGroup, i) => [
+      i,
+      {
+        queries: new Map(queryGroup.map((q) => [q, 0])),
+        results: new Map(
+          resultCache
+            .get(queryGroup[0])
+            // we should use ids here once urls contain them
+            .map(({ algo, source, slug }) => [
+              "/" + getRouteBySource(source) + "/" + slug,
+              { algo, count: 0 },
+            ])
+        ),
+      },
+    ])
+  );
+
+  // at least one search
+  visits
+    .filter((v) => v.where((a) => a.type == actionTypes.search).count() > 0)
+    .forEach(analyseVisit(queryMap, counts));
+
+  // run evaluation and build reports
+};

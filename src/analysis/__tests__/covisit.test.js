@@ -6,7 +6,7 @@ import * as Covisit from "../covisit";
 
 describe("Covisit", () => {
   const toVisitAction = (uvi, url) => ({
-    type: util.actionTypes.visitType,
+    type: util.actionTypes.visit,
     url,
     uvi,
   });
