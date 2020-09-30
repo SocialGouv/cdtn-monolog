@@ -91,7 +91,7 @@ const analyse = (dataset, reportId) => {
   const currentMonthDate = extractMonth(new Date());
   const SumvisitsThisMonth = monthlyVisits.filter(
     (obj) => obj.month === currentMonthDate
-  )[0].nbUniqueVisits;
+  )[0];
   const maxDailyVisitsThisMonth = getMaxDay(dailyVisits);
 
   const FinalAnalyse = {
