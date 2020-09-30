@@ -82,7 +82,7 @@ describe("Basic arithmetic", () => {
 });
 
 describe("Business logic", () => {
-  it("it should aggregates user sessions", () => {
+  it("should aggregates user sessions", () => {
     const session = new dataForge.DataFrame([
       { referrerTypeName: null, type: "visit_content" },
       { referrerTypeName: null, type: "visit_content" },
@@ -93,7 +93,7 @@ describe("Business logic", () => {
       { count: 3, referrerTypeName: null, type: "visit_content" },
     ]);
   });
-  it("it should aggregates user having different content types", () => {
+  it("should aggregates user having different content types", () => {
     const session = new dataForge.DataFrame([
       { referrerTypeName: null, type: "visit_content" },
       { referrerTypeName: null, type: "visit_content" },
@@ -107,7 +107,7 @@ describe("Business logic", () => {
       { count: 3, referrerTypeName: null, type: "selectRelated" },
     ]);
   });
-  it("it should detect exploratory visits", () => {
+  it("should detect exploratory visits", () => {
     const sessionCount = {
       count: 5,
       referrerTypeName: null,
@@ -116,17 +116,17 @@ describe("Business logic", () => {
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
-  it("it should detect exploratory visits search", () => {
+  it("should detect exploratory visits search", () => {
     const sessionCount = { count: 1, referrerTypeName: null, type: "search" };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
-  it("it should detect exploratory visits themes", () => {
+  it("should detect exploratory visits themes", () => {
     const sessionCount = { count: 1, referrerTypeName: null, type: "themes" };
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
-  it("it should detect exploratory visits selectResult", () => {
+  it("should detect exploratory visits selectResult", () => {
     const sessionCount = {
       count: 1,
       referrerTypeName: null,
@@ -135,12 +135,12 @@ describe("Business logic", () => {
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(true);
   });
-  it("it should detect empty visits as short", () => {
+  it("should detect empty visits as short", () => {
     const sessionCount = {};
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(false);
   });
-  it("it should not detect visits with noise", () => {
+  it("should not detect visits with noise", () => {
     const sessionCount = {
       count: 100,
       referrerTypeName: null,
@@ -149,7 +149,7 @@ describe("Business logic", () => {
     const isExplo = Metrics.isExploVisit(sessionCount);
     expect(isExplo).toBe(false);
   });
-  it("it should detect redirected user", () => {
+  it("should detect redirected user", () => {
     const sessionCount = {
       count: 1,
       referrerTypeName: "Search Engines",
@@ -158,7 +158,7 @@ describe("Business logic", () => {
     const isRedirect = Metrics.isRedirected(sessionCount);
     expect(isRedirect).toBe(true);
   });
-  it("it shouldnot has selected related", () => {
+  it("shouldnot has selected related", () => {
     const sessionCount = {
       count: 1,
       referrerTypeName: "Direct Entry",
@@ -167,7 +167,7 @@ describe("Business logic", () => {
     const isRedirect = Metrics.hasSelectedRelated(sessionCount);
     expect(isRedirect).toBe(true);
   });
-  it("it should count selectRelated", () => {
+  it("should count selectRelated", () => {
     const sessionCount = {
       count: 8,
       referrerTypeName: "Direct Entry",
@@ -176,7 +176,7 @@ describe("Business logic", () => {
     const countrelated = Metrics.countSelectRelated(sessionCount);
     expect(countrelated).toBe(8);
   });
-  it("it should get stats of selectRelated", () => {
+  it("should get stats of selectRelated", () => {
     const sessionCountArray = [
       { count: 8, referrerTypeName: "Search Engines", type: "selectRelated" },
       { count: 3, referrerTypeName: "whatsoever", type: "visit_content" },
@@ -190,7 +190,7 @@ describe("Business logic", () => {
       visitorWasRedirected: true,
     });
   });
-  it("it should get user session Type", () => {
+  it("should get user session Type", () => {
     const sessionCountArray = [
       { count: 8, referrerTypeName: "Search Engines", type: "selectRelated" },
       { count: 3, referrerTypeName: "whatsoever", type: "visit_content" },
@@ -198,9 +198,8 @@ describe("Business logic", () => {
     ];
     const countrelated = Metrics.getUserType(sessionCountArray);
     expect(countrelated).toBe(true);
-    console.log(countrelated);
   });
-  it("it should get user session Type 2", () => {
+  it("should get user session Type 2", () => {
     const sessionCountArray = [
       { count: 2, referrerTypeName: "whatsoever", type: "visit_content" },
       { count: 1, referrerTypeName: "whatsoever", type: "whoever" },
