@@ -45,7 +45,7 @@ const isExploVisit = (x) => {
   if (x.type == "visit_content") {
     return x.count > 2 ? true : false;
   } else {
-    const exploTypes = Array("search", "themes", "selectRelated");
+    const exploTypes = Array("search", "themes", "select_related");
     if (exploTypes.includes(x.type)) {
       return true;
     } else {
@@ -56,17 +56,17 @@ const isExploVisit = (x) => {
 
 const isRedirected = (x) => {
   // if a user comes from a search engine and select related return true
-  if (x.referrerTypeName == "Search Engines" && x.type == "selectRelated") {
+  if (x.referrerTypeName == "Search Engines" && x.type == "select_related") {
     return true;
   } else {
     return false;
   }
 };
 const hasSelectedRelated = (x) => {
-  return x.type == "selectRelated" ? true : false;
+  return x.type == "select_related" ? true : false;
 };
 const countSelectRelated = (x) => {
-  return x.type == "selectRelated" ? x.count : 0;
+  return x.type == "select_related" ? x.count : 0;
 };
 const getSelectRelated = (relatedCount) => {
   // takes an array with true if eventType selectRelated else false
