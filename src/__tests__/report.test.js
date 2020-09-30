@@ -14,7 +14,7 @@ beforeAll(async () => {
   await wait(2000);
 });
 
-describe("Report ", () => {
+describe("Report", () => {
   it("should be properly persisted", async () => {
     const docs = await getAnalysis();
     expect(docs.length).toBe(62);
