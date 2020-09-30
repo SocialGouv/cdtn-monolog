@@ -20,7 +20,7 @@ export function getWeekMonday(date) {
     Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
   );
   d.setDate(d.getDate() - d.getDay() + 1);
-  return d.toLocaleString([], options);
+  return d.toLocaleString("fr-FR", options);
 }
 export const getMaxDay = (arr) => {
   const xMax = Math.max(...Array.from(arr, (o) => o.nbUniqueVisits));
@@ -59,7 +59,7 @@ export const getMonthlyVisits = (dataset) => {
 export const getDailyVisits = (dataset) => {
   const parsedDataFrame = dataset.transformSeries({
     lastActionDateTime: (columnValue) =>
-      columnValue.toLocaleString([], options),
+      columnValue.toLocaleString("fr-FR", options),
   });
   return parsedDataFrame
     .groupBy((row) => row.lastActionDateTime)
