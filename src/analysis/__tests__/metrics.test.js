@@ -198,7 +198,6 @@ describe("Business logic", () => {
     ];
     const countrelated = Metrics.getUserType(sessionCountArray);
     expect(countrelated).toBe(true);
-    console.log(countrelated);
   });
   it("it should get user session Type 2", () => {
     const sessionCountArray = [

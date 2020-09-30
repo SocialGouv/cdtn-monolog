@@ -23,9 +23,13 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.9.1",
+    "@socialgouv/cdtn-sources": "^4.31.1",
     "data-forge": "^1.8.11",
     "data-forge-fs": "^0.0.8",
     "esm": "^3.2.25",
+    "murmurhash-js": "^1.0.0",
+    "node-fetch": "^2.6.1",
+    "p-queue": "^6.6.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {

@@ -36,8 +36,9 @@ const runQueryAnalysis = async (period) => {
     period,
     [actionTypes.search, actionTypes.selectResult]
   );
-  const reports = queryAnalysis(data);
-  console.log(reports);
+  const reports = await queryAnalysis(data, 42);
+  const res = await ReportStore.saveReport(esClient, REPORT_INDEX, reports);
+  return res;
 };
 
 // TODO
@@ -73,7 +74,7 @@ const main = async () => {
       await runDefaultAnalysis();
     } else if (command == QUERIES) {
       logger.info("Running query analysis");
-      await runQueryAnalysis();
+      await runQueryAnalysis(30);
     } else {
       logger.error(
         `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}, ${QUERIES}`

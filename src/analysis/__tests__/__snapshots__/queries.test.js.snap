@@ -2,14 +2,12 @@
 
 exports[`Query reports should generate cache for each search query 1`] = `
 Object {
-  "queryGroups": Array [
+  "queryClusters": Array [
     Array [
       "paternite",
     ],
     Array [
-      "conges maternite",
-    ],
-    Array [
+      "conge maternite",
       "conge de maternite",
     ],
   ],
@@ -180,7 +178,7 @@ Object {
         "url": "https://www.service-public.fr/particuliers/vosdroits/F32292",
       },
     ],
-    "conges maternite" => Array [
+    "conge maternite" => Array [
       Object {
         "_score": 0,
         "algo": "pre-qualified",
@@ -202,7 +200,7 @@ Object {
         "description": "L'employeur applique les conditions prévues par la convention ou l'accord collectif ou un usage, si elles sont plus favorables que le code du travail pour…",
         "slug": "quelle-est-la-duree-du-conge-de-maternite",
         "source": "contributions",
-        "title": "Quelle est la durée du congé de maternité ?",
+        "title": "Quelle est la durée du congé de maternité ?",
       },
       Object {
         "_score": 0,
@@ -227,7 +225,7 @@ Object {
 être affiliée à la Sécurité sociale depuis au moins 10 mois à la date présumée de…",
         "slug": "quelles-sont-les-conditions-dindemnisation-pendant-le-conge-de-maternite",
         "source": "contributions",
-        "title": "Quelles sont les conditions d’indemnisation pendant le congé de maternité ? ",
+        "title": "Quelles sont les conditions d’indemnisation pendant le congé de maternité ? ",
       },
       Object {
         "_score": 0,
@@ -407,7 +405,7 @@ Object {
         "description": "Le congé de maternité peut être fractionné en cas d'hospitalisation prolongée de l'enfant au-delà de la 6ème semaine suivant sa naissance.",
         "slug": "hospitalisation-du-nouveau-ne-quelles-consequences-sur-le-conge-de-maternite",
         "source": "fiches_service_public",
-        "title": "Hospitalisation du nouveau-né : quelles conséquences sur le congé de maternité ?",
+        "title": "Hospitalisation du nouveau-né : quelles conséquences sur le congé de maternité ?",
         "url": "https://www.service-public.fr/particuliers/vosdroits/F32967",
       },
       Object {
@@ -457,7 +455,7 @@ Object {
         "description": "L'employeur applique les conditions prévues par la convention ou l'accord collectif ou un usage, si elles sont plus favorables que le code du travail pour…",
         "slug": "quelle-est-la-duree-du-conge-de-maternite",
         "source": "contributions",
-        "title": "Quelle est la durée du congé de maternité ?",
+        "title": "Quelle est la durée du congé de maternité ?",
       },
       Object {
         "_score": 0,
@@ -482,7 +480,7 @@ Object {
 être affiliée à la Sécurité sociale depuis au moins 10 mois à la date présumée de…",
         "slug": "quelles-sont-les-conditions-dindemnisation-pendant-le-conge-de-maternite",
         "source": "contributions",
-        "title": "Quelles sont les conditions d’indemnisation pendant le congé de maternité ? ",
+        "title": "Quelles sont les conditions d’indemnisation pendant le congé de maternité ? ",
       },
       Object {
         "_score": 0,
@@ -662,7 +660,7 @@ Object {
         "description": "Le congé de maternité peut être fractionné en cas d'hospitalisation prolongée de l'enfant au-delà de la 6ème semaine suivant sa naissance.",
         "slug": "hospitalisation-du-nouveau-ne-quelles-consequences-sur-le-conge-de-maternite",
         "source": "fiches_service_public",
-        "title": "Hospitalisation du nouveau-né : quelles conséquences sur le congé de maternité ?",
+        "title": "Hospitalisation du nouveau-né : quelles conséquences sur le congé de maternité ?",
         "url": "https://www.service-public.fr/particuliers/vosdroits/F32967",
       },
       Object {
@@ -692,4 +690,154 @@ Object {
     ],
   },
 }
+`;
+
+exports[`Query reports should keep counts for searches and selections in every visit 1`] = `
+Array [
+  Object {
+    "mean": 3.5,
+    "ndcg": 0.8838329034231467,
+    "problems": Array [
+      Object {
+        "count": 4,
+        "ndcg": 0.7967075809905066,
+        "query": "paternite",
+      },
+    ],
+    "reportId": 42,
+    "reportType": "query-index",
+  },
+  Object {
+    "dcg": 2.8927892607143724,
+    "idcg": 3.6309297535714578,
+    "ndcg": 0.7967075809905066,
+    "queries": Array [
+      Object {
+        "count": 3,
+        "query": "paternite",
+      },
+    ],
+    "queriesCount": 3,
+    "queryKey": 1733549731,
+    "reportId": 42,
+    "reportType": "query",
+    "results": Array [
+      Object {
+        "algo": "pre-qualified",
+        "count": 1,
+        "result": "/fiche-service-public/conge-de-paternite-et-daccueil-de-lenfant-dun-salarie-du-secteur-prive",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 3,
+        "result": "/fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Quelle-est-la-duree-du-conge-de-paternite-et-d-accueil-de-l-enfant-nbsp",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Quelles-sont-les-formalites",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Quels-effets-sur-le-contrat-de-travail",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-paternite-et-daccueil-de-lenfant#Demandeurs-d-emploi-stagiaires-de-la-formation-professionnelle-des-nbsp",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/peut-on-enchainer-conge-de-naissance-et-conge-de-paternite-et-daccueil",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/le-jeune-pere-salarie-beneficie-t-il-dune-protection-contre-le-licenciement",
+      },
+    ],
+    "selectionsCount": 4,
+    "type": "pre-qualified",
+  },
+  Object {
+    "dcg": 2.6309297535714578,
+    "idcg": 2.6309297535714578,
+    "ndcg": 1,
+    "queries": Array [
+      Object {
+        "count": 1,
+        "query": "conge maternite",
+      },
+      Object {
+        "count": 2,
+        "query": "conge de maternite",
+      },
+    ],
+    "queriesCount": 3,
+    "queryKey": 1175151884,
+    "reportId": 42,
+    "reportType": "query",
+    "results": Array [
+      Object {
+        "algo": "pre-qualified",
+        "count": 2,
+        "result": "/contribution/quelle-est-la-duree-du-conge-de-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 1,
+        "result": "/contribution/quelles-sont-les-conditions-dindemnisation-pendant-le-conge-de-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/conge-maternite-dune-salariee-du-secteur-prive",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-maternite#Quelle-est-la-situation-a-l-issue-du-conge",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-maternite#Quelle-est-la-duree-du-conge-de-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-ministere-travail/le-conge-de-maternite#Quelles-sont-les-dispositions-specifiques",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/une-salariee-enceinte-est-elle-obligee-de-reveler-sa-grossesse-a-son-employeur",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/licenciement-dune-salariee-enceinte-ou-en-conge-de-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/peut-on-demissionner-pendant-un-conge-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/hospitalisation-du-nouveau-ne-quelles-consequences-sur-le-conge-de-maternite",
+      },
+      Object {
+        "algo": "pre-qualified",
+        "count": 0,
+        "result": "/fiche-service-public/peut-on-beneficier-de-plusieurs-conges-parentaux-successifs",
+      },
+    ],
+    "selectionsCount": 3,
+    "type": "pre-qualified",
+  },
+]
 `;
