@@ -1,7 +1,7 @@
 import { triggerSearch } from "../../../cdtnApi";
 import { api } from "./apiResults";
 
-jest.mock("../../../cdtnAPI");
+jest.mock("../../../cdtnApi");
 triggerSearch.mockImplementation(
   (query) =>
     new Promise((resolve, fail) =>
