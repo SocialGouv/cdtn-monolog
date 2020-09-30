@@ -4,9 +4,9 @@ import * as datasetUtil from "../dataset";
 
 // --- utils
 var options = {
-  day: "numeric",
-  month: "numeric",
-  year: "numeric",
+  day: "2-digit",
+  month: "2-digit",
+  year: "2-digit",
 };
 export const extractMonth = (date) => {
   const month = date.getMonth() + 1; // months from 1-12

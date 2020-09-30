@@ -19,9 +19,9 @@ describe("test utils", () => {
     const mondayDate1 = mrp.getWeekMonday(date1);
     const mondayDate2 = mrp.getWeekMonday(date2);
     const mondayDate3 = mrp.getWeekMonday(date3);
-    expect(mondayDate1).toBe("09/03/2020");
-    expect(mondayDate2).toBe("17/12/2012");
-    expect(mondayDate3).toBe("28/09/2020");
+    expect(mondayDate1).toBe("09/03/20");
+    expect(mondayDate2).toBe("17/12/12");
+    expect(mondayDate3).toBe("28/09/20");
   });
   it("should get the max of count of an array of object", () => {
     const arr = [
@@ -42,10 +42,10 @@ describe("test analysis", () => {
   const mockdf = new DataFrame(mockdt.dataset).parseDates("lastActionDateTime");
   const dedupMockdf = mockdf.distinct((row) => row.uvi);
   const expected = [
-    { day: "30/03/2020", nbUniqueVisits: 3 },
-    { day: "29/09/2020", nbUniqueVisits: 1 },
-    { day: "30/09/2020", nbUniqueVisits: 4 },
-    { day: "30/12/2020", nbUniqueVisits: 2 },
+    { day: "30/03/20", nbUniqueVisits: 3 },
+    { day: "29/09/20", nbUniqueVisits: 1 },
+    { day: "30/09/20", nbUniqueVisits: 4 },
+    { day: "30/12/20", nbUniqueVisits: 2 },
   ];
   it("should aggregates daily visits", () => {
     const res = mrp.getDailyVisits(mockdf);
@@ -54,9 +54,9 @@ describe("test analysis", () => {
   it("should aggregate weekly visits", () => {
     const res = mrp.getWeeklyVisits(mockdf);
     expect(res).toStrictEqual([
-      { nbUniqueVisits: 3, weekMonday: "30/03/2020" },
-      { nbUniqueVisits: 5, weekMonday: "28/09/2020" },
-      { nbUniqueVisits: 2, weekMonday: "28/12/2020" },
+      { nbUniqueVisits: 3, weekMonday: "30/03/20" },
+      { nbUniqueVisits: 5, weekMonday: "28/09/20" },
+      { nbUniqueVisits: 2, weekMonday: "28/12/20" },
     ]);
   });
   it("should aggregate monthly visits", () => {
@@ -70,9 +70,9 @@ describe("test analysis", () => {
   it("should deduplicate before aggregating", () => {
     const res2 = mrp.getDailyVisits(dedupMockdf);
     expect(res2).toStrictEqual([
-      { day: "30/03/2020", nbUniqueVisits: 1 },
-      { day: "29/09/2020", nbUniqueVisits: 1 },
-      { day: "30/09/2020", nbUniqueVisits: 1 },
+      { day: "30/03/20", nbUniqueVisits: 1 },
+      { day: "29/09/20", nbUniqueVisits: 1 },
+      { day: "30/09/20", nbUniqueVisits: 1 },
     ]);
     expect(res2).not.toStrictEqual(expected);
   });
