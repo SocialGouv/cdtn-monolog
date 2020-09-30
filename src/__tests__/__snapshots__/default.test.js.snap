@@ -7,6 +7,7 @@ Array [
     "popularity" => 20,
     "suggestion" => 321,
     "metrics" => 1,
+    undefined => 1,
   },
   Array [
     Object {
@@ -3229,6 +3230,18 @@ Array [
       "shortVisitsNb": 1966,
       "visitorSelectedRelatedRatio": 0,
       "visitorWasRedirected": 0,
+    },
+    Object {
+      "SumvisitsThisMonth": undefined,
+      "currentMonthDate": "2020-9",
+      "dailyVisits": "[{\\"day\\":\\"05/02/20\\",\\"nbUniqueVisits\\":4082},{\\"day\\":\\"05/03/20\\",\\"nbUniqueVisits\\":4418},{\\"day\\":\\"05/01/20\\",\\"nbUniqueVisits\\":4188},{\\"day\\":\\"05/04/20\\",\\"nbUniqueVisits\\":1968}]",
+      "maxDailyVisitsThisMonth": Object {
+        "day": "05/03/20",
+        "nbUniqueVisits": 4418,
+      },
+      "monthlyVisits": "[{\\"month\\":\\"2020-5\\",\\"nbUniqueVisits\\":14656}]",
+      "reportId": 42,
+      "weeklyVisits": "[{\\"nbUniqueVisits\\":8270,\\"weekMonday\\":\\"04/27/20\\"},{\\"nbUniqueVisits\\":6386,\\"weekMonday\\":\\"05/04/20\\"}]",
     },
   ],
 ]
