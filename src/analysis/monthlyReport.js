@@ -8,7 +8,7 @@ var options = {
   month: "2-digit",
   year: "2-digit",
 };
-const locale = "fr";
+const locale = "fr-FR";
 export const extractMonth = (date) => {
   const month = date.getMonth() + 1; // months from 1-12
   const year = date.getFullYear(); //
