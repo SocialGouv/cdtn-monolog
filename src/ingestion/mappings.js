@@ -81,10 +81,12 @@ const mappings = {
     },
 
     lastActionDateTime: {
-      type: "keyword",
+      format: "yyyy-MM-dd HH:mm:ss",
+      type: "date",
     },
 
     lastActionTimestamp: {
+      format: "epoch_second",
       type: "date",
     },
 
@@ -146,6 +148,7 @@ const mappings = {
     },
 
     timestamp: {
+      format: "epoch_second",
       type: "date",
     },
 
