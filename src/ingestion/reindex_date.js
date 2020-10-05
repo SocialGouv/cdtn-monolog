@@ -11,6 +11,8 @@ const reIndex = async (esClient, indexSource, indexDest) => {
         index: indexSource,
       },
     },
+    refresh: true,
+    wait_for_completion: false,
   });
 };
 
