@@ -89,19 +89,19 @@ const analyse = (dataset, reportId) => {
   const dailyVisits = getDailyVisits(uniqueVisitsDf);
   // current month
   const currentMonthDate = extractMonth(new Date());
-  const SumvisitsThisMonth = monthlyVisits.filter(
+  const sumVisitsThisMonth = monthlyVisits.filter(
     (obj) => obj.month === currentMonthDate
   )[0];
   const maxDailyVisitsThisMonth = getMaxDay(dailyVisits);
 
   const FinalAnalyse = {
-    SumvisitsThisMonth: SumvisitsThisMonth,
-    currentMonthDate: currentMonthDate,
-    dailyVisits: JSON.stringify(dailyVisits),
-    maxDailyVisitsThisMonth: maxDailyVisitsThisMonth,
-    monthlyVisits: JSON.stringify(monthlyVisits),
+    currentMonthDate,
+    dailyVisits,
+    maxDailyVisitsThisMonth,
+    monthlyVisits,
     reportId: reportId,
-    weeklyVisits: JSON.stringify(weeklyVisits),
+    sumVisitsThisMonth,
+    weeklyVisits,
   };
   return Array(FinalAnalyse);
 };
