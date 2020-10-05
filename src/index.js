@@ -2,15 +2,8 @@ import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import * as fs from "fs";
 
 import { defaultAnalysis } from "./analysis/default";
-import {
-  ELASTICSEARCH_URL,
-  esClient,
-  LOG_INDEX,
-  LOG_NEW_INDEX,
-  REPORT_INDEX,
-} from "./esConf";
+import { ELASTICSEARCH_URL, esClient, LOG_INDEX, REPORT_INDEX } from "./esConf";
 import { checkIndex, ingest } from "./ingestion/ingester";
-import { reIndex } from "./ingestion/reindex_date";
 import { logger } from "./logger";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
@@ -42,15 +35,9 @@ const runIngestion = async (dataPath) => {
   });
 };
 
-const runReindex = async () => {
-  await checkIndex(esClient, LOG_NEW_INDEX);
-  await reIndex(esClient, LOG_INDEX, LOG_NEW_INDEX);
-};
-
 // poors man CLI, might move to commander if needed
 const ANALYSE = "analyse";
 const INGEST = "ingest";
-const REINDEX = "reindex";
 
 // const command = process.argv[process.argv.length - 1];
 const command = process.env.MONOLOG_ACTION;
@@ -63,12 +50,9 @@ const main = async () => {
     } else if (command == ANALYSE) {
       logger.info("Running analysis");
       await runAnalysis();
-    } else if (command == REINDEX) {
-      logger.info("Running reindexation");
-      await runReindex();
     } else {
       logger.error(
-        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}, ${REINDEX}`
+        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}`
       );
       process.exit(1);
     }

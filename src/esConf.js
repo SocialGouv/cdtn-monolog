@@ -12,8 +12,7 @@ const esClientConfig = {
 
 const LOG_INDEX = process.env.LOG_INDEX || "logs";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
-const LOG_NEW_INDEX = process.env.LOG_NEW_INDEX || "logs-new";
 
 const esClient = new Client(esClientConfig);
 
-export { ELASTICSEARCH_URL, LOG_INDEX, REPORT_INDEX, LOG_NEW_INDEX, esClient };
+export { ELASTICSEARCH_URL, LOG_INDEX, REPORT_INDEX, esClient };
