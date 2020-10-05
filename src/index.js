@@ -68,7 +68,7 @@ const main = async () => {
       await runReindex();
     } else {
       logger.error(
-        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}`
+        `Unrecognized env variable for MONOLOG_ACTION : ${command}, valid commands are : ${ANALYSE}, ${INGEST}, ${REINDEX}`
       );
       process.exit(1);
     }
