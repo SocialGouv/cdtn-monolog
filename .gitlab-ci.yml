@@ -8,7 +8,10 @@ stages:
   - backup
   - download
   - ingest
-  - analyse
+  - weekly
+  # - monthly
+  - covisites
+  # - queries
 
 Register image:
   stage: register
@@ -66,15 +69,28 @@ Ingest to ES:
     - yarn build
     - node dist/index.js
 
-Run analysis:
-  stage: analyse
+Run weekly:
+  stage: weekly
   image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
   only:
     refs:
       - schedules
     variables:
-      - $MONOLOG_ACTION == "analyse"
+      - $MONOLOG_ACTION == "weekly"
   script:
     - yarn install
     - yarn build
-    - node dist/index.js
+    - node dist/index.js $MONOLOG_ACTION
+
+Run covisites:
+  stage: covisites
+  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  only:
+    refs:
+      - triggers
+    variables:
+      - $MONOLOG_ACTION == "covisites"
+  script:
+    - yarn install
+    - yarn build
+    - node dist/index.js $MONOLOG_ACTION $DAYS 

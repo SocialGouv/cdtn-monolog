@@ -10,25 +10,32 @@ import { actionTypes } from "../util";
 
 const reportType = "query";
 
-const deduplicateQueries = (dataset) =>
-  // get searches and deduplicate them
-  new Set(
-    dataset
-      .where((a) => a.type == actionTypes.search)
-      .getSeries("query")
-      .toArray()
-      .filter((a) => a)
-      .map((q) => q.toLowerCase())
-  );
+// we dedulicate queries and only select the one appearing
+// at least {minOccurence} times
+const deduplicateQueries = (dataset, minOccurence = 2) =>
+  dataset
+    .where((a) => a.type == actionTypes.search)
+    .groupBy((r) => r.query)
+    .select((group) => ({ count: group.count(), query: group.first().query }))
+    .inflate()
+    .where((r) => r.count > minOccurence)
+    .getSeries("query")
+    .toArray()
+    .filter((a) => a)
+    .map((q) => q.toLowerCase());
 
 // get all search queries and build a cache of the responses
 export const buildCache = async (dataset) => {
-  const pqueue = new PQueue({ concurrency: 20 });
+  const pqueue = new PQueue({ concurrency: 4 });
 
   // we get all unique queries
-  const searches = deduplicateQueries(dataset);
+  const queries = deduplicateQueries(dataset);
 
-  const pSearches = Array.from(searches).map((query) =>
+  logger.info(
+    `Calling API for ${queries.length} queries, this might take some time`
+  );
+
+  const pSearches = Array.from(queries).map((query) =>
     pqueue.add(() =>
       triggerSearch(query)
         .then((json) => ({
@@ -49,6 +56,8 @@ export const buildCache = async (dataset) => {
   const results = await Promise.all(pSearches);
 
   await pqueue.onIdle();
+
+  logger.info("API calls completed.");
 
   const groups = new Map();
   const resultCache = new Map();
@@ -125,6 +134,8 @@ const runEvaluation = (counts) => {
   return clusters;
 };
 
+// non functionnal implementation here, we increment counts,
+// might be worth swapping with immutable implementation at one point
 export const analyseVisit = (queryMap, counts) => (v) => {
   const actions = v.where((a) =>
     [actionTypes.search, actionTypes.selectResult].includes(a.type)
@@ -147,8 +158,8 @@ export const analyseVisit = (queryMap, counts) => (v) => {
     const count = counts.get(group);
 
     if (!count) {
-      logger.error("Cannot find results for query : " + q);
-      logger.error(group);
+      // logger.error("Cannot find results for query : " + q);
+      // logger.error(group);
       return new Map();
     }
 
@@ -207,7 +218,7 @@ export const analyseVisit = (queryMap, counts) => (v) => {
 const generateIndexReport = (queryClusters) => {
   const [sumNdcg, sumSelectionCount] = queryClusters
     .map((doc) => [doc.ndcg * doc.selectionsCount, doc.selectionsCount])
-    .reduce((a, b) => [a[0] + b[0], a[1] + b[1]]);
+    .reduce((a, b) => [a[0] + b[0], a[1] + b[1]], [0, 0]);
 
   const meanSelectionCount = sumSelectionCount / queryClusters.length;
 
@@ -218,9 +229,11 @@ const generateIndexReport = (queryClusters) => {
         cluster.selectionsCount > meanSelectionCount && cluster.ndcg < 0.8
     )
     .map((cluster) => ({
-      ...cluster.queries[0],
       count: cluster.selectionsCount,
+
       ndcg: cluster.ndcg,
+      // forcing string
+      ...cluster.queries[0],
     }));
 
   return {
@@ -287,6 +300,8 @@ export const analyse = async (dataset, reportId = new Date().getTime()) => {
     reportId,
     reportType: reportType + "-index",
   };
+
+  // console.log(JSON.stringify(queryClusterIndexReport, null, 2));
 
   // and finally build reports
   return [queryClusterIndexReport, ...queryClusterReports];

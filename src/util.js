@@ -8,6 +8,18 @@ export const urlToPath = (url) => {
   }
 };
 
+export const formatDate = (date) => date.toISOString().split("T")[0];
+
+// get last n days before ref
+export const getLastDays = (n, ref) => {
+  // a day in milliseconds
+  const dayMillis = 24 * 60 * 60 * 1000;
+
+  const createDate = (i) => new Date(ref.getTime() - (i + 1) * dayMillis);
+
+  return [...Array(n).keys()].map(createDate).map(formatDate);
+};
+
 export const actionTypes = {
   home: "home",
   search: "search",

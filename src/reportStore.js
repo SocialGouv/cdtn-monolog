@@ -1,7 +1,7 @@
 // save and read reports in ES uselss for now as only redirecting to ES
 import * as es from "./elastic";
 
-const mappings = {
+export const standardMappings = {
   properties: {
     // covisit
     content: {
@@ -49,7 +49,111 @@ const mappings = {
   },
 };
 
-export const resetReportIndex = async (esClient, indexName) => {
+export const queryReportMappings = {
+  properties: {
+    dcg: {
+      type: "long",
+    },
+    idcg: {
+      type: "long",
+    },
+    ndcg: {
+      type: "long",
+    },
+    problems: {
+      properties: {
+        count: {
+          type: "long",
+        },
+        ndcg: {
+          type: "long",
+        },
+        query: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+      },
+    },
+    queries: {
+      properties: {
+        count: {
+          type: "long",
+        },
+        query: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+      },
+    },
+    queriesCount: {
+      type: "long",
+    },
+    queryKey: {
+      type: "long",
+    },
+    reportId: {
+      type: "long",
+    },
+    reportType: {
+      fields: {
+        keyword: {
+          ignore_above: 256,
+          type: "keyword",
+        },
+      },
+      type: "text",
+    },
+    results: {
+      properties: {
+        algo: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+        count: {
+          type: "long",
+        },
+        result: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+      },
+    },
+    selectionsCount: {
+      type: "long",
+    },
+    type: {
+      fields: {
+        keyword: {
+          ignore_above: 256,
+          type: "keyword",
+        },
+      },
+      type: "text",
+    },
+  },
+};
+
+export const resetReportIndex = async (esClient, indexName, mappings) => {
   await es
     .deleteIfExists(esClient, indexName)
     .then(() => es.testAndCreateIndex(esClient, indexName, mappings));
