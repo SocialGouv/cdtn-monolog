@@ -1,4 +1,4 @@
-FROM node:14.11-alpine3.10 as builder
+FROM node:14.13-alpine3.10 as builder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY ./src/ src/
 RUN yarn install
 RUN yarn build
 
-FROM node:14.11-alpine3.10
+FROM node:14.13-alpine3.10
 WORKDIR /app
 COPY --from=builder /app/dist/ .
 
