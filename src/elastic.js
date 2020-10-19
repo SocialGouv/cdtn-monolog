@@ -80,9 +80,9 @@ const batchInsert = async (esClient, index, documents, size = 1000) => {
 const SCROLL_TIMEOUT = "30s";
 const BATCH_SIZE = 500;
 
-const getDocuments = async (esClient, index, query) => {
+const getDocuments = async (esClient, index, query, aggs, withDocs = true) => {
   const initResponse = await esClient.search({
-    body: { query },
+    body: { aggs, query },
     index,
     scroll: SCROLL_TIMEOUT,
     size: BATCH_SIZE,
@@ -90,37 +90,41 @@ const getDocuments = async (esClient, index, query) => {
 
   const total = initResponse.body.hits.total.value;
 
+  const { aggregations } = initResponse.body;
+
   const docs = [];
 
-  const treatResponse = ({ body }) => {
-    // get docs from response
-    body.hits.hits.forEach((hit) => {
-      docs.push(hit._source);
-    });
+  if (withDocs) {
+    const treatResponse = ({ body }) => {
+      // get docs from response
+      body.hits.hits.forEach((hit) => {
+        docs.push(hit._source);
+      });
 
-    // return next scroll id
-    return body._scroll_id;
-  };
+      // return next scroll id
+      return body._scroll_id;
+    };
 
-  // keep track of the scrolling id
-  let scrollId = treatResponse(initResponse);
-  logger.debug(`Reading ${total} docs : `);
+    // keep track of the scrolling id
+    let scrollId = treatResponse(initResponse);
+    logger.debug(`Reading ${total} docs : `);
 
-  // until we've read all docs, we keep scrolling
-  while (docs.length < total) {
-    // scroll
-    const response = await esClient.scroll({
-      scroll: SCROLL_TIMEOUT,
-      scrollId,
-    });
-    if (docs.length % 50000 == 0) {
-      logger.debug(docs.length);
+    // until we've read all docs, we keep scrolling
+    while (docs.length < total) {
+      // scroll
+      const response = await esClient.scroll({
+        scroll: SCROLL_TIMEOUT,
+        scrollId,
+      });
+      if (docs.length % 50000 == 0) {
+        logger.debug(docs.length);
+      }
+      // read response and get next scroll id
+      scrollId = treatResponse(response);
     }
-    // read response and get next scroll id
-    scrollId = treatResponse(response);
   }
 
-  return docs;
+  return { aggregations, docs };
 };
 
 export { batchInsert, getDocuments, testAndCreateIndex, deleteIfExists };

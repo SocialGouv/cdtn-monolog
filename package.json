@@ -26,10 +26,11 @@
     "@socialgouv/cdtn-sources": "^4.31.1",
     "data-forge": "^1.8.11",
     "data-forge-fs": "^0.0.8",
+    "date-fns": "^2.16.1",
     "esm": "^3.2.25",
     "murmurhash-js": "^1.0.0",
     "node-fetch": "^2.6.1",
-    "p-queue": "^6.6.1",
+    "p-queue": "^6.6.2",
     "winston": "^3.3.3",
     "yargs": "^16.0.3"
   },

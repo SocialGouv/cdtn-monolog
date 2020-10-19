@@ -3,6 +3,8 @@ import * as yargs from "yargs";
 
 import {
   runIngestion,
+  runLastMonthlyReport,
+  runLastWeeklyReport,
   runMonthlyReport,
   runQueryAnalysis,
   runWeeklyReport,
@@ -40,8 +42,27 @@ const main = async () => {
         },
         ({ days }) => runQueryAnalysis(days)
       )
-      .command("monthly", "Compute monthly report", () => runMonthlyReport())
-      .command("weekly", "Compute weekly report", () => runWeeklyReport())
+      .command("last-monthly", "Compute last monthly report", () =>
+        runLastMonthlyReport()
+      )
+      .command("last-weekly", "Compute last weekly report", () =>
+        runLastWeeklyReport()
+      )
+      .command(
+        "monthly [month] [year]",
+        "Compute monthly report",
+        { month: { alias: "m", demand: 1 }, year: { alias: "y", demand: 1 } },
+        ({ month, year }) => runMonthlyReport(month, year)
+      )
+      .command(
+        "weekly [week] [year]",
+        "Compute weekly report",
+        { week: { alias: "w", demand: 1 }, year: { alias: "y", demand: 1 } },
+        ({ week, year }) =>
+          week && year
+            ? runWeeklyReport(week, year)
+            : logger.error("year and week required, check help")
+      )
       .demandCommand()
       // .strict()
       .help().argv;
