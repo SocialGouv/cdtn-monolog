@@ -1,9 +1,14 @@
-import { setWeek } from "date-fns";
+import { getWeek, setWeek } from "date-fns";
 import * as fs from "fs";
 
 import { analyse as queryAnalysis } from "./analysis/queries";
 import { analyse as visitAnalysis } from "./analysis/visits";
-import { esClient, LOG_INDEX } from "./esConf";
+import {
+  esClient,
+  LOG_INDEX,
+  MONTHLY_REPORT_INDEX,
+  WEEKLY_REPORT_INDEX,
+} from "./esConf";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import { logger } from "./logger";
 import * as Reader from "./reader";
@@ -55,11 +60,11 @@ const runWeeklyReportByDate = async (date) => {
   const logFiles = getLastDays(7, lastMonday);
   const dataframe = await Reader.countVisits(esClient, LOG_INDEX, logFiles);
 
-  const report = visitAnalysis(dataframe);
-  console.log(report);
-  // TODO
-  // save report
-  console.log(report);
+  const report = visitAnalysis(
+    dataframe,
+    `weekly-${getWeek(lastMonday) - 1}-${lastMonday.getFullYear()}`
+  );
+  await ReportStore.saveReport(esClient, WEEKLY_REPORT_INDEX, [report]);
 };
 
 export const runWeeklyReport = async (week, year) => {
@@ -82,10 +87,8 @@ export const runMonthlyReport = async (month, year) => {
   const logFiles = days.map(formatDate);
   const dataframe = await Reader.countVisits(esClient, LOG_INDEX, logFiles);
 
-  const report = visitAnalysis(dataframe);
-  // TODO
-  // save report
-  console.log(report);
+  const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
+  await ReportStore.saveReport(esClient, MONTHLY_REPORT_INDEX, [report]);
 };
 
 export const runLastMonthlyReport = async () => {
@@ -95,3 +98,23 @@ export const runLastMonthlyReport = async () => {
 
   runMonthlyReport(month, year);
 };
+
+// TODO function to recreate all reports from january 2020
+// await ReportStore.resetReportIndex(
+//   esClient,
+//   MONTHLY_REPORT_INDEX,
+//   ReportStore.visitReportMappings
+// );
+
+// await ReportStore.resetReportIndex(
+//   esClient,
+//   WEEKLY_REPORT_INDEX,
+//   ReportStore.visitReportMappings
+// );
+
+// [...Array(week).keys()].map((w) => {
+//   const ww = w + 1;
+//   console.log({ week: ww, year });
+//   const weekDate = setWeek(new Date(year, 1, 1, 12), ww + 1);
+//   runWeeklyReportByDate(weekDate);
+// });

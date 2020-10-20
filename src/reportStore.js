@@ -1,5 +1,6 @@
 // save and read reports in ES uselss for now as only redirecting to ES
 import * as es from "./elastic";
+import { logger } from "./logger";
 
 export const standardMappings = {
   properties: {
@@ -153,10 +154,39 @@ export const queryReportMappings = {
   },
 };
 
+export const visitReportMappings = {
+  properties: {
+    averageDailyVisits: {
+      type: "integer",
+    },
+
+    endDate: {
+      type: "date",
+    },
+
+    maxDailyVisits: {
+      type: "integer",
+    },
+
+    nbVisits: {
+      type: "integer",
+    },
+
+    reportId: {
+      type: "keyword",
+    },
+
+    startDate: {
+      type: "date",
+    },
+  },
+};
+
 export const resetReportIndex = async (esClient, indexName, mappings) => {
   await es
     .deleteIfExists(esClient, indexName)
-    .then(() => es.testAndCreateIndex(esClient, indexName, mappings));
+    .then(() => es.testAndCreateIndex(esClient, indexName, mappings))
+    .catch((err) => logger.error(err));
 };
 
 export const saveReport = async (esClient, indexName, docs) => {
