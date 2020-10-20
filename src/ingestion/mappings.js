@@ -8,6 +8,8 @@ const hash = (s) =>
 
 const mapAction = (
   {
+    cc,
+    ccAction,
     idVisit,
     feedbackType,
     lastActionDateTime,
@@ -35,6 +37,8 @@ const mapAction = (
   // unique visit id
   const uvi = hash(`${idVisit}-${lastActionDateTime}`);
   const obj = {
+    cc,
+    ccAction,
     feedbackType,
     idVisit,
     lastActionDateTime,
