@@ -11,11 +11,12 @@ import * as readline from "readline";
 // import { ingest } from "../ingestion/ingester";
 import * as datasetUtil from "../dataset";
 // import * as Suggestion from "../analysis/suggestion";
-import { esClient } from "../esConf";
+import { esClient, LOG_INDEX } from "../esConf";
 import * as Reader from "../reader";
+import { actionTypes } from "../util";
 
 // const logFile = "/Users/remim/tmp/logs-30.csv";
-const logFile = "/Users/remim/tmp/3months/logs-3months.csv";
+const logFile = "/Users/remim/tmp/3months/logs-4months.csv";
 
 // const dumpFile = "/Users/remim/tmp/ingest-test/2020-04-23.json";
 
@@ -24,15 +25,20 @@ const main = async () => {
 
   let data = await Reader.readFromElastic(
     esClient,
-    104,
-    new Date("2020-09-12")
+    LOG_INDEX,
+    // 104,
+    // new Date("2020-09-12")
+    new Date("2020-10-19"),
+    50,
+    // [actionTypes.selectRelated, actionTypes.visit]
+    [actionTypes.selectRelated]
   );
   // console.log(data.count());
 
   // we unfold the result selection object in two columns
-  const resultSelection = data
-    .where((a) => a.type == selectResultType)
-    .getSeries("resultSelection");
+  // const resultSelection = data
+  // .where((a) => a.type == selectResultType)
+  // .getSeries("resultSelection");
 
   data = data.withSeries({
     resultSelectionAlgo: (df) =>
@@ -77,7 +83,7 @@ const read = (m) =>
   Reader.readFromFile(`/Users/remim/tmp/3months/logs-${m}.csv`);
 
 const covisiteAnalysis = async () => {
-  const m = "3months";
+  const m = "4months";
   console.log(m);
   const data = await read(m);
   // const data = await read("july");
@@ -193,7 +199,7 @@ const covisitsRatios = async (data, n) => {
 };
 
 const analyseAugust = async () => {
-  const data = await read("3months");
+  const data = await read("4months");
 
   /*
   data.where(
@@ -218,8 +224,9 @@ const analyseAugust = async () => {
   };
 
   // runOnPeriod("2020/07/30", "2020/09/12", 200);
-  runOnPeriod("2020/07/30", "2020/08/22");
-  runOnPeriod("2020/08/23", "2020/09/12");
+  // runOnPeriod("2020/07/30", "2020/08/22");
+  // runOnPeriod("2020/08/23", "2020/09/12");
+  runOnPeriod("2020/09/01", "2020/10/20");
 
   /*
   runOnPeriod("2020/07/30", "2020/08/08");
@@ -667,10 +674,12 @@ const play = () =>
   });
 
 // main()
-// covisiteAnalysis()
-// analyseAugust()
-// .then(() => evaluate())
-// evaluate()
-play()
+// covisiteAnalysis();
+
+analyseAugust()
+  // .then(() => evaluate())
+
+  // evaluate()
+  // play()
   .then(() => console.log("done"))
   .catch((err) => console.log(err));

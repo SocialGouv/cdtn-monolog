@@ -12,12 +12,16 @@ const analyse = (dataset, reportId) => {
 
   const nbVisits = counts.sum();
   const maxDailyVisits = counts.max();
+  const maxDailyVisitsDay = dataset
+    .where((r) => r.count == maxDailyVisits)
+    .first().day;
   const averageDailyVisits = Math.floor(counts.average());
 
   return {
     averageDailyVisits,
     endDate,
     maxDailyVisits,
+    maxDailyVisitsDay,
     nbVisits,
     reportId,
     startDate,
