@@ -3248,6 +3248,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3263,6 +3264,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3278,6 +3280,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3293,6 +3296,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3308,6 +3312,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3323,6 +3328,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3338,6 +3344,7 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
@@ -3353,6 +3360,8 @@ Array [
     "uvi": -970157954,
   },
   Object {
+    "cc": "Commerce de détail de l'habillement et des articles textiles",
+    "ccAction": "/outils/preavis-demission",
     "idVisit": 856646,
     "lastActionDateTime": "2020-04-24 07:56:44",
     "lastActionTimestamp": 1587715004,
