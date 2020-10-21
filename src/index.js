@@ -21,6 +21,10 @@ const runAnalysis = async () => {
 };
 
 // TODO
+/**
+ *
+ * @param {string} dataPath
+ */
 const runIngestion = async (dataPath) => {
   await checkIndex(esClient, LOG_INDEX);
   // read dump files in default location

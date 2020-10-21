@@ -1,5 +1,10 @@
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
 
+/**
+ *
+ * @param {string} url
+ * @returns {string}
+ */
 export const urlToPath = (url) => {
   if (url.startsWith(SERVICE_URL)) {
     return url.slice(SERVICE_URL.length);

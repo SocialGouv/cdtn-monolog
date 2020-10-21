@@ -11,6 +11,9 @@ export const Dataset = (dataframe) =>
 
 import * as util from "./util";
 
+/**
+ * @param {import("data-forge").DataFrame} dataframe
+ */
 export const getVisits = (dataframe) => {
   return dataframe.groupBy((row) => row.uvi);
 };
