@@ -699,7 +699,7 @@ Array [
     "ndcg": 0.8838329034231467,
     "problems": Array [
       Object {
-        "count": 4,
+        "count": 3,
         "ndcg": 0.7967075809905066,
         "query": "paternite",
       },

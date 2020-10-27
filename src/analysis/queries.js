@@ -12,24 +12,24 @@ const reportType = "query";
 
 // we dedulicate queries and only select the one appearing
 // at least {minOccurence} times
-const deduplicateQueries = (dataset, minOccurence = 2) =>
+const deduplicateQueries = (dataset, minOccurence) =>
   dataset
     .where((a) => a.type == actionTypes.search)
     .groupBy((r) => r.query)
     .select((group) => ({ count: group.count(), query: group.first().query }))
     .inflate()
-    .where((r) => r.count > minOccurence)
+    .where((r) => r.count >= minOccurence)
     .getSeries("query")
     .toArray()
     .filter((a) => a)
     .map((q) => q.toLowerCase());
 
 // get all search queries and build a cache of the responses
-export const buildCache = async (dataset) => {
+export const buildCache = async (dataset, minOccurence = 0) => {
   const pqueue = new PQueue({ concurrency: 4 });
 
   // we get all unique queries
-  const queries = deduplicateQueries(dataset);
+  const queries = deduplicateQueries(dataset, minOccurence);
 
   logger.info(
     `Calling API for ${queries.length} queries, this might take some time`

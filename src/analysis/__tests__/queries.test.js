@@ -52,7 +52,8 @@ describe("Query reports", () => {
 
     const df = DataFrame.concat(visits.map(generateSearchVisit));
 
-    const cache = await buildCache(df);
+    const cache = await buildCache(df, 0);
+
     expect(cache).toMatchSnapshot();
   });
 
