@@ -334,6 +334,11 @@ export const writeCache = async (cache, file) => {
   writer.end();
 };
 
+/**
+ *
+ * @param {string} file
+ * @returns {Promise<import("..").Cache>}
+ */
 export const readCache = async (file) => {
   const readInterface = readline.createInterface({
     crlfDelay: Infinity,
@@ -364,8 +369,9 @@ export const readCache = async (file) => {
 
   // const queryGroups = [...groups.values()];
 
+  /**@type {import("..").Cache} */
   const cache = new Map();
   cacheObj.forEach((obj, idx) => cache.set(idx, obj));
 
-  return { cache };
+  return cache;
 };

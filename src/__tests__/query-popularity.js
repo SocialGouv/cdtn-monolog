@@ -47,8 +47,8 @@ const step2 = async (cache, queryMap, logs) => {
     const entry = cache.get(idx);
 
     if (!entry) {
-      console.log("Issue " + query);
-      console.log(idx);
+      //   console.log("Issue " + query);
+      //   console.log(idx);
       return;
     }
 
@@ -69,7 +69,7 @@ const step2 = async (cache, queryMap, logs) => {
     // most frequent query
     const principalQuery = queries.sort((a, b) => b.count - a.count)[0].query;
 
-    counts.set(principalQuery, { queries, total });
+    if (total > 0) counts.set(principalQuery, { queries, total });
   });
 
   return Array.from(counts.entries()).sort((a, b) => b[1].total - a[1].total);
@@ -78,12 +78,13 @@ const step2 = async (cache, queryMap, logs) => {
 /**
  * Run a popularity analysis for a given period, using generic content equality
  *
-//  * @param {Array<{date: Date, content: string, contentId: number}>} selectionEvents
-//  * @param {Date} refDate
+ * @param {import("..").Cache} cache
+ * @param {Map<string, number>} queryMap
+ * @param {import("data-forge").IDataFrame} logs
  */
-export const genericPopularity = async () => {
+export const genericPopularity = async (cache, queryMap, logs) => {
   // we build the cache
-  const { cache, queryMap, logs } = await step1();
+  //   const { cache, queryMap, logs } = await step1();
 
   // we split the logs
   // TODO borrowed from popularity
@@ -103,13 +104,14 @@ export const genericPopularity = async () => {
   const countFocus = await step2(cache, queryMap, focus);
   const countReference = await step2(cache, queryMap, reference);
 
+  const max = 40;
   console.log(new Date(refDate * 1000));
   console.log(new Date(end * 1000));
-  console.log(JSON.stringify(countFocus, null, 2));
+  console.log(JSON.stringify(countFocus.slice(0, max), null, 2));
   console.log("\n\n\n\n");
   console.log(new Date(start * 1000));
   console.log(new Date(end * 1000));
-  console.log(JSON.stringify(countReference, null, 2));
+  console.log(JSON.stringify(countReference.slice(0, max), null, 2));
 };
 
 const saveCache = async () => {
@@ -121,10 +123,26 @@ const saveCache = async () => {
   writeCache(cache, "cache.json");
 };
 
+/**
+ *
+ * @param {import("..").Cache} cache
+ */
+const queryMapFromCache = (cache) => {
+  const queryMap = new Map();
+  cache.forEach(({ queries }, idx) => {
+    queries.forEach((_, query) => queryMap.set(query, idx));
+  });
+  return queryMap;
+};
+
 const loadCache = async () => {
-  const { cache } = await readCache("cache.json");
-  console.log(cache.get(2));
-  return cache;
+  const cache = await readCache("cache.json");
+  const queryMap = queryMapFromCache(cache);
+
+  return { cache, queryMap };
+
+  //   console.log(cache.get(2));
+  //   return cache;
 
   //   // TODO duplicated from queries build cache
   //   const queryClusters = [...groups.values()];
@@ -139,7 +157,13 @@ const loadCache = async () => {
 };
 
 // genericPopularity()
-saveCache()
-  //   .then(() => loadCache())
-  // loadCache()
+// saveCache()
+//   .then(() => loadCache())
+loadCache()
+  .then(async ({ cache, queryMap }) => {
+    const logs = await readFromElastic(esClient, LOG_INDEX, new Date(), 60, [
+      actionTypes.search,
+    ]);
+    genericPopularity(cache, queryMap, logs);
+  })
   .catch((err) => console.log(err));
