@@ -38,6 +38,7 @@ const main = async () => {
         {
           days: {
             alias: "d",
+            demand: true,
           },
         },
         ({ days }) => runQueryAnalysis(days)
@@ -51,13 +52,19 @@ const main = async () => {
       .command(
         "monthly [month] [year]",
         "Compute monthly report",
-        { month: { alias: "m", demand: 1 }, year: { alias: "y", demand: 1 } },
+        {
+          month: { alias: "m", demand: true },
+          year: { alias: "y", demand: true },
+        },
         ({ month, year }) => runMonthlyReport(month, year)
       )
       .command(
         "weekly [week] [year]",
         "Compute weekly report",
-        { week: { alias: "w", demand: 1 }, year: { alias: "y", demand: 1 } },
+        {
+          week: { alias: "w", demand: true },
+          year: { alias: "y", demand: true },
+        },
         ({ week, year }) =>
           week && year
             ? runWeeklyReport(week, year)

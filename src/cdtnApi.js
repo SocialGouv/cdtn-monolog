@@ -6,6 +6,10 @@ const CDTN_API =
 
 const path = "/api/v1/search";
 
+/**
+ *
+ * @param {string} query
+ */
 export const triggerSearch = (query) => {
   const url = `${CDTN_API}${path}?q=${encodeURIComponent(query)}`;
 

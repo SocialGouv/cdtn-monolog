@@ -13,13 +13,24 @@ export const urlToPath = (url) => {
   }
 };
 
+/**
+ *
+ * @param {Date} date
+ */
 export const formatDate = (date) => date.toISOString().split("T")[0];
 
-// get last n days before ref
+/**
+ * get last n days before ref
+ * @param {number} n
+ * @param {Date} ref
+ */
 export const getLastDays = (n, ref) => {
   // a day in milliseconds
   const dayMillis = 24 * 60 * 60 * 1000;
 
+  /**
+   * @param {number} i
+   */
   const createDate = (i) => new Date(ref.getTime() - (i + 1) * dayMillis);
 
   return [...Array(n).keys()].map(createDate).map(formatDate);

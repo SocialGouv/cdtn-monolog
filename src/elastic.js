@@ -1,6 +1,12 @@
 import { logger } from "./logger";
 
 // we ensure index exists otherwise we create it
+/**
+ *
+ * @param {import("@elastic/elasticsearch").Client} esClient
+ * @param {string} index
+ * @param {*} mappings
+ */
 const testAndCreateIndex = async (esClient, index, mappings) => {
   const { body } = await esClient.indices.exists({ index });
 
@@ -31,6 +37,11 @@ const testAndCreateIndex = async (esClient, index, mappings) => {
   }
 };
 
+/**
+ *
+ * @param {import("@elastic/elasticsearch").Client} esClient
+ * @param {string} index
+ */
 const deleteIfExists = async (esClient, index) => {
   const { body } = await esClient.indices.exists({ index });
   if (body) {
@@ -39,7 +50,12 @@ const deleteIfExists = async (esClient, index) => {
   }
 };
 
-// bulk insert
+/**
+ *
+ * @param {import("@elastic/elasticsearch").Client} esClient
+ * @param {string} index
+ * @param {*} documents
+ */
 const insertDocuments = async (esClient, index, documents) => {
   try {
     const header = { index: { _index: index, _type: "_doc" } };
@@ -65,6 +81,12 @@ const insertDocuments = async (esClient, index, documents) => {
   }
 };
 
+/**
+ * @param {import("@elastic/elasticsearch").Client} esClient
+ * @param {string} index
+ * @param {*} documents
+ * @param {number} size
+ */
 const batchInsert = async (esClient, index, documents, size = 1000) => {
   // number of batches
   const n = Math.ceil(documents.length / size);
@@ -80,6 +102,13 @@ const batchInsert = async (esClient, index, documents, size = 1000) => {
 const SCROLL_TIMEOUT = "30s";
 const BATCH_SIZE = 500;
 
+/**
+ * @param {import("@elastic/elasticsearch").Client} esClient
+ * @param {string} index
+ * @param {*} query
+ * @param {*} aggs
+ * @param {boolean} withDocs
+ */
 const getDocuments = async (esClient, index, query, aggs, withDocs = true) => {
   const initResponse = await esClient.search({
     body: { aggs, query },
@@ -92,6 +121,7 @@ const getDocuments = async (esClient, index, query, aggs, withDocs = true) => {
 
   const { aggregations } = initResponse.body;
 
+  /** @type {Array.<*>} */
   const docs = [];
 
   if (withDocs) {
@@ -106,12 +136,14 @@ const getDocuments = async (esClient, index, query, aggs, withDocs = true) => {
     };
 
     // keep track of the scrolling id
+    /** @type {number} */
     let scrollId = treatResponse(initResponse);
     logger.debug(`Reading ${total} docs : `);
 
     // until we've read all docs, we keep scrolling
     while (docs.length < total) {
       // scroll
+      // @ts-ignore
       const response = await esClient.scroll({
         scroll: SCROLL_TIMEOUT,
         scrollId,

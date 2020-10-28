@@ -64,7 +64,7 @@ export const buildCache = async (dataset, minOccurence = 0) => {
   const groups = new Map();
 
   // grouping query and docs : Map<query, documentResults>
-  /** @type{Map.<*, Array.<string>>} */
+  /** @type{Map.<string, *>} */
   const resultCache = new Map();
 
   results.forEach(({ query, documents }) => {

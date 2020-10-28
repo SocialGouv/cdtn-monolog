@@ -7,7 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "skipLibCheck": false,
-    "strict": true,
+    "strict": false,
     "lib": ["es2019"]
   },
   "include": ["src", "@types"]

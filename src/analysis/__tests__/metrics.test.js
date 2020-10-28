@@ -75,6 +75,7 @@ describe("Basic arithmetic", () => {
     expect(average).toBe(2 / 3);
   });
   it("should count nb of elements of each value  in array", () => {
+    // @ts-ignore
     const arr = Array(true, false, true, "whatever");
     const values = Metrics.valueCounts(arr);
     expect(values).toStrictEqual({ false: 1, true: 2, whatever: 1 });

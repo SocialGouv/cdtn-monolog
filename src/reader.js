@@ -31,7 +31,7 @@ export const readFromElastic = async (
     },
   };
 
-  const { docs } = await getDocuments(esClient, index, query);
+  const { docs } = await getDocuments(esClient, index, query, undefined);
 
   // return a Dataframe containing actions
   return new dataForge.DataFrame({ considerAllRows: true, values: docs });
