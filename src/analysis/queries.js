@@ -59,7 +59,12 @@ export const buildCache = async (dataset, minOccurence = 0) => {
 
   logger.info("API calls completed.");
 
+  // grouping queries : Map<documentResults, list of queries>
+  /** @type{Map.<*, Array.<string>>} */
   const groups = new Map();
+
+  // grouping query and docs : Map<query, documentResults>
+  /** @type{Map.<*, Array.<string>>} */
   const resultCache = new Map();
 
   results.forEach(({ query, documents }) => {
@@ -74,7 +79,34 @@ export const buildCache = async (dataset, minOccurence = 0) => {
 
   const queryClusters = [...groups.values()];
 
-  return { queryClusters, resultCache };
+  // a map to get the query group id from any query : Map<query, clusterIndex>
+  /** @type{Map.<string, number>} */
+  const queryMap = new Map(
+    queryClusters.flatMap((queryCluster, i) =>
+      queryCluster.map((query) => [query, i])
+    )
+  );
+
+  // we build a list of clusters, containing : an id, a list of queries, the API documents
+  const cache = new Map(
+    queryClusters.map((queryGroup, i) => [
+      i,
+      {
+        queries: new Map(queryGroup.map((q) => [q, 0])),
+        results: new Map(
+          resultCache
+            .get(queryGroup[0])
+            // we should use ids here once they're available directly in the URL
+            .map(({ algo, source, slug }) => [
+              "/" + getRouteBySource(source) + "/" + slug,
+              { algo, count: 0 },
+            ])
+        ),
+      },
+    ])
+  );
+
+  return { cache, queryMap };
 };
 
 const computeNDCG = (results) => {
@@ -168,7 +200,6 @@ export const analyseVisit = (queryMap, counts) => (v) => {
     return count.results;
   });
 
-  // we unfold the result selection object in two columns
   const resultSelections = actions.where(
     (a) => a.type == actionTypes.selectResult
   );
@@ -176,6 +207,7 @@ export const analyseVisit = (queryMap, counts) => (v) => {
   // if no selection, not much to do
   if (!resultSelections.count()) return;
 
+  // we unfold the result selection object in two columns
   const unfoldedResultSelections = resultSelections.withSeries({
     resultSelectionAlgo: (df) =>
       df.select((row) =>
@@ -245,33 +277,8 @@ const generateIndexReport = (queryClusters) => {
 
 export const analyse = async (dataset, reportId = new Date().getTime()) => {
   // get all search queries and build cache for each request using CDTN API
-  const { queryClusters, resultCache } = await buildCache(dataset);
-
-  // a map to get the query group id from any query
-  const queryMap = new Map(
-    queryClusters.flatMap((queryCluster, i) =>
-      queryCluster.map((query) => [query, i])
-    )
-  );
-
-  // a map that store each query group with : queries and occurences / results and clicks
-  const counts = new Map(
-    queryClusters.map((queryGroup, i) => [
-      i,
-      {
-        queries: new Map(queryGroup.map((q) => [q, 0])),
-        results: new Map(
-          resultCache
-            .get(queryGroup[0])
-            // we should use ids here once they're available directly in the URL
-            .map(({ algo, source, slug }) => [
-              "/" + getRouteBySource(source) + "/" + slug,
-              { algo, count: 0 },
-            ])
-        ),
-      },
-    ])
-  );
+  // counts : a map that store each query group with : queries and occurences / results and clicks
+  const { cache: counts, queryMap } = await buildCache(dataset);
 
   // go through each visit and count queries and selection
   datasetUtil
