@@ -1,7 +1,7 @@
 #!/bin/bash
 
-date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`
-#date=2020-03-25
+#date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`
+date=2020-09-30
 limit=100
 offset=0
 accu="[]"
