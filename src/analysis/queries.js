@@ -1,7 +1,9 @@
 // here we analyze search queries
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
+import * as fs from "fs";
 import * as murmur from "murmurhash-js";
 import PQueue from "p-queue";
+import * as readline from "readline";
 
 import { triggerSearch } from "../cdtnApi";
 import * as datasetUtil from "../dataset";
@@ -10,7 +12,7 @@ import { actionTypes } from "../util";
 
 const reportType = "query";
 
-// we dedulicate queries and only select the one appearing
+// we deduplicate queries and only select the one appearing
 // at least {minOccurence} times
 const deduplicateQueries = (dataset, minOccurence) =>
   dataset
@@ -26,7 +28,7 @@ const deduplicateQueries = (dataset, minOccurence) =>
 
 // get all search queries and build a cache of the responses
 export const buildCache = async (dataset, minOccurence = 0) => {
-  const pqueue = new PQueue({ concurrency: 4 });
+  const pqueue = new PQueue({ concurrency: 16 });
 
   // we get all unique queries
   const queries = deduplicateQueries(dataset, minOccurence);
@@ -38,12 +40,12 @@ export const buildCache = async (dataset, minOccurence = 0) => {
   const pSearches = Array.from(queries).map((query) =>
     pqueue.add(() =>
       triggerSearch(query)
-        .then((json) => ({
+        .then(({ documents }) => ({
           // use base64 to reduce cache size and ease comparison
           // documents: Buffer.from(JSON.stringify(json.documents)).toString(
           //   "base64"
           // ),
-          documents: json.documents,
+          documents,
           query,
         }))
         .catch(() => {
@@ -68,10 +70,12 @@ export const buildCache = async (dataset, minOccurence = 0) => {
   const resultCache = new Map();
 
   results.forEach(({ query, documents }) => {
-    if (!groups.has(documents)) {
-      groups.set(documents, [query]);
+    // const resultKey = murmur.murmur3(JSON.stringify(documents), 42);
+    const resultKey = JSON.stringify(documents);
+    if (!groups.has(resultKey)) {
+      groups.set(resultKey, [query]);
     } else {
-      groups.get(documents).push(query);
+      groups.get(resultKey).push(query);
     }
 
     resultCache.set(query, documents);
@@ -312,4 +316,56 @@ export const analyse = async (dataset, reportId = new Date().getTime()) => {
 
   // and finally build reports
   return [queryClusterIndexReport, ...queryClusterReports];
+};
+
+/**
+ *
+ * @param {import("..").Cache} cache
+ */
+export const writeCache = async (cache, file) => {
+  // const cache = await buildCache(data);
+  var writer = fs.createWriteStream(file);
+  cache.forEach(({ queries, results }) => {
+    writer.write(
+      JSON.stringify({ queries: [...queries], results: [...results] })
+    );
+    writer.write("\n");
+  });
+  writer.end();
+};
+
+export const readCache = async (file) => {
+  const readInterface = readline.createInterface({
+    crlfDelay: Infinity,
+    input: fs.createReadStream(file),
+  });
+
+  const cacheB64 = [];
+
+  for await (const line of readInterface) {
+    cacheB64.push(JSON.parse(line));
+  }
+
+  const cacheObj = cacheB64.map(({ queries, results }) => ({
+    queries: new Map(queries),
+    // documents: JSON.parse(new Buffer(documents, "base64")),
+    results: new Map(results),
+  }));
+
+  // const groups = new Map();
+
+  // cacheB64.forEach(({ query, documents }) => {
+  //   if (!groups.has(documents)) {
+  //     groups.set(documents, [query]);
+  //   } else {
+  //     groups.get(documents).push(query);
+  //   }
+  // });
+
+  // const queryGroups = [...groups.values()];
+
+  const cache = new Map();
+  cacheObj.forEach((obj, idx) => cache.set(idx, obj));
+
+  return { cache };
 };

@@ -4,6 +4,4 @@ export type Report = {
   id: string
   text: string
 }
-
-// export type DataX = DataFrame
-
+export type Cache = Map<number, { queries: Map<string, number>; results: Map<any, any>; }>

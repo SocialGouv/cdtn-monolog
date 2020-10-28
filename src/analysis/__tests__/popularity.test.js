@@ -105,3 +105,22 @@ describe("Popularity", () => {
     expect(report1.pivot).toBe(start + 0.7 * (end - start));
   });
 });
+
+describe("Generic popularity", () => {
+  it("should work", async () => {
+    const logs = await readFromElastic(esClient, LOG_INDEX, new Date(), 60, [
+      actionTypes.search,
+    ]);
+    const l = 10000;
+    const { cache, queryMap } = await buildCache(logs.take(l), 0);
+    const queries = logs
+      .take(l)
+      .where((a) => a.type == actionTypes.search)
+      .getSeries("query")
+      .toArray()
+      .filter((a) => a)
+      .map((q) => q.toLowerCase());
+
+    expect(true).toBe(false);
+  });
+});

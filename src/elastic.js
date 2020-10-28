@@ -109,7 +109,13 @@ const BATCH_SIZE = 500;
  * @param {*} aggs
  * @param {boolean} withDocs
  */
-const getDocuments = async (esClient, index, query, aggs, withDocs = true) => {
+const getDocuments = async (
+  esClient,
+  index,
+  query,
+  aggs = undefined,
+  withDocs = true
+) => {
   const initResponse = await esClient.search({
     body: { aggs, query },
     index,

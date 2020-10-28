@@ -5,6 +5,14 @@ import * as util from "../util";
 
 const reportType = "popularity";
 
+/**
+ * Run a popularity analysis for a given period, using generic content equality
+ *
+ * @param {Array<{date: Date, content: string, contentId: number}>} selectionEvents
+ * @param {Date} refDate
+ */
+export const genericPopularity = (selectionEvents, refDate) => {};
+
 const analyse = (dataset, proportion, reportId) => {
   const visits = datasetUtil.getVisits(dataset);
 
