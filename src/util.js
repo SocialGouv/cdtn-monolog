@@ -39,6 +39,8 @@ export const getLastDays = (n, ref) => {
 export const actionTypes = {
   home: "home",
   search: "search",
+
+  selectCC: "cc_select",
   // FIXME: 28/07 should be changed to select_related in the near future
   // selectRelated: "selectRelated",
   selectRelated: "select_related",

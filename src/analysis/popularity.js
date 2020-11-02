@@ -4,7 +4,7 @@ import * as datasetUtil from "../dataset";
 import * as util from "../util";
 
 const reportType = "popularity";
-const analyse = (dataset, proportion, reportId) => {
+const analyse = (dataset, proportion, filter) => {
   const visits = datasetUtil.getVisits(dataset);
 
   // FIXME for unkwown reason this doesn't work
@@ -23,6 +23,10 @@ const analyse = (dataset, proportion, reportId) => {
     visits.select((visit) => datasetUtil.toUniqueViews(visit)).toArray()
   );
 
+  const idxUniqueViews = uniqueViews.withIndex(
+    Array.from(Array(uniqueViews.count()).keys())
+  );
+
   // clean views
   const noError = (action) =>
     ![
@@ -31,7 +35,9 @@ const analyse = (dataset, proportion, reportId) => {
       "https://code.travail.gouv.fr/droit-du-travail",
     ].includes(action.url);
 
-  const filteredVisitViews = uniqueViews.where(noError);
+  const filterUrl = (action) => (filter ? action.url.includes(filter) : true);
+
+  const filteredVisitViews = idxUniqueViews.where(noError).where(filterUrl);
 
   const removeAnchor = (url) => {
     return url.split("#")[0];
@@ -58,7 +64,7 @@ const analyse = (dataset, proportion, reportId) => {
       .select((group) => {
         return {
           count: group.count(),
-          url: group.first(),
+          field: group.first(),
         };
       })
       .inflate()
@@ -75,6 +81,9 @@ const analyse = (dataset, proportion, reportId) => {
   const refCounts = countURLs(reference);
   const focusCounts = countURLs(focus);
 
+  return { end, focusCounts, refCounts, refDate, start };
+
+  /*
   // FIXME use outer join to handle missing values (e.g. additions)
   const joined = refCounts.join(
     focusCounts,
@@ -111,6 +120,7 @@ const analyse = (dataset, proportion, reportId) => {
     reportType,
     start: start,
   }));
+  */
 };
 
 export { analyse, reportType };
