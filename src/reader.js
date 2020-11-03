@@ -10,16 +10,7 @@ import { actionTypes, getLastDays } from "./util";
 
 const defaultTypesToConsider = Object.values(actionTypes);
 
-// read logs in Elastic : nDays before referenceDate
-export const readFromElastic = async (
-  esClient,
-  index,
-  referenceDate,
-  nDays,
-  type = defaultTypesToConsider
-) => {
-  const days = getLastDays(nDays, referenceDate);
-
+export const readDaysFromElastic = async (esClient, index, days, type) => {
   const query = {
     bool: {
       must: [
@@ -35,6 +26,18 @@ export const readFromElastic = async (
 
   // return a Dataframe containing actions
   return new dataForge.DataFrame({ considerAllRows: true, values: docs });
+};
+
+// read logs in Elastic : nDays before referenceDate
+export const readFromElastic = async (
+  esClient,
+  index,
+  referenceDate,
+  nDays,
+  type = defaultTypesToConsider
+) => {
+  const days = getLastDays(nDays, referenceDate);
+  readDaysFromElastic(esClient, index, days, type);
 };
 
 // count visit per days in Elastic

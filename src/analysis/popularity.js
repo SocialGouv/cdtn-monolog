@@ -4,7 +4,7 @@ import * as datasetUtil from "../dataset";
 import * as util from "../util";
 
 const reportType = "popularity";
-const analyse = (dataset, proportion, filter) => {
+const analyse = (dataset, m0, m1, m2, filter) => {
   const visits = datasetUtil.getVisits(dataset);
 
   // FIXME for unkwown reason this doesn't work
@@ -50,12 +50,13 @@ const analyse = (dataset, proportion, filter) => {
   const dates = uniqueViews.deflate((r) => r.timestamp);
   const start = dates.min();
   const end = dates.max();
-  const refDate = Math.floor(start + (1 - proportion) * (end - start));
+  // const refDate = Math.floor(start + (1 - proportion) * (end - start));
 
-  const afterRef = (a) => a.timestamp > refDate;
+  // const afterRef = (a) => a.timestamp > refDate;
 
-  const focus = cleanedViews.where(afterRef);
-  const reference = cleanedViews.where((a) => !afterRef(a));
+  const focus = cleanedViews.where((a) => m0.includes(a.logfile));
+  const reference = cleanedViews.where((a) => m1.includes(a.logfile));
+  const m2Data = cleanedViews.where((a) => m2.includes(a.logfile));
 
   const countURLs = (dataframe) => {
     const counts = dataframe
@@ -78,10 +79,23 @@ const analyse = (dataset, proportion, filter) => {
     return normalizedCounts.setIndex("url");
   };
 
-  const refCounts = countURLs(reference);
-  const focusCounts = countURLs(focus);
+  const m0Counts = countURLs(focus);
+  const m0Start = focus.getSeries("timestamp").min();
 
-  return { end, focusCounts, refCounts, refDate, start };
+  const m1Counts = countURLs(reference);
+  const m1Start = reference.getSeries("timestamp").min();
+
+  const m2Counts = countURLs(m2Data);
+  const m2Start = m2Data.getSeries("timestamp").min();
+
+  return {
+    m0Counts,
+    m0Start,
+    m1Counts,
+    m1Start,
+    m2Counts,
+    m2Start,
+  };
 
   /*
   // FIXME use outer join to handle missing values (e.g. additions)

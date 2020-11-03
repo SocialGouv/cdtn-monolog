@@ -1,3 +1,5 @@
+import { setDay, subMonths } from "date-fns";
+
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
 
 /**
@@ -34,6 +36,28 @@ export const getLastDays = (n, ref) => {
   const createDate = (i) => new Date(ref.getTime() - (i + 1) * dayMillis);
 
   return [...Array(n).keys()].map(createDate).map(formatDate);
+};
+
+export const getDaysInMonth = (month, year) => {
+  const date = new Date(year, month - 1, 1, 12);
+  const days = [];
+  while (date.getMonth() === month - 1) {
+    days.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+  return days.map(formatDate);
+};
+
+export const getLastThreeMonthsComplete = () => {
+  const now = new Date();
+
+  const end = setDay(now, 1);
+
+  const m0 = subMonths(end, 0);
+  const m1 = subMonths(end, 1);
+  const m2 = subMonths(end, 2);
+
+  return [m0, m1, m2].map((d) => getDaysInMonth(d.getMonth(), d.getFullYear()));
 };
 
 export const actionTypes = {

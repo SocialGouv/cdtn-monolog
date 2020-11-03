@@ -13,7 +13,7 @@ import { checkIndex, ingest } from "./ingestion/ingester";
 import { logger } from "./logger";
 import * as Reader from "./reader";
 import * as ReportStore from "./reportStore";
-import { actionTypes, formatDate, getLastDays } from "./util";
+import { actionTypes, formatDate, getDaysInMonth, getLastDays } from "./util";
 
 export const runIngestion = async (dataPath) => {
   await checkIndex(esClient, LOG_INDEX);
@@ -78,13 +78,8 @@ export const runLastWeeklyReport = async () => {
 };
 
 export const runMonthlyReport = async (month, year) => {
-  var date = new Date(year, month - 1, 1, 12);
-  var days = [];
-  while (date.getMonth() === month - 1) {
-    days.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  const logFiles = days.map(formatDate);
+  const logFiles = getDaysInMonth(month, year);
+
   const dataframe = await Reader.countVisits(esClient, LOG_INDEX, logFiles);
 
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);

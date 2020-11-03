@@ -13,12 +13,18 @@ export const standardMappings = {
       type: "integer",
     },
 
-    end: {
-      type: "date",
-    },
-
     links: {
       type: "object",
+    },
+
+    m0_start: {
+      type: "date",
+    },
+    m1_start: {
+      type: "date",
+    },
+    m2_start: {
+      type: "date",
     },
 
     pivot: {

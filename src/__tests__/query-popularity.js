@@ -6,9 +6,9 @@ import { analyse as popularityAnalysis } from "../analysis/popularity";
 import { buildCache, readCache, writeCache } from "../analysis/queries";
 import * as datasetUtil from "../dataset";
 import { esClient, LOG_INDEX, REPORT_INDEX } from "../esConf";
-import { readFromElastic, readFromFile } from "../reader";
-import { saveReport } from "../reportStore";
-import { actionTypes } from "../util";
+import { readDaysFromElastic, readFromElastic, readFromFile } from "../reader";
+import { resetReportIndex, saveReport, standardMappings } from "../reportStore";
+import { actionTypes, getLastThreeMonthsComplete } from "../util";
 
 /**
  * Step 1 - Build search engine cache :
@@ -69,7 +69,7 @@ const step2 = async (cache, queryMap, logs) => {
   const counts = new Map();
 
   // we use a copy of our cache
-  new Map(cache).forEach(({ queries: queryMap }) => {
+  cache.forEach(({ queries: queryMap }) => {
     const queries = Array.from(queryMap.entries()).map(([query, count]) => ({
       count,
       query,
@@ -96,51 +96,106 @@ const step2 = async (cache, queryMap, logs) => {
  * @param {Map<string, number>} queryMap
  * @param {import("data-forge").IDataFrame} logs
  */
-export const genericPopularity = async (cache, queryMap, logs, reportId) => {
+export const genericPopularity = async (
+  cache,
+  queryMap,
+  logs,
+  m0,
+  m1,
+  m2,
+  reportId
+) => {
   // we build the cache
   //   const { cache, queryMap, logs } = await step1();
 
   // we split the logs
   // TODO borrowed from popularity
 
-  const proportion = 0.5;
+  // const refDate = Math.floor(start + (1 - proportion) * (end - start));
+
+  // const afterRef = (a) => a.timestamp > refDate;
+
+  /**
+   *
+   * @param {import("..").Cache} c
+   */
+  const cloneCache = (c) => {
+    const e = Array.from(c.entries());
+    return new Map(
+      e.map(([idx, { queries, results }]) => [
+        idx,
+        { queries: new Map(queries), results: new Map(results) },
+      ])
+    );
+  };
+
+  const focus = logs.where((a) => m0.includes(a.logfile));
+  const reference = logs.where((a) => m1.includes(a.logfile));
+  const m2Data = logs.where((a) => m2.includes(a.logfile));
+
+  // const testQ = "chômage partiel";
+
+  const m0Cache = await step2(cloneCache(cache), queryMap, focus);
+  const m0Start = focus.getSeries("timestamp").min();
+  // console.log(focus.where((a) => a.query == testQ).count());
+  // console.log(new Map(m0Cache).get(testQ));
+
+  const m1Cache = await step2(cloneCache(cache), queryMap, reference);
+  const m1Start = reference.getSeries("timestamp").min();
+  // console.log(reference.where((a) => a.query == testQ).count());
+  // console.log(new Map(m1Cache).get(testQ));
+
+  const m2Cache = await step2(cloneCache(cache), queryMap, m2Data);
+  const m2Start = m2Data.getSeries("timestamp").min();
+  // console.log(m2Data.where((a) => a.query.toLowerCase() == testQ).count());
+  // console.log(new Map(m2Cache).get(testQ));
+
+  /* 
   const dates = logs.deflate((r) => r.timestamp);
   const start = dates.min();
   const end = dates.max();
   const refDate = Math.floor(start + (1 - proportion) * (end - start));
 
   const afterRef = (a) => a.timestamp > refDate;
-
-  const focus = logs.where(afterRef);
-  const reference = logs.where((a) => !afterRef(a));
+  */
 
   // we compute counts for each split
-  const countFocus = await step2(cache, queryMap, focus);
+
   // we transform the counts into a proper dataframe
-  const focusCounts = new DataFrame(
-    countFocus.map(([field, { total, total_normalized }]) => ({
+  const m0Counts = new DataFrame(
+    m0Cache.map(([field, { total, total_normalized }]) => ({
       count: total,
       field,
       normalized_count: total_normalized,
     }))
   );
 
-  const countReference = await step2(cache, queryMap, reference);
-  const refCounts = new DataFrame(
-    countReference.map(([field, { total, total_normalized }]) => ({
+  const m1Counts = new DataFrame(
+    m1Cache.map(([field, { total, total_normalized }]) => ({
       count: total,
       field,
       normalized_count: total_normalized,
     }))
   );
 
+  const m2Counts = new DataFrame(
+    m2Cache.map(([field, { total, total_normalized }]) => ({
+      count: total,
+      field,
+      normalized_count: total_normalized,
+    }))
+  );
   // we compare the counts on the two period and select top x variations
+
   const reports = computeReports(
-    refCounts,
-    focusCounts,
-    start,
-    refDate,
-    end,
+    m0Counts,
+    m1Counts,
+    m2Counts,
+
+    m0Start,
+    m1Start,
+    m2Start,
+
     reportId,
     "query-popularity"
   );
@@ -159,62 +214,80 @@ export const genericPopularity = async (cache, queryMap, logs, reportId) => {
 };
 
 const computeReports = (
-  refCounts,
   focusCounts,
-  start,
-  refDate,
-  end,
+  refCounts,
+  previousMonthCount,
+
+  focusStart,
+  refStart,
+  prevStart,
+
   reportId,
   reportType
 ) => {
   // FIXME use outer join to handle missing values (e.g. additions)
-  const joined = refCounts.join(
+
+  const joinedM0M1 = refCounts.join(
     focusCounts,
     (left) => left.field,
     (right) => right.field,
     (left, right) => {
       return {
         field: left.field,
-        focus_count: right.count,
-        focus_norm_count: right.normalized_count,
-        ref_count: left.count,
-        ref_norm_count: left.normalized_count,
+        m0_count: right.count,
+        m0_norm_count: right.normalized_count,
+        m1_count: left.count,
+        m1_norm_count: left.normalized_count,
+      };
+    }
+  );
+
+  const joined = joinedM0M1.join(
+    previousMonthCount,
+    (left) => left.field,
+    (right) => right.field,
+    (left, right) => {
+      return {
+        ...left,
+        m2_count: right.count,
       };
     }
   );
 
   const nContent = 40;
-  const minOccurence = 100;
+  const minOccurence = 40;
 
   const diff = joined
     .generateSeries({
-      diff: (row) => row.focus_norm_count - row.ref_norm_count,
+      diff: (row) => row.m0_norm_count - row.m1_norm_count,
     })
     .generateSeries({
       abs_diff: (row) => Math.abs(row.diff),
     })
     .generateSeries({
-      rel_diff: (row) => (row.focus_count - row.ref_count) / row.ref_count,
+      rel_diff: (row) => (row.m0_count - row.m1_count) / row.m1_count,
     })
-    .where((r) => r.ref_count + r.focus_count > minOccurence);
+    .where((r) => r.m1_count + r.m0_count + r.m2_count > minOccurence);
 
   const topDiff = diff.orderByDescending((r) => r.abs_diff).take(nContent);
-  const topPop = diff.orderByDescending((r) => r.focus_count).take(nContent);
+  const topPop = diff.orderByDescending((r) => r.m0_count).take(nContent);
 
   const top = topDiff.concat(topPop).distinct((row) => row.field);
 
   return top.toArray().map((doc) => ({
     doc,
-    end: end,
-    pivot: refDate,
+    m0_start: focusStart * 1000,
+    m1_start: refStart * 1000,
+    m2_start: prevStart * 1000,
     reportId,
     reportType,
-    start: start,
   }));
 };
 
-const xpOctobre = 62;
-const cacheFile = "cache-sep-oct.json";
+const xpOctobre = 92;
+const cacheFile = "cache-aug-sep-oct.json";
+
+const apiCache = "cache-sep-oct.json";
 
 const saveCache = async () => {
   const logs = await readFromElastic(
@@ -226,7 +299,7 @@ const saveCache = async () => {
   );
   const { cache } = await buildCache(logs, 2);
   console.log(cache.get(2));
-  writeCache(cache, cacheFile);
+  writeCache(cache, apiCache);
 };
 
 /**
@@ -242,7 +315,7 @@ const queryMapFromCache = (cache) => {
 };
 
 const loadCache = async () => {
-  const cache = await readCache(cacheFile);
+  const cache = await readCache(apiCache);
   const queryMap = queryMapFromCache(cache);
 
   return { cache, queryMap };
@@ -262,17 +335,24 @@ const loadCache = async () => {
   //   );
 };
 
+const [m0, m1, m2] = getLastThreeMonthsComplete();
+
 /**
  * Queries
  */
+
+// readDaysFromElastic(esClient, LOG_INDEX, [m0, m1, m2].flat(), [
+// actionTypes.search,
+// ]).then((logs) => logs.asCSV().writeFileSync("searches-aug-sep-oct.csv"));
 
 // genericPopularity()
 // saveCache()
 // .then(() => loadCache())
 // .then(() => console.log("done"));
-/*
+
 loadCache()
   .then(async ({ cache, queryMap }) => {
+    /*
     const logs = await readFromElastic(
       esClient,
       LOG_INDEX,
@@ -280,12 +360,22 @@ loadCache()
       xpOctobre,
       [actionTypes.search]
     );
-    const reports = await genericPopularity(cache, queryMap, logs, "102020");
+    */
+    const logs = await readFromFile("searches-aug-sep-oct.csv");
+
+    const reports = await genericPopularity(
+      cache,
+      queryMap,
+      logs,
+      m0,
+      m1,
+      m2,
+      "102020"
+    );
     // console.log(JSON.stringify(reports, null, 2));
     await saveReport(esClient, REPORT_INDEX, reports);
   })
   .catch((err) => console.log(err));
-  */
 
 /**
  * Contents
@@ -338,22 +428,37 @@ readFromFile(`logs-october.csv`).then((dataset) => {
   */
 
 // /*
-// readFromFile(`logs-october.csv`)
 
-readFromElastic(esClient, LOG_INDEX, new Date(), xpOctobre, [actionTypes.visit])
-  // ]).then((logs) => logs.asCSV().writeFileSync("logs-october.csv"));
+// readDaysFromElastic(esClient, LOG_INDEX, [m0, m1, m2].flat(), [
+// actionTypes.visit,
+// ]).then((logs) => logs.asCSV().writeFileSync(cacheFile));
+
+// readFromElastic(esClient, LOG_INDEX, new Date(), xpOctobre, [
+// actionTypes.visit,
+// ]).then((logs) => logs.asCSV().writeFileSync(cacheFile));
+// /*
+
+// resetReportIndex(esClient, REPORT_INDEX, standardMappings)
+/* .then(() => readFromFile(cacheFile))
   .then(async (logs) => {
-    const { focusCounts, refCounts, start, end, refDate } = popularityAnalysis(
-      logs,
-      0.5
-      // "contribution"
-    );
+    const {
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+    } = popularityAnalysis(logs, m0, m1, m2);
     const reports = computeReports(
-      refCounts,
-      focusCounts,
-      start,
-      refDate,
-      end,
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+
       "102020",
       "content-popularity"
     );
@@ -362,17 +467,24 @@ readFromElastic(esClient, LOG_INDEX, new Date(), xpOctobre, [actionTypes.visit])
     return logs;
   })
   .then(async (logs) => {
-    const { focusCounts, refCounts, start, end, refDate } = popularityAnalysis(
-      logs,
-      0.5,
-      "convention-collective/"
-    );
+    const {
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+    } = popularityAnalysis(logs, m0, m1, m2, "convention-collective/");
     const reports = computeReports(
-      refCounts,
-      focusCounts,
-      start,
-      refDate,
-      end,
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+
       "102020",
       "convention-popularity"
     );
@@ -381,17 +493,24 @@ readFromElastic(esClient, LOG_INDEX, new Date(), xpOctobre, [actionTypes.visit])
     return logs;
   })
   .then(async (logs) => {
-    const { focusCounts, refCounts, start, end, refDate } = popularityAnalysis(
-      logs,
-      0.5,
-      "contribution"
-    );
+    const {
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+    } = popularityAnalysis(logs, m0, m1, m2, "contribution");
     const reports = computeReports(
-      refCounts,
-      focusCounts,
-      start,
-      refDate,
-      end,
+      m0Counts,
+      m1Counts,
+      m2Counts,
+
+      m0Start,
+      m1Start,
+      m2Start,
+
       "102020",
       "contribution-popularity"
     );
