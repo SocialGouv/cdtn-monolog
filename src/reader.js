@@ -2,6 +2,7 @@
 
 import "data-forge-fs";
 
+import { Client } from "@elastic/elasticsearch";
 import * as dataForge from "data-forge";
 import PQueue from "p-queue";
 
@@ -10,6 +11,13 @@ import { actionTypes, getLastDays } from "./util";
 
 const defaultTypesToConsider = Object.values(actionTypes);
 
+/**
+ *
+ * @param {Client} esClient
+ * @param {string} index
+ * @param {string[]} days
+ * @param {string[]} type
+ */
 export const readDaysFromElastic = async (esClient, index, days, type) => {
   const query = {
     bool: {
@@ -37,7 +45,7 @@ export const readFromElastic = async (
   type = defaultTypesToConsider
 ) => {
   const days = getLastDays(nDays, referenceDate);
-  readDaysFromElastic(esClient, index, days, type);
+  return readDaysFromElastic(esClient, index, days, type);
 };
 
 // count visit per days in Elastic

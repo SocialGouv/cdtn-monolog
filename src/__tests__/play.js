@@ -17,7 +17,6 @@ import * as Reader from "../reader";
 import { actionTypes } from "../util";
 
 // const logFile = "/Users/remim/tmp/logs-30.csv";
-const logFile = "/Users/remim/tmp/3months/logs-4months.csv";
 
 // const dumpFile = "/Users/remim/tmp/ingest-test/2020-04-23.json";
 

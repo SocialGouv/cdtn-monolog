@@ -287,7 +287,7 @@ const computeReports = (
 const xpOctobre = 92;
 const cacheFile = "cache-aug-sep-oct.json";
 
-const apiCache = "cache-sep-oct.json";
+const apiCache = "api-cache.json";
 
 const saveCache = async () => {
   const logs = await readFromElastic(

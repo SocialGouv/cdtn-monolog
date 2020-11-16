@@ -7,6 +7,7 @@ import * as readline from "readline";
 
 import { triggerSearch } from "../cdtnApi";
 import * as datasetUtil from "../dataset";
+import { esClient } from "../esConf";
 import { logger } from "../logger";
 import { actionTypes } from "../util";
 
@@ -128,7 +129,7 @@ const computeNDCG = (results) => {
   return { dcg, idcg, ndcg };
 };
 
-const runEvaluation = (counts) => {
+const runEvaluation = (counts, suggestions) => {
   // count queries and results
   [...counts.values()].forEach((obj) => {
     obj.queriesCount = [...obj.queries.values()].reduce((acc, i) => i + acc, 0);
@@ -144,16 +145,19 @@ const runEvaluation = (counts) => {
     const v = queryCluster.results.values().next().value;
     const type = v && v.algo != "pre-qualified" ? "search" : "pre-qualified";
 
-    const queries = (Array.from(queryCluster.queries) || []).map(
-      ([query, count]) => ({
+    const queries = (Array.from(queryCluster.queries) || [])
+      .map(([query, count]) => ({
         count,
         query,
-      })
-    );
+        suggestion: suggestions.has(query),
+      }))
+      .sort((a, b) => b.count - a.count);
 
     const results = (
       Array.from(queryCluster.results) || []
     ).map(([result, { algo, count }]) => ({ algo, count, result }));
+
+    const selectionsRatio = selectionsCount / queriesCount;
 
     return {
       dcg,
@@ -163,6 +167,7 @@ const runEvaluation = (counts) => {
       queriesCount,
       results,
       selectionsCount,
+      selectionsRatio,
       type,
     };
   });
@@ -212,6 +217,7 @@ export const analyseVisit = (queryMap, counts) => (v) => {
   if (!resultSelections.count()) return;
 
   // we unfold the result selection object in two columns
+  /* done beforehand
   const unfoldedResultSelections = resultSelections.withSeries({
     resultSelectionAlgo: (df) =>
       df.select((row) =>
@@ -222,9 +228,11 @@ export const analyseVisit = (queryMap, counts) => (v) => {
         row.resultSelection ? row.resultSelection.url : undefined
       ),
   });
+  */
 
   const urlSelected = new Set(
-    unfoldedResultSelections
+    // unfoldedResultSelections
+    resultSelections
       .getSeries("resultSelectionUrl")
       .toArray()
       .filter((q) => q)
@@ -246,43 +254,107 @@ export const analyseVisit = (queryMap, counts) => (v) => {
 
     if (!found) {
       // TODO: what should we do here ?
-      logger.error(`Selection not in results : ${url}`);
+      // logger.error(`Selection not in results : ${url}`);
     }
   });
 };
 
-const generateIndexReport = (queryClusters) => {
-  const [sumNdcg, sumSelectionCount] = queryClusters
-    .map((doc) => [doc.ndcg * doc.selectionsCount, doc.selectionsCount])
-    .reduce((a, b) => [a[0] + b[0], a[1] + b[1]], [0, 0]);
+const sums = (queryClusters) =>
+  queryClusters
+    .map((doc) => [
+      doc.ndcg * doc.selectionsCount,
+      doc.selectionsCount,
+      doc.queriesCount,
+    ])
+    .reduce((a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]], [0, 0, 0]);
 
+const generateIndexReport = (queryClusters) => {
+  const [sumNdcg, sumSelectionCount, sumQueriesCount] = sums(queryClusters);
   const meanSelectionCount = sumSelectionCount / queryClusters.length;
+  const meanQueriesCount = sumQueriesCount / queryClusters.length;
+
+  const pqClusters = queryClusters.filter((q) => q.type != "search");
+  const lengthPQ = pqClusters.length;
+  const [sumNdcgPQ, sumSelectionCountPQ, sumQueriesCountPQ] = sums(pqClusters);
+  console.log(pqClusters[0]);
+
+  const esClusters = queryClusters.filter((q) => q.type == "search");
+  const lengthES = esClusters.length;
+  const [sumNdcgES, sumSelectionCountES, sumQueriesCountES] = sums(esClusters);
 
   // identify problems : above mean selection and poor score
+  const ndcgThreshold = 0.85;
+  const selectionRatioThreshold = 0.6;
+
   const problems = queryClusters
     .filter(
       (cluster) =>
-        cluster.selectionsCount > meanSelectionCount && cluster.ndcg < 0.8
+        cluster.queriesCount > meanQueriesCount &&
+        (cluster.ndcg < ndcgThreshold ||
+          cluster.selectionRatio < selectionRatioThreshold)
     )
     .map((cluster) => ({
-      count: cluster.selectionsCount,
-
       ndcg: cluster.ndcg,
-      // forcing string
-      ...cluster.queries[0],
+      queriesCount: cluster.queriesCount,
+      query: cluster.queries[0].query,
+      selectionCount: cluster.selectionsCount,
+      selectionRatio: cluster.selectionsRatio,
+      type: cluster.type,
     }));
 
   return {
-    mean: meanSelectionCount,
+    meanQueryCount: meanQueriesCount,
+    meanSelectionCount: meanSelectionCount,
     ndcg: sumNdcg / sumSelectionCount,
+    prequalified: {
+      clusters: lengthPQ,
+      meanQueryCount: sumQueriesCountPQ / lengthPQ,
+      meanSelectionCount: sumSelectionCountPQ / lengthPQ,
+      ndcg: sumNdcgPQ / sumSelectionCountPQ,
+      queryCount: sumQueriesCountPQ,
+      selectionCount: sumSelectionCountPQ,
+      selectionRatio: sumSelectionCountPQ / sumQueriesCountPQ,
+    },
     problems,
+    search: {
+      clusters: lengthES,
+      meanQueryCount: sumQueriesCountES / lengthES,
+      meanSelectionCount: sumSelectionCountES / lengthES,
+      ndcg: sumNdcgES / sumSelectionCountES,
+      queryCount: sumQueriesCountES,
+      selectionCount: sumSelectionCountES,
+      selectionRatio: sumSelectionCountES / sumQueriesCountES,
+    },
+    sumQueriesCount,
+    sumSelectionCount,
   };
 };
 
-export const analyse = async (dataset, reportId = new Date().getTime()) => {
+/**
+ *
+ * @param {import("data-forge").IDataFrame} dataset
+ * @param {number} reportId
+ * @param {import("..").Cache } counts
+ * @param {Set<string>} suggestions
+ */
+export const analyse = (
+  dataset,
+  reportId = new Date().getTime(),
+  counts,
+  suggestions
+) => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks
-  const { cache: counts, queryMap } = await buildCache(dataset);
+  // const { cache: counts, queryMap } = await buildCache(dataset);
+
+  // const queryMap = counts.entries.map();
+
+  /**@type {Map<string, number>} */
+  const queryMap = new Map(
+    Array.from(counts.entries()).flatMap(([i, { queries }]) =>
+      Array.from(queries.keys()).map((q) => [q, i])
+    )
+  );
 
   // go through each visit and count queries and selection
   datasetUtil
@@ -292,7 +364,7 @@ export const analyse = async (dataset, reportId = new Date().getTime()) => {
     .forEach(analyseVisit(queryMap, counts));
 
   // run evaluation
-  const evaluatedQueryClusters = runEvaluation(counts)
+  const evaluatedQueryClusters = runEvaluation(counts, suggestions)
     // at least 2 queries
     .filter((d) => d.queriesCount >= 2);
 
