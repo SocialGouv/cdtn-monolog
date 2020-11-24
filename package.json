@@ -5,7 +5,7 @@
     "access": "public"
   },
   "main": "index.js",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "homepage": "https://github.com/SocialGouv/cdtn-monolog",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
-    "lint": "eslint src/ --ext .js --fix",
+    "lint": "eslint src/ --ext .ts --fix",
     "test": "jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r esm src/index.js",
@@ -33,6 +33,7 @@
     "node-fetch": "^2.6.1",
     "p-queue": "^6.6.2",
     "winston": "^3.3.3",
+    "fp-ts": "^2.9.0",
     "yargs": "^16.0.3"
   },
   "devDependencies": {
@@ -41,12 +42,16 @@
     "@socialgouv/eslint-config-recommended": "^1.38.0",
     "@types/jest": "^26.0.15",
     "@types/node-fetch": "^2.5.7",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "@zeit/ncc": "^0.22.3",
     "babel-jest": "^26.5.2",
     "eslint": "^7.10.0",
+    "esm": "^3.2.25",
     "husky": "^4.3.0",
     "jest": "^26.5.2",
     "prettier": "^2.1.2",
+    "ts-jest": "^26.4.4",
     "typescript": "^4.0.3"
   },
   "jest": {
@@ -54,13 +59,18 @@
       "<rootDir>/src"
     ],
     "transform": {
-      "^.+\\.jsx?$": "babel-jest"
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "src/.*\\.test\\.js$"
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.test.tsx?$",
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "json"
+    ]
   },
   "husky": {
     "hooks": {
-      "pre-commit": "eslint src/ --ext .js"
+      "pre-commit": "eslint src/ --ext .ts"
     }
   },
   "release": {
