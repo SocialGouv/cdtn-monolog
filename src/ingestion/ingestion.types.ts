@@ -60,13 +60,3 @@ type MonologAction = VisitFields &
   RootAction &
   MonologActionFields &
   MonologFields;
-
-export {
-  MonologAction,
-  MonologActionFields,
-  VisitFields,
-  MatomoVisit,
-  MatomoAction,
-  RootAction,
-  MonologFields,
-};

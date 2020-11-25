@@ -1,0 +1,622 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CDTN search API client should only count unique visits 1`] = `
+Object {
+  "articles": Array [
+    Object {
+      "_score": 11.449638,
+      "cdtnId": "c48e2d2ce0",
+      "description": "Pour l'application du I de l'article L. 2261-32 du code du travail, le ministre chargé du travail engage en priorité et selon l'un des critères suivants la fusion des branches : 1° Comptant moins de 5 000 salariés ; 2° N'ayant pas négocié au cours des trois  dernières années sur plusieurs thèmes relevant de la négociation  obligatoire mentionnés aux articles L. 2241-1 et suivants, L. 2241-3 et suivants, L. 2241-7 et suivants du code du travail ; 3° Dont le champ d'application géographique est uniquement régional ou local ; 4° Dans lesquelles moins de 5 % des entreprises adhèrent à une organisation professionnelle représentative des employeurs ; 5° Dont la commission paritaire permanente  de négociation et d'interprétation ne s'est pas réunie au cours de  l'année précédente",
+      "slug": "r2261-15",
+      "source": "code_du_travail",
+      "title": "R2261-15",
+      "url": "https://www.legifrance.gouv.fr/affichCodeArticle.do;?idArticle=LEGIARTI000033401698&cidTexte=LEGITEXT000006072050",
+    },
+    Object {
+      "_score": 11.270105,
+      "cdtnId": "3ae3266bea",
+      "description": "Les manquements aux obligations mentionnées à l'article R. 8115-1 sont ceux résultant de la méconnaissance des dispositions du troisième alinéa du II de l'article L. 1262-4, des articles L. 1262-4-1, L. 1262-4-4, L. 1262-4-5, L. 1263-6 et L. 1263-7 du code du travail",
+      "slug": "r8115-5",
+      "source": "code_du_travail",
+      "title": "R8115-5",
+      "url": "https://www.legifrance.gouv.fr/affichCodeArticle.do;?idArticle=LEGIARTI000042168345&cidTexte=LEGITEXT000006072050",
+    },
+    Object {
+      "_score": 11.225529,
+      "cdtnId": "45508a77a0",
+      "description": "Le repos compensateur acquis au titre de l'article L. 212-5-1 du code du travail peut être pris par demi-journée, comptant pour quatre heures de repos",
+      "slug": "d744-3",
+      "source": "code_du_travail",
+      "title": "D744-3",
+      "url": "https://www.legifrance.gouv.fr/affichCodeArticle.do;?idArticle=LEGIARTI000018519125&cidTexte=LEGITEXT000006072050",
+    },
+    Object {
+      "_score": 11.100092,
+      "cdtnId": "9ab0982b68",
+      "description": "Pour les marins, les autorisations mentionnées à l'article R. 5523-10 sont délivrées par l'autorité maritime dans les conditions fixées au code du travail maritime",
+      "slug": "r5523-12",
+      "source": "code_du_travail",
+      "title": "R5523-12",
+      "url": "https://www.legifrance.gouv.fr/affichCodeArticle.do;?idArticle=LEGIARTI000018524374&cidTexte=LEGITEXT000006072050",
+    },
+    Object {
+      "_score": 11.100092,
+      "cdtnId": "80e38a260e",
+      "description": "Un taux spécifique de l'allocation d'activité partielle peut être fixé à Mayotte dans les conditions prévues à l' article R. 5122-12 du code du travail ",
+      "slug": "r5522-86",
+      "source": "code_du_travail",
+      "title": "R5522-86",
+      "url": "https://www.legifrance.gouv.fr/affichCodeArticle.do;?idArticle=LEGIARTI000037561600&cidTexte=LEGITEXT000006072050",
+    },
+  ],
+  "documents": Array [
+    Object {
+      "_score": 24.256508,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+      ],
+      "cdtnId": "f6247840b2",
+      "description": "Le contrat de travail peut être verbal (donc non écrit), sauf lorsque le code du travail prévoit l’obligation d’un contrat de travail écrit et signé. Cette…",
+      "slug": "est-il-obligatoire-davoir-un-contrat-de-travail-ecrit-et-signe",
+      "source": "contributions",
+      "title": "Est-il obligatoire d'avoir un contrat de travail écrit et signé ?",
+    },
+    Object {
+      "_score": 1.2442716,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Représentation du personnel et négociation collective",
+          "slug": "/themes/7-representation-du-personnel-et-negociation-collective",
+        },
+        Object {
+          "label": "Négociations de branche",
+          "slug": "/themes/74-negociations-de-branche",
+        },
+      ],
+      "cdtnId": "6c801df84b",
+      "description": "Le code APE (activité principale exercée) permet d'identifier la branche d'activité principale de l'entreprise ou du travailleur indépendant.",
+      "slug": "a-quoi-correspond-le-code-ape",
+      "source": "fiches_service_public",
+      "title": "À quoi correspond le code APE ?",
+      "url": "https://www.service-public.fr/professionnels-entreprises/vosdroits/F33050",
+    },
+    Object {
+      "_score": 24.037907,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+        Object {
+          "label": "CDD",
+          "slug": "/themes/122-cdd",
+        },
+      ],
+      "cdtnId": "56d7f70290",
+      "description": "La durée maximale du CDD prévue par le code du travail s’applique, sauf si une convention ou un accord collectif de branche étendu fixe cette durée. Toutefois,…",
+      "slug": "quelle-peut-etre-la-duree-maximale-dun-cdd",
+      "source": "contributions",
+      "title": "Quelle peut être la durée maximale d'un CDD ?",
+    },
+    Object {
+      "_score": 1.1714529,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+      ],
+      "cdtnId": "2e481cc0b9",
+      "description": "Le CDI peut être rompu à tout moment, à l'initiative de l'employeur ou du salarié ou d'un commun accord par une rupture conventionnelle. Dans tous les cas, certains documents doivent être remis au salarié à la fin du contrat de travail (certificat de travail, attestation Pôle emploi, solde de tout compte récapitulatif des dispositifs d'épargne salariale).",
+      "slug": "rupture-du-contrat-de-travail-a-duree-indeterminee-cdi",
+      "source": "fiches_service_public",
+      "title": "Rupture du contrat de travail à durée indéterminée (CDI)",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F10033",
+    },
+    Object {
+      "_score": 23.98041,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Congés et repos",
+          "slug": "/themes/4-conges-et-repos",
+        },
+        Object {
+          "label": "Dimanches, jours fériés et ponts",
+          "slug": "/themes/44-dimanches-jours-feries-et-ponts",
+        },
+      ],
+      "cdtnId": "d094601132",
+      "description": "Le code du travail prévoit les conditions de travail du dimanche. Il peut préciser, dans certains cas, les conditions de rémunération.
+L'employeur applique…",
+      "slug": "travail-du-dimanche-quelle-contrepartie",
+      "source": "contributions",
+      "title": "Travail du dimanche : quelle contrepartie ?",
+    },
+    Object {
+      "_score": 1.1571224,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+        Object {
+          "label": "Documents à remettre au salarié",
+          "slug": "/themes/80-documents-a-remettre-au-salarie",
+        },
+      ],
+      "cdtnId": "59a4d4173c",
+      "description": "Le certificat de travail est un document remis par l'employeur au salarié à la date de fin du contrat de travail. Il est remis au salarié pour tout type de contrat de travail (CDI, CDD...), quel que soit le motif de la rupture (démission, licenciement...).",
+      "slug": "certificat-de-travail",
+      "source": "fiches_service_public",
+      "title": "Certificat de travail",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F87",
+    },
+    Object {
+      "_score": 23.825953,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+      ],
+      "cdtnId": "6549359bb6",
+      "description": "Le nombre de renouvellements du contrat de travail dépend du type de contrat.
+Le nombre de renouvellements prévu par le code du travail s’applique, sauf…",
+      "slug": "combien-de-fois-le-contrat-de-travail-peut-il-etre-renouvele",
+      "source": "contributions",
+      "title": "Combien de fois le contrat de travail peut-il être renouvelé ?",
+    },
+    Object {
+      "_score": 1.1541523,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+      ],
+      "cdtnId": "34f50bff07",
+      "description": "Pour pallier des difficultés de recrutement dans certains secteurs en tension ou pour éviter le chômage partiel en cas de baisse d'activité, une entreprise peut avoir recours au prêt de main-d'œuvre. L'employeur met alors des salariés à la disposition d'une autre entreprise utilisatrice pendant une durée déterminée.",
+      "slug": "pret-de-main-doeuvre-entre-entreprises",
+      "source": "fiches_service_public",
+      "title": "Prêt de main d'œuvre entre entreprises",
+      "url": "https://www.service-public.fr/professionnels-entreprises/vosdroits/F22542",
+    },
+    Object {
+      "_score": 23.44446,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+        Object {
+          "label": "Intérim",
+          "slug": "/themes/123-interim",
+        },
+      ],
+      "cdtnId": "fcc1b617d9",
+      "description": "La durée du contrat de mission (intérim) prévue par le code du travail s’applique, sauf si une convention ou un accord collectif fixe cette durée.
+Plus…",
+      "slug": "quelle-est-la-duree-maximale-du-contrat-de-mission-interim",
+      "source": "contributions",
+      "title": "Quelle est la durée maximale du contrat de mission (intérim) ?",
+    },
+    Object {
+      "_score": 1.1490109,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Temps de travail",
+          "slug": "/themes/3-temps-de-travail",
+        },
+        Object {
+          "label": "Durée du travail",
+          "slug": "/themes/31-duree-du-travail",
+        },
+        Object {
+          "label": "Durée du travail à temps complet",
+          "slug": "/themes/312-duree-du-travail-a-temps-complet",
+        },
+      ],
+      "cdtnId": "abdd8263ba",
+      "description": "Sauf dérogations, le salarié est soumis à une durée légale de travail de 35 heures par semaine. Des durées maximales lui sont également applicables.",
+      "slug": "duree-du-travail-dun-salarie-a-temps-plein",
+      "source": "fiches_service_public",
+      "title": "Durée du travail d'un salarié à temps plein",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F1911",
+    },
+    Object {
+      "_score": 23.211473,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+        Object {
+          "label": "Autres départs",
+          "slug": "/themes/86-autres-departs",
+        },
+      ],
+      "cdtnId": "404b14a887",
+      "description": "Le décès de l’employeur a des conséquences différentes sur le contrat de travail, selon que l’employeur est une entreprise individuelle ou un employeur…",
+      "slug": "quelles-sont-les-consequences-du-deces-de-lemployeur-sur-le-contrat-de-travail",
+      "source": "contributions",
+      "title": "Quelles sont les conséquences du décès de l’employeur sur le contrat de travail ?",
+    },
+    Object {
+      "_score": 1.1481072,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+        Object {
+          "label": "Documents à remettre au salarié",
+          "slug": "/themes/80-documents-a-remettre-au-salarie",
+        },
+      ],
+      "cdtnId": "19837df114",
+      "description": "Le certificat de travail est un document obligatoire remis par l’employeur au salarié à la date de fin du contrat de travail.",
+      "slug": "certificat-de-travail",
+      "source": "modeles_de_courriers",
+      "title": "Certificat de travail",
+    },
+    Object {
+      "_score": 22.846493,
+      "algo": "both",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Salaire et Rémunération",
+          "slug": "/themes/2-salaire-et-remuneration",
+        },
+        Object {
+          "label": "Primes et avantages",
+          "slug": "/themes/22-primes-et-avantages",
+        },
+      ],
+      "cdtnId": "7ba2dd7054",
+      "description": "Les primes pour travaux dangereux et pour travaux insalubres ne sont pas prévues par le code du travail. Elles sont prévues par une convention ou un accord…",
+      "slug": "quelles-sont-les-conditions-dattribution-de-la-prime-pour-travaux-dangereux-et-de-la-prime-pour-travaux-insalubres",
+      "source": "contributions",
+      "title": "Quelles sont les conditions d'attribution de la prime pour travaux dangereux et de la prime pour travaux insalubres ?",
+    },
+    Object {
+      "_score": 1.1441448,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Santé, sécurité et conditions de travail",
+          "slug": "/themes/6-sante-securite-et-conditions-de-travail",
+        },
+        Object {
+          "label": "Risques professionnels et prévention",
+          "slug": "/themes/62-risques-professionnels-et-prevention",
+        },
+        Object {
+          "label": "Obligations générales de prévention",
+          "slug": "/themes/622-obligations-generales-de-prevention",
+        },
+      ],
+      "cdtnId": "e17f9a27b1",
+      "description": "L'employeur doit veiller à la santé et à la sécurité de ses travailleurs en mettant en place des actions de prévention, d'information et de formation. Il doit également évaluer les risques professionnels sur chaque poste de travail. Ces risques sont consignés dans un document. En cas de non-respect de cette obligation, sa responsabilité civile et/ou pénale peut être engagée.",
+      "slug": "sante-et-securite-au-travail-obligations-de-lemployeur",
+      "source": "fiches_service_public",
+      "title": "Santé et sécurité au travail : obligations de l'employeur",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F2210",
+    },
+    Object {
+      "_score": 22.6013,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+        Object {
+          "label": "Fin d'un CDD - CTT",
+          "slug": "/themes/82-fin-dun-cdd-ctt",
+        },
+      ],
+      "cdtnId": "dbdb302beb",
+      "description": "La durée du délai de carence entre 2 CDD prévue par le code du travail s’applique, sauf si une convention ou un accord collectif de branche étendu fixe…",
+      "slug": "faut-il-respecter-un-delai-de-carence-entre-deux-cdd-si-oui-quelle-est-sa-duree",
+      "source": "contributions",
+      "title": "Faut-il respecter un délai de carence entre deux CDD ? Si oui, quelle est sa durée ?",
+    },
+    Object {
+      "_score": 1.1422343,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Conflits au travail et contrôle de la réglementation",
+          "slug": "/themes/9-conflits-au-travail-et-controle-de-la-reglementation",
+        },
+        Object {
+          "label": "Travail illégal",
+          "slug": "/themes/95-travail-illegal",
+        },
+      ],
+      "cdtnId": "f8a3838c44",
+      "description": "Une société ou un particulier qui a recours au travail illégal directement ou par personne interposée, ou qui en fait la publicité, s'expose à des sanctions pénales et administratives.",
+      "slug": "que-risque-une-entreprise-en-cas-de-travail-illegal",
+      "source": "fiches_service_public",
+      "title": "Que risque une entreprise en cas de travail illégal ?",
+      "url": "https://www.service-public.fr/professionnels-entreprises/vosdroits/F31490",
+    },
+    Object {
+      "_score": 22.189466,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+      ],
+      "cdtnId": "6d8d0918fc",
+      "description": "En cas de perte de marché, les contrats de travail sont transférés à la nouvelle entreprise uniquement dans les cas suivants :
+Si la perte de marché entraîne…",
+      "slug": "en-cas-de-perte-de-marche-par-lemployeur-quelles-sont-les-conditions-dun-transfert-des-contrats-de-travail",
+      "source": "contributions",
+      "title": "En cas de perte de marché par l’employeur, quelles sont les conditions d'un transfert des contrats de travail ? ",
+    },
+    Object {
+      "_score": 1.1400816,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Santé, sécurité et conditions de travail",
+          "slug": "/themes/6-sante-securite-et-conditions-de-travail",
+        },
+        Object {
+          "label": "Conditions de travail",
+          "slug": "/themes/61-conditions-de-travail",
+        },
+        Object {
+          "label": "Egalité professionnelle",
+          "slug": "/themes/617-egalite-professionnelle",
+        },
+      ],
+      "cdtnId": "984b48484b",
+      "description": "L'index de l'égalité professionnelle est un un outil visant à calculer les écarts de rémunération entre les femmes et les hommes dans l'entreprise.",
+      "slug": "quest-ce-que-lindex-de-legalite-professionnelle",
+      "source": "fiches_service_public",
+      "title": "Qu'est-ce que l'index de l'égalité professionnelle ?",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F35103",
+    },
+    Object {
+      "_score": 22.016685,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+      ],
+      "cdtnId": "b1c89ec45e",
+      "description": "Le code du travail prévoit le contenu obligatoire du contrat de travail uniquement pour certains contrats (CDD, contrat d’apprentissage, etc.). Une convention…",
+      "slug": "quelles-informations-doivent-figurer-dans-le-contrat-de-travail-ou-la-lettre-dengagement",
+      "source": "contributions",
+      "title": "Quelles informations doivent figurer dans le contrat de travail ou la lettre d'engagement ?",
+    },
+    Object {
+      "_score": 1.1373153,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Santé, sécurité et conditions de travail",
+          "slug": "/themes/6-sante-securite-et-conditions-de-travail",
+        },
+        Object {
+          "label": "Risques professionnels et prévention",
+          "slug": "/themes/62-risques-professionnels-et-prevention",
+        },
+        Object {
+          "label": "Obligations générales de prévention",
+          "slug": "/themes/622-obligations-generales-de-prevention",
+        },
+      ],
+      "cdtnId": "a8be4cc14f",
+      "description": "L'employeur doit organiser, après avis du médecin du travail, un dispositif pour dispenser les soins d'urgence aux salariés accidentés ou malades.",
+      "slug": "quelles-sont-les-obligations-de-lemployeur-en-matiere-de-secourisme-au-travail",
+      "source": "fiches_service_public",
+      "title": "Quelles sont les obligations de l'employeur en matière de secourisme au travail ?",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F31261",
+    },
+    Object {
+      "_score": 21.923727,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Santé, sécurité et conditions de travail",
+          "slug": "/themes/6-sante-securite-et-conditions-de-travail",
+        },
+        Object {
+          "label": "Santé au travail",
+          "slug": "/themes/63-sante-au-travail",
+        },
+        Object {
+          "label": "Maladie",
+          "slug": "/themes/631-maladie",
+        },
+      ],
+      "cdtnId": "6ba03fe8aa",
+      "description": "Le code du travail prévoit une protection différente du salarié en cas de maladie ou accident non professionnel et en cas de maladie professionnelle ou…",
+      "slug": "en-cas-de-maladie-le-salarie-a-t-il-droit-a-une-garantie-demploi",
+      "source": "contributions",
+      "title": "En cas de maladie, le salarié a-t-il droit à une garantie d’emploi ?",
+    },
+    Object {
+      "_score": 1.135545,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Contrat de travail",
+          "slug": "/themes/12-contrat-de-travail",
+        },
+        Object {
+          "label": "CDI",
+          "slug": "/themes/121-cdi",
+        },
+      ],
+      "cdtnId": "c1120a94a5",
+      "description": "Le contrat de travail à durée indéterminée (CDI) est un contrat sans limitation de durée, conclu à temps plein ou à temps partiel, entre un employeur et un salarié.",
+      "slug": "conclusion-dun-contrat-de-travail-a-duree-indeterminee-cdi",
+      "source": "fiches_service_public",
+      "title": "Conclusion d'un contrat de travail à durée indéterminée (CDI)",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F1906",
+    },
+    Object {
+      "_score": 20.698877,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Embauche et contrat de travail",
+          "slug": "/themes/1-embauche-et-contrat-de-travail",
+        },
+        Object {
+          "label": "Embauche",
+          "slug": "/themes/11-embauche",
+        },
+        Object {
+          "label": "Période d'essai",
+          "slug": "/themes/113-periode-dessai",
+        },
+      ],
+      "cdtnId": "8958bb10ad",
+      "description": "Le code du travail prévoit la durée maximale de la période d’essai. Il précise que, dans certains cas, la période d’essai est automatiquement réduite ou…",
+      "slug": "quelle-est-la-duree-maximale-de-la-periode-dessai-sans-et-avec-renouvellement",
+      "source": "contributions",
+      "title": "Quelle est la durée maximale de la période d'essai, sans et avec renouvellement ?",
+    },
+    Object {
+      "_score": 1.1334199,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Congés et repos",
+          "slug": "/themes/4-conges-et-repos",
+        },
+        Object {
+          "label": "Réduction du temps de travail (RTT)",
+          "slug": "/themes/43-reduction-du-temps-de-travail-rtt",
+        },
+      ],
+      "cdtnId": "515a159ac2",
+      "description": "La réduction du temps de travail (RTT) permet d'attribuer des journées ou demi-journées de repos au salarié travaillant plus de 35 heures par semaine.",
+      "slug": "reduction-du-temps-de-travail-rtt",
+      "source": "fiches_service_public",
+      "title": "Réduction du temps de travail (RTT)",
+      "url": "https://www.service-public.fr/particuliers/vosdroits/F34151",
+    },
+    Object {
+      "_score": 20.673985,
+      "algo": "fulltext",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Départ de l'entreprise",
+          "slug": "/themes/8-depart-de-lentreprise",
+        },
+      ],
+      "cdtnId": "b78d4062ae",
+      "description": "Le code du travail ne prévoit pas que le salarié a le droit de s’absenter pendant son préavis pour pouvoir rechercher un nouvel emploi. Il existe une exception…",
+      "slug": "le-salarie-peut-il-sabsenter-pour-rechercher-un-emploi-pendant-son-preavis",
+      "source": "contributions",
+      "title": "Le salarié peut-il s’absenter pour rechercher un emploi pendant son préavis ?",
+    },
+  ],
+  "themes": Array [
+    Object {
+      "_score": 9.150444,
+      "algo": "fulltext",
+      "slug": "312-duree-du-travail-a-temps-complet",
+      "source": "themes",
+      "title": "Durée du travail à temps complet",
+    },
+    Object {
+      "_score": 1.154994,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Conflits au travail et contrôle de la réglementation",
+          "slug": "/themes/9-conflits-au-travail-et-controle-de-la-reglementation",
+        },
+      ],
+      "slug": "95-travail-illegal",
+      "source": "themes",
+      "title": "Travail illégal",
+    },
+    Object {
+      "_score": 8.370906,
+      "algo": "fulltext",
+      "slug": "313-duree-du-travail-dun-jeune-avant-18-ans",
+      "source": "themes",
+      "title": "Durée du travail d'un jeune avant 18 ans",
+    },
+    Object {
+      "_score": 1.1492419,
+      "algo": "semantic",
+      "breadcrumbs": Array [
+        Object {
+          "label": "Conflits au travail et contrôle de la réglementation",
+          "slug": "/themes/9-conflits-au-travail-et-controle-de-la-reglementation",
+        },
+      ],
+      "slug": "93-inspection-du-travail",
+      "source": "themes",
+      "title": "Inspection du travail",
+    },
+    Object {
+      "_score": 8.164622,
+      "algo": "fulltext",
+      "slug": "31-duree-du-travail",
+      "source": "themes",
+      "title": "Durée du travail",
+    },
+  ],
+}
+`;

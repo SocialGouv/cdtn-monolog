@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Query reports generate query reports 1`] = `
+Array [
+  Object {
+    "meanQueryCount": NaN,
+    "meanSelectionCount": NaN,
+    "ndcg": NaN,
+    "prequalified": Object {
+      "clusters": 0,
+      "meanQueryCount": NaN,
+      "meanSelectionCount": NaN,
+      "ndcg": NaN,
+      "queryCount": 0,
+      "selectionCount": 0,
+      "selectionRatio": NaN,
+    },
+    "problems": Array [],
+    "reportId": 42,
+    "reportType": "query-index",
+    "search": Object {
+      "clusters": 0,
+      "meanQueryCount": NaN,
+      "meanSelectionCount": NaN,
+      "ndcg": NaN,
+      "queryCount": 0,
+      "selectionCount": 0,
+      "selectionRatio": NaN,
+    },
+    "sumQueriesCount": 0,
+    "sumSelectionCount": 0,
+  },
+]
+`;

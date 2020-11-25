@@ -1,0 +1,31 @@
+import { DataFrame } from "data-forge";
+
+import { buildDataFrameFromQueries } from "../../__tests__/util";
+import { buildCache, persistCache, readCache } from "../resultCache";
+
+describe("CDTN API result cache", () => {
+  const queries = [
+    "contrat de travail",
+    "apprentissage",
+    "apprentissage",
+    "grossesse",
+    "grossesse",
+  ];
+
+  const dataset = buildDataFrameFromQueries(queries);
+
+  it("build cache from test data", async () => {
+    const cache = await buildCache(dataset, 2);
+
+    expect(cache).toMatchSnapshot();
+  });
+
+  it("write and read cache in filesystem", async () => {
+    const cache = await buildCache(dataset, 2);
+
+    const cachePath = "cache-test.json";
+    persistCache(cache, cachePath);
+    const persistedCache = await readCache(cachePath);
+    expect(cache).toStrictEqual(persistedCache);
+  });
+});

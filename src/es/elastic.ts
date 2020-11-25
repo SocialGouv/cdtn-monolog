@@ -142,7 +142,7 @@ const insertDocuments = async (index: string, documents: any) => {
       });
     }
   } catch (error) {
-    logger.error("Indexing error :\n", error);
+    logger.error(`Indexation error : ${error.name}`);
   }
 };
 
@@ -164,4 +164,5 @@ export {
   testAndCreateIndex,
   batchInsert,
   esClient,
+  LOG_INDEX,
 };

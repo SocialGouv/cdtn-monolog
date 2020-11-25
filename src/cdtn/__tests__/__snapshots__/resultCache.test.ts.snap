@@ -1,0 +1,226 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CDTN API result cache build cache from test data 1`] = `
+Object {
+  "clusters": Map {
+    0 => Object {
+      "queries": Array [
+        "apprentissage",
+      ],
+      "results": Map {
+        "/fiche-service-public/contrat-dapprentissage" => Object {
+          "algo": "both",
+          "cdtnId": "84d110c212",
+        },
+        "/modeles-de-courriers/rupture-dun-commun-accord-dun-contrat-dapprentissage" => Object {
+          "algo": "fulltext",
+          "cdtnId": "1bb4d2bd84",
+        },
+        "/fiche-service-public/aides-a-lembauche-pour-un-contrat-dapprentissage" => Object {
+          "algo": "both",
+          "cdtnId": "dd7c4a58da",
+        },
+        "/fiche-service-public/mediateur-de-lapprentissage-comment-y-recourir" => Object {
+          "algo": "fulltext",
+          "cdtnId": "fe23276022",
+        },
+        "/fiche-service-public/contrat-dapprentissage-et-de-professionnalisation-quelles-differences" => Object {
+          "algo": "fulltext",
+          "cdtnId": "e5e46de8ef",
+        },
+        "/fiche-service-public/travailleur-handicape-contrat-dapprentissage" => Object {
+          "algo": "fulltext",
+          "cdtnId": "97408945f7",
+        },
+        "/fiche-service-public/peut-on-entrer-en-apprentissage-apres-la-classe-de-troisieme" => Object {
+          "algo": "fulltext",
+          "cdtnId": "d382535275",
+        },
+        "/contribution/quelles-informations-doivent-figurer-dans-le-contrat-de-travail-ou-la-lettre-dengagement" => Object {
+          "algo": "fulltext",
+          "cdtnId": "b1c89ec45e",
+        },
+        "/contribution/est-il-obligatoire-davoir-un-contrat-de-travail-ecrit-et-signe" => Object {
+          "algo": "fulltext",
+          "cdtnId": "f6247840b2",
+        },
+        "/contribution/dans-le-cadre-dun-cdd-quel-est-le-montant-de-lindemnite-de-fin-de-contrat" => Object {
+          "algo": "fulltext",
+          "cdtnId": "3ccaa9dfc4",
+        },
+        "/fiche-service-public/un-stagiaire-peut-il-beneficier-des-avantages-du-comite-social-et-economique-cse" => Object {
+          "algo": "fulltext",
+          "cdtnId": "4ebf3556b2",
+        },
+        "/fiche-service-public/a-partir-de-quel-age-peut-on-travailler" => Object {
+          "algo": "fulltext",
+          "cdtnId": "fa19e95d20",
+        },
+        "/contribution/quelle-est-la-duree-maximale-de-la-periode-dessai-sans-et-avec-renouvellement" => Object {
+          "algo": "fulltext",
+          "cdtnId": "8958bb10ad",
+        },
+        "/fiche-service-public/quelles-formations-sont-accessibles-a-une-personne-en-situation-de-handicap" => Object {
+          "algo": "fulltext",
+          "cdtnId": "5af4c6c7ec",
+        },
+        "/fiche-service-public/un-salarie-en-arret-de-travail-peut-il-suivre-une-formation" => Object {
+          "algo": "fulltext",
+          "cdtnId": "ada1458994",
+        },
+        "/fiche-service-public/qui-peut-toucher-la-prime-de-precarite-a-la-fin-dun-contrat-de-travail" => Object {
+          "algo": "fulltext",
+          "cdtnId": "c4c546bb57",
+        },
+        "/fiche-service-public/jeune-de-15-a-18-ans-en-entreprise-travaux-interdits-et-travaux-reglementes" => Object {
+          "algo": "fulltext",
+          "cdtnId": "8a1c8b5007",
+        },
+        "/fiche-service-public/droits-du-salarie-en-contrat-de-travail-a-duree-determinee-cdd" => Object {
+          "algo": "fulltext",
+          "cdtnId": "f5980c0b3d",
+        },
+        "/fiche-service-public/peut-on-encore-profiter-du-cse-si-on-ne-travaille-plus-dans-lentreprise" => Object {
+          "algo": "fulltext",
+          "cdtnId": "fb0e917dd4",
+        },
+        "/fiche-service-public/le-contrat-de-travail-est-il-obligatoirement-ecrit" => Object {
+          "algo": "fulltext",
+          "cdtnId": "c6c206dc8b",
+        },
+        "/fiche-service-public/aide-a-lembauche-dun-jeune-de-moins-de-26-ans" => Object {
+          "algo": "fulltext",
+          "cdtnId": "5ddfc79386",
+        },
+        "/fiche-service-public/aides-a-lembauche-dune-personne-en-contrat-de-professionnalisation" => Object {
+          "algo": "fulltext",
+          "cdtnId": "d0c27138ea",
+        },
+        "/fiche-service-public/retraite-dans-le-prive-rachat-de-trimestres" => Object {
+          "algo": "fulltext",
+          "cdtnId": "abe39e77e9",
+        },
+        "/fiche-service-public/salarie-etranger-quest-ce-que-lopposabilite-de-la-situation-de-lemploi" => Object {
+          "algo": "fulltext",
+          "cdtnId": "5d5542fc74",
+        },
+        "/fiche-service-public/contribution-solidarite-autonomie-csa" => Object {
+          "algo": "fulltext",
+          "cdtnId": "9da947117a",
+        },
+      },
+    },
+    1 => Object {
+      "queries": Array [
+        "grossesse",
+      ],
+      "results": Map {
+        "/fiche-service-public/licenciement-dune-salariee-enceinte-ou-en-conge-de-maternite" => Object {
+          "algo": "fulltext",
+          "cdtnId": "2014cd215a",
+        },
+        "/fiche-service-public/une-salariee-a-t-elle-droit-a-des-absences-liees-a-sa-grossesse" => Object {
+          "algo": "both",
+          "cdtnId": "2772ba4bde",
+        },
+        "/fiche-service-public/une-salariee-enceinte-est-elle-obligee-de-reveler-sa-grossesse-a-son-employeur" => Object {
+          "algo": "both",
+          "cdtnId": "14d889edfd",
+        },
+        "/fiche-service-public/peut-on-demissionner-pendant-un-conge-maternite" => Object {
+          "algo": "fulltext",
+          "cdtnId": "184ebe1ef6",
+        },
+        "/fiche-service-public/une-salariee-enceinte-a-t-elle-droit-a-une-reduction-de-sa-duree-de-travail" => Object {
+          "algo": "both",
+          "cdtnId": "c862e5aa79",
+        },
+        "/fiche-service-public/travail-de-nuit-dune-salariee-enceinte" => Object {
+          "algo": "fulltext",
+          "cdtnId": "44bf5ecd56",
+        },
+        "/fiche-service-public/une-salariee-enceinte-peut-elle-refuser-deffectuer-certaines-taches" => Object {
+          "algo": "both",
+          "cdtnId": "7c8fbd8b16",
+        },
+        "/fiche-service-public/maternite-pendant-le-conge-parental-quelles-sont-les-regles" => Object {
+          "algo": "fulltext",
+          "cdtnId": "1d74d56595",
+        },
+        "/contribution/le-preavis-de-demission-doit-il-etre-execute-en-totalite-y-compris-si-le-salarie-a-retrouve-un-emploi" => Object {
+          "algo": "fulltext",
+          "cdtnId": "9fcdb4215e",
+        },
+        "/fiche-service-public/conge-maternite-dune-salariee-du-secteur-prive" => Object {
+          "algo": "fulltext",
+          "cdtnId": "8328342034",
+        },
+        "/contribution/quelles-sont-les-conditions-dindemnisation-pendant-le-conge-de-maternite" => Object {
+          "algo": "fulltext",
+          "cdtnId": "c7c50b7ee8",
+        },
+        "/fiche-service-public/un-arret-de-travail-prolonge-t-il-un-cdd" => Object {
+          "algo": "fulltext",
+          "cdtnId": "ac29f26a29",
+        },
+        "/fiche-service-public/hospitalisation-du-nouveau-ne-quelles-consequences-sur-le-conge-de-maternite" => Object {
+          "algo": "fulltext",
+          "cdtnId": "f25f92dafb",
+        },
+        "/fiche-service-public/quels-sont-les-droits-du-salarie-dont-le-contrat-de-travail-est-suspendu" => Object {
+          "algo": "fulltext",
+          "cdtnId": "de45a7af09",
+        },
+        "/contribution/combien-de-fois-le-contrat-de-travail-peut-il-etre-renouvele" => Object {
+          "algo": "fulltext",
+          "cdtnId": "6549359bb6",
+        },
+        "/fiche-service-public/mettre-fin-au-contrat-dune-assistante-maternelle" => Object {
+          "algo": "fulltext",
+          "cdtnId": "a6fdbb4358",
+        },
+        "/contribution/les-conges-pour-evenements-familiaux" => Object {
+          "algo": "fulltext",
+          "cdtnId": "eba7a4592f",
+        },
+        "/fiche-service-public/candidat-a-une-offre-demploi-methodes-de-recrutement-autorisees" => Object {
+          "algo": "fulltext",
+          "cdtnId": "3d0b8d4679",
+        },
+        "/fiche-service-public/curriculum-vitae-cv-candidature-a-une-offre-demploi" => Object {
+          "algo": "fulltext",
+          "cdtnId": "b51faaa12e",
+        },
+        "/fiche-service-public/cotisations-et-contributions-sociales-des-commercants-artisans-et-industriels" => Object {
+          "algo": "fulltext",
+          "cdtnId": "1d1edf2cf4",
+        },
+        "/fiche-service-public/peut-on-beneficier-de-plusieurs-conges-parentaux-successifs" => Object {
+          "algo": "fulltext",
+          "cdtnId": "b16c71fcb0",
+        },
+        "/fiche-service-public/prestations-sociales-pour-les-commercants-et-les-artisans-independants" => Object {
+          "algo": "fulltext",
+          "cdtnId": "fbeeb65acd",
+        },
+        "/fiche-service-public/discrimination-au-travail" => Object {
+          "algo": "fulltext",
+          "cdtnId": "ac8b581463",
+        },
+        "/fiche-service-public/le-salarie-doit-il-passer-une-visite-medicale-apres-un-arret-de-travail" => Object {
+          "algo": "fulltext",
+          "cdtnId": "1096b8d2c5",
+        },
+        "/fiche-service-public/quelles-sont-les-obligations-du-salarie-dont-le-contrat-de-travail-est-suspendu" => Object {
+          "algo": "fulltext",
+          "cdtnId": "978f53cb85",
+        },
+      },
+    },
+  },
+  "queryMap": Map {
+    "apprentissage" => 0,
+    "grossesse" => 1,
+  },
+}
+`;

@@ -3,15 +3,6 @@ import * as fs from "fs";
 import * as elastic from "../es/elastic";
 import { logger } from "../logger";
 import { parseEvent, parseSearch, parseStandard } from "./actionParsers";
-import {
-  MatomoAction,
-  MatomoVisit,
-  MonologAction,
-  MonologActionFields,
-  MonologFields,
-  RootAction,
-  VisitFields,
-} from "./ingestion.types";
 import { mappings } from "./mappings";
 
 // shameless copy paste from stack overflow as non critical and
@@ -28,9 +19,9 @@ const parseAction = (
   logfile: string
 ): MonologAction => {
   const matomoActionFields = (({ url, timeSpent, timestamp }) => ({
-    url,
     timeSpent,
     timestamp: timestamp + 28800,
+    url,
   }))(action);
 
   const matomoVisitFields = (({
@@ -42,11 +33,11 @@ const parseAction = (
     lastActionDateTime,
   }) => ({
     idVisit,
-    serverTimePretty,
-    referrerTypeName,
-    referrerName,
-    lastActionTimestamp,
     lastActionDateTime,
+    lastActionTimestamp,
+    referrerName,
+    referrerTypeName,
+    serverTimePretty,
   }))(visit);
 
   const uvi = hash(`${visit.idVisit}-${visit.lastActionDateTime}`);

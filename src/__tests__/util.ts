@@ -4,6 +4,7 @@ import * as dataForge from "data-forge";
 import * as path from "path";
 
 import * as Reader from "../reader/logReader";
+import { actionTypes } from "../reader/readerUtil";
 
 export const logfile = path.join(__dirname, "__fixtures__/logs.csv");
 
@@ -18,3 +19,8 @@ export const readLogFile = async (
 ): Promise<dataForge.IDataFrame> => dataForge.readFile(path).parseCSV();
 
 export const LOGS_TEST_INDEX = "logs-test";
+
+export const buildDataFrameFromQueries = (queries: string[]) =>
+  new dataForge.DataFrame(
+    queries.map((query) => ({ query, type: actionTypes.search }))
+  );
