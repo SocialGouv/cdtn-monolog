@@ -1,10 +1,6 @@
 import { some } from "fp-ts/Option";
 
-import {
-  formatDate,
-  getLastDays,
-  getLastThreeMonthsComplete,
-} from "../readerUtil";
+import { formatDate, getLastDays, getLastMonthsComplete } from "../readerUtil";
 
 const testDate = new Date(1606227183865);
 
@@ -17,5 +13,5 @@ test("get last days", () => {
 });
 
 test("get last months", () => {
-  expect(getLastThreeMonthsComplete(some(testDate))).toMatchSnapshot();
+  expect(getLastMonthsComplete(some(testDate))).toMatchSnapshot();
 });

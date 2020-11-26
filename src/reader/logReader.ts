@@ -29,7 +29,28 @@ export const readDaysFromElastic = async (
   const { docs } = await getDocuments(index, query, undefined);
 
   // return a Dataframe containing actions
-  return new DataFrame({ considerAllRows: true, values: docs });
+  const data = new DataFrame({ considerAllRows: true, values: docs });
+
+  // in case we return select result type, we need to
+  // unfold the result selection object in two columns
+  const unfoldedData = type.includes(actionTypes.selectResult)
+    ? data.withSeries({
+        resultSelectionAlgo: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.algo : undefined
+            ),
+        resultSelectionUrl: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.url : undefined
+            ),
+      })
+    : data;
+
+  return unfoldedData;
 };
 
 // read logs in Elastic : nDays before referenceDate

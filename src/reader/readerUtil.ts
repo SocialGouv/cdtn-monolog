@@ -35,7 +35,7 @@ export const getDaysInMonth = (month: number, year: number): string[] => {
   return days.map(formatDate);
 };
 
-export const getLastThreeMonthsComplete = (
+export const getLastMonthsComplete = (
   ref: Option<Date> = none,
   n: Option<number> = none
 ): string[][] => {

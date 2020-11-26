@@ -159,20 +159,6 @@ const analyseVisit = (
   // if no selection, not much to do
   if (!resultSelections.count()) return;
 
-  // we unfold the result selection object in two columns
-  /* done beforehand
-    const unfoldedResultSelections = resultSelections.withSeries({
-      resultSelectionAlgo: (df) =>
-        df.select((row) =>
-          row.resultSelection ? row.resultSelection.algo : undefined
-        ),
-      resultSelectionUrl: (df) =>
-        df.select((row) =>
-          row.resultSelection ? row.resultSelection.url : undefined
-        ),
-    });
-    */
-
   const urlSelected = new Set(
     // unfoldedResultSelections
     resultSelections
@@ -236,37 +222,46 @@ const generateIndexReport = (queryClusters: QueryCluster[]) => {
           cluster.selectionsRatio < selectionRatioThreshold)
     )
     .map((cluster) => ({
-      ndcg: cluster.ndcg,
+      ndcg: cluster.ndcg.toFixed(2),
       queriesCount: cluster.queriesCount,
       query: cluster.queries[0].query,
       selectionCount: cluster.selectionsCount,
-      selectionRatio: cluster.selectionsRatio,
+      selectionRatio: cluster.selectionsRatio.toFixed(2),
       type: cluster.type,
     }));
 
+  const metrics = (
+    length: number,
+    sumQueriesCount: number,
+    sumSelectionCount: number,
+    sumNdcg: number
+  ) => ({
+    clusters: length,
+    meanQueryCount: (sumQueriesCount / length).toFixed(2),
+    meanSelectionCount: (sumSelectionCount / length).toFixed(2),
+    ndcg: (sumNdcg / sumSelectionCount).toFixed(2),
+    queryCount: sumQueriesCount,
+    selectionCount: sumSelectionCount,
+    selectionRatio: (sumSelectionCount / sumQueriesCount).toFixed(2),
+  });
+
   return {
-    meanQueryCount: meanQueriesCount,
-    meanSelectionCount: meanSelectionCount,
-    ndcg: sumNdcg / sumSelectionCount,
-    prequalified: {
-      clusters: lengthPQ,
-      meanQueryCount: sumQueriesCountPQ / lengthPQ,
-      meanSelectionCount: sumSelectionCountPQ / lengthPQ,
-      ndcg: sumNdcgPQ / sumSelectionCountPQ,
-      queryCount: sumQueriesCountPQ,
-      selectionCount: sumSelectionCountPQ,
-      selectionRatio: sumSelectionCountPQ / sumQueriesCountPQ,
-    },
+    meanQueryCount: meanQueriesCount.toFixed(2),
+    meanSelectionCount: meanSelectionCount.toFixed(2),
+    ndcg: (sumNdcg / sumSelectionCount).toFixed(2),
+    prequalified: metrics(
+      lengthPQ,
+      sumQueriesCountPQ,
+      sumSelectionCountPQ,
+      sumNdcgPQ
+    ),
     problems,
-    search: {
-      clusters: lengthES,
-      meanQueryCount: sumQueriesCountES / lengthES,
-      meanSelectionCount: sumSelectionCountES / lengthES,
-      ndcg: sumNdcgES / sumSelectionCountES,
-      queryCount: sumQueriesCountES,
-      selectionCount: sumSelectionCountES,
-      selectionRatio: sumSelectionCountES / sumQueriesCountES,
-    },
+    search: metrics(
+      lengthES,
+      sumQueriesCountES,
+      sumSelectionCountES,
+      sumNdcgES
+    ),
     sumQueriesCount,
     sumSelectionCount,
   };
@@ -295,14 +290,6 @@ export const analyse = (
 
     counts.set(index, { queries, results });
   });
-
-  /*
-  const queryMap = new Map(
-    Array.from(queryCache.clusters.entries()).flatMap(([i, { queries }]) =>
-      Array.from(queries.keys()).map((q) => [q, i])
-    )
-  );
-  */
 
   // go through each visit and count queries and selection
   datasetUtil
