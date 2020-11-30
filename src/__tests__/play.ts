@@ -4,16 +4,17 @@ import { readFromElastic } from "../reader/logReader";
 import { actionTypes } from "../reader/readerUtil";
 
 const getLogs = async () => {
-  const data = await readFromElastic(LOG_INDEX, new Date("2020-11-25"), 2, [
+  const data = await readFromElastic(LOG_INDEX, new Date("2020-11-30"), 95, [
     actionTypes.search,
-    actionTypes.visit,
-    actionTypes.selectResult,
+    // actionTypes.visit,
+    // actionTypes.selectResult,
   ]);
   // kept here to recreate local data export
-  data.asCSV().writeFileSync("/Users/remim/tmp/queries-test-logs.csv");
+  //   data.asCSV().writeFileSync("/Users/remim/tmp/queries-test-logs.csv");
+  data.asCSV().writeFileSync("./log-searches.csv");
 
   const cache = await buildCache(data, 2);
-  await persistCache(cache, "/Users/remim/tmp/cache-test.csv");
+  await persistCache(cache, "./cache-searches.csv");
 };
 
 getLogs().then(() => console.log("done"));

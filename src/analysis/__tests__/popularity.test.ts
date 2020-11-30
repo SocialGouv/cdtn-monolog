@@ -4,7 +4,7 @@ import { some } from "fp-ts/Option";
 import { readCache } from "../../cdtn/resultCache";
 import { readFromFile } from "../../reader/logReader";
 import { getLastMonthsComplete } from "../../reader/readerUtil";
-import { analyse } from "../popularity";
+import { analyse, countQueries } from "../popularity";
 
 describe("Query popularity", () => {
   const logPath = "/Users/remim/tmp/queries-test-logs.csv";
@@ -16,20 +16,29 @@ describe("Query popularity", () => {
   let dataset: IDataFrame;
 
   beforeAll(async () => {
-    dataset = await readFromFile(log3Months);
+    // dataset = await readFromFile(log3Months);
   });
 
-  /*
   it("generate query reports", async () => {
-    const dataset = await readFromFile(logPath);
     const cache = await readCache(cachePath);
     const days = getLastMonthsComplete(some(new Date()));
-    const reports = analyse(dataset, cache, days[0], days[1], days[2], 44);
+
+    dataset = await readFromFile("./log-searches.csv");
+
+    const reports = analyse(
+      dataset,
+      days[0],
+      days[1],
+      days[2],
+      44,
+      "QUERY",
+      some(cache)
+    );
 
     expect(reports).toMatchSnapshot();
   }, 10000);
-  */
 
+  /*
   it("generate popularity report for contents", async () => {
     const days = getLastMonthsComplete(some(new Date()));
 
@@ -50,4 +59,5 @@ describe("Query popularity", () => {
     );
     expect(reports).toMatchSnapshot();
   });
+  */
 });

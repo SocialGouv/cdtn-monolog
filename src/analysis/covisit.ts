@@ -2,6 +2,7 @@ import { IDataFrame } from "data-forge";
 
 import * as datasetUtil from "../reader/dataset";
 import { urlToPath } from "../reader/readerUtil";
+import { CovisiteReport } from "./reports.types";
 
 const reportType = "covisit";
 
@@ -11,17 +12,11 @@ const LINK_LIMIT = 6;
 // minimum covisits to consider as actual link
 // 5 means : a minimum of 5 unique visits where two contents were viewed
 const MIN_OCC = 5;
-
-type CovisiteReport = {
-  content: string;
-  links: { count: number; link: string }[];
-  reportType: string;
-};
-
 const analyse = (
   dataset: IDataFrame,
   minOcc: number = MIN_OCC,
-  linkLimit: number = LINK_LIMIT
+  linkLimit: number = LINK_LIMIT,
+  reportId: number = new Date().getTime()
 ): CovisiteReport[] => {
   // FIXME avoid using to array
   const visits = datasetUtil.getVisits(dataset).toArray();
@@ -97,7 +92,7 @@ const analyse = (
           link: urlToPath(link),
         };
       });
-    docs.push({ content, links, reportType });
+    docs.push({ content, links, reportId, reportType });
   });
 
   return docs;

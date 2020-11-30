@@ -1953,3 +1953,5 @@ Array [
   },
 ]
 `;
+
+exports[`Query popularity generate query reports 1`] = `Array []`;

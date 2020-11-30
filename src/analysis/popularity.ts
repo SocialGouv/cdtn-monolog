@@ -1,7 +1,10 @@
 import { DataFrame, IDataFrame } from "data-forge";
+import { isSome, none, Option } from "fp-ts/lib/Option";
 
-import { getVisits, toUniqueViews } from "../reader/dataset";
-import { urlToPath } from "../reader/readerUtil";
+import { Cache } from "../cdtn/cdtn.types";
+import { getVisits, toUniqueSearches, toUniqueViews } from "../reader/dataset";
+import { actionTypes, urlToPath } from "../reader/readerUtil";
+import { PopularityReport } from "./reports.types";
 
 const reportType = (pt: PopularityTypeString): string =>
   `popularity-${pt.toLowerCase()}`;
@@ -85,14 +88,107 @@ export enum PopularityType {
 
 type PopularityTypeString = keyof typeof PopularityType;
 
+const countURLs = (dataframe: IDataFrame) => {
+  const counts = dataframe
+    .deflate((a) => a.url)
+    .groupBy((value) => value)
+    .select((group) => {
+      return {
+        count: group.count(),
+        field: group.first(),
+      };
+    })
+    .inflate()
+    .orderByDescending((r) => r.count);
+
+  const sum = counts.deflate((r) => r.count).sum();
+  const normalizedCounts = counts.withSeries({
+    normalized_count: (df) =>
+      df.deflate((row) => row.count).select((count) => count / sum),
+  });
+  return normalizedCounts.setIndex("url");
+};
+
+export const countQueries = (logs: IDataFrame, cache: Option<Cache>) => {
+  if (isSome(cache)) {
+    const queries = logs
+      .where((a) => a.type == actionTypes.search)
+      .getSeries("query")
+      .toArray()
+      .filter((a) => a && a != "undefined")
+      .map((q) => q.toLowerCase());
+
+    type ClusterCount = Array<{ query: string; count: number }>;
+    const clusterCounts = new Map<number, ClusterCount>();
+
+    console.log(queries.length);
+
+    queries.forEach((currQ) => {
+      const idx = cache.value.queryMap.get(currQ);
+      const entry = idx && cache.value.clusters.get(idx);
+      if (!idx || !entry) {
+        //TODO
+        //   console.log("Issue " + query);
+        //   console.log(idx);
+        return;
+      }
+
+      if (!clusterCounts.has(idx)) {
+        // add cluster
+        const cluster = entry.queries.map((query) => ({ count: 0, query }));
+        clusterCounts.set(idx, cluster);
+      }
+
+      // increment count
+      const cc = clusterCounts.get(idx)?.find(({ query }) => currQ == query);
+      if (!cc) {
+        //TODO
+        //   console.log("Issue " + query);
+        //   console.log(idx);
+        return;
+      } else {
+        cc.count += 1;
+      }
+    });
+
+    type ClusterReport = {
+      count: number;
+      field: string;
+      normalized_count: number;
+    };
+
+    const reportedClusters: ClusterReport[] = Array.from(clusterCounts.values())
+      .map((cc: ClusterCount) => {
+        const count = cc.reduce((acc, next) => acc + next.count, 0);
+        const normalized_count = count / queries.length;
+        // most frequent query
+        const field = cc.sort((a, b) => b.count - a.count)[0].query;
+
+        return { count, field, normalized_count };
+      })
+      .sort((a, b) => b.count - a.count);
+
+    return new DataFrame(reportedClusters);
+  } else {
+    // TODO this is ugly
+    throw new Error("Cache not set");
+  }
+};
+
 const analyse = (
   dataset: IDataFrame,
   m0: string[],
   m1: string[],
   m2: string[],
   reportId: number,
-  popularityType: PopularityTypeString
-) => {
+  popularityType: PopularityTypeString,
+  cache: Option<Cache> = none
+): PopularityReport[] => {
+  // if query popoularity, cache is required
+  if (popularityType == PopularityType[PopularityType.QUERY] && cache == none) {
+    throw new Error("Cache required for query popularity report");
+  }
+
   const visits = getVisits(dataset);
 
   // FIXME for unkwown reason this doesn't work
@@ -107,8 +203,12 @@ const analyse = (
   */
 
   // so we use toArray for now
+  const grouping =
+    popularityType == PopularityType[PopularityType.QUERY]
+      ? toUniqueSearches
+      : toUniqueViews;
   const uniqueViews = DataFrame.concat(
-    visits.select((visit) => toUniqueViews(visit)).toArray()
+    visits.select((visit) => grouping(visit)).toArray()
   );
 
   const idxUniqueViews = uniqueViews.withIndex(
@@ -142,47 +242,24 @@ const analyse = (
     url: (u) => urlToPath(removeAnchor(u)),
   });
 
-  //   const dates = uniqueViews.deflate((r) => r.timestamp);
-  //   const start = dates.min();
-  //   const end = dates.max();
-
-  // const refDate = Math.floor(start + (1 - proportion) * (end - start));
-
-  // const afterRef = (a) => a.timestamp > refDate;
-
   const focus = cleanedViews.where((a) => m0.includes(a.logfile));
   const reference = cleanedViews.where((a) => m1.includes(a.logfile));
   const m2Data = cleanedViews.where((a) => m2.includes(a.logfile));
 
-  const countURLs = (dataframe: IDataFrame) => {
-    const counts = dataframe
-      .deflate((a) => a.url)
-      .groupBy((value) => value)
-      .select((group) => {
-        return {
-          count: group.count(),
-          field: group.first(),
-        };
-      })
-      .inflate()
-      .orderByDescending((r) => r.count);
-
-    const sum = counts.deflate((r) => r.count).sum();
-    const normalizedCounts = counts.withSeries({
-      normalized_count: (df) =>
-        df.deflate((row) => row.count).select((count) => count / sum),
-    });
-    return normalizedCounts.setIndex("url");
-  };
-
-  const m0Counts = countURLs(focus);
   const m0Start = focus.getSeries("timestamp").min();
-
-  const m1Counts = countURLs(reference);
   const m1Start = reference.getSeries("timestamp").min();
-
-  const m2Counts = countURLs(m2Data);
   const m2Start = m2Data.getSeries("timestamp").min();
+
+  let m0Counts, m1Counts, m2Counts;
+  if (popularityType != PopularityType[PopularityType.QUERY]) {
+    m0Counts = countURLs(focus);
+    m1Counts = countURLs(reference);
+    m2Counts = countURLs(m2Data);
+  } else {
+    m0Counts = countQueries(focus, cache);
+    m1Counts = countQueries(reference, cache);
+    m2Counts = countQueries(m2Data, cache);
+  }
 
   const reports = computeReports(
     m0Counts,
@@ -198,45 +275,6 @@ const analyse = (
   );
 
   return reports;
-
-  /*
-  // FIXME use outer join to handle missing values (e.g. additions)
-  const joined = refCounts.join(
-    focusCounts,
-    (left) => left.url,
-    (right) => right.url,
-    (left, right) => {
-      return {
-        focus_count: right.count,
-        focus_norm_count: right.normalized_count,
-        ref_count: left.count,
-        ref_norm_count: left.normalized_count,
-        url: left.url,
-      };
-    }
-  );
-
-  const nContent = 40;
-
-  const diff = joined
-    .generateSeries({
-      diff: (row) => row.focus_norm_count - row.ref_norm_count,
-    })
-    .generateSeries({
-      abs_diff: (row) => Math.abs(row.diff),
-    })
-    .orderByDescending((r) => r.abs_diff)
-    .take(nContent);
-
-  return diff.toArray().map((doc) => ({
-    doc,
-    end: end,
-    pivot: refDate,
-    reportId,
-    reportType,
-    start: start,
-  }));
-  */
 };
 
 export { analyse, reportType };

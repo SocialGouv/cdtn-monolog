@@ -24,6 +24,13 @@ export const toUniqueViews = (visit: IDataFrame): IDataFrame =>
     .select((urlGroups) => urlGroups.first())
     .inflate();
 
+export const toUniqueSearches = (visit: IDataFrame): IDataFrame =>
+  visit
+    .where((a) => a.type == util.actionTypes.search)
+    .groupBy((r) => r.query)
+    .select((queryGroups) => queryGroups.first())
+    .inflate();
+
 export const toUniqueSuggestions = (visit: IDataFrame): IDataFrame =>
   visit
     .where((a) => a.type == util.actionTypes.selectSuggestion)

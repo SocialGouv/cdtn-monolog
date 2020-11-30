@@ -4,6 +4,7 @@ import * as murmur from "murmurhash-js";
 import { Cache } from "../cdtn/cdtn.types";
 import * as datasetUtil from "../reader/dataset";
 import { actionTypes } from "../reader/readerUtil";
+import { QueryIndexReport, QueryReport, Report } from "./reports.types";
 
 type QueryGroup = {
   // the different queries returning the same results and their count
@@ -197,7 +198,9 @@ const sums = (queryClusters: QueryCluster[]) =>
     ])
     .reduce((a, b) => [a[0] + b[0], a[1] + b[1], a[2] + b[2]], [0, 0, 0]);
 
-const generateIndexReport = (queryClusters: QueryCluster[]) => {
+const generateIndexReport = (
+  queryClusters: QueryCluster[]
+): Omit<QueryIndexReport, "reportType" | "reportId"> => {
   const [sumNdcg, sumSelectionCount, sumQueriesCount] = sums(queryClusters);
   const meanSelectionCount = sumSelectionCount / queryClusters.length;
   const meanQueriesCount = sumQueriesCount / queryClusters.length;
@@ -272,7 +275,7 @@ export const analyse = (
   queryCache: Cache,
   suggestions: Set<string>,
   reportId = new Date().getTime()
-) => {
+): Array<QueryIndexReport | QueryReport> => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks
   // const { cache: counts, queryMap } = await buildCache(dataset);
@@ -315,7 +318,7 @@ export const analyse = (
     reportType,
   }));
 
-  const queryClusterIndexReport = {
+  const queryClusterIndexReport: QueryIndexReport = {
     ...generateIndexReport(evaluatedQueryClusters),
     reportId,
     reportType: reportType + "-index",
