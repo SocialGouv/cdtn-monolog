@@ -165,4 +165,6 @@ export {
   batchInsert,
   esClient,
   LOG_INDEX,
+  REPORT_INDEX,
+  MONTHLY_REPORT_INDEX,
 };

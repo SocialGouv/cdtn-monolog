@@ -1,20 +1,155 @@
-import { buildCache, persistCache } from "../cdtn/resultCache";
-import { LOG_INDEX } from "../es/elastic";
-import { readFromElastic } from "../reader/logReader";
-import { actionTypes } from "../reader/readerUtil";
+import { DataFrame } from "data-forge";
+import { cons } from "fp-ts/lib/NonEmptyArray";
+import { some } from "fp-ts/lib/Option";
+import * as fs from "fs";
+import * as readline from "readline";
+
+import { analyse } from "../analysis/popularity";
+import { analyse as analyseQueries } from "../analysis/queries";
+import { Report } from "../analysis/reports.types";
+import { analyse as visitAnalysis } from "../analysis/visits";
+import { buildCache, persistCache, readCache } from "../cdtn/resultCache";
+import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "../es/elastic";
+import { getVisits, toUniqueSearches } from "../reader/dataset";
+import {
+  countVisits,
+  readDaysFromElastic,
+  readFromFile,
+} from "../reader/logReader";
+import {
+  actionTypes,
+  getDaysInMonth,
+  getLastMonthsComplete,
+} from "../reader/readerUtil";
+import {
+  queryReportMappings,
+  resetReportIndex,
+  saveReport,
+  standardMappings,
+} from "../report/reportStore";
+
+const readSuggestions = async () => {
+  const entities: string[] = [];
+
+  const promiseStream = new Promise((resolve) => {
+    const stream = readline.createInterface({
+      input: fs.createReadStream("./suggestions.txt"),
+    });
+
+    let suggestionsBuffer: any[] = [];
+    stream.on("line", async function (line) {
+      // parse JSON representing a suggestion entity {entity: suggestion, value: weight}
+      const entity = JSON.parse(line);
+      suggestionsBuffer.push(entity);
+      if (suggestionsBuffer.length >= 2048) {
+        // create an immutable copy of the array
+        const suggestions = suggestionsBuffer.slice();
+        suggestionsBuffer = [];
+        suggestions.forEach((s) => entities.push(s));
+      }
+    });
+
+    stream.on("close", async function () {
+      if (suggestionsBuffer.length > 0) {
+        suggestionsBuffer.forEach((s) => entities.push(s));
+        resolve();
+      }
+    });
+  });
+
+  await promiseStream;
+  // console.log(entities.slice(0, 10));
+  return entities;
+};
 
 const getLogs = async () => {
-  const data = await readFromElastic(LOG_INDEX, new Date("2020-11-30"), 95, [
+  /*
+  const days = getLastMonthsComplete();
+  console.log(days);
+  const data = await readDaysFromElastic(LOG_INDEX, days.flat(), [
     actionTypes.search,
-    // actionTypes.visit,
-    // actionTypes.selectResult,
+    actionTypes.visit,
+    actionTypes.selectResult,
+    actionTypes.feedback,
   ]);
   // kept here to recreate local data export
   //   data.asCSV().writeFileSync("/Users/remim/tmp/queries-test-logs.csv");
-  data.asCSV().writeFileSync("./log-searches.csv");
+  data.asCSV().writeFileSync("./logs-sept-oct-nov.csv");
+  */
 
-  const cache = await buildCache(data, 2);
-  await persistCache(cache, "./cache-searches.csv");
+  const data = await readFromFile("./logs-sept-oct-nov.csv");
+
+  const visits = getVisits(data);
+  const uniqueSearches = DataFrame.concat(
+    visits.select((visit) => toUniqueSearches(visit)).toArray()
+  );
+
+  const cache = await buildCache(uniqueSearches, 2);
+  await persistCache(cache, "./cache-sept-oct-nov.csv");
 };
 
-getLogs().then(() => console.log("done"));
+const monthlyRun = async () => {
+  const [m0, m1, m2] = getLastMonthsComplete();
+
+  const data = await readFromFile("./logs-sept-oct-nov.csv");
+  const cache = await readCache("./cache-sept-oct-nov.csv");
+
+  const contentPop = analyse(data, m0, m1, m2, 1220, "CONTENT");
+  const conventionPop = analyse(data, m0, m1, m2, 1220, "CONVENTION");
+  const queryPop = analyse(data, m0, m1, m2, 1220, "QUERY", some(cache));
+
+  const suggestions = await readSuggestions();
+  const queryReports = analyseQueries(data, cache, new Set(suggestions), 1220);
+
+  //   await resetReportIndex(MONTHLY_REPORT_INDEX, standardMappings);
+
+  await saveReport(REPORT_INDEX, [
+    ...contentPop,
+    ...conventionPop,
+    ...queryPop,
+  ]);
+
+  const queryReportIndex = "log_reports_queries";
+  await resetReportIndex(queryReportIndex, queryReportMappings);
+  await saveReport(queryReportIndex, queryReports);
+
+  const month = 11;
+  const year = 2020;
+  const logFiles = getDaysInMonth(month, year);
+  const dataframe = await countVisits(LOG_INDEX, logFiles);
+
+  // TODO we cast for now, we should change report type and id to respect Report type
+  const report = (visitAnalysis(
+    dataframe,
+    `monthly-${month}-${year}`
+  ) as unknown) as Report;
+
+  await saveReport(MONTHLY_REPORT_INDEX, [report]);
+};
+
+const playQueries = async () => {
+  const data = await readFromFile("./logs-sept-oct-nov.csv");
+  const cache = await readCache("./cache-sept-oct-nov.csv");
+
+  const suggestions = await readSuggestions();
+  const queryReports = analyseQueries(data, cache, new Set(suggestions), 1220);
+
+  const queryReportIndex = "log_reports_queries";
+  await resetReportIndex(queryReportIndex, queryReportMappings);
+  await saveReport(queryReportIndex, queryReports);
+};
+
+const feedback = async () => {
+  const data = await readFromFile("./logs-sept-oct-nov.csv");
+  const logFiles = getDaysInMonth(11, 2020);
+
+  const fb = data
+    .where((a) => a.type == actionTypes.feedback)
+    .where((a) => logFiles.includes(a.logfile));
+
+  const p = fb.where((a) => a.feedbackType == "positive").count();
+  const t = fb.count();
+  console.log(p / t);
+};
+
+playQueries().then(() => console.log("done."));

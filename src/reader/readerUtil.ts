@@ -1,4 +1,4 @@
-import { setDay, subMonths } from "date-fns";
+import { setDate, subMonths } from "date-fns";
 import { pipe } from "fp-ts/lib/function";
 import { getOrElse, none, Option } from "fp-ts/Option";
 
@@ -39,12 +39,12 @@ export const getLastMonthsComplete = (
   ref: Option<Date> = none,
   n: Option<number> = none
 ): string[][] => {
-  // const end = setDay(getOrElse(() => new Date())(ref), 1);
+  // const end = setDate(getOrElse(() => new Date())(ref), 1);
 
   const end = pipe(
     ref,
     getOrElse(() => new Date()),
-    (d: Date) => setDay(d, 1)
+    (d: Date) => setDate(d, 1)
   );
 
   // we want the 3 last month by default
@@ -62,6 +62,7 @@ export const getLastMonthsComplete = (
 };
 
 export const actionTypes = {
+  feedback: "feedback",
   home: "home",
   search: "search",
 

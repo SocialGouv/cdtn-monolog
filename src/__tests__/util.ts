@@ -20,7 +20,9 @@ export const readLogFile = async (
 
 export const LOGS_TEST_INDEX = "logs-test";
 
-export const buildDataFrameFromQueries = (queries: string[]) =>
+export const buildDataFrameFromQueries = (
+  queries: string[]
+): dataForge.IDataFrame =>
   new dataForge.DataFrame(
     queries.map((query) => ({ query, type: actionTypes.search }))
   );

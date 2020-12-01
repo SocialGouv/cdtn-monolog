@@ -1,23 +1,24 @@
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
-import { IDataFrame } from "data-forge";
+import { DataFrame, IDataFrame } from "data-forge";
 import * as fs from "fs";
 import PQueue from "p-queue";
 import * as readline from "readline";
 
 import { logger } from "../logger";
+import { getVisits, toUniqueSearches } from "../reader/dataset";
 import { actionTypes } from "../reader/readerUtil";
 import { Cache, CacheQueryCluster, Document } from "./cdtn.types";
 import { triggerSearch } from "./cdtnApi";
 
 // we deduplicate queries and only select the one appearing
 // at least {minOccurence} times
-const deduplicateQueries = (
+export const deduplicateQueries = (
   dataset: IDataFrame,
   minOccurence: number
 ): string[] =>
   dataset
     .where((a) => a.type == actionTypes.search)
-    .groupBy((r) => r.query)
+    .groupBy((r) => r.query.toLowerCase())
     .select((group) => ({ count: group.count(), query: group.first().query }))
     .inflate()
     .where((r) => r.count >= minOccurence)
@@ -40,8 +41,13 @@ export const buildCache = async (
 ): Promise<Cache> => {
   const pqueue = new PQueue({ concurrency: 16 });
 
-  // we get all unique queries
-  const queries: string[] = deduplicateQueries(dataset, minOccurence);
+  // we get all unique queries (deduplicate when happening in same visit + min occurence)
+  const visits = getVisits(dataset);
+  const uniqueSearches = DataFrame.concat(
+    visits.select((visit) => toUniqueSearches(visit)).toArray()
+  );
+
+  const queries: string[] = deduplicateQueries(uniqueSearches, minOccurence);
 
   logger.info(
     `Calling API for ${queries.length} queries, this might take some time`

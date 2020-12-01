@@ -72,6 +72,16 @@ export type QueryIndexReport = Report & {
   sumSelectionCount: number;
 };
 
+export type MonthlyReport = {
+  averageDailyVisits: number;
+  endDate: number;
+  maxDailyVisits: number;
+  maxDailyVisitsDay: number;
+  nbVisits: number;
+  startDate: number;
+  reportId: string;
+};
+
 export type CovisiteReport = Report & {
   content: string;
   links: { count: number; link: string }[];

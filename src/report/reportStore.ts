@@ -1,4 +1,5 @@
 // save and read reports in ES uselss for now as only redirecting to ES
+import { Report } from "../analysis/reports.types";
 import * as es from "../es/elastic";
 import { DocumentResponse } from "../es/elastic";
 import { logger } from "../logger";
@@ -60,21 +61,22 @@ export const standardMappings = {
 export const queryReportMappings = {
   properties: {
     dcg: {
-      type: "long",
+      type: "float",
     },
     idcg: {
-      type: "long",
+      type: "float",
     },
     ndcg: {
-      type: "long",
+      type: "float",
     },
+
     problems: {
       properties: {
         count: {
-          type: "long",
+          type: "integer",
         },
         ndcg: {
-          type: "long",
+          type: "float",
         },
         query: {
           fields: {
@@ -85,12 +87,19 @@ export const queryReportMappings = {
           },
           type: "text",
         },
+        selectionCount: {
+          type: "integer",
+        },
+        selectionRatio: {
+          type: "float",
+        },
       },
     },
+
     queries: {
       properties: {
         count: {
-          type: "long",
+          type: "integer",
         },
         query: {
           fields: {
@@ -104,13 +113,13 @@ export const queryReportMappings = {
       },
     },
     queriesCount: {
-      type: "long",
+      type: "integer",
     },
     queryKey: {
-      type: "long",
+      type: "integer",
     },
     reportId: {
-      type: "long",
+      type: "integer",
     },
     reportType: {
       fields: {
@@ -133,7 +142,7 @@ export const queryReportMappings = {
           type: "text",
         },
         count: {
-          type: "long",
+          type: "integer",
         },
         result: {
           fields: {
@@ -146,8 +155,11 @@ export const queryReportMappings = {
         },
       },
     },
-    selectionsCount: {
-      type: "long",
+    selectionCount: {
+      type: "integer",
+    },
+    selectionRatio: {
+      type: "float",
     },
     type: {
       fields: {
@@ -201,7 +213,7 @@ export const resetReportIndex = async (
 
 export const saveReport = async (
   indexName: string,
-  docs: any[]
+  docs: Report[]
 ): Promise<number> => {
   await es.batchInsert(indexName, docs);
   return 0;

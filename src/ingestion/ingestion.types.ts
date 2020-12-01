@@ -1,15 +1,15 @@
-type RootAction = {
+export type RootAction = {
   url: string;
   timeSpent: number;
   timestamp: number;
 };
 
-type MonologFields = {
+export type MonologFields = {
   uvi: number;
   logfile: string;
 };
 
-type VisitFields = {
+export type VisitFields = {
   idVisit: number;
   serverTimePretty: number;
   referrerTypeName: string;
@@ -18,7 +18,7 @@ type VisitFields = {
   lastActionDateTime: number;
 };
 
-type MatomoAction = RootAction & {
+export type MatomoAction = RootAction & {
   // update
   type: string;
   subtitle: string;
@@ -29,11 +29,11 @@ type MatomoAction = RootAction & {
   eventName: string;
 };
 
-type MatomoVisit = VisitFields & {
+export type MatomoVisit = VisitFields & {
   actionDetails: MatomoAction[];
 };
 
-type MonologActionFields = {
+export type MonologActionFields = {
   type: string;
 
   // additional fields for Monolog format
@@ -56,7 +56,7 @@ type MonologActionFields = {
   ccAction?: string;
 };
 
-type MonologAction = VisitFields &
+export type MonologAction = VisitFields &
   RootAction &
   MonologActionFields &
   MonologFields;

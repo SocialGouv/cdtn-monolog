@@ -7,7 +7,7 @@ import { actionTypes, urlToPath } from "../reader/readerUtil";
 import { PopularityReport } from "./reports.types";
 
 const reportType = (pt: PopularityTypeString): string =>
-  `popularity-${pt.toLowerCase()}`;
+  `${pt.toLowerCase()}-popularity`;
 
 const computeReports = (
   focusCounts: IDataFrame,
@@ -109,7 +109,10 @@ const countURLs = (dataframe: IDataFrame) => {
   return normalizedCounts.setIndex("url");
 };
 
-export const countQueries = (logs: IDataFrame, cache: Option<Cache>) => {
+export const countQueries = (
+  logs: IDataFrame,
+  cache: Option<Cache>
+): DataFrame => {
   if (isSome(cache)) {
     const queries = logs
       .where((a) => a.type == actionTypes.search)
@@ -175,6 +178,16 @@ export const countQueries = (logs: IDataFrame, cache: Option<Cache>) => {
   }
 };
 
+/**
+ *
+ * @param dataset
+ * @param m0 focus period : m0
+ * @param m1 reference period (m0 - 1)
+ * @param m2 two months ago (m0 - 2)
+ * @param reportId
+ * @param popularityType
+ * @param cache
+ */
 const analyse = (
   dataset: IDataFrame,
   m0: string[],

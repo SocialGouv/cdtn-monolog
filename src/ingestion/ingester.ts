@@ -3,6 +3,15 @@ import * as fs from "fs";
 import * as elastic from "../es/elastic";
 import { logger } from "../logger";
 import { parseEvent, parseSearch, parseStandard } from "./actionParsers";
+import {
+  MatomoAction,
+  MatomoVisit,
+  MonologAction,
+  MonologActionFields,
+  MonologFields,
+  RootAction,
+  VisitFields,
+} from "./ingestion.types";
 import { mappings } from "./mappings";
 
 // shameless copy paste from stack overflow as non critical and

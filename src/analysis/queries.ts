@@ -148,7 +148,7 @@ const analyseVisit = (
       return new Map();
     }
 
-    count.queries.set(q, count.queries.get(q) || 0 + 1);
+    count.queries.set(q, (count.queries.get(q) || 0) + 1);
 
     return count.results;
   });

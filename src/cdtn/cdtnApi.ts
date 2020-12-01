@@ -1,4 +1,3 @@
-import { cons } from "fp-ts/lib/ReadonlyArray";
 import fetch from "node-fetch";
 
 import { SearchResult } from "./cdtn.types";

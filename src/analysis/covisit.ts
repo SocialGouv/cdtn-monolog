@@ -35,10 +35,13 @@ const analyse = (
     if (visitViews.length > 1) {
       // visitViews.map((v) => console.log(v.toString()));
       // get all pairs of contents A/B
-      const covisits = visitViews.reduce((acc: any[], a: string, i: number) => {
-        acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
-        return acc;
-      }, []);
+      const covisits = visitViews.reduce(
+        (acc: string[][], a: string, i: number) => {
+          acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
+          return acc;
+        },
+        []
+      );
 
       // TODO use proper edge type rather than array
       covisits.forEach(([a, b]: string[]) => {
