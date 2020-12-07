@@ -1,8 +1,8 @@
 import { MatomoAction, MonologActionFields } from "./ingestion.types";
 
 const parseSearch = (action: MatomoAction): MonologActionFields => ({
-  type: "search",
   query: action.subtitle,
+  type: "search",
 });
 
 const parseStandard = (action: MatomoAction): MonologActionFields => {
@@ -31,15 +31,15 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
   switch (action.eventCategory) {
     case "selectedSuggestion": {
       return {
-        type: "select_suggestion",
         suggestionPrefix: action.eventAction,
         suggestionSelection: action.eventName,
+        type: "select_suggestion",
       };
     }
     case "feedback": {
       return {
-        type: "feedback",
         feedbackType: action.eventAction,
+        type: "feedback",
         visited: action.eventName,
       };
     }
@@ -52,20 +52,20 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
     }
     case "candidateResults": {
       return {
-        type: "result_candidates",
         query: action.eventAction,
+        type: "result_candidates",
       };
     }
     case "nextResultPage": {
       return {
-        type: "next_result_page",
         query: action.eventAction,
+        type: "next_result_page",
       };
     }
     case "selectResult": {
       return {
-        type: "select_result",
         resultSelection: JSON.parse(action.eventAction),
+        type: "select_result",
       };
     }
     case "selectRelated": {
@@ -86,7 +86,7 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
       }
     }
     case "themeResults": {
-      return { type: "theme_candidates", query: action.eventAction };
+      return { query: action.eventAction, type: "theme_candidates" };
     }
     case "outil": {
       const outilAction = action.eventAction.startsWith("view_step_")
@@ -97,20 +97,20 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
       );
       const outilEvent = action.eventName;
 
-      return { type: "outil", outil, outilEvent, outilAction };
+      return { outil, outilAction, outilEvent, type: "outil" };
     }
     case "cc_search": {
       return {
-        type: action.eventCategory,
-        query: action.eventName,
         ccAction: action.eventAction,
+        query: action.eventName,
+        type: action.eventCategory,
       };
     }
     case "cc_select": {
       return {
-        type: action.eventCategory,
         cc: action.eventName,
         ccAction: action.eventAction,
+        type: action.eventCategory,
       };
     }
     default: {

@@ -1,5 +1,3 @@
-import { DataFrame } from "data-forge";
-
 import { buildDataFrameFromQueries } from "../../__tests__/util";
 import { buildCache, persistCache, readCache } from "../resultCache";
 

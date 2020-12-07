@@ -97,11 +97,13 @@ const parse = (rawData: string, logfile: string) => {
   });
 };
 
-const checkIndex = async (index: string) => {
+// TODO should return TaskEither
+const checkIndex = async (index: string): Promise<void> => {
   await elastic.testAndCreateIndex(index, mappings);
 };
 
-const ingest = async (dumpPath: string, index: string) => {
+// TODO should return TaskEither
+const ingest = async (dumpPath: string, index: string): Promise<void> => {
   logger.info(`Ingesting dump ${dumpPath} to ES.`);
   const logfile = dumpPath.slice(
     dumpPath.lastIndexOf("/") + 1,

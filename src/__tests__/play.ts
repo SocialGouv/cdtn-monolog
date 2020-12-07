@@ -1,5 +1,4 @@
 import { DataFrame } from "data-forge";
-import { cons } from "fp-ts/lib/NonEmptyArray";
 import { some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 import * as readline from "readline";
@@ -11,11 +10,7 @@ import { analyse as visitAnalysis } from "../analysis/visits";
 import { buildCache, persistCache, readCache } from "../cdtn/resultCache";
 import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "../es/elastic";
 import { getVisits, toUniqueSearches } from "../reader/dataset";
-import {
-  countVisits,
-  readDaysFromElastic,
-  readFromFile,
-} from "../reader/logReader";
+import { countVisits, readFromFile } from "../reader/logReader";
 import {
   actionTypes,
   getDaysInMonth,
@@ -25,7 +20,6 @@ import {
   queryReportMappings,
   resetReportIndex,
   saveReport,
-  standardMappings,
 } from "../report/reportStore";
 
 const readSuggestions = async () => {

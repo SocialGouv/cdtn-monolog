@@ -9,8 +9,6 @@ const LOG_INDEX = process.env.LOG_INDEX || "logs";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
 const MONTHLY_REPORT_INDEX =
   process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
-const WEEKLY_REPORT_INDEX =
-  process.env.WEEKLY_REPORT_INDEX || "log_reports_weekly";
 
 const SCROLL_TIMEOUT = "30s";
 const BATCH_SIZE = 500;
