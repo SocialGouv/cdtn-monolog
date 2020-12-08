@@ -274,7 +274,7 @@ export const analyse = (
   dataFrame: IDataFrame,
   queryCache: Cache,
   suggestions: Set<string>,
-  reportId = new Date().getTime()
+  reportId = new Date().getTime().toString()
 ): Array<QueryIndexReport | QueryReport> => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks

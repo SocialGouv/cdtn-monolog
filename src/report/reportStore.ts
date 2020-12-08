@@ -119,7 +119,13 @@ export const queryReportMappings = {
       type: "integer",
     },
     reportId: {
-      type: "integer",
+      fields: {
+        keyword: {
+          ignore_above: 256,
+          type: "keyword",
+        },
+      },
+      type: "string",
     },
     reportType: {
       fields: {

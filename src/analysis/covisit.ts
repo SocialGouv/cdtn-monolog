@@ -16,7 +16,7 @@ const analyse = (
   dataset: IDataFrame,
   minOcc: number = MIN_OCC,
   linkLimit: number = LINK_LIMIT,
-  reportId: number = new Date().getTime()
+  reportId: string = new Date().getTime().toString()
 ): CovisiteReport[] => {
   // FIXME avoid using to array
   const visits = datasetUtil.getVisits(dataset).toArray();

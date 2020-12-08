@@ -3,6 +3,8 @@ import { parseISO } from "date-fns";
 
 import { MonthlyReport } from "./reports.types";
 
+const reportType = "monthly-report";
+
 const analyse = (dataset: IDataFrame, reportId: string): MonthlyReport => {
   const counts = dataset.getSeries("count");
   const dates = dataset.getSeries("day").select((d) => parseISO(d));
@@ -27,6 +29,7 @@ const analyse = (dataset: IDataFrame, reportId: string): MonthlyReport => {
     maxDailyVisitsDay,
     nbVisits,
     reportId,
+    reportType,
     startDate,
   };
 

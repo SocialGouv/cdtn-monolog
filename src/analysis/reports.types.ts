@@ -1,5 +1,5 @@
 export type Report = {
-  reportId: number;
+  reportId: string;
   reportType: string;
 };
 
@@ -72,14 +72,13 @@ export type QueryIndexReport = Report & {
   sumSelectionCount: number;
 };
 
-export type MonthlyReport = {
+export type MonthlyReport = Report & {
   averageDailyVisits: number;
   endDate: number;
   maxDailyVisits: number;
   maxDailyVisitsDay: number;
   nbVisits: number;
   startDate: number;
-  reportId: string;
 };
 
 export type CovisiteReport = Report & {

@@ -1,0 +1,247 @@
+import { cons } from "fp-ts/lib/NonEmptyArray";
+import { some } from "fp-ts/lib/Option";
+import * as fs from "fs";
+
+import { analyse as popularityAnalysis } from "./analysis/popularity";
+import { analyse as queryAnalysis } from "./analysis/queries";
+import { analyse as visitAnalysis } from "./analysis/visits";
+import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
+import { readSuggestions } from "./cdtn/suggestions";
+import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "./es/elastic";
+import { checkIndex, ingest } from "./ingestion/ingester";
+import { logger } from "./logger";
+import {
+  countVisits,
+  readDaysFromElastic,
+  readFromFile,
+} from "./reader/logReader";
+import {
+  actionTypes,
+  getDaysInMonth,
+  getLastMonthsComplete,
+} from "./reader/readerUtil";
+import {
+  queryReportMappings,
+  resetReportIndex,
+  saveReport,
+} from "./report/reportStore";
+
+// TODO shall we use EitherTask here ?
+export const runIngestion = async (dataPath: string): Promise<void> => {
+  logger.info(`Running Elastic ingestion for files in ${dataPath}`);
+  return;
+
+  await checkIndex(LOG_INDEX);
+  // read dump files in default location
+  fs.readdirSync(dataPath).forEach(async (f) => {
+    // convert data
+    // save actions to Elastic
+    try {
+      await ingest(dataPath + f, LOG_INDEX);
+    } catch (err) {
+      logger.error(JSON.stringify(err, null, 2));
+    }
+  });
+};
+
+export const runQueryAnalysis = async (
+  dataPath: string,
+  cachePath: string,
+  suggestionPath: string | undefined
+): Promise<void> => {
+  logger.info(
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
+      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    }, saved in Elastic reports`
+  );
+  return;
+
+  const queryReportIndex = "log_reports_queries";
+
+  const data = await readFromFile(dataPath);
+  const cache = await readCache(cachePath);
+  const suggestions = suggestionPath
+    ? await readSuggestions(suggestionPath as string)
+    : new Set<string>();
+
+  // // period should match with latest search update or release ?
+  // const data = await Reader.readFromElastic(LOG_INDEX, new Date(), period, [
+  //   actionTypes.search,
+  //   actionTypes.selectResult,
+  // ]);
+
+  logger.info("Analysing logs");
+  const reports = await queryAnalysis(data, cache, suggestions);
+
+  // we delete the exisiting query reports
+  await resetReportIndex(queryReportIndex, queryReportMappings);
+
+  // we save the new reports
+  await saveReport(queryReportIndex, reports);
+};
+
+/*
+const runWeeklyReportByDate = async (date: Date) => {
+  const lastMonday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
+  const logFiles = getLastDays(7, lastMonday);
+  const dataframe = await Reader.countVisits(LOG_INDEX, logFiles);
+
+  const report = visitAnalysis(
+    dataframe,
+    `weekly-${getWeek(lastMonday) - 1}-${lastMonday.getFullYear()}`
+  );
+  await ReportStore.saveReport(WEEKLY_REPORT_INDEX, [report]);
+};
+
+export const runWeeklyReport = async (week: number, year: number) => {
+  const weekDate = setWeek(new Date(year, 1, 1, 12), week + 1);
+  runWeeklyReportByDate(weekDate);
+};
+
+export const runLastWeeklyReport = async () => {
+  const today = new Date();
+  runWeeklyReportByDate(today);
+};
+
+export const runMonthlyReport = async (
+  month: number,
+  year: number
+): Promise<void> => {
+  const logFiles = getDaysInMonth(month, year);
+
+  const dataframe = await Reader.countVisits(LOG_INDEX, logFiles);
+
+  const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
+  await saveReport(MONTHLY_REPORT_INDEX, [report]);
+};
+
+export const runLastMonthlyReport = async (): Promise<void> => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = today.getMonth();
+
+  runMonthlyReport(month, year);
+};
+
+*/
+
+export const runMonthly = async (
+  dataPath: string,
+  cachePath: string
+): Promise<void> => {
+  logger.info(
+    `Running monthly log analysis (monthly counts and popularity reports) using data ${dataPath} and cache ${cachePath}, saved in Elastic reports`
+  );
+  return;
+
+  const [m0, m1, m2] = getLastMonthsComplete();
+  const data = await readFromFile(dataPath);
+  const cache = await readCache(cachePath);
+
+  const contentPop = popularityAnalysis(data, m0, m1, m2, "1220", "CONTENT");
+  const conventionPop = popularityAnalysis(
+    data,
+    m0,
+    m1,
+    m2,
+    "1220",
+    "CONVENTION"
+  );
+  const queryPop = popularityAnalysis(
+    data,
+    m0,
+    m1,
+    m2,
+    "1220",
+    "QUERY",
+    some(cache)
+  );
+
+  //   await resetReportIndex(MONTHLY_REPORT_INDEX, standardMappings);
+
+  await saveReport(REPORT_INDEX, [
+    ...contentPop,
+    ...conventionPop,
+    ...queryPop,
+  ]);
+
+  const month = 11;
+  const year = 2020;
+  const logFiles = getDaysInMonth(month, year);
+  const dataframe = await countVisits(LOG_INDEX, logFiles);
+
+  // TODO we cast for now, we should change report type and id to respect Report type
+  const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
+
+  await saveReport(MONTHLY_REPORT_INDEX, [report]);
+};
+
+export const retrieveThreeMonthsData = async (
+  output: string
+): Promise<void> => {
+  const days = getLastMonthsComplete().flat().sort();
+
+  logger.info(
+    `Retrieve log data for the last three months (${days[0]} to ${
+      days[days.length - 1]
+    }), saved in ${output}`
+  );
+
+  const data = await readDaysFromElastic(LOG_INDEX, days, [
+    actionTypes.search,
+    actionTypes.visit,
+    actionTypes.selectResult,
+    actionTypes.feedback,
+  ]);
+
+  await data.asCSV().writeFile(output);
+};
+
+export const createCache = async (
+  dataPath: string,
+  output: string
+): Promise<void> => {
+  logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
+  const data = await readFromFile(dataPath);
+  const cache = await buildCache(data, 2);
+  await persistCache(cache, output);
+};
+
+/*
+const playQueries = async () => {
+  const data = await readFromFile("./logs-sept-oct-nov.csv");
+  const cache = await readCache("./cache-sept-oct-nov.csv");
+
+  const suggestions = await readSuggestions();
+  const queryReports = analyseQueries(
+    data,
+    cache,
+    new Set(suggestions),
+    "1220"
+  );
+
+  const queryReportIndex = "log_reports_queries";
+  await resetReportIndex(queryReportIndex, queryReportMappings);
+  await saveReport(queryReportIndex, queryReports);
+};
+*/
+
+// TODO function to recreate all reports from january 2020
+// await ReportStore.resetReportIndex(
+//   esClient,
+//   MONTHLY_REPORT_INDEX,
+//   ReportStore.visitReportMappings
+// );
+
+// await ReportStore.resetReportIndex(
+//   esClient,
+//   WEEKLY_REPORT_INDEX,
+//   ReportStore.visitReportMappings
+// );
+
+// [...Array(week).keys()].map((w) => {
+//   const ww = w + 1;
+//   console.log({ week: ww, year });
+//   const weekDate = setWeek(new Date(year, 1, 1, 12), ww + 1);
+//   runWeeklyReportByDate(weekDate);
+// });

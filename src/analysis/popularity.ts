@@ -18,7 +18,7 @@ const computeReports = (
   refStart: number,
   prevStart: number,
 
-  reportId: number,
+  reportId: string,
   reportType: string
 ) => {
   // FIXME use outer join to handle missing values (e.g. additions)
@@ -193,7 +193,7 @@ const analyse = (
   m0: string[],
   m1: string[],
   m2: string[],
-  reportId: number,
+  reportId: string,
   popularityType: PopularityTypeString,
   cache: Option<Cache> = none
 ): PopularityReport[] => {

@@ -88,12 +88,17 @@ const monthlyRun = async () => {
   const data = await readFromFile("./logs-sept-oct-nov.csv");
   const cache = await readCache("./cache-sept-oct-nov.csv");
 
-  const contentPop = analyse(data, m0, m1, m2, 1220, "CONTENT");
-  const conventionPop = analyse(data, m0, m1, m2, 1220, "CONVENTION");
-  const queryPop = analyse(data, m0, m1, m2, 1220, "QUERY", some(cache));
+  const contentPop = analyse(data, m0, m1, m2, "1220", "CONTENT");
+  const conventionPop = analyse(data, m0, m1, m2, "1220", "CONVENTION");
+  const queryPop = analyse(data, m0, m1, m2, "1220", "QUERY", some(cache));
 
   const suggestions = await readSuggestions();
-  const queryReports = analyseQueries(data, cache, new Set(suggestions), 1220);
+  const queryReports = analyseQueries(
+    data,
+    cache,
+    new Set(suggestions),
+    "1220"
+  );
 
   //   await resetReportIndex(MONTHLY_REPORT_INDEX, standardMappings);
 
@@ -126,7 +131,12 @@ const playQueries = async () => {
   const cache = await readCache("./cache-sept-oct-nov.csv");
 
   const suggestions = await readSuggestions();
-  const queryReports = analyseQueries(data, cache, new Set(suggestions), 1220);
+  const queryReports = analyseQueries(
+    data,
+    cache,
+    new Set(suggestions),
+    "1220"
+  );
 
   const queryReportIndex = "log_reports_queries";
   await resetReportIndex(queryReportIndex, queryReportMappings);
