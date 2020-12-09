@@ -9,7 +9,12 @@ describe("Query reports", () => {
   it("generate query reports", async () => {
     const dataset = await readFromFile(logPath);
     const cache = await readCache(cachePath);
-    const reports = analyse(dataset, cache, new Set(["apprentissage"]), 42);
+    const reports = analyse(
+      dataset,
+      cache,
+      new Set(["apprentissage"]),
+      "report-42"
+    );
 
     expect(reports).toMatchSnapshot();
   }, 10000);

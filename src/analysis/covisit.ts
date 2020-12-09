@@ -2,7 +2,7 @@ import { IDataFrame } from "data-forge";
 
 import * as datasetUtil from "../reader/dataset";
 import { urlToPath } from "../reader/readerUtil";
-import { CovisiteReport } from "./reports.types";
+import { CovisiteReport } from "./reports";
 
 const reportType = "covisit";
 
@@ -82,7 +82,6 @@ const analyse = (
   });
 
   const docs: CovisiteReport[] = [];
-  // const docs: [] = [];
 
   sortedContents.forEach((counts, url) => {
     const content = urlToPath(url);
@@ -100,7 +99,5 @@ const analyse = (
 
   return docs;
 };
-
-// configured function
 
 export { analyse, reportType };

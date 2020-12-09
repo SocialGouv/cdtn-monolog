@@ -9,13 +9,14 @@ Logs are structured as a list of typed _actions_ describing user behaviour durin
 
 ### ENV variable
 
-As this project lies between different services, it can be useful to describe the different environment variable :
+As this project lies between different services, it is useful to understand the different environment variables :
 
 ```
 MATOMO_URL # URL of the Matomo server where raw logs can be found
 AZ_STORAGE_TOKEN # Azure token to push dump to Azure blob
 ELASTIC_URL # URL of the Elastic instance where the logs are stored eventually
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
+CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results
 ```
 
 ## Log storage
@@ -28,7 +29,7 @@ We use Azure blob to store daily dumps of the Matomo content. Downloading the da
 
 The `ingest` task takes a Matomo dump file, convert it, and push the actions to Elastic.
 
-```
+```console
 ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy AZURE_TOKEN=xxxx yarn monolog ingest
 ```
 
@@ -47,43 +48,75 @@ It's done in several steps :
 - finally we execute the `monthly` analysis using both
 - we can also generate the `queries` reports using the same 3 months data
 
+The `log reports` are stored in Elastic and can then be shown in Kibana dashboards.
+
 ### `retrieve`
 
-blabla
+Retrieve logs for the last 3 months and store them in the output as a CSV file.
+We only select _some_ action types : searches / selections / content visits / feebdack.
+
+```console
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog retrieve -o data.csv
+```
 
 ### `cache`
 
-blabla
+We identify all _searches_ in the data CSV file, and trigger them to the CDTN API search endpoint.
+We store the results for those queries in a cache json file that'll be used in the next steps to compute popularity metrics and generate the query reports.
+
+```console
+CDTN_API_URL=zzzz yarn monolog cache -d data.csv -o cache.json
+```
 
 ### `monthly`
 
-blabla
+Based on usage logs we compute several reports and store them to Elastic :
+
+- _Monthly report_ contains metrics for the last month : average daily visits, number of unique visits...
+- _Popularity reports_ describe the most popular contents, conventions collectives and queries. We compute popularity for each of the last three months in order to observe their progression. (Note: queries are grouped in clusters, if the trigger the same results from the API, we consider them as part of the same _query cluster_)
+
+```console
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog monthly -d data.csv -c cache.json
+```
 
 ### `query reports`
 
-blabla
+Using user searches and selections in conjonction with CDTN API search results, we can compute scores for each query cluster.
+It allows us to identify query that are underperforming (the user do not select any results, or the users always select the 4th result rather than the first one...).
+We also use the suggestion list used by the CDTN API in order to track if a query was suggested (query auto-completion) to the user.
+Query reports are stored in Elastic.
+
+```console
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt
+```
+
+## Covisits
+
+The `covisits` task check for links between documents that can be found in the user journeys.
+If several visits contain the same content views, we use it as a signal for content recommandations.
+We store those links in the Elastic log reports.
+
+The CDTN API will then read those links at build time, and use them to provide the user with "related content" suggestions.
+
+To refresh the covisits using a CSV data export (see `retrieve` above) :
+
+```console
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog covisits -d data.csv
+```
+
+## Elastic Reports
+
+Analysis reports are stored in different indices :
+
+- the `log_reports` index contains up-to-date reports that are overriden at each exection, there can be queried using the `reportType` attribute :
+  - `covisit` : covisit reports
+  - `content-popularity` / `convention-popularity` / `query-popularity` : popularity reports for the current month
+- `log_reports_monthly` index containing a monthly report for each month
+- `log_reports_queries` index containing the last query reports (overriden at each analysis)
+
+> Report types can be found in `/src/analysis/reports.types.ts`
 
 # TODO :
-
-## Covisites
-
-## deprecated :
-
-The default `analyse` task run the standard analysis using logs of the last 30 days :
-
-- suggestions : store the list of suggestions along with their respective weights (computed from frequency in the logs)
-- covisit : for each matching document, store the list of their identified links (using visits similarity)
-- [popularity](./popularity.md) : store the list of most significant changes in content popularity (up or down)
-- metrics:
-  Compute [different Metrics](./metrics.md) on user sessions
-
-Analysis results are stored in Elastic Search and available for Kibana visualisation or directly from code using the query lib described below.
-
-```
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn run monolog --analyse
-```
-
-By default this task is performed on a weekly basis using the `run-analysis.sh` script as a cron job.
 
 ## Query lib
 

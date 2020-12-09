@@ -1,38 +1,22 @@
 import { IDataFrame } from "data-forge";
 import { some } from "fp-ts/Option";
 
-import { readCache } from "../../cdtn/resultCache";
-import { readFromFile } from "../../reader/logReader";
+import { largeCache, largeData } from "../../__tests__/util";
 import { getLastMonthsComplete } from "../../reader/readerUtil";
-import { analyse, countQueries } from "../popularity";
+import { analyse } from "../popularity";
 
 describe("Query popularity", () => {
-  const logPath = "/Users/remim/tmp/queries-test-logs.csv";
-  const cachePath = "/Users/remim/tmp/cache-test.csv";
-
-  const log3Months =
-    "/Users/remim/dev/cdtn/cdtn-monolog/logs-test-aug-sep-oct.json";
-
-  let dataset: IDataFrame;
-
-  beforeAll(async () => {
-    // dataset = await readFromFile(log3Months);
-  });
-
   it("generate query reports", async () => {
-    const cache = await readCache(cachePath);
-    const days = getLastMonthsComplete(some(new Date()));
-
-    dataset = await readFromFile("./log-searches.csv");
+    const days = getLastMonthsComplete(some(new Date(1607530903149)));
 
     const reports = analyse(
-      dataset,
+      largeData,
       days[0],
       days[1],
       days[2],
-      44,
+      "44",
       "QUERY",
-      some(cache)
+      some(largeCache)
     );
 
     expect(reports).toMatchSnapshot();

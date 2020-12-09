@@ -4,7 +4,7 @@ import * as murmur from "murmurhash-js";
 import { Cache } from "../cdtn/cdtn.types";
 import * as datasetUtil from "../reader/dataset";
 import { actionTypes } from "../reader/readerUtil";
-import { QueryIndexReport, QueryReport } from "./reports.types";
+import { QueryIndexReport, QueryReport } from "./reports";
 
 type QueryGroup = {
   // the different queries returning the same results and their count

@@ -1,5 +1,5 @@
 // save and read reports in ES uselss for now as only redirecting to ES
-import { Report } from "../analysis/reports.types";
+import { Report } from "../analysis/reports";
 import * as es from "../es/elastic";
 import { DocumentResponse } from "../es/elastic";
 import { logger } from "../logger";
@@ -116,25 +116,15 @@ export const queryReportMappings = {
       type: "integer",
     },
     queryKey: {
-      type: "integer",
+      type: "long",
     },
     reportId: {
-      fields: {
-        keyword: {
-          ignore_above: 256,
-          type: "keyword",
-        },
-      },
-      type: "string",
+      ignore_above: 256,
+      type: "keyword",
     },
     reportType: {
-      fields: {
-        keyword: {
-          ignore_above: 256,
-          type: "keyword",
-        },
-      },
-      type: "text",
+      ignore_above: 256,
+      type: "keyword",
     },
     results: {
       properties: {

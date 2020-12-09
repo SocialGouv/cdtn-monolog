@@ -9,6 +9,8 @@ const LOG_INDEX = process.env.LOG_INDEX || "logs";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
 const MONTHLY_REPORT_INDEX =
   process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
+const QUERY_REPORT_INDEX =
+  process.env.QUERY_REPORT_INDEX || "log_reports_queries";
 
 const SCROLL_TIMEOUT = "30s";
 const BATCH_SIZE = 500;
@@ -27,7 +29,8 @@ export type DocumentResponse = {
   docs: any[];
 };
 
-const getDocuments = async (
+export const getDocumentsFromES = async (
+  esClient: Client,
   index: string,
   query: any,
   // TODO use fp-ts option here
@@ -79,6 +82,15 @@ const getDocuments = async (
 
   return { aggregations, docs };
 };
+
+const getDocuments = async (
+  index: string,
+  query: any,
+  // TODO use fp-ts option here
+  aggs: any = undefined,
+  withDocs = true
+): Promise<DocumentResponse> =>
+  getDocumentsFromES(esClient, index, query, aggs, withDocs);
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {
@@ -165,4 +177,5 @@ export {
   LOG_INDEX,
   REPORT_INDEX,
   MONTHLY_REPORT_INDEX,
+  QUERY_REPORT_INDEX,
 };

@@ -11,3 +11,4 @@ legacy
 *.log
 data/
 test-dump.json
+large-*

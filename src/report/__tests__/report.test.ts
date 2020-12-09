@@ -4,7 +4,8 @@ import * as Covisit from "../../analysis/covisit";
 import * as es from "../../es/elastic";
 import * as ReportStore from "../reportStore";
 
-const getAnalysis = async () => readLogfile().then((d) => Covisit.analyse(d));
+const getAnalysis = async () =>
+  readLogfile().then((d) => Covisit.analyse(d, 5, 14, "report-42"));
 
 const index = "test-report-store";
 

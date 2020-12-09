@@ -3,6 +3,7 @@ import * as yargs from "yargs";
 
 import {
   createCache,
+  refreshCovisits,
   retrieveThreeMonthsData,
   runIngestion,
   runMonthly,
@@ -26,19 +27,18 @@ const main = async () => {
         },
         async ({ path }) => await runIngestion(path)
       )
-      /*
       .command(
-        "covisites [days]",
+        "covisits [days]",
         "Compute covisites",
         {
-          days: {
+          data: {
             alias: "d",
+            demand: true,
           },
         },
         // TODO
-        ({ days }) => console.log(`running covisites analysis for ${days} days`)
+        async ({ data }) => await refreshCovisits(data as string)
       )
-      */
       .command(
         "retrieve [output]",
         "Retrieve data for monthly analysis",

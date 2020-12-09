@@ -1,13 +1,18 @@
-import { cons } from "fp-ts/lib/NonEmptyArray";
 import { some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
+import { analyse as covisitAnalysis } from "./analysis/covisit";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import { analyse as queryAnalysis } from "./analysis/queries";
 import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
-import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "./es/elastic";
+import {
+  LOG_INDEX,
+  MONTHLY_REPORT_INDEX,
+  QUERY_REPORT_INDEX,
+  REPORT_INDEX,
+} from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import { logger } from "./logger";
 import {
@@ -29,7 +34,6 @@ import {
 // TODO shall we use EitherTask here ?
 export const runIngestion = async (dataPath: string): Promise<void> => {
   logger.info(`Running Elastic ingestion for files in ${dataPath}`);
-  return;
 
   await checkIndex(LOG_INDEX);
   // read dump files in default location
@@ -54,9 +58,6 @@ export const runQueryAnalysis = async (
       suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
-  return;
-
-  const queryReportIndex = "log_reports_queries";
 
   const data = await readFromFile(dataPath);
   const cache = await readCache(cachePath);
@@ -64,66 +65,15 @@ export const runQueryAnalysis = async (
     ? await readSuggestions(suggestionPath as string)
     : new Set<string>();
 
-  // // period should match with latest search update or release ?
-  // const data = await Reader.readFromElastic(LOG_INDEX, new Date(), period, [
-  //   actionTypes.search,
-  //   actionTypes.selectResult,
-  // ]);
-
   logger.info("Analysing logs");
   const reports = await queryAnalysis(data, cache, suggestions);
 
   // we delete the exisiting query reports
-  await resetReportIndex(queryReportIndex, queryReportMappings);
+  await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
 
   // we save the new reports
-  await saveReport(queryReportIndex, reports);
+  await saveReport(QUERY_REPORT_INDEX, reports);
 };
-
-/*
-const runWeeklyReportByDate = async (date: Date) => {
-  const lastMonday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
-  const logFiles = getLastDays(7, lastMonday);
-  const dataframe = await Reader.countVisits(LOG_INDEX, logFiles);
-
-  const report = visitAnalysis(
-    dataframe,
-    `weekly-${getWeek(lastMonday) - 1}-${lastMonday.getFullYear()}`
-  );
-  await ReportStore.saveReport(WEEKLY_REPORT_INDEX, [report]);
-};
-
-export const runWeeklyReport = async (week: number, year: number) => {
-  const weekDate = setWeek(new Date(year, 1, 1, 12), week + 1);
-  runWeeklyReportByDate(weekDate);
-};
-
-export const runLastWeeklyReport = async () => {
-  const today = new Date();
-  runWeeklyReportByDate(today);
-};
-
-export const runMonthlyReport = async (
-  month: number,
-  year: number
-): Promise<void> => {
-  const logFiles = getDaysInMonth(month, year);
-
-  const dataframe = await Reader.countVisits(LOG_INDEX, logFiles);
-
-  const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
-  await saveReport(MONTHLY_REPORT_INDEX, [report]);
-};
-
-export const runLastMonthlyReport = async (): Promise<void> => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth();
-
-  runMonthlyReport(month, year);
-};
-
-*/
 
 export const runMonthly = async (
   dataPath: string,
@@ -132,7 +82,8 @@ export const runMonthly = async (
   logger.info(
     `Running monthly log analysis (monthly counts and popularity reports) using data ${dataPath} and cache ${cachePath}, saved in Elastic reports`
   );
-  return;
+
+  const reportId = new Date().getTime().toString();
 
   const [m0, m1, m2] = getLastMonthsComplete();
   const data = await readFromFile(dataPath);
@@ -144,7 +95,7 @@ export const runMonthly = async (
     m0,
     m1,
     m2,
-    "1220",
+    reportId,
     "CONVENTION"
   );
   const queryPop = popularityAnalysis(
@@ -152,13 +103,12 @@ export const runMonthly = async (
     m0,
     m1,
     m2,
-    "1220",
+    reportId,
     "QUERY",
     some(cache)
   );
 
-  //   await resetReportIndex(MONTHLY_REPORT_INDEX, standardMappings);
-
+  // TODO : delete previous popularity reports
   await saveReport(REPORT_INDEX, [
     ...contentPop,
     ...conventionPop,
@@ -170,7 +120,6 @@ export const runMonthly = async (
   const logFiles = getDaysInMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
-  // TODO we cast for now, we should change report type and id to respect Report type
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
@@ -207,24 +156,15 @@ export const createCache = async (
   await persistCache(cache, output);
 };
 
-/*
-const playQueries = async () => {
-  const data = await readFromFile("./logs-sept-oct-nov.csv");
-  const cache = await readCache("./cache-sept-oct-nov.csv");
+export const refreshCovisits = async (dataPath: string): Promise<void> => {
+  logger.info(`Refreshing covisites using links in data ${dataPath}`);
+  const data = await readFromFile(dataPath);
+  const covisitReports = covisitAnalysis(data);
 
-  const suggestions = await readSuggestions();
-  const queryReports = analyseQueries(
-    data,
-    cache,
-    new Set(suggestions),
-    "1220"
-  );
+  // TODO : delete previous covisit reports
 
-  const queryReportIndex = "log_reports_queries";
-  await resetReportIndex(queryReportIndex, queryReportMappings);
-  await saveReport(queryReportIndex, queryReports);
+  await saveReport(REPORT_INDEX, covisitReports);
 };
-*/
 
 // TODO function to recreate all reports from january 2020
 // await ReportStore.resetReportIndex(

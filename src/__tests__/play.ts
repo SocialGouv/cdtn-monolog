@@ -5,7 +5,7 @@ import * as readline from "readline";
 
 import { analyse } from "../analysis/popularity";
 import { analyse as analyseQueries } from "../analysis/queries";
-import { Report } from "../analysis/reports.types";
+import { Report } from "../analysis/reports";
 import { analyse as visitAnalysis } from "../analysis/visits";
 import { buildCache, persistCache, readCache } from "../cdtn/resultCache";
 import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "../es/elastic";

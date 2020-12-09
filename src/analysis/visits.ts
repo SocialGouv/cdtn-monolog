@@ -1,7 +1,7 @@
 import { IDataFrame } from "data-forge";
 import { parseISO } from "date-fns";
 
-import { MonthlyReport } from "./reports.types";
+import { MonthlyReport } from "./reports";
 
 const reportType = "monthly-report";
 

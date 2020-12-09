@@ -3,10 +3,29 @@ import "data-forge-fs";
 import * as dataForge from "data-forge";
 import * as path from "path";
 
+import { Cache } from "../cdtn/cdtn.types";
+import { readCache } from "../cdtn/resultCache";
 import * as Reader from "../reader/logReader";
 import { actionTypes } from "../reader/readerUtil";
 
 export const logfile = path.join(__dirname, "__fixtures__/logs.csv");
+
+export let largeData: dataForge.IDataFrame;
+export let largeCache: Cache;
+
+(async () => {
+  try {
+    largeData = await Reader.readFromFile(
+      path.join(__dirname, "__fixtures__/large-data.csv")
+    );
+
+    largeCache = await readCache(
+      path.join(__dirname, "__fixtures__/large-cache.json")
+    );
+  } catch (e) {
+    console.log("Cannot read large test data or cache");
+  }
+})();
 
 export const wait = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms));

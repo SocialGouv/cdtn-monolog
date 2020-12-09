@@ -4,7 +4,7 @@ import { isSome, none, Option } from "fp-ts/lib/Option";
 import { Cache } from "../cdtn/cdtn.types";
 import { getVisits, toUniqueSearches, toUniqueViews } from "../reader/dataset";
 import { actionTypes, urlToPath } from "../reader/readerUtil";
-import { PopularityReport } from "./reports.types";
+import { PopularityReport } from "./reports";
 
 const reportType = (pt: PopularityTypeString): string =>
   `${pt.toLowerCase()}-popularity`;
