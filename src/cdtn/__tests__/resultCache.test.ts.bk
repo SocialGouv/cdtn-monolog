@@ -1,3 +1,4 @@
+/*
 import { buildDataFrameFromQueries } from "../../__tests__/util";
 import { buildCache, persistCache, readCache } from "../resultCache";
 
@@ -27,3 +28,5 @@ describe("CDTN API result cache", () => {
     expect(cache).toStrictEqual(persistedCache);
   });
 });
+
+*/

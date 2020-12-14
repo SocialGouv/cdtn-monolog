@@ -1,4 +1,6 @@
 import { IDataFrame } from "data-forge";
+/*
+
 import { some } from "fp-ts/Option";
 
 import { largeCache, largeData } from "../../__tests__/util";
@@ -22,7 +24,6 @@ describe("Query popularity", () => {
     expect(reports).toMatchSnapshot();
   }, 10000);
 
-  /*
   it("generate popularity report for contents", async () => {
     const days = getLastMonthsComplete(some(new Date()));
 
@@ -43,5 +44,6 @@ describe("Query popularity", () => {
     );
     expect(reports).toMatchSnapshot();
   });
-  */
 });
+
+  */

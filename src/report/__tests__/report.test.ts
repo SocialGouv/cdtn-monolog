@@ -22,7 +22,7 @@ describe("Report", () => {
     const res = await ReportStore.saveReport(index, docs);
     await wait(8000);
     expect(res).toBe(0);
-  }, 10000);
+  });
 
   it("should be readable", async () => {
     const reports = await ReportStore.loadReport(index, {

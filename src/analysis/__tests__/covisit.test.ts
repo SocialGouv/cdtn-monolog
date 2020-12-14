@@ -13,7 +13,7 @@ describe("Covisit", () => {
 
   const url = (i: number) => `url${i}`;
 
-  const analyse = (dataset: IDataFrame) => Covisit.analyse(dataset, 1, 3);
+  const analyse = (dataset: IDataFrame) => Covisit.analyse(dataset, 1, 3, "42");
 
   // takes tuples and generate data : [1,3] =>  visit id 1 / content viewed 3
   const generate = (a: number[][]) =>
@@ -59,16 +59,16 @@ describe("Covisit", () => {
     const dataMinOcc = generate(rawMinOcc);
 
     // try with minoccurence 2
-    expect(Covisit.analyse(dataMinOcc, 2, 2)).toMatchSnapshot();
+    expect(Covisit.analyse(dataMinOcc, 2, 2, "42")).toMatchSnapshot();
 
     // try with minoccurence 3
-    expect(Covisit.analyse(dataMinOcc, 3, 2)).toStrictEqual([]);
+    expect(Covisit.analyse(dataMinOcc, 3, 2, "42")).toStrictEqual([]);
     // add content so it passes limitation
     [
       [3, 1],
       [3, 2],
     ].forEach((a) => rawMinOcc.push(a));
-    expect(Covisit.analyse(generate(rawMinOcc), 3, 2)).toMatchSnapshot();
+    expect(Covisit.analyse(generate(rawMinOcc), 3, 2, "42")).toMatchSnapshot();
   });
 
   it("should respect link limit setting", () => {
@@ -85,9 +85,9 @@ describe("Covisit", () => {
     ]);
 
     // try with link limit 2
-    expect(Covisit.analyse(linkLimit, 1, 2)).toMatchSnapshot();
+    expect(Covisit.analyse(linkLimit, 1, 2, "42")).toMatchSnapshot();
 
     // try with link limit 3
-    expect(Covisit.analyse(linkLimit, 1, 1)).toMatchSnapshot();
+    expect(Covisit.analyse(linkLimit, 1, 1, "42")).toMatchSnapshot();
   });
 });

@@ -23,11 +23,12 @@ CDTN_API_URL # URL of the CDTN API required to generate a cache of the search en
 
 ### Backup
 
-We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure is done through a bash script `download-dump.sh` executed from the Azure Docker image.
+We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure is done through a bash script `dump_matomo_yesterday.sh` executed from the Azure Docker image.
 
-### Ingestion
+### `ingest`
 
-The `ingest` task takes a Matomo dump file, convert it, and push the actions to Elastic.
+The `ingest` task takes a Matomo dump file in `data/`, convert it, and push the actions to Elastic.
+The `download_dump.sh` script allows you to get a dump file from Azure.
 
 ```console
 ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy AZURE_TOKEN=xxxx yarn monolog ingest

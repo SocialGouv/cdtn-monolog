@@ -14,6 +14,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -28,6 +29,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -42,6 +44,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]
@@ -57,6 +60,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -67,6 +71,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]
@@ -86,6 +91,7 @@ Array [
         "link": "url3",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -100,6 +106,7 @@ Array [
         "link": "url3",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -114,6 +121,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]
@@ -129,6 +137,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -139,6 +148,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -149,6 +159,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]
@@ -164,6 +175,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -174,6 +186,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]
@@ -189,6 +202,7 @@ Array [
         "link": "url2",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
   Object {
@@ -199,6 +213,7 @@ Array [
         "link": "url1",
       },
     ],
+    "reportId": "42",
     "reportType": "covisit",
   },
 ]

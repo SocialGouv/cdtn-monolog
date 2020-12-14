@@ -22,7 +22,7 @@ beforeAll(async () => {
     index,
   });
   await wait(5000);
-}, 10000);
+});
 
 // test that the ingestion of fake matomo dump is ok
 test("ingest Matomo dump to ES", async () => {
