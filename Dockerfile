@@ -13,4 +13,5 @@ FROM node:14.13-alpine3.10
 WORKDIR /app
 COPY --from=builder /app/dist/ .
 
+
 CMD ["sh", "-c", "node index.js ${MONOLOG_ACTION}"]
