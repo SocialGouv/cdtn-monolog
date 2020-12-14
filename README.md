@@ -114,7 +114,7 @@ Analysis reports are stored in different indices :
 - `log_reports_monthly` index containing a monthly report for each month
 - `log_reports_queries` index containing the last query reports (overriden at each analysis)
 
-> Report types can be found in `/src/analysis/reports.types.ts`
+> Report types can be found in `/src/analysis/reports.ts`
 
 # TODO :
 
