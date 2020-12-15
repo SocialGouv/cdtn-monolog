@@ -1,3 +1,4 @@
+import { cons } from "fp-ts/lib/NonEmptyArray";
 import * as fs from "fs";
 import * as readline from "readline";
 
@@ -24,13 +25,13 @@ export const readSuggestions = async (
         // create an immutable copy of the array
         const suggestions = suggestionsBuffer.slice();
         suggestionsBuffer = [];
-        suggestions.forEach((s) => entities.add(s));
+        suggestions.forEach((s) => entities.add(s.entity));
       }
     });
 
     stream.on("close", async function () {
       if (suggestionsBuffer.length > 0) {
-        suggestionsBuffer.forEach((s) => entities.add(s));
+        suggestionsBuffer.forEach((s) => entities.add(s.entity));
         resolve();
       }
     });
