@@ -81,8 +81,8 @@ const main = async () => {
           )
       )
       .command(
-        "monthly",
-        "Compute monthly reports (visit and popularity) using [data]",
+        "monthly [data]",
+        "Compute monthly reports (visit and popularity)",
         {
           cache: { alias: "c", demand: true },
           data: { alias: "d", demand: true },

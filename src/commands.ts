@@ -3,7 +3,10 @@ import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
-import { analyse as queryAnalysis } from "./analysis/queries";
+import {
+  analyse as queryAnalysis,
+  generateAPIResponseReports,
+} from "./analysis/queries";
 import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
@@ -12,6 +15,7 @@ import {
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
+  RESULTS_REPORT_INDEX,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import { logger } from "./logger";
@@ -66,13 +70,15 @@ export const runQueryAnalysis = async (
     : new Set<string>();
 
   logger.info("Analysing logs");
-  const reports = await queryAnalysis(data, cache, suggestions);
+  const { index, queries } = await queryAnalysis(data, cache, suggestions);
+  const results = generateAPIResponseReports(queries);
 
   // we delete the exisiting query reports
   await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
 
   // we save the new reports
-  await saveReport(QUERY_REPORT_INDEX, reports);
+  await saveReport(QUERY_REPORT_INDEX, [index, ...queries]);
+  await saveReport(RESULTS_REPORT_INDEX, results);
 };
 
 export const runMonthly = async (

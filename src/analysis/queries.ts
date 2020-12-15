@@ -4,7 +4,7 @@ import * as murmur from "murmurhash-js";
 import { Cache } from "../cdtn/cdtn.types";
 import * as datasetUtil from "../reader/dataset";
 import { actionTypes } from "../reader/readerUtil";
-import { QueryIndexReport, QueryReport } from "./reports";
+import { QueryIndexReport, QueryReport, ResultReport } from "./reports";
 
 type QueryGroup = {
   // the different queries returning the same results and their count
@@ -275,7 +275,7 @@ export const analyse = (
   queryCache: Cache,
   suggestions: Set<string>,
   reportId = new Date().getTime().toString()
-): Array<QueryIndexReport | QueryReport> => {
+): { index: QueryIndexReport; queries: QueryReport[] } => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks
   // const { cache: counts, queryMap } = await buildCache(dataset);
@@ -327,5 +327,23 @@ export const analyse = (
   // console.log(JSON.stringify(queryClusterIndexReport, null, 2));
 
   // and finally build reports
-  return [queryClusterIndexReport, ...queryClusterReports];
+  return { index: queryClusterIndexReport, queries: queryClusterReports };
+};
+
+/**
+ *
+ * @param queryClusterReports Create result reports for Kibana vizualisation purpose
+ */
+export const generateAPIResponseReports = (
+  queryClusterReports: QueryReport[]
+): ResultReport[] => {
+  const reportType = "result";
+  return queryClusterReports.flatMap(({ reportId, queries, results }) =>
+    results.map((r) => ({
+      queries,
+      ...r,
+      reportId,
+      reportType,
+    }))
+  );
 };

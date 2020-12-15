@@ -17,6 +17,18 @@ export type PopularityReport = Report & {
   m2_start: number;
 };
 
+type Query = {
+  count: number;
+  query: string;
+  suggestion: boolean;
+};
+
+type Result = {
+  algo: string;
+  count: number;
+  result: string;
+};
+
 export type QueryReport = Report & {
   queryKey: number;
   ndcg: number;
@@ -24,19 +36,16 @@ export type QueryReport = Report & {
   dcg: number;
   queriesCount: number;
   selectionsCount: number;
-  queries: {
-    count: number;
-    query: string;
-    suggestion: boolean;
-  }[];
-  results: {
-    algo: string;
-    count: number;
-    result: string;
-  }[];
+  queries: Query[];
+  results: Result[];
   selectionsRatio: number;
   type: string;
 };
+
+export type ResultReport = Report &
+  Result & {
+    queries: Query[];
+  };
 
 export type QueryIndexReport = Report & {
   meanQueryCount: string;
