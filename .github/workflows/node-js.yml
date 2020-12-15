@@ -15,6 +15,13 @@ jobs:
           - 12.x
 
     steps:
+      # - uses: fixpoint/azblob-download-artifact@v3
+      #   with:
+      #     connection-string: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      #     container: logs
+      #     name: test-data.csv
+      #     path: /data/
+      # - run: head -c 30 /data/test-data.csv
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1

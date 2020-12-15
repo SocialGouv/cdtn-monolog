@@ -110,7 +110,7 @@ const monthlyRun = async () => {
 
   const queryReportIndex = "log_reports_queries";
   await resetReportIndex(queryReportIndex, queryReportMappings);
-  await saveReport(queryReportIndex, queryReports);
+  // await saveReport(queryReportIndex, queryReports);
 
   const month = 11;
   const year = 2020;
@@ -140,7 +140,7 @@ const playQueries = async () => {
 
   const queryReportIndex = "log_reports_queries";
   await resetReportIndex(queryReportIndex, queryReportMappings);
-  await saveReport(queryReportIndex, queryReports);
+  // await saveReport(queryReportIndex, queryReports);
 };
 
 const feedback = async () => {
