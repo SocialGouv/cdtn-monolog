@@ -67,7 +67,7 @@ Ingest to ES:
   script:
     - yarn install
     - yarn build
-    - node dist/index.js
+    - node dist/index.js $MONOLOG_ACTION
 
 Run weekly:
   stage: weekly
@@ -93,4 +93,4 @@ Run covisites:
   script:
     - yarn install
     - yarn build
-    - node dist/index.js $MONOLOG_ACTION $DAYS 
+    - node dist/index.js $MONOLOG_ACTION $DAYS
