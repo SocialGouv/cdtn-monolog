@@ -1,7 +1,5 @@
 import { setDate, subMonths } from "date-fns";
-import { da } from "date-fns/locale";
 import { pipe } from "fp-ts/lib/function";
-import { cons } from "fp-ts/lib/NonEmptyArray";
 import { getOrElse, none, Option } from "fp-ts/Option";
 
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
