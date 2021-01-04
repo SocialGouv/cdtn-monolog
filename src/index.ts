@@ -105,7 +105,7 @@ const main = async () => {
 
 //TODO
 main().then(() => {
-  logger.info("Done");
+  logger.info("Started");
 });
 // .catch((err) => {
 // logger.error(err);

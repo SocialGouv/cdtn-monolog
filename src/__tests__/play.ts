@@ -13,7 +13,7 @@ import { getVisits, toUniqueSearches } from "../reader/dataset";
 import { countVisits, readFromFile } from "../reader/logReader";
 import {
   actionTypes,
-  getDaysInMonth,
+  getDaysInPrevMonth,
   getLastMonthsComplete,
 } from "../reader/readerUtil";
 import {
@@ -114,7 +114,7 @@ const monthlyRun = async () => {
 
   const month = 11;
   const year = 2020;
-  const logFiles = getDaysInMonth(month, year);
+  const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   // TODO we cast for now, we should change report type and id to respect Report type
@@ -145,7 +145,7 @@ const playQueries = async () => {
 
 const feedback = async () => {
   const data = await readFromFile("./logs-sept-oct-nov.csv");
-  const logFiles = getDaysInMonth(11, 2020);
+  const logFiles = getDaysInPrevMonth(11, 2020);
 
   const fb = data
     .where((a) => a.type == actionTypes.feedback)

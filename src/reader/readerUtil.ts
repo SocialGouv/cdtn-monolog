@@ -1,5 +1,7 @@
 import { setDate, subMonths } from "date-fns";
+import { da } from "date-fns/locale";
 import { pipe } from "fp-ts/lib/function";
+import { cons } from "fp-ts/lib/NonEmptyArray";
 import { getOrElse, none, Option } from "fp-ts/Option";
 
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
@@ -25,10 +27,18 @@ export const getLastDays = (n: number, ref: Date): string[] => {
   return [...Array(n).keys()].map(createDate).map(formatDate);
 };
 
-export const getDaysInMonth = (month: number, year: number): string[] => {
-  const date = new Date(year, month - 1, 1, 12);
+/**
+ *  return days of previous month
+ *  month : 12 / year : 2020 will return all days in november 2020
+ * @param month
+ * @param year
+ */
+export const getDaysInPrevMonth = (month: number, year: number): string[] => {
+  const date = subMonths(new Date(year, month, 1, 12), 1);
+  const currentMonth = date.getMonth();
+
   const days = [];
-  while (date.getMonth() === month - 1) {
+  while (date.getMonth() === currentMonth) {
     days.push(new Date(date));
     date.setDate(date.getDate() + 1);
   }
@@ -58,7 +68,7 @@ export const getLastMonthsComplete = (
 
   return nMonths
     .map((i) => subMonths(end, i))
-    .map((d) => getDaysInMonth(d.getMonth(), d.getFullYear()));
+    .map((d) => getDaysInPrevMonth(d.getMonth(), d.getFullYear()));
 };
 
 export const actionTypes = {

@@ -26,7 +26,7 @@ import {
 } from "./reader/logReader";
 import {
   actionTypes,
-  getDaysInMonth,
+  getDaysInPrevMonth,
   getLastMonthsComplete,
 } from "./reader/readerUtil";
 import {
@@ -93,9 +93,10 @@ export const runMonthly = async (
 
   const [m0, m1, m2] = getLastMonthsComplete();
   const data = await readFromFile(dataPath);
+
   const cache = await readCache(cachePath);
 
-  const contentPop = popularityAnalysis(data, m0, m1, m2, "1220", "CONTENT");
+  const contentPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONTENT");
   const conventionPop = popularityAnalysis(
     data,
     m0,
@@ -121,9 +122,11 @@ export const runMonthly = async (
     ...queryPop,
   ]);
 
-  const month = 11;
-  const year = 2020;
-  const logFiles = getDaysInMonth(month, year);
+  // we use the last analysed month (m0)
+  const month = parseInt(m0[0].split("-")[1]);
+  const year = parseInt(m0[0].split("-")[0]);
+
+  const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
@@ -142,6 +145,7 @@ export const retrieveThreeMonthsData = async (
     }), saved in ${output}`
   );
 
+  console.log(days);
   const data = await readDaysFromElastic(LOG_INDEX, days, [
     actionTypes.search,
     actionTypes.visit,
