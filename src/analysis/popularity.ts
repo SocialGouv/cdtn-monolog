@@ -1,7 +1,7 @@
 import { DataFrame, IDataFrame } from "data-forge";
 import { isSome, none, Option } from "fp-ts/lib/Option";
 
-import { Cache } from "../cdtn/cdtn.types";
+import { Cache, CacheQueryCluster } from "../cdtn/cdtn.types";
 import { getVisits, toUniqueSearches, toUniqueViews } from "../reader/dataset";
 import { actionTypes, urlToPath } from "../reader/readerUtil";
 import { PopularityReport } from "./reports";
@@ -129,7 +129,9 @@ export const countQueries = (
     queries.forEach((currQ) => {
       const idx = cache.value.queryMap.get(currQ);
       const entry = idx && cache.value.clusters.get(idx);
-      if (!idx || !entry) {
+
+      // case no entry or no result in entry
+      if (!idx || !entry || (entry as CacheQueryCluster).results.size == 0) {
         //TODO
         //   console.log("Issue " + query);
         //   console.log(idx);
@@ -166,6 +168,10 @@ export const countQueries = (
         const normalized_count = count / queries.length;
         // most frequent query
         const field = cc.sort((a, b) => b.count - a.count)[0].query;
+
+        if (field == "amiante") {
+          console.log(cc);
+        }
 
         return { count, field, normalized_count };
       })

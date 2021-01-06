@@ -3,7 +3,7 @@ import { some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 import * as readline from "readline";
 
-import { analyse } from "../analysis/popularity";
+import { analyse, countQueries } from "../analysis/popularity";
 import { analyse as analyseQueries } from "../analysis/queries";
 import { Report } from "../analysis/reports";
 import { analyse as visitAnalysis } from "../analysis/visits";
@@ -71,8 +71,46 @@ const getLogs = async () => {
   data.asCSV().writeFileSync("./logs-sept-oct-nov.csv");
   */
 
-  const data = await readFromFile("./logs-sept-oct-nov.csv");
+  const [m0, m1, m2] = getLastMonthsComplete();
 
+  const data = await readFromFile("./01-2021.csv");
+  const cache = await readCache("./cache-01-2021.json");
+
+  const visits = getVisits(data);
+  // so we use toArray for now
+  const uniqueSearches = DataFrame.concat(
+    visits.select((visit) => toUniqueSearches(visit)).toArray()
+  );
+
+  const filtered = data
+    .where(
+      (r) =>
+        m1.includes(r.logfile) && r.type == "search" && r.query == "amiante"
+    )
+    .distinct((r) => r.idVisit)
+    .head(10);
+
+  const november = uniqueSearches.where((r) => m1.includes(r.logfile));
+
+  const am = data.where((r) => m1.includes(r.logfile) && r.query == "amiante");
+
+  const am2 = uniqueSearches
+    .where((r) => m1.includes(r.logfile) && r.query.toLowerCase() == "amiante")
+    .distinct((r) => r.idVisit);
+
+  const count = countQueries(november, some(cache));
+  console.log(am.count());
+  console.log(am2.count());
+
+  /*
+  console.log(count.where((r) => r.field == "amiante").toString());
+  console.log(count.toString());
+  console.log(count.where((r) => r.field == "amiante").toString());
+  */
+
+  // const data = await readFromFile("./");
+
+  /*
   const visits = getVisits(data);
   const uniqueSearches = DataFrame.concat(
     visits.select((visit) => toUniqueSearches(visit)).toArray()
@@ -80,6 +118,7 @@ const getLogs = async () => {
 
   const cache = await buildCache(uniqueSearches, 2);
   await persistCache(cache, "./cache-sept-oct-nov.csv");
+  */
 };
 
 const monthlyRun = async () => {
@@ -156,4 +195,4 @@ const feedback = async () => {
   console.log(p / t);
 };
 
-playQueries().then(() => console.log("done."));
+getLogs().then(() => console.log("done."));

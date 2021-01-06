@@ -89,12 +89,16 @@ export const runMonthly = async (
     `Running monthly log analysis (monthly counts and popularity reports) using data ${dataPath} and cache ${cachePath}, saved in Elastic reports`
   );
 
-  const reportId = new Date().getTime().toString();
-
   const [m0, m1, m2] = getLastMonthsComplete();
   const data = await readFromFile(dataPath);
 
   const cache = await readCache(cachePath);
+
+  // we use the last analysed month (m0)
+  const month = parseInt(m0[0].split("-")[1]);
+  const year = parseInt(m0[0].split("-")[0]);
+
+  const reportId = month.toString() + year.toString();
 
   const contentPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONTENT");
   const conventionPop = popularityAnalysis(
@@ -121,10 +125,6 @@ export const runMonthly = async (
     ...conventionPop,
     ...queryPop,
   ]);
-
-  // we use the last analysed month (m0)
-  const month = parseInt(m0[0].split("-")[1]);
-  const year = parseInt(m0[0].split("-")[0]);
 
   const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
