@@ -329,7 +329,7 @@ export const analyse = (
   // console.log(JSON.stringify(queryClusterIndexReport, null, 2));
 
   // and finally build reports
-  return {queries: queryClusterReports };
+  return { queries: queryClusterReports };
 };
 
 /**
