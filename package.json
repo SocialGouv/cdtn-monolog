@@ -37,8 +37,8 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/preset-env": "^7.12.16",
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
     "@socialgouv/eslint-config-recommended": "^1.49.0",
     "@types/jest": "^26.0.20",
     "@types/murmurhash-js": "^1.0.3",
