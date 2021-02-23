@@ -50,4 +50,4 @@ type Cache = {
   queryMap: Map<string, number>;
 };
 
-export { Document, SearchResult, Cache, CacheQueryCluster };
+export { Cache, CacheQueryCluster, Document, SearchResult };

@@ -1,4 +1,3 @@
-import { cons } from "fp-ts/lib/NonEmptyArray";
 import * as fs from "fs";
 import * as readline from "readline";
 
@@ -11,7 +10,7 @@ export const readSuggestions = async (
 ): Promise<Set<string>> => {
   const entities: Set<string> = new Set();
 
-  const promiseStream = new Promise((resolve) => {
+  const promiseStream = new Promise<void>((resolve) => {
     const stream = readline.createInterface({
       input: fs.createReadStream(filePath),
     });

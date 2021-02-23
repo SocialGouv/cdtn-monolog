@@ -74,6 +74,7 @@ export const actionTypes = {
   home: "home",
   search: "search",
 
+  searchCC: "cc_search",
   selectCC: "cc_select",
   selectRelated: "select_related",
   selectResult: "select_result",

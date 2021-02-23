@@ -171,14 +171,14 @@ const batchInsert = async (index: string, documents: any, size = 1000) => {
 };
 
 export {
-  getDocuments,
-  deleteIfExists,
-  testAndCreateIndex,
   batchInsert,
+  deleteIfExists,
   esClient,
+  getDocuments,
   LOG_INDEX,
-  REPORT_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
+  REPORT_INDEX,
   RESULTS_REPORT_INDEX,
+  testAndCreateIndex,
 };

@@ -119,4 +119,4 @@ const ingest = async (dumpPath: string, index: string): Promise<void> => {
   return;
 };
 
-export { ingest, checkIndex };
+export { checkIndex, ingest };

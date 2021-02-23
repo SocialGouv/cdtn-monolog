@@ -7,7 +7,7 @@ import { analyse, countQueries } from "../analysis/popularity";
 import { analyse as analyseQueries } from "../analysis/queries";
 import { Report } from "../analysis/reports";
 import { analyse as visitAnalysis } from "../analysis/visits";
-import { buildCache, persistCache, readCache } from "../cdtn/resultCache";
+import { readCache } from "../cdtn/resultCache";
 import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "../es/elastic";
 import { getVisits, toUniqueSearches } from "../reader/dataset";
 import { countVisits, readFromFile } from "../reader/logReader";
@@ -25,7 +25,7 @@ import {
 const readSuggestions = async () => {
   const entities: string[] = [];
 
-  const promiseStream = new Promise((resolve) => {
+  const promiseStream = new Promise<void>((resolve) => {
     const stream = readline.createInterface({
       input: fs.createReadStream("./suggestions.txt"),
     });
