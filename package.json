@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.11.0",
-    "@socialgouv/cdtn-sources": "^4.43.0",
+    "@socialgouv/cdtn-sources": "^4.44.0",
     "data-forge": "^1.8.17",
     "data-forge-fs": "^0.0.9",
     "date-fns": "^2.17.0",
@@ -37,9 +37,9 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.17",
-    "@babel/preset-env": "^7.12.17",
-    "@socialgouv/eslint-config-recommended": "^1.49.0",
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.8",
+    "@socialgouv/eslint-config-recommended": "^1.53.0",
     "@types/jest": "^26.0.20",
     "@types/murmurhash-js": "^1.0.3",
     "@types/node-fetch": "^2.5.8",
@@ -47,14 +47,14 @@
     "@typescript-eslint/parser": "^4.15.2",
     "@zeit/ncc": "^0.22.3",
     "babel-jest": "^26.6.3",
-    "eslint": "^7.19.0",
+    "eslint": "^7.21.0",
     "esm": "^3.2.25",
     "husky": "^4.3.8",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.5.2",
     "ts-node": "^9.1.1",
-    "typescript": "4.1.5"
+    "typescript": "4.2.2"
   },
   "jest": {
     "testTimeout": 30000,
