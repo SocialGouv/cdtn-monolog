@@ -37,8 +37,8 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.8",
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
     "@socialgouv/eslint-config-recommended": "^1.53.0",
     "@types/jest": "^26.0.20",
     "@types/murmurhash-js": "^1.0.3",
@@ -52,9 +52,9 @@
     "husky": "^4.3.8",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
-    "ts-jest": "^26.5.2",
+    "ts-jest": "^26.5.3",
     "ts-node": "^9.1.1",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   },
   "jest": {
     "testTimeout": 30000,
