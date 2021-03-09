@@ -122,18 +122,18 @@ export const runMonthly = async (
   );
 
   // TODO : delete previous popularity reports
-  //await saveReport(REPORT_INDEX, [
-  //  ...contentPop,
-  // ...conventionPop,
-  // ...queryPop,
-  //]);
+  await saveReport(REPORT_INDEX, [
+    ...contentPop,
+    ...conventionPop,
+    ...queryPop,
+  ]);
 
   const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
-  //await saveReport(MONTHLY_REPORT_INDEX, [report]);
+  await saveReport(MONTHLY_REPORT_INDEX, [report]);
 };
 
 export const retrieveThreeMonthsData = async (
