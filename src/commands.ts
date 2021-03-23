@@ -33,6 +33,7 @@ import {
 import {
   queryReportMappings,
   resetReportIndex,
+  resultReportMappings,
   saveReport,
   standardMappings,
 } from "./report/reportStore";
@@ -72,14 +73,15 @@ export const runQueryAnalysis = async (
     : new Set<string>();
 
   logger.info("Analysing logs");
-  const { index, queries } = await queryAnalysis(data, cache, suggestions);
+  const { queries } = await queryAnalysis(data, cache, suggestions);
   const results = generateAPIResponseReports(queries);
 
   // we delete the exisiting query reports
   await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
-
+  await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
+  await saveReport(RESULTS_REPORT_INDEX, results);
   // we save the new reports
-  await saveReport(QUERY_REPORT_INDEX, [index, ...queries]);
+  await saveReport(QUERY_REPORT_INDEX, [...queries]);
   await saveReport(RESULTS_REPORT_INDEX, results);
 };
 

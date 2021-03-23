@@ -69,7 +69,6 @@ export const queryReportMappings = {
     ndcg: {
       type: "float",
     },
-
     problems: {
       properties: {
         count: {
@@ -118,6 +117,14 @@ export const queryReportMappings = {
     queryKey: {
       type: "long",
     },
+    queryName: {
+      ignore_above: 1024,
+      type: "keyword",
+    },
+    queryVariants: {
+      ignore_above: 1024,
+      type: "keyword",
+    },
     reportId: {
       ignore_above: 256,
       type: "keyword",
@@ -165,6 +172,54 @@ export const queryReportMappings = {
         },
       },
       type: "text",
+    },
+  },
+};
+
+export const resultReportMappings = {
+  properties: {
+    algo: {
+      ignore_above: 256,
+      type: "keyword",
+    },
+    count: {
+      type: "integer",
+    },
+    queries: {
+      properties: {
+        count: {
+          type: "integer",
+        },
+        query: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+      },
+    },
+    queryName: {
+      ignore_above: 1024,
+      type: "keyword",
+    },
+    queryVariants: {
+      ignore_above: 1024,
+      type: "keyword",
+    },
+    reportId: {
+      ignore_above: 256,
+      type: "keyword",
+    },
+    reportType: {
+      ignore_above: 256,
+      type: "keyword",
+    },
+    result: {
+      ignore_above: 256,
+      type: "keyword",
     },
   },
 };

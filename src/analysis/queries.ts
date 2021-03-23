@@ -99,20 +99,22 @@ const runEvaluation = (
 
     const selectionsRatio =
       selectionsCount && queriesCount ? selectionsCount / queriesCount : 0;
-
+    const queryName = queries.sort((a, b) => b.count - a.count)[0].query;
+    const queryVariants = queries.map((a) => a.query).join(" | ");
     return {
       dcg,
       idcg,
       ndcg,
       queries,
       queriesCount,
+      queryName,
+      queryVariants,
       results,
       selectionsCount,
       selectionsRatio,
       type,
     };
   });
-
   return clusters;
 };
 
@@ -275,7 +277,7 @@ export const analyse = (
   queryCache: Cache,
   suggestions: Set<string>,
   reportId = new Date().getTime().toString()
-): { index: QueryIndexReport; queries: QueryReport[] } => {
+): { queries: QueryReport[] } => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks
   // const { cache: counts, queryMap } = await buildCache(dataset);
@@ -327,7 +329,7 @@ export const analyse = (
   // console.log(JSON.stringify(queryClusterIndexReport, null, 2));
 
   // and finally build reports
-  return { index: queryClusterIndexReport, queries: queryClusterReports };
+  return { queries: queryClusterReports };
 };
 
 /**
@@ -341,6 +343,8 @@ export const generateAPIResponseReports = (
   return queryClusterReports.flatMap(({ reportId, queries, results }) =>
     results.map((r) => ({
       queries,
+      queryName: queries.sort((a, b) => b.count - a.count)[0].query,
+      queryVariants: queries.map((a) => a.query).join(" | "),
       ...r,
       reportId,
       reportType,
