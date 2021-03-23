@@ -1,6 +1,9 @@
+import { IDataFrame } from "data-forge";
 import { setDate, subMonths } from "date-fns";
 import { pipe } from "fp-ts/lib/function";
 import { getOrElse, none, Option } from "fp-ts/Option";
+
+import { removeArr } from "./themeNames";
 
 export const SERVICE_URL = "https://code.travail.gouv.fr/";
 
@@ -67,6 +70,10 @@ export const getLastMonthsComplete = (
   return nMonths
     .map((i) => subMonths(end, i))
     .map((d) => getDaysInPrevMonth(d.getMonth(), d.getFullYear()));
+};
+
+export const removeThemesQueries = (dataset: IDataFrame): IDataFrame => {
+  return dataset.where((row) => !removeArr.has(row["query"]));
 };
 
 export const actionTypes = {

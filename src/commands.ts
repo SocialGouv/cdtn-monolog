@@ -28,11 +28,13 @@ import {
   actionTypes,
   getDaysInPrevMonth,
   getLastMonthsComplete,
+  removeThemesQueries,
 } from "./reader/readerUtil";
 import {
   queryReportMappings,
   resetReportIndex,
   saveReport,
+  standardMappings,
 } from "./report/reportStore";
 
 // TODO shall we use EitherTask here ?
@@ -90,7 +92,9 @@ export const runMonthly = async (
   );
 
   const [m0, m1, m2] = getLastMonthsComplete();
-  const data = await readFromFile(dataPath);
+  const data_raw = await readFromFile(dataPath);
+  const data = removeThemesQueries(data_raw);
+  // const data = data_raw;
 
   const cache = await readCache(cachePath);
 
@@ -118,8 +122,8 @@ export const runMonthly = async (
     "QUERY",
     some(cache)
   );
-
   // TODO : delete previous popularity reports
+  await resetReportIndex(REPORT_INDEX, standardMappings);
   await saveReport(REPORT_INDEX, [
     ...contentPop,
     ...conventionPop,

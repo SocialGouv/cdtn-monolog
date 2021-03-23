@@ -14,7 +14,7 @@ const QUERY_REPORT_INDEX =
 const RESULTS_REPORT_INDEX =
   process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
 
-const SCROLL_TIMEOUT = "30s";
+const SCROLL_TIMEOUT = "50s";
 const BATCH_SIZE = 500;
 
 const auth = API_KEY ? { apiKey: API_KEY } : undefined;

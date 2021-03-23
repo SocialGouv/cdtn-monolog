@@ -12,3 +12,6 @@ legacy
 data/
 test-dump.json
 large-*
+cache.json
+data.csv
+suggestions.txt
