@@ -66,7 +66,8 @@ export const runQueryAnalysis = async (
     }, saved in Elastic reports`
   );
 
-  const data = await readFromFile(dataPath);
+  const data_raw = await readFromFile(dataPath);
+  const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
   const suggestions = suggestionPath
     ? await readSuggestions(suggestionPath as string)
