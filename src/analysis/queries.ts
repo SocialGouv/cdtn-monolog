@@ -38,6 +38,9 @@ type QueryCluster = Metrics & {
 
 const reportType = "query";
 
+export const PQ = "pre-qualified";
+export const SE = "search";
+
 const computeNDCG = (results: Map<string, { count: number }>) => {
   const dcg = [...results.values()].reduce(
     (acc, val, index) => acc + val.count / Math.log2(index + 1 + 1),
@@ -83,7 +86,7 @@ const runEvaluation = (
     } = queryCluster as QueryGroup & Metrics;
 
     const v = queryCluster.results.values().next().value;
-    const type = v && v.algo != "pre-qualified" ? "search" : "pre-qualified";
+    const type = v && v.algo != PQ ? SE : PQ;
 
     const queries = (Array.from(queryCluster.queries) || [])
       .map(([query, count]) => ({
@@ -207,11 +210,11 @@ const generateIndexReport = (
   const meanSelectionCount = sumSelectionCount / queryClusters.length;
   const meanQueriesCount = sumQueriesCount / queryClusters.length;
 
-  const pqClusters = queryClusters.filter((q) => q.type != "search");
+  const pqClusters = queryClusters.filter((q) => q.type != SE);
   const lengthPQ = pqClusters.length;
   const [sumNdcgPQ, sumSelectionCountPQ, sumQueriesCountPQ] = sums(pqClusters);
 
-  const esClusters = queryClusters.filter((q) => q.type == "search");
+  const esClusters = queryClusters.filter((q) => q.type == SE);
   const lengthES = esClusters.length;
   const [sumNdcgES, sumSelectionCountES, sumQueriesCountES] = sums(esClusters);
 
@@ -277,7 +280,7 @@ export const analyse = (
   queryCache: Cache,
   suggestions: Set<string>,
   reportId = new Date().getTime().toString()
-): { queries: QueryReport[] } => {
+): { queries: QueryReport[]; summary: QueryIndexReport } => {
   // get all search queries and build cache for each request using CDTN API
   // counts : a map that store each query group with : queries and occurences / results and clicks
   // const { cache: counts, queryMap } = await buildCache(dataset);
@@ -329,7 +332,7 @@ export const analyse = (
   // console.log(JSON.stringify(queryClusterIndexReport, null, 2));
 
   // and finally build reports
-  return { queries: queryClusterReports };
+  return { queries: queryClusterReports, summary: queryClusterIndexReport };
 };
 
 /**

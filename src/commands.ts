@@ -1,19 +1,27 @@
+import { es } from "date-fns/locale";
+import { cons } from "fp-ts/lib/NonEmptyArray";
 import { some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
+import { prequalifiedAnalysis } from "./analysis/prequalified";
 import {
   analyse as queryAnalysis,
   generateAPIResponseReports,
+  PQ,
 } from "./analysis/queries";
+import { QueryIndexReport, QueryReport } from "./analysis/reports";
 import { analyse as visitAnalysis } from "./analysis/visits";
+import { readPrequalified } from "./cdtn/prequalified";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
 import {
+  DocumentResponse,
   LOG_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
+  QUERY_REPORT_SUMMARY_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
 } from "./es/elastic";
@@ -31,7 +39,10 @@ import {
   removeThemesQueries,
 } from "./reader/readerUtil";
 import {
+  ensureIndexExists,
+  loadReport,
   queryReportMappings,
+  queryReportSummaryMappings,
   resetReportIndex,
   resultReportMappings,
   saveReport,
@@ -58,7 +69,8 @@ export const runIngestion = async (dataPath: string): Promise<void> => {
 export const runQueryAnalysis = async (
   dataPath: string,
   cachePath: string,
-  suggestionPath: string | undefined
+  suggestionPath: string | undefined,
+  id: string | undefined
 ): Promise<void> => {
   logger.info(
     `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
@@ -74,16 +86,56 @@ export const runQueryAnalysis = async (
     : new Set<string>();
 
   logger.info("Analysing logs");
-  const { queries } = await queryAnalysis(data, cache, suggestions);
+  const { queries, summary } = await queryAnalysis(
+    data,
+    cache,
+    suggestions,
+    id
+  );
   const results = generateAPIResponseReports(queries);
 
   // we delete the exisiting query reports
   await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
   await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
-  await saveReport(RESULTS_REPORT_INDEX, results);
+  // TODO separate mappings between query reports and summary
+  await ensureIndexExists(
+    QUERY_REPORT_SUMMARY_INDEX,
+    queryReportSummaryMappings
+  );
+
   // we save the new reports
   await saveReport(QUERY_REPORT_INDEX, [...queries]);
   await saveReport(RESULTS_REPORT_INDEX, results);
+
+  await saveReport(QUERY_REPORT_SUMMARY_INDEX, [summary]);
+};
+
+export const runPrequalifiedCheck = async (
+  prequalifiedFile: string,
+  reportId: string
+) => {
+  // we parse the prequalified queries json file
+  const prequalified = await readPrequalified(prequalifiedFile);
+
+  // we retieve the report summary from ES
+  const summaryDoc: DocumentResponse = await loadReport(
+    QUERY_REPORT_SUMMARY_INDEX,
+    { match: { "reportId.keyword": reportId } }
+  );
+  const summary = summaryDoc.docs[0] as QueryIndexReport;
+
+  // execute prequalified analysis
+  const report = await prequalifiedAnalysis(prequalified, summary);
+
+  // for now we print the output for manual correction
+  console.log(JSON.stringify(report, null, 2));
+
+  return;
+};
+
+// TODO
+export const updateSuggestions = () => {
+  return;
 };
 
 export const runMonthly = async (

@@ -83,12 +83,23 @@ ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog monthly -d data.csv -c cach
 ### `query reports`
 
 Using user searches and selections in conjonction with CDTN API search results, we can compute scores for each query cluster.
-It allows us to identify query that are underperforming (the user do not select any results, or the users always select the 4th result rather than the first one...).
+It allows us to identify query that are underperforming (users do not select any results, or they always select the 4th result rather than the first one...).
 We also use the suggestion list used by the CDTN API in order to track if a query was suggested (query auto-completion) to the user.
-Query reports are stored in Elastic.
+Query reports are stored in Elastic and we also save a summary report with an overview of scores and identified problems.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt -i reportId
+```
+
+### `prequalified`
+
+We retrieve prequalified queries from the cdtn-admin, and compare them to the query report.
+We suggest specific edits and highlight some "concerning" issues.
+You will need the ADMIN_JWT token that can retrieved from the web dashboard.
+
+```console
+ADMIN_JWT=tttt ./scripts/download_prequalified.sh > prequalified.json
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog prequalified -p prequalified.json -i reportId
 ```
 
 ## Covisits

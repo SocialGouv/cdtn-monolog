@@ -69,32 +69,6 @@ export const queryReportMappings = {
     ndcg: {
       type: "float",
     },
-    problems: {
-      properties: {
-        count: {
-          type: "integer",
-        },
-        ndcg: {
-          type: "float",
-        },
-        query: {
-          fields: {
-            keyword: {
-              ignore_above: 256,
-              type: "keyword",
-            },
-          },
-          type: "text",
-        },
-        selectionCount: {
-          type: "integer",
-        },
-        selectionRatio: {
-          type: "float",
-        },
-      },
-    },
-
     queries: {
       properties: {
         count: {
@@ -176,6 +150,36 @@ export const queryReportMappings = {
   },
 };
 
+export const queryReportSummaryMappings = {
+  properties: {
+    problems: {
+      properties: {
+        count: {
+          type: "integer",
+        },
+        ndcg: {
+          type: "float",
+        },
+        query: {
+          fields: {
+            keyword: {
+              ignore_above: 256,
+              type: "keyword",
+            },
+          },
+          type: "text",
+        },
+        selectionCount: {
+          type: "integer",
+        },
+        selectionRatio: {
+          type: "float",
+        },
+      },
+    },
+  },
+};
+
 export const resultReportMappings = {
   properties: {
     algo: {
@@ -250,6 +254,15 @@ export const visitReportMappings = {
       type: "date",
     },
   },
+};
+
+export const ensureIndexExists = async (
+  indexName: string,
+  mappings: any
+): Promise<void> => {
+  await es
+    .testAndCreateIndex(indexName, mappings)
+    .catch((err: any) => logger.error(err));
 };
 
 export const resetReportIndex = async (

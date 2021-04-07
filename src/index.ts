@@ -1,12 +1,14 @@
 import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import * as yargs from "yargs";
 
+import { reportType } from "./analysis/covisit";
 import {
   createCache,
   refreshCovisits,
   retrieveThreeMonthsData,
   runIngestion,
   runMonthly,
+  runPrequalifiedCheck,
   runQueryAnalysis,
 } from "./commands";
 import { logger } from "./logger";
@@ -66,19 +68,31 @@ const main = async () => {
         ({ data, output }) => createCache(data as string, output as string)
       )
       .command(
-        "queries [data] [cache] [suggestions]",
+        "queries [data] [cache] [suggestions] [reportId]",
         "Compute query reports",
         {
           cache: { alias: "c", demand: true },
           data: { alias: "d", demand: true },
+          reportId: { alias: "i" },
           suggestions: { alias: "s" },
         },
-        ({ data, cache, suggestions }) =>
+        ({ data, cache, suggestions, reportId }) =>
           runQueryAnalysis(
             data as string,
             cache as string,
-            suggestions as string | undefined
+            suggestions as string | undefined,
+            (reportId as string) || undefined
           )
+      )
+      .command(
+        "prequalified [prequalified] [reportId]",
+        "Compute query reports",
+        {
+          prequalified: { alias: "p", demand: true },
+          reportId: { alias: "i", demand: true },
+        },
+        ({ prequalified, reportId }) =>
+          runPrequalifiedCheck(prequalified as string, reportId as string)
       )
       .command(
         "monthly [data]",

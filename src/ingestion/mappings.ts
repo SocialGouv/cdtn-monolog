@@ -30,6 +30,10 @@ const mappings = {
       type: "keyword",
     },
 
+    nActions: {
+      type: "short",
+    },
+
     outil: {
       type: "keyword",
     },

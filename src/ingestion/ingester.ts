@@ -55,6 +55,7 @@ const parseAction = (
     ...matomoActionFields,
     ...matomoVisitFields,
     logfile,
+    nActions: visit.actionDetails.length,
     uvi,
   };
 

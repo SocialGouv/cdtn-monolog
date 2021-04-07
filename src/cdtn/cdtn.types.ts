@@ -50,4 +50,23 @@ type Cache = {
   queryMap: Map<string, number>;
 };
 
-export { Cache, CacheQueryCluster, Document, SearchResult };
+type Prequalified = {
+  id: string;
+  cdtnId: string;
+  contentRelations: {
+    position: 0;
+    content: {
+      cdtnId: string;
+      slug: string;
+      source: string;
+      title: string;
+    }[];
+  };
+  title: string;
+  source: string;
+  document: {
+    variants: string[];
+  };
+};
+
+export { Cache, CacheQueryCluster, Document, Prequalified, SearchResult };

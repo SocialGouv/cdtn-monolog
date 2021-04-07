@@ -13,6 +13,8 @@ const QUERY_REPORT_INDEX =
   process.env.QUERY_REPORT_INDEX || "log_reports_queries";
 const RESULTS_REPORT_INDEX =
   process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
+const QUERY_REPORT_SUMMARY_INDEX =
+  process.env.QUERY_REPORT_SUMMARY_INDEX || "log_reports_queries_summary";
 
 const SCROLL_TIMEOUT = "50s";
 const BATCH_SIZE = 500;
@@ -178,6 +180,7 @@ export {
   LOG_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
+  QUERY_REPORT_SUMMARY_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
   testAndCreateIndex,

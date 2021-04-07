@@ -16,6 +16,7 @@ export type VisitFields = {
   referrerName: string;
   lastActionTimestamp: number;
   lastActionDateTime: number;
+  nActions: number;
 };
 
 export type MatomoAction = RootAction & {
