@@ -17,7 +17,7 @@ Register image:
   stage: register
   extends: .base_register_kaniko_stage
   only:
-    - master
+    - branches
   except:
     - schedules
   variables:
