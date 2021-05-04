@@ -1,7 +1,7 @@
 include:
   - project: SocialGouv/gitlab-ci-yml
-    file: /base_register_stage.yml
-    ref: v17.23.0
+    file: /base_register_kaniko_stage.yml
+    ref: v22.0.0
   #
 stages:
   - register
@@ -15,14 +15,14 @@ stages:
 
 Register image:
   stage: register
-  extends: .base_register_stage
+  extends: .base_register_kaniko_stage
   only:
-    - master
+    - branches
   except:
     - schedules
   variables:
-    CONTEXT: . # The folder where the Dockerfile is
-    IMAGE_NAME: $CI_REGISTRY_IMAGE # The image name
+    CONTEXT: .
+    IMAGE_NAME: cdtn-monolog
 
 Backup Matomo data:
   stage: backup
@@ -54,7 +54,7 @@ Download dump from Azure:
 
 Ingest to ES:
   stage: ingest
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
   only:
     refs:
       - schedules
@@ -65,32 +65,26 @@ Ingest to ES:
       - data/
     expire_in: 1 hour
   script:
-    - yarn install
-    - yarn build
     - node dist/index.js $MONOLOG_ACTION
 
 Run weekly:
   stage: weekly
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
   only:
     refs:
       - schedules
     variables:
       - $MONOLOG_ACTION == "weekly"
   script:
-    - yarn install
-    - yarn build
     - node dist/index.js $MONOLOG_ACTION
 
 Run covisites:
   stage: covisites
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
   only:
     refs:
       - triggers
     variables:
       - $MONOLOG_ACTION == "covisites"
   script:
-    - yarn install
-    - yarn build
     - node dist/index.js $MONOLOG_ACTION $DAYS
