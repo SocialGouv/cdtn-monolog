@@ -65,9 +65,7 @@ Ingest to ES:
       - data/
     expire_in: 1 hour
   script:
-    - ls
-    - ls /app
-    - node index.js $MONOLOG_ACTION
+    - node /app/index.js $MONOLOG_ACTION
 
 Run weekly:
   stage: weekly
@@ -78,7 +76,7 @@ Run weekly:
     variables:
       - $MONOLOG_ACTION == "weekly"
   script:
-    - node index.js $MONOLOG_ACTION
+    - node /app/index.js $MONOLOG_ACTION
 
 Run covisites:
   stage: covisites
@@ -89,4 +87,4 @@ Run covisites:
     variables:
       - $MONOLOG_ACTION == "covisites"
   script:
-    - node index.js $MONOLOG_ACTION $DAYS
+    - node /app/index.js $MONOLOG_ACTION $DAYS
