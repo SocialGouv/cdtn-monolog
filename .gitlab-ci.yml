@@ -55,17 +55,17 @@ Download dump from Azure:
 Ingest to ES:
   stage: ingest
   image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
- # only:
- #   refs:
- #     - schedules
- #   variables:
- #     - $MONOLOG_ACTION == "ingest"
+  only:
+    refs:
+      - schedules
+    variables:
+      - $MONOLOG_ACTION == "ingest"
   artifacts:
     paths:
       - data/
     expire_in: 1 hour
   script:
-    - node /app/index.js ingest
+    - node /app/index.js $MONOLOG_ACTION
 
 Run weekly:
   stage: weekly
@@ -76,7 +76,7 @@ Run weekly:
     variables:
       - $MONOLOG_ACTION == "weekly"
   script:
-    - node /app/index.js weekly
+    - node /app/index.js $MONOLOG_ACTION
 
 Run covisites:
   stage: covisites
@@ -87,4 +87,4 @@ Run covisites:
     variables:
       - $MONOLOG_ACTION == "covisites"
   script:
-    - node /app/index.js covisites
+    - node /app/index.js $MONOLOG_ACTION
