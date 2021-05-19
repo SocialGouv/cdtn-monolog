@@ -1,5 +1,4 @@
 import { DataFrame, IDataFrame } from "data-forge";
-import { parseISO } from "date-fns";
 
 import { getVisits } from "../reader/dataset";
 import { removeAnchor, urlToPath } from "./popularity";
@@ -12,15 +11,10 @@ const noError = (action: any) =>
     "https://code.travail.gouv.fr/droit-du-travail",
   ].includes(action.url);
 
+
 const getPageType = (x: string) => {
   const first = x.split("/")[0];
   return first;
-};
-
-const sameMonth = (d1: Date, d2: Date): boolean => {
-  return (
-    d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth()
-  );
 };
 
 const countURLs = (dataframe: IDataFrame) => {
@@ -129,49 +123,31 @@ const analyzeSession = (dataframe: IDataFrame) => {
 
 // Actual analysis
 const analyse = (dataset: IDataFrame): any => {
-  // filter dataset on last month
-  const today = new Date();
-  const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
-
-  const datasetThisMonth = dataset
-    .withSeries({
-      lastActionDateTime: (df) =>
-        df
-          .deflate((row) => row.lastActionDateTime)
-          .select((value) => parseISO(value)),
-    })
-    .where((row) => sameMonth(row.lastActionDateTime, lastMonth));
-  const maxDate = new Date(
-    datasetThisMonth.getSeries("lastActionDateTime").max()
-  );
-  // get unique visits
-  const visits = getVisits(datasetThisMonth);
+  const visits = getVisits(dataset);
   const uniqueViews = DataFrame.concat(visits.toArray());
 
   const idxUniqueViews = uniqueViews.withIndex(
     Array.from(Array(uniqueViews.count()).keys())
   );
-  const filteredVisitViews = idxUniqueViews.where(noError);
+  const filteredVisitViews = idxUniqueViews.where(noError)
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
   const uniqueUrls = countURLs(cleanedViews);
 
   const augmentedDf = uniqueUrls.generateSeries({
-    feedback_difference: (row) => row.feed_positive - row.feed_negative,
-    feedback_ratio: (row) =>
-      row.feed_negative + row.feed_negative > 0
-        ? row.feed_positive / (row.feed_negative + row.feed_positive)
-        : 0,
-    pageType: (row) => getPageType(row.page_name),
-    select_related_ratio: (row) => row.select_related_out_nb / row.page_views,
+    feedback_difference: row => row.feed_positive - row.feed_negative,
+    feedback_ratio: row => row.feed_negative + row.feed_negative > 0 ? row.feed_positive / (row.feed_negative + row.feed_positive) : 0,
+    pageType: row => getPageType(row.page_name),
+    select_related_ratio: row => (row.select_related_out_nb / row.page_views),
+
   });
-  console.log("ANALYZE SESSIONS");
+  console.log("ANALYZE SESSIONS")
 
   const sessionDf = analyzeSession(cleanedViews);
-  console.log(sessionDf.toArray().length);
-  console.log("JOIN SESSIONS WITH ADDITIONAL STATS...");
-  console.log(augmentedDf.toArray().length);
+  console.log(sessionDf.toArray().length)
+  console.log("JOIN...")
+  console.log(augmentedDf.toArray().length)
   const resultDf = augmentedDf.join(
     sessionDf,
     (left) => left.page_name,
@@ -179,16 +155,11 @@ const analyse = (dataset: IDataFrame): any => {
     (left, right) => {
       return {
         ...left,
-        ...right,
+        ...right
       };
     }
-  );
-  // add endDate to df
-  const resultDfDate = resultDf.withSeries({
-    endDate: (df) => df.deflate((row) => row.count).select((count) => maxDate),
-  });
-
-  return resultDfDate.toArray();
+  )
+  return resultDf.toArray();
 };
 
 export { analyse };
