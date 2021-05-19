@@ -7,6 +7,7 @@ import {
   analyse as queryAnalysis,
   generateAPIResponseReports,
 } from "./analysis/queries";
+import { analyse as satisfactionAnalysis } from "./analysis/satisfaction";
 import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
@@ -33,6 +34,7 @@ import {
 import {
   queryReportMappings,
   resetReportIndex,
+  satisfactionMappings,
   saveReport,
   standardMappings,
 } from "./report/reportStore";
@@ -60,8 +62,7 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
-      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -94,8 +95,12 @@ export const runMonthly = async (
   const [m0, m1, m2] = getLastMonthsComplete();
   const data_raw = await readFromFile(dataPath);
   const data = removeThemesQueries(data_raw);
-  // const data = data_raw;
-
+  const res = satisfactionAnalysis(data);
+  console.log(res);
+  await resetReportIndex("logs-satisfaction", satisfactionMappings);
+  await saveReport("logs-satisfaction", res);
+  //const data = data_raw;
+  /*
   const cache = await readCache(cachePath);
 
   // we use the last analysed month (m0)
@@ -135,7 +140,7 @@ export const runMonthly = async (
 
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
-  await saveReport(MONTHLY_REPORT_INDEX, [report]);
+  await saveReport(MONTHLY_REPORT_INDEX, [report]); */
 };
 
 export const retrieveThreeMonthsData = async (
@@ -144,8 +149,7 @@ export const retrieveThreeMonthsData = async (
   const days = getLastMonthsComplete().flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${
-      days[days.length - 1]
+    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
     }), saved in ${output}`
   );
 
@@ -154,6 +158,7 @@ export const retrieveThreeMonthsData = async (
     actionTypes.search,
     actionTypes.visit,
     actionTypes.selectResult,
+    actionTypes.selectRelated,
     actionTypes.feedback,
   ]);
 

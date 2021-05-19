@@ -65,7 +65,7 @@ export const buildCache = async (
           query,
         }))
         .catch(() => {
-          logger.error("Cannot retrieve results for query :" + query);
+          logger.error("Cannot retrieve results for query : " + query);
           return { documents: [] as Document[], query };
         })
     )

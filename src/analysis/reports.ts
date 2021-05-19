@@ -94,3 +94,21 @@ export type CovisiteReport = Report & {
   content: string;
   links: { count: number; link: string }[];
 };
+
+export type satisfactionReport = Report & {
+  feedback_ratio: number;
+  feed_positive: number;
+  feed_negative: number;
+  page_name: string;
+  bounce_rate: number;
+  page_views: number;
+  time_spent: number;
+  content_type: string;
+  exit_rate: number;
+  select_related_rate: number;
+  start_analysis: number;
+  end_analysis: number;
+  // provenance.
+  // destination.
+  // outlinks.
+};

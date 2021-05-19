@@ -9,6 +9,7 @@ const CDTN_API_URL =
 const path = "/api/v1/search";
 
 export const triggerSearch = (query: string): Promise<SearchResult> => {
+  console.log(query);
   const url = `${CDTN_API_URL}${path}?q=${encodeURIComponent(query)}`;
 
   return fetch(url).then((res) => res.json());
