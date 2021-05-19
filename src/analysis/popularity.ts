@@ -9,6 +9,9 @@ import { PopularityReport } from "./reports";
 const reportType = (pt: PopularityTypeString): string =>
   `${pt.toLowerCase()}-popularity`;
 
+const removeAnchor = (url: string) => {
+  return url.split("#")[0];
+};
 const computeReports = (
   focusCounts: IDataFrame,
   refCounts: IDataFrame,
@@ -253,14 +256,9 @@ const analyse = (
 
   const filteredVisitViews = idxUniqueViews.where(noError).where(filterUrl);
 
-  const removeAnchor = (url: string) => {
-    return url.split("#")[0];
-  };
-
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
-
   const focus = cleanedViews.where((a) => m0.includes(a.logfile));
   const reference = cleanedViews.where((a) => m1.includes(a.logfile));
   const m2Data = cleanedViews.where((a) => m2.includes(a.logfile));
@@ -296,4 +294,4 @@ const analyse = (
   return reports;
 };
 
-export { analyse, reportType };
+export { analyse, reportType, removeAnchor, urlToPath, countURLs };
