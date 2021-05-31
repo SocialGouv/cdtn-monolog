@@ -11,7 +11,6 @@ const noError = (action: any) =>
     "https://code.travail.gouv.fr/droit-du-travail",
   ].includes(action.url);
 
-
 const getPageType = (x: string) => {
   const first = x.split("/")[0];
   return first;
@@ -67,8 +66,8 @@ interface unnestType {
   is_unique_page: boolean;
 }
 const unnest = (x: elementObjectType[]) => {
-  /* eslint no-var: off */
-  const unnested: unnestType[] = [];
+  let unnested: unnestType[];
+  unnested = [];
   for (let i = 0; i < x.length; i++) {
     var elementObject: elementObjectType = x[i];
     elementObject["url"].map((x, i) => {
@@ -129,25 +128,27 @@ const analyse = (dataset: IDataFrame): any => {
   const idxUniqueViews = uniqueViews.withIndex(
     Array.from(Array(uniqueViews.count()).keys())
   );
-  const filteredVisitViews = idxUniqueViews.where(noError)
+  const filteredVisitViews = idxUniqueViews.where(noError);
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
   const uniqueUrls = countURLs(cleanedViews);
 
   const augmentedDf = uniqueUrls.generateSeries({
-    feedback_difference: row => row.feed_positive - row.feed_negative,
-    feedback_ratio: row => row.feed_negative + row.feed_negative > 0 ? row.feed_positive / (row.feed_negative + row.feed_positive) : 0,
-    pageType: row => getPageType(row.page_name),
-    select_related_ratio: row => (row.select_related_out_nb / row.page_views),
-
+    feedback_difference: (row) => row.feed_positive - row.feed_negative,
+    feedback_ratio: (row) =>
+      row.feed_negative + row.feed_negative > 0
+        ? row.feed_positive / (row.feed_negative + row.feed_positive)
+        : 0,
+    pageType: (row) => getPageType(row.page_name),
+    select_related_ratio: (row) => row.select_related_out_nb / row.page_views,
   });
-  console.log("ANALYZE SESSIONS")
+  console.log("ANALYZE SESSIONS");
 
   const sessionDf = analyzeSession(cleanedViews);
-  console.log(sessionDf.toArray().length)
-  console.log("JOIN...")
-  console.log(augmentedDf.toArray().length)
+  console.log(sessionDf.toArray().length);
+  console.log("JOIN...");
+  console.log(augmentedDf.toArray().length);
   const resultDf = augmentedDf.join(
     sessionDf,
     (left) => left.page_name,
@@ -155,10 +156,10 @@ const analyse = (dataset: IDataFrame): any => {
     (left, right) => {
       return {
         ...left,
-        ...right
+        ...right,
       };
     }
-  )
+  );
   return resultDf.toArray();
 };
 
