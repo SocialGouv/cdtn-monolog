@@ -11,7 +11,6 @@ const noError = (action: any) =>
     "https://code.travail.gouv.fr/droit-du-travail",
   ].includes(action.url);
 
-
 const getPageType = (x: string) => {
   const first = x.split("/")[0];
   return first;
@@ -30,9 +29,6 @@ const countURLs = (dataframe: IDataFrame) => {
         feed_nb: group
           .where((row) => ["positive", "negative"].includes(row.feedbackType))
           .count(),
-        select_related_out_nb: group
-          .where((row) => row.type == "select_related")
-          .count(),
         feed_negative: group
           .where((row) => row.feedbackType == "negative")
           .count(),
@@ -45,6 +41,9 @@ const countURLs = (dataframe: IDataFrame) => {
           .median(),
         page_name: group.deflate((g) => g.url).first(),
         page_views: group.count(),
+        select_related_out_nb: group
+          .where((row) => row.type == "select_related")
+          .count(),
       };
     })
     .inflate()
@@ -53,32 +52,31 @@ const countURLs = (dataframe: IDataFrame) => {
   return counts.setIndex("page_name");
 };
 interface elementObjectType {
-  url: string[],
-  rank: number[],
-  is_exit: boolean[],
-  is_entry: boolean[],
-  is_unique_page: boolean[]
+  url: string[];
+  rank: number[];
+  is_exit: boolean[];
+  is_entry: boolean[];
+  is_unique_page: boolean[];
 }
 interface unnestType {
-  url: string,
-  rank: number,
-  is_entry: boolean,
-  is_exit: boolean,
-  is_unique_page: boolean,
+  url: string;
+  rank: number;
+  is_entry: boolean;
+  is_exit: boolean;
+  is_unique_page: boolean;
 }
 const unnest = (x: elementObjectType[]) => {
-  var unnested: unnestType[];
+  let unnested: unnestType[];
   unnested = [];
   for (let i = 0; i < x.length; i++) {
-    var elementObject: elementObjectType = x[i]
+    var elementObject: elementObjectType = x[i];
     elementObject["url"].map((x, i) => {
       unnested.push({
-        url: x,
-        rank: elementObject["rank"][i],
         is_entry: elementObject["is_entry"][i],
         is_exit: elementObject["is_exit"][i],
-        is_unique_page: elementObject["is_unique_page"][i]
-
+        is_unique_page: elementObject["is_unique_page"][i],
+        rank: elementObject["rank"][i],
+        url: x,
       });
     });
   }
@@ -86,33 +84,40 @@ const unnest = (x: elementObjectType[]) => {
 };
 
 const analyzeSession = (dataframe: IDataFrame) => {
-  const sessions = dataframe.where(row => row.type === "visit_content").orderBy(row => row.timestamp)
+  const sessions = dataframe
+    .where((row) => row.type === "visit_content")
+    .orderBy((row) => row.timestamp)
     .groupBy((row) => row.uvi)
     .select((group) => {
       return {
-        url: group.toArray().map((x, index) => x.url),
-        rank: group.toArray().map((x, index) => index),
+        is_entry: group.toArray().map((x, index) => index === 0),
         is_exit: group
           .toArray()
           .map((x, index) => index === group.toArray().length - 1),
-        is_entry: group.toArray().map((x, index) => index === 0),
         is_unique_page: group
           .toArray()
-          .map((x, index) => index === group.toArray().length - 1 && index === 0),
+          .map(
+            (x, index) => index === group.toArray().length - 1 && index === 0
+          ),
+        rank: group.toArray().map((x, index) => index),
+        url: group.toArray().map((x, index) => x.url),
       };
-    }).inflate()
+    })
+    .inflate();
   const uSessions = unnest(sessions.toArray());
-  const uDf = new DataFrame(uSessions).groupBy(row => row.url)
-    .select(group => {
+  const uDf = new DataFrame(uSessions)
+    .groupBy((row) => row.url)
+    .select((group) => {
       return {
-        url: group.deflate(g => g.url).first(),
-        median_rank: group.deflate(g => g.rank).median(),
-        exit_rate: group.deflate(g => g.is_exit).average(),
-        entry_rate: group.deflate(g => g.is_entry).average(),
-        unique_page_rate: group.deflate(g => g.is_unique_page).average()
-      }
-    }).inflate()
-  return uDf
+        entry_rate: group.deflate((g) => g.is_entry).average(),
+        exit_rate: group.deflate((g) => g.is_exit).average(),
+        median_rank: group.deflate((g) => g.rank).median(),
+        unique_page_rate: group.deflate((g) => g.is_unique_page).average(),
+        url: group.deflate((g) => g.url).first(),
+      };
+    })
+    .inflate();
+  return uDf;
 };
 
 // Actual analysis
@@ -123,25 +128,27 @@ const analyse = (dataset: IDataFrame): any => {
   const idxUniqueViews = uniqueViews.withIndex(
     Array.from(Array(uniqueViews.count()).keys())
   );
-  const filteredVisitViews = idxUniqueViews.where(noError)
+  const filteredVisitViews = idxUniqueViews.where(noError);
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
   const uniqueUrls = countURLs(cleanedViews);
 
   const augmentedDf = uniqueUrls.generateSeries({
-    feedback_difference: row => row.feed_positive - row.feed_negative,
-    feedback_ratio: row => row.feed_negative + row.feed_negative > 0 ? row.feed_positive / (row.feed_negative + row.feed_positive) : 0,
-    pageType: row => getPageType(row.page_name),
-    select_related_ratio: row => (row.select_related_out_nb / row.page_views),
-
+    feedback_difference: (row) => row.feed_positive - row.feed_negative,
+    feedback_ratio: (row) =>
+      row.feed_negative + row.feed_negative > 0
+        ? row.feed_positive / (row.feed_negative + row.feed_positive)
+        : 0,
+    pageType: (row) => getPageType(row.page_name),
+    select_related_ratio: (row) => row.select_related_out_nb / row.page_views,
   });
-  console.log("ANALYZE SESSIONS")
+  console.log("ANALYZE SESSIONS");
 
   const sessionDf = analyzeSession(cleanedViews);
-  console.log(sessionDf.toArray().length)
-  console.log("JOIN...")
-  console.log(augmentedDf.toArray().length)
+  console.log(sessionDf.toArray().length);
+  console.log("JOIN...");
+  console.log(augmentedDf.toArray().length);
   const resultDf = augmentedDf.join(
     sessionDf,
     (left) => left.page_name,
@@ -149,10 +156,10 @@ const analyse = (dataset: IDataFrame): any => {
     (left, right) => {
       return {
         ...left,
-        ...right
+        ...right,
       };
     }
-  )
+  );
   return resultDf.toArray();
 };
 
