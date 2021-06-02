@@ -79,8 +79,8 @@ export const runQueryAnalysis = async (
   await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
 
   // we save the new reports
-  //await saveReport(QUERY_REPORT_INDEX, [index, ...queries]);
-  //await saveReport(RESULTS_REPORT_INDEX, results);
+  await saveReport(QUERY_REPORT_INDEX, [index, ...queries]);
+  await saveReport(RESULTS_REPORT_INDEX, results);
 };
 
 export const runMonthly = async (
@@ -123,19 +123,19 @@ export const runMonthly = async (
     some(cache)
   );
   // TODO : delete previous popularity reports
-  //await resetReportIndex(REPORT_INDEX, standardMappings);
-  //await saveReport(REPORT_INDEX, [
-  //  ...contentPop,
-  //  ...conventionPop,
-  //  ...queryPop,
-  //]);
+  await resetReportIndex(REPORT_INDEX, standardMappings);
+  await saveReport(REPORT_INDEX, [
+    ...contentPop,
+    ...conventionPop,
+    ...queryPop,
+  ]);
 
   const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
-  // await saveReport(MONTHLY_REPORT_INDEX, [report]);
+  await saveReport(MONTHLY_REPORT_INDEX, [report]);
 };
 
 export const retrieveThreeMonthsData = async (

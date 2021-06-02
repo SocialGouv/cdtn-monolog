@@ -174,7 +174,9 @@ export const visitReportMappings = {
     averageDailyVisits: {
       type: "integer",
     },
-
+    averageDailyVisitsWorkDays: {
+      type: "integer",
+    },
     endDate: {
       type: "date",
     },

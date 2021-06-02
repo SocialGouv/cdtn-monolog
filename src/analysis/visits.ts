@@ -9,9 +9,9 @@ const analyse = (dataset: IDataFrame, reportId: string): MonthlyReport => {
   const datasetFiltered = dataset.where(
     (d) => !weekEndNumbers.includes(parseISO(d.day).getDay()) // remove weekends
   );
-  console.log(datasetFiltered.toArray());
-  const counts = datasetFiltered.getSeries("count");
-  const dates = datasetFiltered.getSeries("day").select((d) => parseISO(d));
+  const counts = dataset.getSeries("count");
+  const dates = dataset.getSeries("day").select((d) => parseISO(d));
+  const countsWorkDays = datasetFiltered.getSeries("count");
 
   // logs start at 8am
   const min = new Date(dates.min());
@@ -25,9 +25,11 @@ const analyse = (dataset: IDataFrame, reportId: string): MonthlyReport => {
     .where((r) => r.count == maxDailyVisits)
     .first().day;
   const averageDailyVisits = Math.floor(counts.average());
+  const averageDailyVisitsWorkDays = Math.floor(countsWorkDays.average());
 
   const report = {
     averageDailyVisits,
+    averageDailyVisitsWorkDays,
     endDate,
     maxDailyVisits,
     maxDailyVisitsDay,

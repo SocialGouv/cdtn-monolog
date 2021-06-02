@@ -5,7 +5,7 @@ import { logger } from "../logger";
 const ELASTICSEARCH_URL =
   process.env.ELASTICSEARCH_URL || "http://localhost:9200";
 const API_KEY = process.env.API_KEY || null;
-const LOG_INDEX = process.env.LOG_INDEX || "logs";
+const LOG_INDEX = process.env.LOG_INDEX || "logs-new";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
 const MONTHLY_REPORT_INDEX =
   process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
@@ -143,7 +143,7 @@ const insertDocuments = async (index: string, documents: any) => {
       body,
       index,
     });
-
+    console.log(resp);
     if (resp.body.errors) {
       resp.body.items.forEach((element: any) => {
         if (element.index.status == 400) {
@@ -165,7 +165,11 @@ const batchInsert = async (index: string, documents: any, size = 1000) => {
 
   for (const i of [...Array(n).keys()]) {
     const batch = documents.slice(i * size, (i + 1) * size);
+
     await insertDocuments(index, batch);
+    if (i === 0) {
+      console.log(batch[0]);
+    }
   }
   logger.debug(`${documents.length} documents indexed into ${index}.`);
 };
