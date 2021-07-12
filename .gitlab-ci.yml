@@ -51,6 +51,7 @@ Download dump from Azure:
     paths:
       - data/
     expire_in: 1 hour
+  retry: 2
 
 Ingest to ES:
   stage: ingest
@@ -66,6 +67,7 @@ Ingest to ES:
     expire_in: 1 hour
   script:
     - node /app/index.js $MONOLOG_ACTION
+  retry: 2
 
 Run weekly:
   stage: weekly
