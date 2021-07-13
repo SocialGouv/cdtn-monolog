@@ -78,8 +78,8 @@ export const runQueryAnalysis = async (
   const results = generateAPIResponseReports(queries);
 
   // we delete the exisiting query reports
-  await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
-  await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
+  //await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
+  //await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
   await saveReport(RESULTS_REPORT_INDEX, results);
   // we save the new reports
   await saveReport(QUERY_REPORT_INDEX, [...queries]);
@@ -180,7 +180,7 @@ export const refreshCovisits = async (dataPath: string): Promise<void> => {
 
   // TODO : delete previous covisit reports
 
-  await saveReport(REPORT_INDEX, covisitReports);
+  //await saveReport(REPORT_INDEX, covisitReports);
 };
 
 // TODO function to recreate all reports from january 2020
