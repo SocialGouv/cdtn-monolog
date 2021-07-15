@@ -19,6 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn --frozen-lockfile
+      - run: yarn tsc
       - run: yarn test --coverage
         env:
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
