@@ -10,7 +10,7 @@ const dumpfile = path.join(
   "../../__tests__/__fixtures__/2020-04-24.json"
 );
 
-const index = LOGS_TEST_INDEX;
+const index = `${LOGS_TEST_INDEX}-${Number(Date.now())}`;
 
 beforeAll(async () => {
   // init and wait in case index does not exist yet
