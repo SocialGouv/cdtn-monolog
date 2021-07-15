@@ -4,11 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "exports": {
-    ".": {
-      "require": "./dist/index.js"
-    }
-  },
+  "main": "./lib/index.js",
   "sideEffects": false,
   "version": "2.0.0",
   "homepage": "https://github.com/SocialGouv/cdtn-monolog",
@@ -16,6 +12,9 @@
     "type": "git",
     "url": "https://github.com/SocialGouv/cdtn-monolog.git"
   },
+  "files": [
+    "lib"
+  ],
   "license": "Apache-2.0",
   "scripts": {
     "dev": "jest --watch",
@@ -23,7 +22,8 @@
     "test": "jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r ts-node/register --max-old-space-size=16000 src/index.ts",
-    "build": "yarn run ncc build src/index.ts -o dist",
+    "build:bin": "yarn run ncc build src/bin/index.ts -o bin",
+    "build:lib": "yarn tsc",
     "start": "node ./dist/index.js",
     "check:types": "tsc"
   },

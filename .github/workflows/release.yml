@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [master]
+    branches: [master, alpha]
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn --frozen-lockfile
-      - run: yarn tsc
+      - run: yarn build:lib
       - run: yarn test --coverage
         env:
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}

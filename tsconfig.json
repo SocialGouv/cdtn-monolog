@@ -5,7 +5,8 @@
     "downlevelIteration": true,
     "module": "commonjs",
     "noImplicitAny": true,
-    "outDir": "dist",
+    "skipLibCheck": true,
+    "outDir": "lib",
     "sourceMap": true,
     "strict": true,
     "lib": [
@@ -13,5 +14,5 @@
     ]
   },
   "include": ["./src/**/*"],
-  "exclude": ["node_modules" ]
+  "exclude": ["node_modules"]
 }
