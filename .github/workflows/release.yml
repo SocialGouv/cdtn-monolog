@@ -24,7 +24,9 @@ jobs:
         env:
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
-      - run: npx semantic-release
+      - run: |
+          yarn global add semantic-release @semantic-release/changelog @semantic-release/git
+          $(yarn global bin)/semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SOCIALGROOVYBOT_NPM_TOKEN }}
