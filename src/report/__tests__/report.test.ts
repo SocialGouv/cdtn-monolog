@@ -7,7 +7,7 @@ import * as ReportStore from "../reportStore";
 const getAnalysis = async () =>
   readLogfile().then((d) => Covisit.analyse(d, 5, 14, "report-42"));
 
-const index = "test-report-store";
+const index = "test-report-store-" + Number(Date.now());
 
 beforeAll(async () => {
   await es.testAndCreateIndex(index, {});
