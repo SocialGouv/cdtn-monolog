@@ -1,3 +1,10 @@
+## [1.5.4](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.3...v1.5.4) (2021-07-16)
+
+
+### Bug Fixes
+
+* **covisit:** use keyword field for term query ([#112](https://github.com/SocialGouv/cdtn-monolog/issues/112)) ([1a95485](https://github.com/SocialGouv/cdtn-monolog/commit/1a95485e1f9888682a5dd4b1330f1ddaa5f67da6)), closes [#111](https://github.com/SocialGouv/cdtn-monolog/issues/111)
+
 ## [1.5.3](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.2...v1.5.3) (2021-07-15)
 
 
