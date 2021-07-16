@@ -11,12 +11,12 @@ const LogQueries = (esClient: Client, index: string) => {
           must: [
             {
               term: {
-                reportType: Covisit.reportType,
+                "reportType.keyword": Covisit.reportType,
               },
             },
             {
               term: {
-                content,
+                "content.keyword": content,
               },
             },
           ],
