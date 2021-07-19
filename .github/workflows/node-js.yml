@@ -33,4 +33,6 @@ jobs:
         env:
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
+      - run: yarn build:bin
+      - run: yarn build:lib
       - uses: codecov/codecov-action@v1
