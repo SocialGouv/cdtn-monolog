@@ -1,3 +1,4 @@
+import { logger } from "@socialgouv/cdtn-logger";
 import { some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
@@ -18,7 +19,6 @@ import {
   RESULTS_REPORT_INDEX,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
-import { logger } from "./logger";
 import {
   countVisits,
   readDaysFromElastic,

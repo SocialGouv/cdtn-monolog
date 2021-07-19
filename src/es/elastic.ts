@@ -1,6 +1,5 @@
 import { Client, ClientOptions } from "@elastic/elasticsearch";
-
-import { logger } from "../logger";
+import { logger } from "@socialgouv/cdtn-logger";
 
 const ELASTICSEARCH_URL =
   process.env.ELASTICSEARCH_URL || "http://localhost:9200";

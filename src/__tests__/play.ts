@@ -157,10 +157,10 @@ const monthlyRun = async () => {
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   // TODO we cast for now, we should change report type and id to respect Report type
-  const report = (visitAnalysis(
+  const report = visitAnalysis(
     dataframe,
     `monthly-${month}-${year}`
-  ) as unknown) as Report;
+  ) as unknown as Report;
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
 };

@@ -1177,6 +1177,13 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@socialgouv/cdtn-logger@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.7.4.tgz#5c0da365a5b5c4987385b51816ebcfc79fba6af3"
+  integrity sha512-A4RVNLZen38UOmjx++Es2O0LPXI0EqxPZ3Yrdi9KKhKSBFGVcHaJPx1cgDIWV1MsQ34rzaaTwbqEnDmv7/cAaA==
+  dependencies:
+    winston "^3.3.3"
+
 "@socialgouv/cdtn-sources@^4.45.0":
   version "4.45.0"
   resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-sources/-/cdtn-sources-4.45.0.tgz#d05ca34ab2a12f814b5af9dd64344ab442c9ae13"

@@ -1,7 +1,7 @@
+import { logger } from "@socialgouv/cdtn-logger";
 import * as fs from "fs";
 
 import * as elastic from "../es/elastic";
-import { logger } from "../logger";
 import { parseEvent, parseSearch, parseStandard } from "./actionParsers";
 import {
   MatomoAction,
@@ -111,7 +111,7 @@ const ingest = async (dumpPath: string, index: string): Promise<void> => {
   );
 
   // TODO hmm hmm
-  const rawData = (fs.readFileSync(dumpPath) as unknown) as string;
+  const rawData = fs.readFileSync(dumpPath) as unknown as string;
 
   const actions = parse(rawData, logfile);
 
