@@ -1,10 +1,10 @@
+import { logger } from "@socialgouv/cdtn-logger";
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
 import { DataFrame, IDataFrame } from "data-forge";
 import * as fs from "fs";
 import PQueue from "p-queue";
 import * as readline from "readline";
 
-import { logger } from "../logger";
 import { getVisits, toUniqueSearches } from "../reader/dataset";
 import { actionTypes } from "../reader/readerUtil";
 import { Cache, CacheQueryCluster, Document } from "./cdtn.types";

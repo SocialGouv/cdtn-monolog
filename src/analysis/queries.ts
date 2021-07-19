@@ -74,13 +74,8 @@ const runEvaluation = (
 
   const clusters = [...counts.values()].map((queryCluster) => {
     // TODO see above
-    const {
-      dcg,
-      idcg,
-      ndcg,
-      queriesCount,
-      selectionsCount,
-    } = queryCluster as QueryGroup & Metrics;
+    const { dcg, idcg, ndcg, queriesCount, selectionsCount } =
+      queryCluster as QueryGroup & Metrics;
 
     const v = queryCluster.results.values().next().value;
     const type = v && v.algo != "pre-qualified" ? "search" : "pre-qualified";
@@ -93,9 +88,9 @@ const runEvaluation = (
       }))
       .sort((a, b) => b.count - a.count);
 
-    const results = (
-      Array.from(queryCluster.results) || []
-    ).map(([result, { algo, count }]) => ({ algo, count, result }));
+    const results = (Array.from(queryCluster.results) || []).map(
+      ([result, { algo, count }]) => ({ algo, count, result })
+    );
 
     const selectionsRatio =
       selectionsCount && queriesCount ? selectionsCount / queriesCount : 0;
@@ -120,76 +115,75 @@ const runEvaluation = (
 
 // non functionnal implementation here, we increment counts,
 // might be worth swapping with immutable implementation at one point
-const analyseVisit = (
-  queryMap: Map<string, number>,
-  counts: Map<number, QueryGroup>
-) => (v: any) => {
-  const actions = v.where((a: any) =>
-    [actionTypes.search, actionTypes.selectResult].includes(a.type)
-  );
+const analyseVisit =
+  (queryMap: Map<string, number>, counts: Map<number, QueryGroup>) =>
+  (v: any) => {
+    const actions = v.where((a: any) =>
+      [actionTypes.search, actionTypes.selectResult].includes(a.type)
+    );
 
-  // remove duplicates
-  const searches: string[] = Array.from(
-    new Set(
-      actions
-        .getSeries("query")
+    // remove duplicates
+    const searches: string[] = Array.from(
+      new Set(
+        actions
+          .getSeries("query")
+          .toArray()
+          .filter((q: string) => q)
+          .map((q: string) => q.toLowerCase())
+      )
+    );
+
+    // we increment query count and retrieve results lists
+    const results = searches.map((q) => {
+      const group = queryMap.get(q);
+      const count = group ? counts.get(group) : undefined;
+
+      if (!count) {
+        // logger.error("Cannot find results for query : " + q);
+        // logger.error(group);
+        return new Map();
+      }
+
+      count.queries.set(q, (count.queries.get(q) || 0) + 1);
+
+      return count.results;
+    });
+
+    const resultSelections = actions.where(
+      (a: any) => a.type == actionTypes.selectResult
+    );
+
+    // if no selection, not much to do
+    if (!resultSelections.count()) return;
+
+    const urlSelected = new Set(
+      // unfoldedResultSelections
+      resultSelections
+        .getSeries("resultSelectionUrl")
         .toArray()
         .filter((q: string) => q)
-        .map((q: string) => q.toLowerCase())
-    )
-  );
+    );
 
-  // we increment query count and retrieve results lists
-  const results = searches.map((q) => {
-    const group = queryMap.get(q);
-    const count = group ? counts.get(group) : undefined;
-
-    if (!count) {
-      // logger.error("Cannot find results for query : " + q);
-      // logger.error(group);
-      return new Map();
-    }
-
-    count.queries.set(q, (count.queries.get(q) || 0) + 1);
-
-    return count.results;
-  });
-
-  const resultSelections = actions.where(
-    (a: any) => a.type == actionTypes.selectResult
-  );
-
-  // if no selection, not much to do
-  if (!resultSelections.count()) return;
-
-  const urlSelected = new Set(
-    // unfoldedResultSelections
-    resultSelections
-      .getSeries("resultSelectionUrl")
-      .toArray()
-      .filter((q: string) => q)
-  );
-
-  urlSelected.forEach((url) => {
-    const incrementSelection = () => {
-      for (const r of results) {
-        if (r.has(url)) {
-          const obj = r.get(url);
-          r.set(url, { algo: obj.algo, count: obj.count + 1 });
-          return true;
+    urlSelected.forEach((url) => {
+      const incrementSelection = () => {
+        for (const r of results) {
+          if (r.has(url)) {
+            const obj = r.get(url);
+            r.set(url, { algo: obj.algo, count: obj.count + 1 });
+            return true;
+          }
         }
+        return false;
+      };
+
+      const found = incrementSelection();
+
+      if (!found) {
+        // TODO: what should we do here ?
+        // logger.error(`Selection not in results : ${url}`);
       }
-      return false;
-    };
-
-    const found = incrementSelection();
-
-    if (!found) {
-      // TODO: what should we do here ?
-      // logger.error(`Selection not in results : ${url}`);
-    }
-  });
-};
+    });
+  };
 
 const sums = (queryClusters: QueryCluster[]) =>
   queryClusters

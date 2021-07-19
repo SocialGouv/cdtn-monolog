@@ -1,8 +1,9 @@
 // save and read reports in ES uselss for now as only redirecting to ES
+import { logger } from "@socialgouv/cdtn-logger";
+
 import { Report } from "../analysis/reports";
 import * as es from "../es/elastic";
 import { DocumentResponse } from "../es/elastic";
-import { logger } from "../logger";
 
 export const standardMappings = {
   properties: {

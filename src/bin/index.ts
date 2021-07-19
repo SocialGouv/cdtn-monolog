@@ -1,4 +1,5 @@
 import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
+import { logger } from "@socialgouv/cdtn-logger";
 import * as yargs from "yargs";
 
 import {
@@ -9,7 +10,6 @@ import {
   runMonthly,
   runQueryAnalysis,
 } from "../commands";
-import { logger } from "../logger";
 
 const main = async () => {
   try {
