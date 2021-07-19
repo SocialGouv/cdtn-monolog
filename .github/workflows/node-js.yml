@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 12.x
+          - 14.x
 
     steps:
       # - uses: fixpoint/azblob-download-artifact@v3
