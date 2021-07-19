@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.4...v1.5.5) (2021-07-19)
+
+
+### Bug Fixes
+
+* use cdtn logger ([#114](https://github.com/SocialGouv/cdtn-monolog/issues/114)) ([f349094](https://github.com/SocialGouv/cdtn-monolog/commit/f349094ce8d03e9c9be620905de677c432071fa6))
+
 ## [1.5.4](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.3...v1.5.4) (2021-07-16)
 
 
