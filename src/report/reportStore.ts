@@ -64,12 +64,16 @@ export const queryReportMappings = {
     dcg: {
       type: "float",
     },
+    endDate: {
+      type: "date",
+    },
     idcg: {
       type: "float",
     },
     ndcg: {
       type: "float",
     },
+
     problems: {
       properties: {
         count: {
@@ -95,7 +99,6 @@ export const queryReportMappings = {
         },
       },
     },
-
     queries: {
       properties: {
         count: {
@@ -165,6 +168,9 @@ export const queryReportMappings = {
     selectionRatio: {
       type: "float",
     },
+    startDate: {
+      type: "date",
+    },
     type: {
       fields: {
         keyword: {
@@ -185,6 +191,9 @@ export const resultReportMappings = {
     },
     count: {
       type: "integer",
+    },
+    endDate: {
+      type: "date",
     },
     queries: {
       properties: {
@@ -221,6 +230,9 @@ export const resultReportMappings = {
     result: {
       ignore_above: 256,
       type: "keyword",
+    },
+    startDate: {
+      type: "date",
     },
   },
 };

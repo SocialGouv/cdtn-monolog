@@ -61,8 +61,7 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
-      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -78,9 +77,8 @@ export const runQueryAnalysis = async (
   const results = generateAPIResponseReports(queries);
 
   // we delete the exisiting query reports
-  //await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings);
-  //await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
-  await saveReport(RESULTS_REPORT_INDEX, results);
+  //await resetReportIndex(QUERY_REPORT_INDEX, queryReportMappings); now indexed by date
+  await resetReportIndex(RESULTS_REPORT_INDEX, resultReportMappings);
   // we save the new reports
   await saveReport(QUERY_REPORT_INDEX, [...queries]);
   await saveReport(RESULTS_REPORT_INDEX, results);
@@ -147,8 +145,7 @@ export const retrieveThreeMonthsData = async (
   const days = getLastMonthsComplete().flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${
-      days[days.length - 1]
+    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
     }), saved in ${output}`
   );
 
