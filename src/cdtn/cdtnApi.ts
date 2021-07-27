@@ -4,7 +4,7 @@ import { SearchResult } from "./cdtn.types";
 
 const CDTN_API_URL =
   process.env.CDTN_API_URL ||
-  "https://api-preprod-code-du-travail-numerique.dev2.fabrique.social.gouv.fr";
+  "https://api-preprod-code-du-travail-numerique.dev.fabrique.social.gouv.fr";
 
 const path = "/api/v1/search";
 
