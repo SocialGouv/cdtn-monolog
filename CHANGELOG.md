@@ -1,3 +1,10 @@
+## [1.5.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.5...v1.5.6) (2021-07-27)
+
+
+### Bug Fixes
+
+* update cdtn-api preprod domain ([5fd584d](https://github.com/SocialGouv/cdtn-monolog/commit/5fd584d3de76436ff3a5f5dba80d8867698ee5fb))
+
 ## [1.5.5](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.4...v1.5.5) (2021-07-19)
 
 
