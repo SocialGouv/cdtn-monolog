@@ -15,6 +15,7 @@ stages:
 
 Register image:
   stage: register
+  interruptible: true
   extends: .base_register_kaniko_stage
   only:
     - branches
