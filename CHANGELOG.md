@@ -1,3 +1,10 @@
+## [1.5.7](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.6...v1.5.7) (2021-07-27)
+
+
+### Bug Fixes
+
+* uhandle new version of yargs ([#117](https://github.com/SocialGouv/cdtn-monolog/issues/117)) ([c223c9a](https://github.com/SocialGouv/cdtn-monolog/commit/c223c9af71b8a8c82a4059a2039d4f6ab33de920))
+
 ## [1.5.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.5...v1.5.6) (2021-07-27)
 
 
