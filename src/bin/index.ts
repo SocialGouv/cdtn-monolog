@@ -1,7 +1,8 @@
 import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import { logger } from "@socialgouv/cdtn-logger";
-import * as yargs from "yargs";
+import yargs from "yargs/yargs";
 
+import packageInfo from "../../package.json";
 import {
   createCache,
   refreshCovisits,
@@ -13,7 +14,8 @@ import {
 
 const main = async () => {
   try {
-    await yargs
+    yargs(process.argv.slice(2))
+      .version(packageInfo.version)
       .scriptName("monolog")
       .usage("$0 <cmd> args")
       .command(
@@ -107,6 +109,3 @@ const main = async () => {
 main().then(() => {
   logger.info("Started");
 });
-// .catch((err) => {
-// logger.error(err);
-// });

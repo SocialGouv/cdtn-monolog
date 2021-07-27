@@ -31,4 +31,6 @@ jobs:
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
       - run: yarn build:bin
       - run: yarn build:lib
+      - run: yarn start --version
+      - run: yarn start --help
       - uses: codecov/codecov-action@v2

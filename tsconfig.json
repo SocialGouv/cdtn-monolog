@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "declaration": true,
-    "downlevelIteration": true,
-    "lib": ["es2019"],
+    "target": "ES2020",
     "module": "commonjs",
     "moduleResolution": "node",
+    "allowJs": false,
+    "declaration": true,
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "lib": [
+      "es2019"
+    ],
+    "resolveJsonModule": true,
     "noImplicitAny": true,
     "outDir": "lib",
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true
   },
-  "exclude": ["node_modules", "lib", "bin"]
+  "exclude": [
+    "node_modules",
+    "lib",
+    "bin"
+  ]
 }

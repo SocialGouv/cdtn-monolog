@@ -70,17 +70,6 @@ Ingest to ES:
     - node /app/index.js $MONOLOG_ACTION
   retry: 2
 
-Run weekly:
-  stage: weekly
-  image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
-  only:
-    refs:
-      - schedules
-    variables:
-      - $MONOLOG_ACTION == "weekly"
-  script:
-    - node /app/index.js $MONOLOG_ACTION
-
 Run covisites:
   stage: covisites
   image: $HARBOR_REGISTRY/$HARBOR_PROJECT/cdtn-monolog:$CI_COMMIT_SHA
