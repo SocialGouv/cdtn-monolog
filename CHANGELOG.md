@@ -1,3 +1,10 @@
+## [1.5.9](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.8...v1.5.9) (2021-08-01)
+
+
+### Bug Fixes
+
+* **deps:** update dependency yargs to v17 ([fad38be](https://github.com/SocialGouv/cdtn-monolog/commit/fad38be4db8106f8fa8d62c0c5266af439991f67))
+
 ## [1.5.8](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.7...v1.5.8) (2021-07-31)
 
 
