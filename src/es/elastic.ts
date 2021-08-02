@@ -63,7 +63,7 @@ export const getDocumentsFromES = async (
     };
 
     let scroll_id = treatResponse(initResponse);
-    logger.debug(`Reading ${total} docs : `);
+    logger.info(`Reading ${total} docs : `);
 
     // until we've read all docs, we keep scrolling
     while (docs.length < total) {
@@ -74,7 +74,7 @@ export const getDocumentsFromES = async (
         // scrollId,
       });
       if (docs.length % 50000 == 0) {
-        logger.debug(docs.length);
+        logger.info(docs.length);
       }
       // read response and get next scroll id
       scroll_id = treatResponse(response);
