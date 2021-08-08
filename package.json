@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.13.0",
-    "@socialgouv/cdtn-logger": "^1.8.8",
+    "@socialgouv/cdtn-logger": "^1.8.9",
     "@socialgouv/cdtn-sources": "^4.52.1",
     "data-forge": "^1.8.17",
     "data-forge-fs": "^0.0.9",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.9",
-    "@socialgouv/eslint-config-recommended": "^1.83.1",
+    "@socialgouv/eslint-config-recommended": "^1.83.2",
     "@types/jest": "^26.0.24",
     "@types/murmurhash-js": "^1.0.3",
     "@types/node-fetch": "^2.5.12",
