@@ -45,7 +45,7 @@
   "devDependencies": {
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.9",
-    "@socialgouv/eslint-config-recommended": "^1.83.2",
+    "@socialgouv/eslint-config-recommended": "^1.84.0",
     "@types/jest": "^26.0.24",
     "@types/murmurhash-js": "^1.0.3",
     "@types/node-fetch": "^2.5.12",

@@ -1197,7 +1197,7 @@
   resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-sources/-/cdtn-sources-4.52.1.tgz#f812e54aa5ab69a14d3563a54a735cbebb69d239"
   integrity sha512-RvggTh+ND4FY09tjzmCWwmpQgIVKPZk3VM0Gxcy1cyj55GHwpaKA5ckOPTp3SbUXPx3cLF6tp2NESMh4ysE//w==
 
-"@socialgouv/eslint-config-recommended@^1.83.2":
+"@socialgouv/eslint-config-recommended@^1.84.0":
   version "1.84.0"
   resolved "https://registry.yarnpkg.com/@socialgouv/eslint-config-recommended/-/eslint-config-recommended-1.84.0.tgz#f3109577ef93be04a50016414ee9fac65b7fa037"
   integrity sha512-JJlkJIkopVQTtsXOw26eKLe0v4mT6QQIdzub0vJ21EQMD8gpsEqxDwHr74/XLGAW/34b4SXrDDysVlQ7qRkDfw==
