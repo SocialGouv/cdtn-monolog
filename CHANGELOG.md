@@ -1,3 +1,10 @@
+## [1.5.10](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.9...v1.5.10) (2021-08-09)
+
+
+### Bug Fixes
+
+* **deps:** update all dependencies ([79fc7e9](https://github.com/SocialGouv/cdtn-monolog/commit/79fc7e9e4a75b087890d28be8f5bcecc1890ca2e))
+
 ## [1.5.9](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.8...v1.5.9) (2021-08-01)
 
 
