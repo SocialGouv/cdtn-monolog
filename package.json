@@ -46,7 +46,7 @@
     "@babel/core": "^7.14.8",
     "@babel/preset-env": "^7.14.9",
     "@socialgouv/eslint-config-recommended": "^1.84.1",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^27.0.1",
     "@types/murmurhash-js": "^1.0.3",
     "@types/node-fetch": "^2.5.12",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
