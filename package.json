@@ -28,7 +28,7 @@
     "check:types": "tsc"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.13.0",
+    "@elastic/elasticsearch": "^7.14.1",
     "@socialgouv/cdtn-logger": "^1.8.9",
     "@socialgouv/cdtn-sources": "^4.52.1",
     "data-forge": "^1.8.17",
@@ -40,7 +40,7 @@
     "node-fetch": "^2.6.1",
     "p-queue": "^6.6.2",
     "winston": "^3.3.3",
-    "yargs": "^17.0.1"
+    "yargs": "^17.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
