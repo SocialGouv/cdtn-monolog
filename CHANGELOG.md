@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.6.0...v1.6.1) (2021-10-04)
+
+
+### Bug Fixes
+
+* change monolog command ([#137](https://github.com/SocialGouv/cdtn-monolog/issues/137)) ([41e238e](https://github.com/SocialGouv/cdtn-monolog/commit/41e238ef71e88f959a89c8e5d5f24e5a59c4c5c9))
+
 # [1.6.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.11...v1.6.0) (2021-10-04)
 
 
