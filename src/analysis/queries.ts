@@ -1,4 +1,5 @@
 import { IDataFrame } from "data-forge";
+import { parseISO } from "date-fns";
 import * as murmur from "murmurhash-js";
 
 import { Cache } from "../cdtn/cdtn.types";
@@ -277,14 +278,25 @@ export const analyse = (
   // const { cache: counts, queryMap } = await buildCache(dataset);
 
   const queryMap = queryCache.queryMap;
-
+  const dates = dataFrame
+    .getSeries("lastActionDateTime")
+    .select((d) => parseISO(d));
+  const min = new Date(dates.min());
+  const startDate = min.setHours(min.getHours() + 8);
+  const max = new Date(dates.max());
+  const endDate = max.setHours(max.getHours() + 32);
   // we transform the clusters into a "counting" format to increment counts based on logs
   const counts = new Map<number, QueryGroup>();
   queryCache.clusters.forEach((cacheCluster, index) => {
     const queries = new Map(cacheCluster.queries.map((q) => [q, 0]));
     const results = new Map();
     cacheCluster.results.forEach((obj, url) => {
-      results.set(url, { count: 0, ...obj });
+      results.set(url, {
+        count: 0,
+        ...obj,
+        endDate: endDate,
+        startDate: startDate,
+      });
     });
 
     counts.set(index, { queries, results });
@@ -310,6 +322,7 @@ export const analyse = (
   const queryClusterReports = evaluatedQueryClusters.map((cluster) => ({
     ...cluster,
     queryKey: hashQueries(cluster),
+    ...{ endDate: endDate, startDate: startDate },
     reportId,
     reportType,
   }));

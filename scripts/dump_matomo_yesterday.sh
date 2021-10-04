@@ -1,6 +1,6 @@
 #!/bin/bash
-
 date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`
+# date=`gdate -d "@$(($(gdate +%s) - 86400))"  "+%Y-%m-%d"` # to run locally on macosx
 #date=2020-09-30
 limit=100
 offset=0
