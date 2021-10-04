@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.11...v1.6.0) (2021-10-04)
+
+
+### Features
+
+* **analysis:** add date in query reports for analysis ([#125](https://github.com/SocialGouv/cdtn-monolog/issues/125)) ([0cb159d](https://github.com/SocialGouv/cdtn-monolog/commit/0cb159db0af8daebd4ca0afd47ba3555096b4a5f))
+
 ## [1.5.11](https://github.com/SocialGouv/cdtn-monolog/compare/v1.5.10...v1.5.11) (2021-09-01)
 
 
