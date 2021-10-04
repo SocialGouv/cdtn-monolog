@@ -43,6 +43,20 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
         visited: action.eventName,
       };
     }
+    case "feedback_category": {
+      return {
+        feedbackType: action.eventAction,
+        type: "feedback_category",
+        visited: action.eventName,
+      };
+    }
+    case "feedback_suggestion": {
+      return {
+        feedbackType: action.eventAction,
+        type: "feedback_suggestion",
+        visited: action.eventName,
+      };
+    }
     case "candidateSuggestions": {
       return {
         type: "suggestion_candidates",
