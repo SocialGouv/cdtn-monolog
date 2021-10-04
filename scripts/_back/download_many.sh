@@ -1,6 +1,6 @@
 #!/bin/bash
 ALLDATES=""
-for i in {0..90}
+for i in {0..4}
 do
    #DATE=`date --date="$i days ago" "+%Y-%m-%d"`
    DATE=`date -v -${i}d "+%Y-%m-%d"`
