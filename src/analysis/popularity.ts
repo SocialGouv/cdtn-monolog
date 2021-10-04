@@ -294,4 +294,4 @@ const analyse = (
   return reports;
 };
 
-export { analyse, reportType, removeAnchor, urlToPath, countURLs };
+export { analyse, countURLs, removeAnchor, reportType, urlToPath };

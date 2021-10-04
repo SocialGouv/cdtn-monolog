@@ -66,8 +66,8 @@ interface unnestType {
   is_unique_page: boolean;
 }
 const unnest = (x: elementObjectType[]) => {
-  let unnested: unnestType[];
-  unnested = [];
+  /* eslint no-var: off */
+  const unnested: unnestType[] = [];
   for (let i = 0; i < x.length; i++) {
     var elementObject: elementObjectType = x[i];
     elementObject["url"].map((x, i) => {
