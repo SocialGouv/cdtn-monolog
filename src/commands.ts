@@ -63,8 +63,7 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
-      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -99,10 +98,8 @@ export const runMonthly = async (
   const data_raw = await readFromFile(dataPath);
   const data = removeThemesQueries(data_raw);
   const satisfaction_result = satisfactionAnalysis(data);
-  await resetReportIndex("logs-satisfaction", satisfactionMappings);
   await saveReport("logs-satisfaction", satisfaction_result);
-  // const data = data_raw;
-
+  //const data = data_raw;
   const cache = await readCache(cachePath);
 
   // we use the last analysed month (m0)
@@ -151,8 +148,7 @@ export const retrieveThreeMonthsData = async (
   const days = getLastMonthsComplete().flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${
-      days[days.length - 1]
+    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
     }), saved in ${output}`
   );
 
