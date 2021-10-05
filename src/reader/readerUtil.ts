@@ -80,7 +80,6 @@ export const actionTypes = {
   feedback: "feedback",
   home: "home",
   search: "search",
-
   searchCC: "cc_search",
   selectCC: "cc_select",
   selectRelated: "select_related",

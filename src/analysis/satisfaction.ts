@@ -1,4 +1,5 @@
 import { DataFrame, IDataFrame } from "data-forge";
+import { parseISO } from "date-fns";
 
 import { getVisits } from "../reader/dataset";
 import { removeAnchor, urlToPath } from "./popularity";
@@ -14,6 +15,12 @@ const noError = (action: any) =>
 const getPageType = (x: string) => {
   const first = x.split("/")[0];
   return first;
+};
+
+const sameMonth = (d1: Date, d2: Date): boolean => {
+  return (
+    d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth()
+  );
 };
 
 const countURLs = (dataframe: IDataFrame) => {
@@ -122,7 +129,23 @@ const analyzeSession = (dataframe: IDataFrame) => {
 
 // Actual analysis
 const analyse = (dataset: IDataFrame): any => {
-  const visits = getVisits(dataset);
+  // filter dataset on last month
+  const today = new Date();
+  const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
+
+  const datasetThisMonth = dataset
+    .withSeries({
+      lastActionDateTime: (df) =>
+        df
+          .deflate((row) => row.lastActionDateTime)
+          .select((value) => parseISO(value)),
+    })
+    .where((row) => sameMonth(row.lastActionDateTime, lastMonth));
+  const maxDate = new Date(
+    datasetThisMonth.getSeries("lastActionDateTime").max()
+  );
+  // get unique visits
+  const visits = getVisits(datasetThisMonth);
   const uniqueViews = DataFrame.concat(visits.toArray());
 
   const idxUniqueViews = uniqueViews.withIndex(
@@ -147,7 +170,7 @@ const analyse = (dataset: IDataFrame): any => {
 
   const sessionDf = analyzeSession(cleanedViews);
   console.log(sessionDf.toArray().length);
-  console.log("JOIN...");
+  console.log("JOIN SESSIONS WITH ADDITIONAL STATS...");
   console.log(augmentedDf.toArray().length);
   const resultDf = augmentedDf.join(
     sessionDf,
@@ -160,7 +183,12 @@ const analyse = (dataset: IDataFrame): any => {
       };
     }
   );
-  return resultDf.toArray();
+  // add endDate to df
+  const resultDfDate = resultDf.withSeries({
+    endDate: (df) => df.deflate((row) => row.count).select((count) => maxDate),
+  });
+
+  return resultDfDate.toArray();
 };
 
 export { analyse };

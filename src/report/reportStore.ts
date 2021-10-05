@@ -285,6 +285,9 @@ export const satisfactionMappings = {
       type: "integer",
     },
 
+    endDate: {
+      type: "date",
+    },
     feed_positive: {
       type: "integer",
     },
