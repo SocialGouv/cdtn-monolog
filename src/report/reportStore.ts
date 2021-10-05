@@ -272,6 +272,9 @@ export const satisfactionMappings = {
     avg_time_spent: {
       type: "float",
     },
+    endDate: {
+      type: "date",
+    },
     entry_rate: {
       type: "float",
     },
@@ -281,12 +284,9 @@ export const satisfactionMappings = {
     feed_nb: {
       type: "integer",
     },
+
     feed_negative: {
       type: "integer",
-    },
-
-    endDate: {
-      type: "date",
     },
     feed_positive: {
       type: "integer",
