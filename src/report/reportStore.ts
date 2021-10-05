@@ -284,6 +284,7 @@ export const satisfactionMappings = {
     feed_nb: {
       type: "integer",
     },
+
     feed_negative: {
       type: "integer",
     },
