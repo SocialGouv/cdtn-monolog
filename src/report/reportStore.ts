@@ -267,6 +267,63 @@ export const visitReportMappings = {
   },
 };
 
+export const satisfactionMappings = {
+  properties: {
+    avg_time_spent: {
+      type: "float",
+    },
+    endDate: {
+      type: "date",
+    },
+    entry_rate: {
+      type: "float",
+    },
+    exit_rate: {
+      type: "float",
+    },
+    feed_nb: {
+      type: "integer",
+    },
+
+    feed_negative: {
+      type: "integer",
+    },
+    feed_positive: {
+      type: "integer",
+    },
+    feedback_difference: {
+      type: "integer",
+    },
+    feedback_ratio: {
+      type: "float",
+    },
+    median_rank: {
+      type: "float",
+    },
+    median_time_spent: {
+      type: "float",
+    },
+    pageType: {
+      type: "keyword",
+    },
+    page_name: {
+      type: "keyword",
+    },
+    page_views: {
+      type: "long",
+    },
+    select_related_out_nb: {
+      type: "keyword",
+    },
+    select_related_ratio: {
+      type: "float",
+    },
+    unique_page_rate: {
+      type: "float",
+    },
+  },
+};
+
 export const resetReportIndex = async (
   indexName: string,
   mappings: any

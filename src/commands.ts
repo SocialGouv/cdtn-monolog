@@ -8,6 +8,7 @@ import {
   analyse as queryAnalysis,
   generateAPIResponseReports,
 } from "./analysis/queries";
+import { analyse as satisfactionAnalysis } from "./analysis/satisfaction";
 import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
@@ -34,6 +35,7 @@ import {
   queryReportMappings,
   resetReportIndex,
   resultReportMappings,
+  satisfactionMappings,
   saveReport,
   standardMappings,
 } from "./report/reportStore";
@@ -96,8 +98,9 @@ export const runMonthly = async (
   const [m0, m1, m2] = getLastMonthsComplete();
   const data_raw = await readFromFile(dataPath);
   const data = removeThemesQueries(data_raw);
-  // const data = data_raw;
-
+  const satisfaction_result = satisfactionAnalysis(data);
+  await saveReport("logs-satisfaction", satisfaction_result);
+  //const data = data_raw;
   const cache = await readCache(cachePath);
 
   // we use the last analysed month (m0)
@@ -156,6 +159,7 @@ export const retrieveThreeMonthsData = async (
     actionTypes.search,
     actionTypes.visit,
     actionTypes.selectResult,
+    actionTypes.selectRelated,
     actionTypes.feedback,
   ]);
 
