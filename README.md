@@ -144,7 +144,12 @@ queries
 
 ## Kibana
 
-TODO : we'll add some Kibana configuration to visualize log reports and provide business insights.
+Most analysis are indexed in ElasticSearch and visualized via Kibana Dashboards
+
+## saved objects
+
+To restore Dashboards & visualisations follow this [documentation](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html)
+kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/) 
 
 ## Adding a new analysis
 
