@@ -10,9 +10,11 @@ type Article = {
   url: string;
 };
 
+type Algo = "pre-qualified" | "semantic" | "fulltext" | "both";
+
 type Document = {
   _score: number;
-  algo: string;
+  algo: Algo;
   breadcrumbs: { label: string; slug: string }[];
   cdtnId: string;
   description: string;
@@ -50,4 +52,4 @@ type Cache = {
   queryMap: Map<string, number>;
 };
 
-export { Cache, CacheQueryCluster, Document, SearchResult };
+export { Algo, Cache, CacheQueryCluster, Document, SearchResult };

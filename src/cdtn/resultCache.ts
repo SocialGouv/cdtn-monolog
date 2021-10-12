@@ -53,6 +53,12 @@ export const buildCache = async (
     `Calling API for ${queries.length} queries, this might take some time`
   );
 
+  // for prequalified results, we want to remove "completed results" and only keep PQ since #2037
+  const isolatePrequalified = (documents: Document[]) =>
+    documents[0].algo == "pre-qualified"
+      ? documents.filter((d) => d.algo == "pre-qualified")
+      : documents;
+
   const pSearches = Array.from(queries).map((query) =>
     pqueue.add(() =>
       triggerSearch(query)
@@ -61,7 +67,7 @@ export const buildCache = async (
           // documents: Buffer.from(JSON.stringify(json.documents)).toString(
           //   "base64"
           // ),
-          documents,
+          documents: isolatePrequalified(documents),
           query,
         }))
         .catch(() => {
