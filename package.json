@@ -6,7 +6,7 @@
   },
   "main": "./lib/index.js",
   "sideEffects": false,
-  "version": "1.7.0",
+  "version": "1.7.1",
   "homepage": "https://github.com/SocialGouv/cdtn-monolog",
   "repository": {
     "type": "git",
