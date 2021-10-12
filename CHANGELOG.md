@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.6.1...v1.7.0) (2021-10-12)
+
+
+### Bug Fixes
+
+* **queries:** fix query reports CDTN [#3679](https://github.com/SocialGouv/cdtn-monolog/issues/3679) ([57e142a](https://github.com/SocialGouv/cdtn-monolog/commit/57e142a53e667c62b1c7c85174ab915ef2c066e0))
+
+
+### Features
+
+* **analysis:** Satisfaction ([#135](https://github.com/SocialGouv/cdtn-monolog/issues/135)) ([86bc30e](https://github.com/SocialGouv/cdtn-monolog/commit/86bc30e957eb8a9dbe3550bc140078ac93d8ea42))
+
 ## [1.6.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.6.0...v1.6.1) (2021-10-04)
 
 
