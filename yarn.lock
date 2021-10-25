@@ -1174,7 +1174,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@socialgouv/cdtn-logger@^1.8.12":
+"@socialgouv/cdtn-logger@^1.10.2":
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.10.2.tgz#ba58bf7d86f12fecbf06659e1a57808af9713d1e"
   integrity sha512-awGkZGDU5q+3fJMMhyQtlforjb0ePWWW6+j2ukHOA4jCleMc821lIO9cqwS9EtRd4P6s10eBUpgg4yWtdPFSyw==
@@ -1951,10 +1951,10 @@ data-forge-fs@^0.0.9:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.17:
-  version "1.8.17"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.17.tgz#d26669771472d91837e08f4c6dd2a939c8ff44f1"
-  integrity sha512-VWLoMyceLJL3a7jGPhxNFMwpW1tC3D6enJEoskBxGAJ3cTG3tT7YzVaAmQdDsU20+sPMsG/tRC2Vb3/knVTLzA==
+data-forge@^1.8.18:
+  version "1.8.18"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.18.tgz#2e010bbe179be41a7f010a91d8eb34833bdad145"
+  integrity sha512-7SkxCagHWVE4slGufbALxXMt91IXt1LAbPJvGFzoZCXTqRyfFzE32PPU52RgY12tyc26mmohpBuVsuG71XcrOQ==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
@@ -2557,10 +2557,10 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-fp-ts@^2.11.4:
-  version "2.11.4"
-  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.4.tgz#ad78a0d8eafb0dcfc835a0fb200f6da6422c27f0"
-  integrity sha512-lhV7tGEbs2qoVw4vmqOovChS7CAoIYU0gdiPEF8Vc4bLZct+PAMMeXrCqRyBNEo33XOvwvAmFDEDIrHPWH2/fg==
+fp-ts@^2.11.5:
+  version "2.11.5"
+  resolved "https://registry.yarnpkg.com/fp-ts/-/fp-ts-2.11.5.tgz#97cceb26655b1452d7088d6fb0864f84cceffbe4"
+  integrity sha512-OqlwJq1BdpB83BZXTqI+dNcA6uYk6qk4u9Cgnt64Y+XS7dwdbp/mobx8S2KXf2AXH+scNmA/UVK3SEFHR3vHZA==
 
 fs.realpath@^1.0.0:
   version "1.0.0"
@@ -2750,10 +2750,10 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-husky@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.2.tgz#21900da0f30199acca43a46c043c4ad84ae88dff"
-  integrity sha512-8yKEWNX4z2YsofXAMT7KvA1g8p+GxtB1ffV8XtpAEGuXNAbCV5wdNKH+qTpw8SM9fh4aMPDR+yQuKfgnreyZlg==
+husky@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.4.tgz#242048245dc49c8fb1bf0cc7cfb98dd722531535"
+  integrity sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==
 
 iconv-lite@0.4.24:
   version "0.4.24"
@@ -3563,6 +3563,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.memoize@4.x:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/lodash.memoize/-/lodash.memoize-4.1.2.tgz#bcc6c49a42a2840ed997f323eada5ecd182e0bfe"
+  integrity sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+
 lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
@@ -3573,7 +3578,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.yarnpkg.com/lodash.truncate/-/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@4.x, lodash@^4.7.0:
+lodash@^4.7.0:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -4559,16 +4564,16 @@ triple-beam@^1.2.0, triple-beam@^1.3.0:
   resolved "https://registry.yarnpkg.com/triple-beam/-/triple-beam-1.3.0.tgz#a595214c7298db8339eeeee083e4d10bd8cb8dd9"
   integrity sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==
 
-ts-jest@^27.0.5:
-  version "27.0.5"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.5.tgz#0b0604e2271167ec43c12a69770f0bb65ad1b750"
-  integrity sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==
+ts-jest@^27.0.7:
+  version "27.0.7"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.7.tgz#fb7c8c8cb5526ab371bc1b23d06e745652cca2d0"
+  integrity sha512-O41shibMqzdafpuP+CkrOL7ykbmLh+FqQrXEmV9CydQ5JBk0Sj0uAEF5TNNe94fZWKm3yYvWa/IbyV4Yg1zK2Q==
   dependencies:
     bs-logger "0.x"
     fast-json-stable-stringify "2.x"
     jest-util "^27.0.0"
     json5 "2.x"
-    lodash "4.x"
+    lodash.memoize "4.x"
     make-error "1.x"
     semver "7.x"
     yargs-parser "20.x"
