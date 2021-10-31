@@ -1174,10 +1174,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@socialgouv/cdtn-logger@^1.10.2":
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.10.2.tgz#ba58bf7d86f12fecbf06659e1a57808af9713d1e"
-  integrity sha512-awGkZGDU5q+3fJMMhyQtlforjb0ePWWW6+j2ukHOA4jCleMc821lIO9cqwS9EtRd4P6s10eBUpgg4yWtdPFSyw==
+"@socialgouv/cdtn-logger@^1.10.3":
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.10.3.tgz#341db6cae12ce7a9a6884f40a8d779a9894222c8"
+  integrity sha512-C/lFrnCCJm8eGiEI/QjuE0xYwqfGeAUy4B9Z0LaGzmcLL5YmX/iiXNmphETHDM2UYTNqz2dIF4r583Hk4rETLg==
   dependencies:
     winston "^3.3.3"
 
@@ -1951,10 +1951,10 @@ data-forge-fs@^0.0.9:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.18:
-  version "1.8.18"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.18.tgz#2e010bbe179be41a7f010a91d8eb34833bdad145"
-  integrity sha512-7SkxCagHWVE4slGufbALxXMt91IXt1LAbPJvGFzoZCXTqRyfFzE32PPU52RgY12tyc26mmohpBuVsuG71XcrOQ==
+data-forge@^1.8.21:
+  version "1.8.21"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.21.tgz#e6060edf021dfaffb73a685fa50d419cd1b1da56"
+  integrity sha512-oaSLcho852ytSKFWA7IECnqFMl/9j3oP4jiWj77TB6Fbz4m1ethafePxQsYDi32oiDUVArEg+zyjvUwolMDsBQ==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
@@ -3692,10 +3692,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-node-fetch@^2.6.5:
-  version "2.6.5"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.5.tgz#42735537d7f080a7e5f78b6c549b7146be1742fd"
-  integrity sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ==
+node-fetch@^2.6.6:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.6.tgz#1751a7c01834e8e1697758732e9efb6eeadfaf89"
+  integrity sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==
   dependencies:
     whatwg-url "^5.0.0"
 
