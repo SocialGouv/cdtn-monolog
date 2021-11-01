@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.2...v1.7.3) (2021-11-01)
+
+
+### Bug Fixes
+
+* **deps:** update all dependencies ([a24359a](https://github.com/SocialGouv/cdtn-monolog/commit/a24359a682d09bfafcca469236254f6b23e45d52))
+
 ## [1.7.2](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.1...v1.7.2) (2021-10-25)
 
 
