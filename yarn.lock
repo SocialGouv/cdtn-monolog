@@ -915,7 +915,7 @@
   resolved "https://registry.yarnpkg.com/@data-forge/serialization/-/serialization-1.0.1.tgz#2a963ea78154688f738e3465558b1c0a2d5963e2"
   integrity sha512-EP7IWimh5JcDOISVoXvNIjUAqcPN1FkNWvuvjY3uzcswErxB8j93ldlUBvgvGEszqFRwMM3fpMF0HrISg5iBSQ==
 
-"@elastic/elasticsearch@^7.15.0":
+"@elastic/elasticsearch@^7.14.1":
   version "7.15.0"
   resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.15.0.tgz#4b009a87e0b11b8cfd2e4f378f0292574bc17300"
   integrity sha512-FUKvjV2IKtIiWsvBy7D+wLbSEONsmNR15RRN7P/Sb30g4ObZRHH2qGOP5PPnzxdntEkzZ8HzY7nKKXFS+3Du1g==
@@ -1181,7 +1181,7 @@
   dependencies:
     winston "^3.3.3"
 
-"@socialgouv/cdtn-sources@^4.55.1":
+"@socialgouv/cdtn-sources@^4.52.1":
   version "4.55.1"
   resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-sources/-/cdtn-sources-4.55.1.tgz#aac97236b7350bd7b904c3f214355a386f3a8efc"
   integrity sha512-qW00XRyw8HLWd3GNxiNBZoWuqSpOT5FD2SteKb52DbKvtXBxNb24VmGTDo1gyUfflIXx9E5t8nS5yonX+Plxsg==
