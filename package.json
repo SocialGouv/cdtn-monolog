@@ -33,14 +33,14 @@
     "@socialgouv/cdtn-sources": "^4.52.1",
     "data-forge": "^1.8.17",
     "data-forge-fs": "^0.0.9",
-    "date-fns": "^2.23.0",
+    "date-fns": "^2.25.0",
     "esm": "^3.2.25",
     "fp-ts": "^2.11.4",
     "murmurhash-js": "^1.0.0",
-    "node-fetch": "^2.6.5",
+    "node-fetch": "^2.6.6",
     "p-queue": "^6.6.2",
     "winston": "^3.3.3",
-    "yargs": "^17.1.1"
+    "yargs": "^17.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
