@@ -1174,10 +1174,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@socialgouv/cdtn-logger@^1.10.3":
-  version "1.10.3"
-  resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.10.3.tgz#341db6cae12ce7a9a6884f40a8d779a9894222c8"
-  integrity sha512-C/lFrnCCJm8eGiEI/QjuE0xYwqfGeAUy4B9Z0LaGzmcLL5YmX/iiXNmphETHDM2UYTNqz2dIF4r583Hk4rETLg==
+"@socialgouv/cdtn-logger@^1.10.4":
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/@socialgouv/cdtn-logger/-/cdtn-logger-1.10.4.tgz#14e1b6afb46b8b26436a0937c738e83a0432d605"
+  integrity sha512-4mjeSvKNf15sLKWDDwyB2VwiRaB3Jk5OHrq3q1F55tbqJ++O/KdAfsjQX/Gw6lV3wBE2YDTP32XscXlrWuzpTQ==
   dependencies:
     winston "^3.3.3"
 
@@ -1951,10 +1951,10 @@ data-forge-fs@^0.0.9:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.21:
-  version "1.8.21"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.8.21.tgz#e6060edf021dfaffb73a685fa50d419cd1b1da56"
-  integrity sha512-oaSLcho852ytSKFWA7IECnqFMl/9j3oP4jiWj77TB6Fbz4m1ethafePxQsYDi32oiDUVArEg+zyjvUwolMDsBQ==
+data-forge@^1.8.26:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.9.0.tgz#da3fa5ab56d5a871bd485fff84dc0a65c2456750"
+  integrity sha512-y/Gnp2ZGyfEPY4ZKR9+0NWVYVHv+ErsmaGO8MRHPIaPgvo7gpVdI9EGjgCqMYzdCxUgdAn6+gyKlkoSdadf/3Q==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
