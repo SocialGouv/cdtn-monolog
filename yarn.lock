@@ -1951,7 +1951,7 @@ data-forge-fs@^0.0.9:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.8.26:
+data-forge@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.9.0.tgz#da3fa5ab56d5a871bd485fff84dc0a65c2456750"
   integrity sha512-y/Gnp2ZGyfEPY4ZKR9+0NWVYVHv+ErsmaGO8MRHPIaPgvo7gpVdI9EGjgCqMYzdCxUgdAn6+gyKlkoSdadf/3Q==

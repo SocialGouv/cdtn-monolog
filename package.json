@@ -31,7 +31,7 @@
     "@elastic/elasticsearch": "^7.15.0",
     "@socialgouv/cdtn-logger": "^1.10.4",
     "@socialgouv/cdtn-sources": "^4.55.1",
-    "data-forge": "^1.8.26",
+    "data-forge": "^1.9.0",
     "data-forge-fs": "^0.0.9",
     "date-fns": "^2.25.0",
     "esm": "^3.2.25",
