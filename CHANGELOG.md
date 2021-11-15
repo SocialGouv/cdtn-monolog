@@ -1,3 +1,10 @@
+## [1.7.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.5...v1.7.6) (2021-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency data-forge to ^1.9.0 ([a7bfc7f](https://github.com/SocialGouv/cdtn-monolog/commit/a7bfc7f7e79f6149ac5bf8342601d380401212bd))
+
 ## [1.7.5](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.4...v1.7.5) (2021-11-08)
 
 
