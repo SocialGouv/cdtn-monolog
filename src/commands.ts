@@ -22,8 +22,10 @@ import {
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
   countVisits,
+  readDaysandWrite,
   readDaysFromElastic,
   readFromFile,
+  readFromFolder,
 } from "./reader/logReader";
 import {
   actionTypes,
@@ -63,8 +65,7 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
-      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -96,13 +97,14 @@ export const runMonthly = async (
   );
 
   const [m0, m1, m2] = getLastMonthsComplete();
-  const data_raw = await readFromFile(dataPath);
+  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const satisfaction_result = satisfactionAnalysis(data);
-  await saveReport("logs-satisfaction", satisfaction_result);
+  console.log(satisfaction_result);
+  //await saveReport("logs-satisfaction", satisfaction_result);
   //const data = data_raw;
   const cache = await readCache(cachePath);
-
+  /*
   // we use the last analysed month (m0)
   const month = parseInt(m0[0].split("-")[1]);
   const year = parseInt(m0[0].split("-")[0]);
@@ -141,6 +143,7 @@ export const runMonthly = async (
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
+  */
 };
 
 export const retrieveThreeMonthsData = async (
@@ -149,21 +152,24 @@ export const retrieveThreeMonthsData = async (
   const days = getLastMonthsComplete().flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${
-      days[days.length - 1]
+    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
     }), saved in ${output}`
   );
 
-  console.log(days);
-  const data = await readDaysFromElastic(LOG_INDEX, days, [
-    actionTypes.search,
-    actionTypes.visit,
-    actionTypes.selectResult,
-    actionTypes.selectRelated,
-    actionTypes.feedback,
-  ]);
+  await readDaysandWrite(
+    LOG_INDEX,
+    days,
+    [
+      actionTypes.search,
+      actionTypes.visit,
+      actionTypes.selectResult,
+      actionTypes.selectRelated,
+      actionTypes.feedback,
+    ],
+    output
+  );
 
-  await data.asCSV().writeFile(output);
+  //await data.asCSV().writeFile(output);
 };
 
 export const createCache = async (

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataFrame, IDataFrame } from "data-forge";
 import { parseISO } from "date-fns";
 
@@ -58,6 +59,39 @@ const countURLs = (dataframe: IDataFrame) => {
 
   return counts.setIndex("page_name");
 };
+/* eslint-disable */
+class DefaultDict {
+  constructor(defaultInit) {
+    return new Proxy(
+      {},
+      {
+        get: (target, name) =>
+          name in target
+            ? target[name]
+            : (target[name] =
+              typeof defaultInit === "function"
+                ? new defaultInit().valueOf()
+                : defaultInit),
+      }
+    );
+  }
+}
+class tupleList {
+  comments: Array<string> = [];
+  reasons: Array<string> = [];
+}
+
+/* eslint-enable */
+const custGroupBy = (x: Array<string>) => {
+  /* eslint no-var: off */
+  const defarray = new DefaultDict(tupleList);
+  for (let i = 0; i < x.length; i++) {
+    var elementObject = x[i];
+    defarray[elementObject["Col2"]].reasons.push(elementObject["Col3"]);
+  }
+  return defarray;
+};
+
 interface elementObjectType {
   url: string[];
   rank: number[];
@@ -155,6 +189,7 @@ const analyse = (dataset: IDataFrame): any => {
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
+  console.log(cleanedViews.toArray());
   const uniqueUrls = countURLs(cleanedViews);
 
   const augmentedDf = uniqueUrls.generateSeries({
