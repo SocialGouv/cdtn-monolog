@@ -1282,10 +1282,10 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
-"@types/jest@^27.0.2":
-  version "27.0.2"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.2.tgz#ac383c4d4aaddd29bbf2b916d8d105c304a5fcd7"
-  integrity sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==
+"@types/jest@^27.0.3":
+  version "27.0.3"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.3.tgz#0cf9dfe9009e467f70a342f0f94ead19842a783a"
+  integrity sha512-cmmwv9t7gBYt7hNKH5Spu7Kuu/DotGa+Ff+JGRKZ4db5eh8PnKS4LuebJ3YLUoyOyIHraTGyULn23YtEAm0VSg==
   dependencies:
     jest-diff "^27.0.0"
     pretty-format "^27.0.0"
@@ -1951,10 +1951,10 @@ data-forge-fs@^0.0.9:
   dependencies:
     chai "^4.1.2"
 
-data-forge@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.9.0.tgz#da3fa5ab56d5a871bd485fff84dc0a65c2456750"
-  integrity sha512-y/Gnp2ZGyfEPY4ZKR9+0NWVYVHv+ErsmaGO8MRHPIaPgvo7gpVdI9EGjgCqMYzdCxUgdAn6+gyKlkoSdadf/3Q==
+data-forge@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/data-forge/-/data-forge-1.9.2.tgz#4611028c957eab23bffabdc34666fa7b11f54223"
+  integrity sha512-jNEMk6oF3hzODzi9VzOd7g+nyLLO7XE+0oq2ez8y267eE/S3P+px4N8yIz8V+8/O2ZLJjZOp/l0ORAPtwKKs8Q==
   dependencies:
     "@data-forge/serialization" "^1.0.0"
     dayjs "^1.8.12"
