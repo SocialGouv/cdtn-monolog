@@ -15,7 +15,7 @@ const retrieveData = async () => {
     actionTypes.searchCC,
   ]);
 
-  await data.asCSV().writeFile("./cc-search.csv");
+  await data.asCSV().writeFile("./data/cc-search.csv");
 };
 
 retrieveData().then(() => console.log("done"));
