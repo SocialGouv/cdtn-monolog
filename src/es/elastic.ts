@@ -13,7 +13,6 @@ const QUERY_REPORT_INDEX =
 const RESULTS_REPORT_INDEX =
   process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
 
-const SCROLL_TIMEOUT = "50s";
 const BATCH_SIZE = 500;
 
 const auth = API_KEY ? { apiKey: API_KEY } : undefined;
@@ -41,7 +40,6 @@ export const getDocumentsFromES = async (
   const initResponse = await esClient.search({
     body: { aggs, query },
     index,
-    scroll: SCROLL_TIMEOUT,
     size: BATCH_SIZE,
   });
 
@@ -52,35 +50,44 @@ export const getDocumentsFromES = async (
   const docs: any[] = [];
 
   if (withDocs) {
-    const treatResponse = ({ body }: { body: any }) => {
-      // get docs from response
-      body.hits.hits.forEach((hit: any) => {
+    const treatResponse = ({ hits }: { hits: any }) => {
+      hits.forEach((hit: any) => {
         docs.push(hit._source);
-      });
-
-      // return next scroll id
-      return body._scroll_id;
-    };
-
-    let scroll_id = treatResponse(initResponse);
-    logger.debug(`Reading ${total} docs : `);
-
-    // until we've read all docs, we keep scrolling
-    while (docs.length < total) {
-      // scroll
-      const response = await esClient.scroll({
-        scroll: SCROLL_TIMEOUT,
-        scroll_id,
-        // scrollId,
       });
       if (docs.length % 50000 == 0) {
         logger.debug(docs.length);
       }
-      // read response and get next scroll id
-      scroll_id = treatResponse(response);
+
+      return hits[hits.length - 1].sort[0];
+    };
+
+    const pointInTimeId = (
+      await esClient.openPointInTime({ index, keep_alive: "1m" })
+    ).body.id;
+
+    let searchAfter;
+
+    while (docs.length < total) {
+      const response = await esClient.search({
+        body: {
+          pit: {
+            id: pointInTimeId,
+            keep_alive: "1m",
+          },
+          query,
+          size: BATCH_SIZE,
+          sort: [{ _shard_doc: "asc" }],
+          track_total_hits: false, // This will make query faster
+          ...(searchAfter && { search_after: [searchAfter] }),
+        },
+      });
+      if (docs.length % 50000 == 0) {
+        logger.debug(docs.length);
+      }
+
+      searchAfter = treatResponse({ hits: response.body.hits.hits });
     }
   }
-
   return { aggregations, docs };
 };
 

@@ -18,6 +18,10 @@ ELASTIC_URL # URL of the Elastic instance where the logs are stored eventually
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
 CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results
 ```
+## Local
+To run locally launch ES :
+
+    docker-compose up
 
 ## Log storage
 
@@ -31,7 +35,7 @@ The `ingest` task takes a Matomo dump file in `data/`, convert it, and push the 
 The `download_dump.sh` script allows you to get a dump file from Azure.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy AZURE_TOKEN=xxxx yarn monolog ingest
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog ingest
 ```
 
 ### Script
