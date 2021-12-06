@@ -4,6 +4,7 @@ import { logfile, LOGS_TEST_INDEX, wait } from "../../__tests__/util";
 import * as elastic from "../../es/elastic";
 import { ingest } from "../../ingestion/ingester";
 import * as Reader from "../logReader";
+import result from "../../__tests__/__fixtures__/2020-04-24-covisits.json";
 
 const dumpfile = path.join(
   __dirname,
@@ -26,7 +27,9 @@ test("read data from Elastic", async () => {
   // data.asCSV().writeFileSync("/Users/remim/tmp/logs.csv");
   // */
 
-  expect(data.count()).toBeGreaterThan(0);
+  const searchCC = JSON.parse(data.toJSON());
+  expect(searchCC.length).toEqual(result.length);
+  expect(searchCC).toEqual(result);
 }, 30000);
 
 afterAll(async () => {
