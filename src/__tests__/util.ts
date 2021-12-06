@@ -37,7 +37,7 @@ export const readLogFile = async (
   path: string
 ): Promise<dataForge.IDataFrame> => dataForge.readFile(path).parseCSV();
 
-export const LOGS_TEST_INDEX = "logs-test";
+export const LOGS_TEST_INDEX = "logs_data-test";
 
 export const buildDataFrameFromQueries = (
   queries: string[]
