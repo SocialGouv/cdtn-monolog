@@ -474,6 +474,13 @@
 
 * **es scroll:** revert file move ([5af2ca8](https://github.com/SocialGouv/cdtn-monolog/commit/5af2ca88ded4505a0e049ecb01847c7051eff186))
 
+## [1.7.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.5...v1.7.6) (2021-12-06)
+
+
+### Bug Fixes
+
+* **es scroll:** revert file move ([5af2ca8](https://github.com/SocialGouv/cdtn-monolog/commit/5af2ca88ded4505a0e049ecb01847c7051eff186))
+
 ## [1.7.5](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.4...v1.7.5) (2021-11-08)
 
 
