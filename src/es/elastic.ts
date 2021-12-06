@@ -84,7 +84,7 @@ export const getDocumentsFromES = async (
       if (docs.length % 50000 == 0) {
         logger.debug(docs.length);
       }
-
+      if (!response?.body?.hits?.hits || !response.body.hits.hits.length) break;
       searchAfter = treatResponse({ hits: response.body.hits.hits });
     }
   }

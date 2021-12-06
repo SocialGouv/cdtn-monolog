@@ -9,6 +9,8 @@ import { actionTypes, getLastMonthsComplete } from "../reader/readerUtil";
 // get cc search
 const retrieveData = async () => {
   const days = getLastMonthsComplete(none, some(6)).flat().sort();
+  // To test you can hardcode a date here
+  // constdays=["2020-04-24"];
 
   console.log(days);
   const data = await readDaysFromElastic(LOG_INDEX, days, [
@@ -19,6 +21,3 @@ const retrieveData = async () => {
 };
 
 retrieveData().then(() => console.log("done"));
-
-// To run :
-// node -r ts-node/register  src/tests/query_es.ts
