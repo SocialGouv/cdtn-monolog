@@ -179,19 +179,15 @@ export const readFromFile = async (path: string): Promise<IDataFrame> =>
 export const readSingleFile = async (
   file: string,
   path: string
-): Promise<any> => {
+): Promise<IDataFrame<number, any>> => {
   return readFile(path + "/" + file).parseCSV();
 };
 export const readFromFolder = async (path: string): Promise<IDataFrame> => {
   const files = fs.readdirSync(path);
-
-  const dfs = await Promise.all(
-    files.map((file: string) => readSingleFile(file, path))
-  );
-  console.log(typeof dfs);
-  console.log(dfs);
-
-  const singleDf = DataFrame.concat(dfs);
-  //console.log(singleDf.toArray());
-  return new DataFrame();
+  const arr: any[] = [];
+  for (const file of files) {
+    arr.push(await readSingleFile(file, path));
+  }
+  const singleDf = DataFrame.concat(arr);
+  return singleDf;
 };

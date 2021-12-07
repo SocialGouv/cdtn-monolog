@@ -8,6 +8,8 @@ const LOG_INDEX = process.env.LOG_INDEX || "logs-new";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
 const MONTHLY_REPORT_INDEX =
   process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
+const SATISFACTION_REASONS_INDEX =
+  process.env.SATISFACTION_REASONS_INDEX || "logs-satisfaction-reasons";
 const QUERY_REPORT_INDEX =
   process.env.QUERY_REPORT_INDEX || "log_reports_queries";
 const RESULTS_REPORT_INDEX =
@@ -190,5 +192,6 @@ export {
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
+  SATISFACTION_REASONS_INDEX,
   testAndCreateIndex,
 };

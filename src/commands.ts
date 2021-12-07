@@ -18,6 +18,7 @@ import {
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
+  SATISFACTION_REASONS_INDEX,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
@@ -38,6 +39,7 @@ import {
   resetReportIndex,
   resultReportMappings,
   satisfactionMappings,
+  satisfactionReasonsMappings,
   saveReport,
   standardMappings,
 } from "./report/reportStore";
@@ -69,7 +71,7 @@ export const runQueryAnalysis = async (
     }, saved in Elastic reports`
   );
 
-  const data_raw = await readFromFile(dataPath);
+  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
   const suggestions = suggestionPath
@@ -99,12 +101,14 @@ export const runMonthly = async (
   const [m0, m1, m2] = getLastMonthsComplete();
   const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
-  const satisfaction_result = satisfactionAnalysis(data);
-  console.log(satisfaction_result);
-  //await saveReport("logs-satisfaction", satisfaction_result);
+  const satisfaction = satisfactionAnalysis(data);
+
+  await saveReport("logs-satisfaction", satisfaction.analysis);
+  await saveReport(SATISFACTION_REASONS_INDEX, satisfaction.reasons);
+
   //const data = data_raw;
   const cache = await readCache(cachePath);
-  /*
+
   // we use the last analysed month (m0)
   const month = parseInt(m0[0].split("-")[1]);
   const year = parseInt(m0[0].split("-")[0]);
@@ -143,7 +147,6 @@ export const runMonthly = async (
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
-  */
 };
 
 export const retrieveThreeMonthsData = async (
@@ -165,6 +168,8 @@ export const retrieveThreeMonthsData = async (
       actionTypes.selectResult,
       actionTypes.selectRelated,
       actionTypes.feedback,
+      actionTypes.feedback_category,
+      actionTypes.feedback_suggestion,
     ],
     output
   );
@@ -177,14 +182,14 @@ export const createCache = async (
   output: string
 ): Promise<void> => {
   logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
-  const data = await readFromFile(dataPath);
+  const data = await readFromFolder(dataPath);
   const cache = await buildCache(data, 2);
   await persistCache(cache, output);
 };
 
 export const refreshCovisits = async (dataPath: string): Promise<void> => {
   logger.info(`Refreshing covisites using links in data ${dataPath}`);
-  const data = await readFromFile(dataPath);
+  const data = await readFromFolder(dataPath);
   const covisitReports = covisitAnalysis(data);
 
   // TODO : delete previous covisit reports
