@@ -3,6 +3,14 @@
 
 ### Bug Fixes
 
+* dummy ([f2d6c8a](https://github.com/SocialGouv/cdtn-monolog/commit/f2d6c8a4a3ede62109a68e1650726ba0321d000f))
+* **es scroll:** revert file move ([5af2ca8](https://github.com/SocialGouv/cdtn-monolog/commit/5af2ca88ded4505a0e049ecb01847c7051eff186))
+
+## [1.7.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.5...v1.7.6) (2021-12-17)
+
+
+### Bug Fixes
+
 * **es scroll:** revert file move ([5af2ca8](https://github.com/SocialGouv/cdtn-monolog/commit/5af2ca88ded4505a0e049ecb01847c7051eff186))
 
 ## [1.7.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.5...v1.7.6) (2021-12-06)
