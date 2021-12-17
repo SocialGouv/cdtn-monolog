@@ -1,3 +1,10 @@
+## [1.7.8](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.7...v1.7.8) (2021-12-17)
+
+
+### Bug Fixes
+
+* dummy ([c9adf9c](https://github.com/SocialGouv/cdtn-monolog/commit/c9adf9c132d6badc703053443be65ff30aa81260))
+
 ## [1.7.6](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.5...v1.7.6) (2021-12-17)
 
 
