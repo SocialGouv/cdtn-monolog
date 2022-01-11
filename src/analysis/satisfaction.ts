@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataFrame, IDataFrame } from "data-forge";
 import { parseISO } from "date-fns";
 
@@ -58,6 +59,47 @@ const countURLs = (dataframe: IDataFrame) => {
 
   return counts.setIndex("page_name");
 };
+/* eslint-disable */
+class DefaultDict {
+  constructor(defaultInit) {
+    return new Proxy(
+      {},
+      {
+        get: (target, name) =>
+          name in target
+            ? target[name]
+            : (target[name] =
+              typeof defaultInit === "function"
+                ? new defaultInit().valueOf()
+                : defaultInit),
+      }
+    );
+  }
+}
+class tupleList {
+  comments: Array<string> = [];
+  reasons: Array<string> = [];
+}
+// custom groupby to get arrays of feedbacks
+/* eslint-enable */
+const custGroupBy = (x: Array<string>) => {
+  /* eslint no-var: off */
+  const defarray = new DefaultDict(tupleList);
+  for (let i = 0; i < x.length; i++) {
+    var elementObject = x[i];
+    if (elementObject["type"] == "feedback_suggestion") {
+      defarray[elementObject["url"]].reasons.push(
+        elementObject["feedbackType"]
+      );
+    } else if (elementObject["type"] == "feedback_category") {
+      defarray[elementObject["url"]].comments.push(
+        elementObject["feedbackType"]
+      );
+    }
+  }
+  return defarray;
+};
+
 interface elementObjectType {
   url: string[];
   rank: number[];
@@ -127,6 +169,24 @@ const analyzeSession = (dataframe: IDataFrame) => {
   return uDf;
 };
 
+const flatDocs = (resultArrayFeed: Array<Any>) => {
+  var res2 = [];
+  for (const feedObject of resultArrayFeed) {
+    if (typeof feedObject.suggestions !== "undefined") {
+      for (const suggestion of feedObject.suggestions) {
+        res2.push({
+          endDate: feedObject.endDate,
+          pageType: feedObject.pageType,
+          page_name: feedObject.page_name,
+          reason: suggestion,
+          url: feedObject.url,
+        });
+      }
+    }
+  }
+  return res2;
+};
+
 // Actual analysis
 const analyse = (dataset: IDataFrame): any => {
   // filter dataset on last month
@@ -144,6 +204,7 @@ const analyse = (dataset: IDataFrame): any => {
   const maxDate = new Date(
     datasetThisMonth.getSeries("lastActionDateTime").max()
   );
+
   // get unique visits
   const visits = getVisits(datasetThisMonth);
   const uniqueViews = DataFrame.concat(visits.toArray());
@@ -155,8 +216,12 @@ const analyse = (dataset: IDataFrame): any => {
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
+  // filter only feedbacks
+  const feedbacks = cleanedViews.where(
+    (row) => !["", "positive", "negative"].includes(row.feedbackType)
+  );
+  const feedbacks_grouped = custGroupBy(feedbacks.toArray());
   const uniqueUrls = countURLs(cleanedViews);
-
   const augmentedDf = uniqueUrls.generateSeries({
     feedback_difference: (row) => row.feed_positive - row.feed_negative,
     feedback_ratio: (row) =>
@@ -183,12 +248,21 @@ const analyse = (dataset: IDataFrame): any => {
       };
     }
   );
+  console.log("ADDING FEEDBACKS Comments");
   // add endDate to df
   const resultDfDate = resultDf.withSeries({
     endDate: (df) => df.deflate((row) => row.count).select((count) => maxDate),
   });
+  // add feedbacks arrays to result array
+  const resultArray = resultDfDate.toArray();
+  const resultArrayFeed = resultArray.map((obj) => ({
+    ...obj,
+    categories: feedbacks_grouped[obj.url].reasons,
+    suggestions: feedbacks_grouped[obj.url].comments,
+  }));
 
-  return resultDfDate.toArray();
+  console.log(resultArrayFeed);
+  return { analysis: resultArrayFeed, reasons: flatDocs(resultArrayFeed) };
 };
 
 export { analyse };

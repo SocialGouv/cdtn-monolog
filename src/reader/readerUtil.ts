@@ -78,6 +78,8 @@ export const removeThemesQueries = (dataset: IDataFrame): IDataFrame => {
 
 export const actionTypes = {
   feedback: "feedback",
+  feedback_category: "feedback_category",
+  feedback_suggestion: "feedback_suggestion",
   home: "home",
   search: "search",
   searchCC: "cc_search",

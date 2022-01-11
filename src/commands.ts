@@ -18,12 +18,15 @@ import {
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
+  SATISFACTION_REASONS_INDEX,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
   countVisits,
+  readDaysandWrite,
   readDaysFromElastic,
   readFromFile,
+  readFromFolder,
 } from "./reader/logReader";
 import {
   actionTypes,
@@ -36,6 +39,7 @@ import {
   resetReportIndex,
   resultReportMappings,
   satisfactionMappings,
+  satisfactionReasonsMappings,
   saveReport,
   standardMappings,
 } from "./report/reportStore";
@@ -63,12 +67,11 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
-      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
-  const data_raw = await readFromFile(dataPath);
+  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
   const suggestions = suggestionPath
@@ -96,10 +99,13 @@ export const runMonthly = async (
   );
 
   const [m0, m1, m2] = getLastMonthsComplete();
-  const data_raw = await readFromFile(dataPath);
+  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
-  const satisfaction_result = satisfactionAnalysis(data);
-  await saveReport("logs-satisfaction", satisfaction_result);
+  const satisfaction = satisfactionAnalysis(data);
+
+  await saveReport("logs-satisfaction", satisfaction.analysis);
+  await saveReport(SATISFACTION_REASONS_INDEX, satisfaction.reasons);
+
   //const data = data_raw;
   const cache = await readCache(cachePath);
 
@@ -149,21 +155,26 @@ export const retrieveThreeMonthsData = async (
   const days = getLastMonthsComplete().flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${
-      days[days.length - 1]
+    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
     }), saved in ${output}`
   );
 
-  console.log(days);
-  const data = await readDaysFromElastic(LOG_INDEX, days, [
-    actionTypes.search,
-    actionTypes.visit,
-    actionTypes.selectResult,
-    actionTypes.selectRelated,
-    actionTypes.feedback,
-  ]);
+  await readDaysandWrite(
+    LOG_INDEX,
+    days,
+    [
+      actionTypes.search,
+      actionTypes.visit,
+      actionTypes.selectResult,
+      actionTypes.selectRelated,
+      actionTypes.feedback,
+      actionTypes.feedback_category,
+      actionTypes.feedback_suggestion,
+    ],
+    output
+  );
 
-  await data.asCSV().writeFile(output);
+  //await data.asCSV().writeFile(output);
 };
 
 export const createCache = async (
@@ -171,14 +182,14 @@ export const createCache = async (
   output: string
 ): Promise<void> => {
   logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
-  const data = await readFromFile(dataPath);
+  const data = await readFromFolder(dataPath);
   const cache = await buildCache(data, 2);
   await persistCache(cache, output);
 };
 
 export const refreshCovisits = async (dataPath: string): Promise<void> => {
   logger.info(`Refreshing covisites using links in data ${dataPath}`);
-  const data = await readFromFile(dataPath);
+  const data = await readFromFolder(dataPath);
   const covisitReports = covisitAnalysis(data);
 
   // TODO : delete previous covisit reports

@@ -272,6 +272,9 @@ export const satisfactionMappings = {
     avg_time_spent: {
       type: "float",
     },
+    comments: {
+      type: "keyword",
+    },
     endDate: {
       type: "date",
     },
@@ -284,7 +287,6 @@ export const satisfactionMappings = {
     feed_nb: {
       type: "integer",
     },
-
     feed_negative: {
       type: "integer",
     },
@@ -312,6 +314,9 @@ export const satisfactionMappings = {
     page_views: {
       type: "long",
     },
+    reasons: {
+      type: "keyword",
+    },
     select_related_out_nb: {
       type: "keyword",
     },
@@ -320,6 +325,26 @@ export const satisfactionMappings = {
     },
     unique_page_rate: {
       type: "float",
+    },
+  },
+};
+
+export const satisfactionReasonsMappings = {
+  properties: {
+    endDate: {
+      type: "date",
+    },
+    pageType: {
+      type: "keyword",
+    },
+    page_name: {
+      type: "keyword",
+    },
+    reason: {
+      type: "keyword",
+    },
+    url: {
+      type: "keyword",
     },
   },
 };
