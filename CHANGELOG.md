@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.8...v1.8.0) (2022-01-11)
+
+
+### Features
+
+* **add satisfaction index:** Satisfaction ([#160](https://github.com/SocialGouv/cdtn-monolog/issues/160)) ([ed2161e](https://github.com/SocialGouv/cdtn-monolog/commit/ed2161e8d7073f3d5f75b4deb382ea65bf13350d))
+
 ## [1.7.8](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.7...v1.7.8) (2021-12-17)
 
 
