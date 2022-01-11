@@ -26,7 +26,7 @@ const computeReports = (
 ) => {
   // FIXME use outer join to handle missing values (e.g. additions)
 
-  const joinedM0M1 = refCounts.join(
+  const joinedM0M1 = refCounts.joinOuter(
     focusCounts,
     (left) => left.field,
     (right) => right.field,
@@ -41,7 +41,7 @@ const computeReports = (
     }
   );
 
-  const joined = joinedM0M1.join(
+  const joined = joinedM0M1.joinOuter(
     previousMonthCount,
     (left) => left.field,
     (right) => right.field,
