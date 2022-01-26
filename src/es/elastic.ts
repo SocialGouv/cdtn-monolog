@@ -175,9 +175,6 @@ const batchInsert = async (index: string, documents: any, size = 1000) => {
     const batch = documents.slice(i * size, (i + 1) * size);
 
     await insertDocuments(index, batch);
-    if (i === 0) {
-      console.log(batch[0]);
-    }
   }
   logger.debug(`${documents.length} documents indexed into ${index}.`);
 };
