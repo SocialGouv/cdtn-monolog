@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.0...v1.8.1) (2022-01-27)
+
+
+### Bug Fixes
+
+* **dump:** remove new lines from json ([d632337](https://github.com/SocialGouv/cdtn-monolog/commit/d632337078b35f9c21fafeba6fe0a8f45645a3c7))
+
 # [1.8.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.7.8...v1.8.0) (2022-01-11)
 
 
