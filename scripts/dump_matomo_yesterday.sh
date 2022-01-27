@@ -28,6 +28,8 @@ while [ "$finished" = false ]; do
   else
     echo $res > $out
     echo "Offset : " $offset
+    # remove new lines
+    tr -d '\n' < ${out} > ${out}
   fi
 
 done
