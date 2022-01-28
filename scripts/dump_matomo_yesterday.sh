@@ -20,16 +20,17 @@ while [ "$finished" = false ]; do
   out=$prefix-$offset.json
 
   res=$(curl --silent $url)
-  
+
   offset=$((offset + limit))
 
   if [ "$res" = "[]" ]; then
     finished=true
   else
-    echo $res > $out
+    echo $res > $out.raw
     echo "Offset : " $offset
     # remove new lines
-    tr -d '\n' < ${out} > ${out}
+    tr -d '\n \t' < $out.raw > $out
+    rm $out.raw
   fi
 
 done
