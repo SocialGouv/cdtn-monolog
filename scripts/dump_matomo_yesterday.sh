@@ -26,11 +26,8 @@ while [ "$finished" = false ]; do
   if [ "$res" = "[]" ]; then
     finished=true
   else
-    echo $res > $out.raw
+    echo $res > $out
     echo "Offset : " $offset
-    # remove new lines
-    tr -d '\n \t' < $out.raw > $out
-    rm $out.raw
   fi
 
 done
