@@ -1,8 +1,11 @@
+#!/bin/bash
+
 ALLDATES=""
 for i in {0..37}
+#for i in $(seq 17 18) # ubuntu
 do
-  #date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"` # ubuntu
-  date=`gdate -d "@$(($(gdate +%s) - 86400 * (i+1) ))"  "+%Y-%m-%d"` # to run locally on macosx
+  date=`date -d "@$(($(date +%s) - $(($i*86400))))"  "+%Y-%m-%d"` # ubuntu
+  #date=`gdate -d "@$(($(gdate +%s) - 86400 * (i+1) ))"  "+%Y-%m-%d"` # to run locally on macosx
   limit=100
   offset=0
   accu="[]"
