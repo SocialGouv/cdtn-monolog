@@ -10,7 +10,11 @@ const reportType = (pt: PopularityTypeString): string =>
   `${pt.toLowerCase()}-popularity`;
 
 const removeAnchor = (url: string) => {
-  return url.split("#")[0];
+  // remove query parameters
+  if (url.includes("?")) {
+    url = url.substring(0, url.indexOf("?"));
+  }
+  return url.split("#")[0].toLowerCase();
 };
 const computeReports = (
   focusCounts: IDataFrame,
