@@ -15,13 +15,14 @@ const QUERY_REPORT_INDEX =
 const RESULTS_REPORT_INDEX =
   process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
 
-const BATCH_SIZE = 500;
+const BATCH_SIZE = 1000;
 
 const auth = API_KEY ? { apiKey: API_KEY } : undefined;
 
 const esClientConfig: ClientOptions = {
   auth,
   node: `${ELASTICSEARCH_URL}`,
+  requestTimeout: 600000,
 };
 
 const esClient = new Client(esClientConfig);
@@ -39,13 +40,12 @@ export const getDocumentsFromES = async (
   aggs: any = undefined,
   withDocs = true
 ): Promise<DocumentResponse> => {
-  const initResponse = await esClient.search({
+  const initResponse = await esClient.count({
     body: { aggs, query },
     index,
-    size: BATCH_SIZE,
   });
 
-  const total = initResponse.body.hits.total.value;
+  const total = initResponse.body.count;
 
   const { aggregations } = initResponse.body;
 
@@ -64,7 +64,7 @@ export const getDocumentsFromES = async (
     };
 
     const pointInTimeId = (
-      await esClient.openPointInTime({ index, keep_alive: "1m" })
+      await esClient.openPointInTime({ index, keep_alive: "10m" })
     ).body.id;
 
     let searchAfter;
@@ -74,7 +74,7 @@ export const getDocumentsFromES = async (
         body: {
           pit: {
             id: pointInTimeId,
-            keep_alive: "1m",
+            keep_alive: "10m",
           },
           query,
           size: BATCH_SIZE,
