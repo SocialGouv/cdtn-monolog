@@ -21,7 +21,7 @@ const build_query = (day: string, type: Array<string>) => {
     },
   };
 };
-const queryAndWrite = async (
+export const queryAndWrite = async (
   index: string,
   day: string,
   query: any,

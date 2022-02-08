@@ -1,8 +1,9 @@
 import { logger } from "@socialgouv/cdtn-logger";
-import { some } from "fp-ts/lib/Option";
+import { none, some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
+import { readDaysAndWriteKpi } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import {
   analyse as queryAnalysis,
@@ -67,7 +68,8 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
+      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -152,16 +154,20 @@ export const runMonthly = async (
 export const retrieveThreeMonthsData = async (
   output: string
 ): Promise<void> => {
-  const days = getLastMonthsComplete().flat().sort();
+  const daysOfLastThreeMonths = getLastMonthsComplete().flat().sort();
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
-    }), saved in ${output}`
+    `Retrieve log data for the last three months (${
+      daysOfLastThreeMonths[0]
+    } to ${
+      daysOfLastThreeMonths[daysOfLastThreeMonths.length - 1]
+    }), saved in data-${output}`
   );
 
   await readDaysandWrite(
     LOG_INDEX,
-    days,
+    daysOfLastThreeMonths,
     [
       actionTypes.search,
       actionTypes.visit,
@@ -171,7 +177,18 @@ export const retrieveThreeMonthsData = async (
       actionTypes.feedback_category,
       actionTypes.feedback_suggestion,
     ],
-    output
+    `data-${output}`
+  );
+
+  logger.info(
+    `Retrieve log data for the last three months (${daysOfLastMonth[0]} to ${
+      daysOfLastMonth[daysOfLastMonth.length - 1]
+    }), saved in data-outils-${output}`
+  );
+  await readDaysAndWriteKpi(
+    LOG_INDEX,
+    daysOfLastMonth,
+    `data-outils-${output}`
   );
 
   //await data.asCSV().writeFile(output);
