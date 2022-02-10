@@ -35,19 +35,19 @@ export const queryAndWrite = async (
   // unfold the result selection object in two columns
   const unfoldedData = (await type.includes(actionTypes.selectResult))
     ? data.withSeries({
-      resultSelectionAlgo: (df) =>
-        df
-          .deflate((row) => row.resultSelection)
-          .select((resultSelection) =>
-            resultSelection ? resultSelection.algo : undefined
-          ),
-      resultSelectionUrl: (df) =>
-        df
-          .deflate((row) => row.resultSelection)
-          .select((resultSelection) =>
-            resultSelection ? resultSelection.url : undefined
-          ),
-    })
+        resultSelectionAlgo: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.algo : undefined
+            ),
+        resultSelectionUrl: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.url : undefined
+            ),
+      })
     : data;
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);

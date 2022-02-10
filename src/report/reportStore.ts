@@ -349,6 +349,29 @@ export const satisfactionReasonsMappings = {
   },
 };
 
+export const kpiMappings = {
+  properties: {
+    denominator: {
+      type: "integer",
+    },
+    kpi_type: {
+      type: "keyword",
+    },
+    numerator: {
+      type: "integer",
+    },
+    rate: {
+      type: "float",
+    },
+    start_date: {
+      type: "date",
+    },
+    url: {
+      type: "keyword",
+    },
+  },
+};
+
 export const resetReportIndex = async (
   indexName: string,
   mappings: any

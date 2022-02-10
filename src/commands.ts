@@ -14,12 +14,13 @@ import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
 import {
+  KPI_INDEX,
   LOG_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
-  SATISFACTION_REASONS_INDEX,
+  SATISFACTION_REASONS_INDEX, testAndCreateIndex,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
@@ -36,6 +37,7 @@ import {
   removeThemesQueries,
 } from "./reader/readerUtil";
 import {
+  kpiMappings,
   queryReportMappings,
   resetReportIndex,
   resultReportMappings,
@@ -101,7 +103,9 @@ export const runMonthly = async (
   );
 
   const [m0, m1, m2] = getLastMonthsComplete();
-  const data_raw = await readFromFolder(dataPath);
+  const data_raw = await readFromFolder(`data-${dataPath}`);
+  // testAndCreateIndex(KPI_INDEX, kpiMappings);
+  const data_outil_raw = await readFromFolder(`data-outils-${dataPath}`);
   const data = removeThemesQueries(data_raw);
   const satisfaction = satisfactionAnalysis(data);
 
@@ -181,9 +185,7 @@ export const retrieveThreeMonthsData = async (
   );
 
   logger.info(
-    `Retrieve log data for the last three months (${daysOfLastMonth[0]} to ${
-      daysOfLastMonth[daysOfLastMonth.length - 1]
-    }), saved in data-outils-${output}`
+    `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-outils-${output}`
   );
   await readDaysAndWriteKpi(
     LOG_INDEX,
