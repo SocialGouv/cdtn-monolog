@@ -1,7 +1,9 @@
-import { IDataFrame } from "data-forge";
+import { IDataFrame, ISeries} from "data-forge";
+import { parseISO } from "date-fns";
 
 import { queryAndWrite } from "../reader/logReader";
 import { removeAnchor } from "./popularity";
+import { KpiReport } from "./reports";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
   "convention-collective": {
@@ -38,7 +40,7 @@ const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
   },
 };
 
-const generateQueryToGetLogsFromUrlOutilForAGivenDate = (day: string) => {
+const generateQueryToGetLogsFromUrlToolForAGivenDate = (day: string) => {
   return {
     bool: {
       must: [
@@ -61,7 +63,7 @@ export const readDaysAndWriteKpi = async (
   outputFolderName: string
 ): Promise<void> => {
   const queries = days.map((day) =>
-    generateQueryToGetLogsFromUrlOutilForAGivenDate(day)
+    generateQueryToGetLogsFromUrlToolForAGivenDate(day)
   );
   const queries_and_days = queries.map((q, i) => ({
     day: days[i],
@@ -105,7 +107,7 @@ export const getNumberOfVisitByUrlAndEvent = (dataset: IDataFrame) => {
     .inflate();
 };
 
-export const getNbVisitIfStepDefinedInOutil = (
+export const getNbVisitIfStepDefinedInTool = (
   url: string,
   eventStep: string | undefined,
   dataset: IDataFrame
@@ -121,16 +123,20 @@ export const getNbVisitIfStepDefinedInOutil = (
   return 0;
 };
 
-export const getListOfKpiCompletionRate = (visitsByUrlAndEvent: IDataFrame) => {
+export const getListOfKpiCompletionRate = (
+  visitsByUrlAndEvent: IDataFrame,
+  startDate: string,
+  reportId: string
+): KpiReport[] => {
   return Object.entries(
     DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME
   ).map(([key, value]) => {
-    const numerator = getNbVisitIfStepDefinedInOutil(
+    const numerator = getNbVisitIfStepDefinedInTool(
       key,
       value.lastStep,
       visitsByUrlAndEvent
     );
-    const denominator = getNbVisitIfStepDefinedInOutil(
+    const denominator = getNbVisitIfStepDefinedInTool(
       key,
       value.firstStep,
       visitsByUrlAndEvent
@@ -139,24 +145,36 @@ export const getListOfKpiCompletionRate = (visitsByUrlAndEvent: IDataFrame) => {
     // TODO: change start_date
     return {
       denominator: denominator,
-      kpi_type: "Completion rate of /outils/ urls",
+      kpi_type: "Completion-rate-of-tools",
       numerator: numerator,
       rate: denominator > 0 ? numerator / denominator : 0,
-      start_date: "january",
+      reportId: reportId,
+      reportType: "kpi",
+      start_date: startDate,
       url: key,
     };
   });
 };
 
+const getFirstDayOfMonth = (series: ISeries): string => {
+  return series.toArray().sort()[0];
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const computeCompletionRateOfUrlOutil = (dataset: IDataFrame) => {
+export const computeCompletionRateOfUrlTool = (
+  dataset: IDataFrame,
+  reportId: string = new Date().getTime().toString()
+): KpiReport[] => {
+  const firstDay = getFirstDayOfMonth(dataset.getSeries("lastActionDateTime"));
+
   const datasetFiltered = dataset.where(
     (row) => row.outilAction == "view_step"
   );
+
   const datasetWithCleanUrl = cleanUrl(datasetFiltered);
 
   const visitsByUrlAndEvent =
     getNumberOfVisitByUrlAndEvent(datasetWithCleanUrl);
 
-  return getListOfKpiCompletionRate(visitsByUrlAndEvent);
+  return getListOfKpiCompletionRate(visitsByUrlAndEvent, firstDay, reportId);
 };

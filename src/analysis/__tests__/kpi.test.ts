@@ -2,9 +2,9 @@ import { DataFrame } from "data-forge";
 
 import {
   cleanUrl,
-  computeCompletionRateOfUrlOutil,
+  computeCompletionRateOfUrlTool,
   getListOfKpiCompletionRate,
-  getNbVisitIfStepDefinedInOutil,
+  getNbVisitIfStepDefinedInTool,
   getNumberOfVisitByUrlAndEvent,
 } from "../kpi";
 
@@ -108,7 +108,7 @@ describe("kpi", () => {
     });
   });
 
-  describe("#getNbVisitIfStepDefinedInOutil", () => {
+  describe("#getNbVisitIfStepDefinedInTool", () => {
     it("should return the number of visits for a given url and start step", () => {
       // Given
       const data = [
@@ -124,7 +124,7 @@ describe("kpi", () => {
       const expected = 10;
 
       // When
-      const result = getNbVisitIfStepDefinedInOutil(url, step, dataset);
+      const result = getNbVisitIfStepDefinedInTool(url, step, dataset);
 
       // Then
       expect(result).toStrictEqual(expected);
@@ -144,7 +144,7 @@ describe("kpi", () => {
       const expected = 3;
 
       // When
-      const result = getNbVisitIfStepDefinedInOutil(url, step, dataset);
+      const result = getNbVisitIfStepDefinedInTool(url, step, dataset);
 
       // Then
       expect(result).toStrictEqual(expected);
@@ -164,7 +164,7 @@ describe("kpi", () => {
       const expected = 0;
 
       // When
-      const result = getNbVisitIfStepDefinedInOutil(url, step, dataset);
+      const result = getNbVisitIfStepDefinedInTool(url, step, dataset);
 
       // Then
       expect(result).toStrictEqual(expected);
@@ -184,7 +184,7 @@ describe("kpi", () => {
       const expected = 0;
 
       // When
-      const result = getNbVisitIfStepDefinedInOutil(url, step, dataset);
+      const result = getNbVisitIfStepDefinedInTool(url, step, dataset);
 
       // Then
       expect(result).toStrictEqual(expected);
@@ -213,39 +213,47 @@ describe("kpi", () => {
       const expected = [
         {
           denominator: 900,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 0,
           rate: 0,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "convention-collective",
         },
         {
           denominator: 100,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 90,
           rate: 0.9,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "heures-recherche-emploi",
         },
         {
           denominator: 1111,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 555,
           rate: 555 / 1111,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "indemnite-licenciement",
         },
         {
           denominator: 0,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 0,
           rate: 0,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "indemnite-precarite",
         },
       ];
       // When
-      const result = getListOfKpiCompletionRate(dataset);
+      const result = getListOfKpiCompletionRate(dataset, "2020-01-01", "2020");
 
       // Then
       expect(result[0]).toStrictEqual(expected[0]);
@@ -255,114 +263,132 @@ describe("kpi", () => {
     });
   });
 
-  describe("#computeCompletionRateOfUrlOutil - Integration test", () => {
+  describe("#computeCompletionRateOfUrlTool - Integration test", () => {
     it("given a list of event, method should return kpis of completion rate by url", () => {
       // Given
       const data = [
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-05",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/convention-collective?arg2",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "step1",
           url: "/outils/convention-collective#aze",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "step2",
           url: "/outils/convention-collective",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "convention-collective",
           url: "/outils/convention-collective",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/indemnite-licenciement#20aij?arg2",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "compute",
           url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-10",
           outilAction: "view_step",
           outilEvent: "results",
           url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-01",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
           url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-20",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
           url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
+          lastActionDateTime: "2020-01-20",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
           url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 2,
+          lastActionDateTime: "2020-01-20",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 2,
+          lastActionDateTime: "2020-01-20",
           outilAction: "view_step",
           outilEvent: "compute",
           url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 2,
+          lastActionDateTime: "2020-01-20",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
           url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 3,
+          lastActionDateTime: "2020-01-25",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/indemnite-precarite?fgh",
         },
         {
           idVisit: 3,
+          lastActionDateTime: "2020-01-25",
           outilAction: "view_step",
           outilEvent: "indemnite",
           url: "/outils/indemnite-precarite?fgh",
         },
         {
           idVisit: 3,
+          lastActionDateTime: "2020-01-25",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/preavis-demission",
         },
         {
           idVisit: 4,
+          lastActionDateTime: "2020-01-25",
           outilAction: "view_step",
           outilEvent: "start",
           url: "/outils/preavis-demission",
         },
         {
           idVisit: 4,
+          lastActionDateTime: "2020-01-02",
           outilAction: "view_step",
           outilEvent: "results",
           url: "/outils/preavis-demission",
@@ -372,47 +398,57 @@ describe("kpi", () => {
       const expected = [
         {
           denominator: 1,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 0,
           rate: 0,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "convention-collective",
         },
         {
           denominator: 0,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 0,
           rate: 0,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "heures-recherche-emploi",
         },
         {
           denominator: 2,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 2,
           rate: 1,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "indemnite-licenciement",
         },
         {
           denominator: 1,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 1,
           rate: 1,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "indemnite-precarite",
         },
         {
           denominator: 2,
-          kpi_type: "Completion rate of /outils/ urls",
+          kpi_type: "Completion-rate-of-tools",
           numerator: 1,
           rate: 0.5,
-          start_date: "january",
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: "2020-01-01",
           url: "preavis-demission",
         },
       ];
       // When
-      const result = computeCompletionRateOfUrlOutil(dataset);
+      const result = computeCompletionRateOfUrlTool(dataset, "2020");
 
       // Then
       expect(result.slice(0, 5)).toStrictEqual(expected.slice(0, 5));
