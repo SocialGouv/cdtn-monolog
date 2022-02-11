@@ -14,7 +14,7 @@ const QUERY_REPORT_INDEX =
   process.env.QUERY_REPORT_INDEX || "log_reports_queries";
 const RESULTS_REPORT_INDEX =
   process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
-export const KPI_INDEX = process.env.KPI_INDEX || "kpi_index";
+export const KPI_INDEX = process.env.KPI_INDEX || "log_kpi_index";
 
 const BATCH_SIZE = 1000;
 

@@ -90,6 +90,15 @@ export type MonthlyReport = Report & {
   startDate: number;
 };
 
+export type KpiReport = Report & {
+  denominator: number;
+  kpi_type: string;
+  numerator: number;
+  rate: number;
+  start_date: string;
+  url: string;
+};
+
 export type CovisiteReport = Report & {
   content: string;
   links: { count: number; link: string }[];

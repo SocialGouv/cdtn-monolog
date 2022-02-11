@@ -1,5 +1,4 @@
-import { IDataFrame, ISeries} from "data-forge";
-import { parseISO } from "date-fns";
+import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
 import { removeAnchor } from "./popularity";
