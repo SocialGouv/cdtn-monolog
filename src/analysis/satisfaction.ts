@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { DataFrame, IDataFrame } from "data-forge";
 import { parseISO } from "date-fns";
