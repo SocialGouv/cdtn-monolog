@@ -16,7 +16,59 @@ const removeAnchor = (url: string) => {
   }
   return url.split("#")[0].toLowerCase();
 };
-const computeReports = (
+
+export const joinOuter3Df = (
+  df1: IDataFrame,
+  df2: IDataFrame,
+  df3: IDataFrame
+): IDataFrame => {
+  const newDf1 = df1.select((row) => {
+    return {
+      field: row.field,
+      m0_count: row.count,
+      m0_norm_count: row.normalized_count,
+      m1_count: 0,
+      m1_norm_count: 0,
+      m2_count: 0,
+    };
+  });
+  const newDf2 = df2.select((row) => {
+    return {
+      field: row.field,
+      m0_count: 0,
+      m0_norm_count: 0,
+      m1_count: row.count,
+      m1_norm_count: row.normalized_count,
+      m2_count: 0,
+    };
+  });
+  const newDf3 = df3.select((row) => {
+    return {
+      field: row.field,
+      m0_count: 0,
+      m0_norm_count: 0,
+      m1_count: 0,
+      m1_norm_count: 0,
+      m2_count: row.count,
+    };
+  });
+
+  const concatenated = DataFrame.concat([newDf1, newDf2, newDf3]);
+
+  return concatenated
+    .groupBy((row) => row.field)
+    .select((group) => ({
+      field: group.first().field,
+      m0_count: group.deflate((row) => row.m0_count).max(),
+      m0_norm_count: group.deflate((row) => row.m0_norm_count).max(),
+      m1_count: group.deflate((row) => row.m1_count).max(),
+      m1_norm_count: group.deflate((row) => row.m1_norm_count).max(),
+      m2_count: group.deflate((row) => row.m2_count).max(),
+    }))
+    .inflate();
+};
+
+export const computeReports = (
   focusCounts: IDataFrame,
   refCounts: IDataFrame,
   previousMonthCount: IDataFrame,
@@ -28,10 +80,48 @@ const computeReports = (
   reportId: string,
   reportType: string
 ) => {
-  // FIXME use outer join to handle missing values (e.g. additions)
+  /*
+  const joinedM0M1 = focusCounts.joinOuter(
+    refCounts,
+    (left) => left.field,
+    (right) => right.field,
+    (left, right) => {
+      return {
+        field: 0,
+        m0_count: 0,
+        m0_norm_count: 0,
+        m1_count: 0,
+        m1_norm_count: 0,
+      };
+    }
+  );
 
-  const joinedM0M1 = refCounts.join(
-    focusCounts,
+  const joined = joinedM0M1.joinOuter(
+    previousMonthCount,
+    (left) => left.field,
+    (right) => right.field,
+    (left, right) => {
+      return {
+        field: left ? left.field : right.field,
+        m0_count: left ? left.m0_count : 0,
+        m0_norm_count: left ? left.m0_norm_count : 0,
+        m1_count: left ? left.m1_count : 0,
+        m1_norm_count: left ? left.m1_norm_count : 0,
+        m2_count: right ? right.count : 0,
+      };
+    }
+  );
+  */
+
+  //const start = Date.now();
+  const joined = joinOuter3Df(focusCounts, refCounts, previousMonthCount);
+  //const time = Date.now() - start;
+  //console.log("Seconds passed = " + time / 1000);
+  //console.log(joined.count());
+
+  /*
+  const ancienjoinedM0M1 = focusCounts.join(
+    refCounts,
     (left) => left.field,
     (right) => right.field,
     (left, right) => {
@@ -44,8 +134,7 @@ const computeReports = (
       };
     }
   );
-
-  const joined = joinedM0M1.join(
+  const ancienjoined = ancienjoinedM0M1.join(
     previousMonthCount,
     (left) => left.field,
     (right) => right.field,
@@ -56,6 +145,35 @@ const computeReports = (
       };
     }
   );
+  console.log("printing info");
+
+  const start1 = Date.now();
+  console.log(ancienjoinedM0M1.count());
+  const typesDf3 = ancienjoinedM0M1.detectTypes();
+  console.log(typesDf3.toString());
+  const time1 = Date.now() - start1;
+  console.log("Seconds passed = " + time1 / 1000);
+
+  const start2 = Date.now();
+  console.log(ancienjoined.count());
+  const typesDf4 = ancienjoined.detectTypes();
+  console.log(typesDf4.toString());
+  const time2 = Date.now() - start2;
+  console.log("Seconds passed = " + time2 / 1000);
+
+  const start3 = Date.now();
+  console.log(joinedM0M1.count());
+  const typesDf1 = joinedM0M1.detectTypes();
+  console.log(typesDf1.toString());
+  const time3 = Date.now() - start3;
+  console.log("Seconds passed = " + time3 / 1000);
+
+  const start4 = Date.now();
+  console.log(joined.count());
+  const typesDf2 = joined.detectTypes();
+  console.log(typesDf2.toString());
+  const time4 = Date.now() - start4;
+  console.log("Seconds passed = " + time4 / 1000); */
 
   const nContent = 40;
   const minOccurence = 40;
@@ -68,9 +186,13 @@ const computeReports = (
       abs_diff: (row) => Math.abs(row.diff),
     })
     .generateSeries({
-      rel_diff: (row) => (row.m0_count - row.m1_count) / row.m1_count,
+      rel_diff: (row) =>
+        row.m1_count > 0 ? (row.m0_count - row.m1_count) / row.m1_count : 0,
     })
-    .where((r) => r.m1_count + r.m0_count + r.m2_count > minOccurence);
+    .where(
+      (r) =>
+        r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != ""
+    );
 
   const topDiff = diff.orderByDescending((r: any) => r.abs_diff).take(nContent);
   const topPop = diff.orderByDescending((r) => r.m0_count).take(nContent);
@@ -282,7 +404,7 @@ const analyse = (
     m2Counts = countQueries(m2Data, cache);
   }
 
-  const reports = computeReports(
+  return computeReports(
     m0Counts,
     m1Counts,
     m2Counts,
@@ -294,8 +416,6 @@ const analyse = (
     reportId,
     reportType(popularityType)
   );
-
-  return reports;
 };
 
 export { analyse, countURLs, removeAnchor, reportType, urlToPath };
