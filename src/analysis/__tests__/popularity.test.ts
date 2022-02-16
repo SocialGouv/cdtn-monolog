@@ -100,11 +100,6 @@ describe("Cdtn popularity", () => {
       expect(result).toStrictEqual(expected);
     });
   });
-  it("debug", async () => {
-    //const res = runMonthly("data-january-bis", "cache-january-bis.json");
-    //expect(true).toBe(false);
-    expect(true).toBe(true);
-  });
   describe("#computeReports", () => {
     it("_____", async () => {
       // Given
