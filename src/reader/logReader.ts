@@ -2,12 +2,11 @@
 import "data-forge-fs";
 
 import { DataFrame, IDataFrame, readFile } from "data-forge";
+import fs from "fs";
 import PQueue from "p-queue";
 
 import { getDocuments } from "../es/elastic";
 import { actionTypes, getLastDays } from "./readerUtil";
-
-const fs = require("fs");
 
 const defaultTypesToConsider = Object.values(actionTypes);
 const build_query = (day: string, type: Array<string>) => {

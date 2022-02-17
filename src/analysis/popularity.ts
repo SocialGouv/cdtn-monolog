@@ -4,6 +4,7 @@ import { isSome, none, Option } from "fp-ts/lib/Option";
 import { Cache, CacheQueryCluster } from "../cdtn/cdtn.types";
 import { getVisits, toUniqueSearches, toUniqueViews } from "../reader/dataset";
 import { actionTypes, urlToPath } from "../reader/readerUtil";
+import { joinOuter3DfOnFieldColumn } from "./dataframeUtils";
 import { PopularityReport } from "./reports";
 
 const reportType = (pt: PopularityTypeString): string =>
@@ -16,7 +17,8 @@ const removeAnchor = (url: string) => {
   }
   return url.split("#")[0].toLowerCase();
 };
-const computeReports = (
+
+export const computeReports = (
   focusCounts: IDataFrame,
   refCounts: IDataFrame,
   previousMonthCount: IDataFrame,
@@ -28,33 +30,10 @@ const computeReports = (
   reportId: string,
   reportType: string
 ) => {
-  // FIXME use outer join to handle missing values (e.g. additions)
-
-  const joinedM0M1 = refCounts.join(
+  const joined = joinOuter3DfOnFieldColumn(
     focusCounts,
-    (left) => left.field,
-    (right) => right.field,
-    (left, right) => {
-      return {
-        field: left.field,
-        m0_count: right.count,
-        m0_norm_count: right.normalized_count,
-        m1_count: left.count,
-        m1_norm_count: left.normalized_count,
-      };
-    }
-  );
-
-  const joined = joinedM0M1.join(
-    previousMonthCount,
-    (left) => left.field,
-    (right) => right.field,
-    (left, right) => {
-      return {
-        ...left,
-        m2_count: right.count,
-      };
-    }
+    refCounts,
+    previousMonthCount
   );
 
   const nContent = 40;
@@ -68,9 +47,13 @@ const computeReports = (
       abs_diff: (row) => Math.abs(row.diff),
     })
     .generateSeries({
-      rel_diff: (row) => (row.m0_count - row.m1_count) / row.m1_count,
+      rel_diff: (row) =>
+        row.m1_count > 0 ? (row.m0_count - row.m1_count) / row.m1_count : 0,
     })
-    .where((r) => r.m1_count + r.m0_count + r.m2_count > minOccurence);
+    .where(
+      (r) =>
+        r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != ""
+    );
 
   const topDiff = diff.orderByDescending((r: any) => r.abs_diff).take(nContent);
   const topPop = diff.orderByDescending((r) => r.m0_count).take(nContent);
@@ -282,7 +265,7 @@ const analyse = (
     m2Counts = countQueries(m2Data, cache);
   }
 
-  const reports = computeReports(
+  return computeReports(
     m0Counts,
     m1Counts,
     m2Counts,
@@ -294,8 +277,6 @@ const analyse = (
     reportId,
     reportType(popularityType)
   );
-
-  return reports;
 };
 
 export { analyse, countURLs, removeAnchor, reportType, urlToPath };

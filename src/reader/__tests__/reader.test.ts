@@ -1,10 +1,10 @@
 import * as path from "path";
 
+import result from "../../__tests__/__fixtures__/2020-04-24-covisits.json";
 import { logfile, LOGS_TEST_INDEX, wait } from "../../__tests__/util";
 import * as elastic from "../../es/elastic";
 import { ingest } from "../../ingestion/ingester";
 import * as Reader from "../logReader";
-import result from "../../__tests__/__fixtures__/2020-04-24-covisits.json";
 
 const dumpfile = path.join(
   __dirname,

@@ -14,3 +14,4 @@ suggestions.txt
 bin
 lib
 data-*
+.env.local
