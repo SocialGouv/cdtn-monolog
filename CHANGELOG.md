@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.1...v1.8.2) (2022-02-17)
+
+
+### Bug Fixes
+
+* update monthly dashboard by adding new content to content monthl… ([#169](https://github.com/SocialGouv/cdtn-monolog/issues/169)) ([bbdc044](https://github.com/SocialGouv/cdtn-monolog/commit/bbdc044d5d437179f743b8e9aa5982ef5b486739))
+
 ## [1.8.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.0...v1.8.1) (2022-01-27)
 
 
