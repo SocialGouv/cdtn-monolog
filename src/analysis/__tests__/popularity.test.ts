@@ -1,6 +1,7 @@
 import { DataFrame } from "data-forge";
 
-import { computeReports, joinOuter3Df, removeAnchor } from "../popularity";
+import { joinOuter3DfOnFieldColumn } from "../dataframeUtils";
+import { computeReports, removeAnchor } from "../popularity";
 
 describe("Cdtn popularity", () => {
   it("removeAnchor should return the website url", async () => {
@@ -93,7 +94,7 @@ describe("Cdtn popularity", () => {
       const expected = new DataFrame(expectedData);
 
       // When
-      const result = joinOuter3Df(df1, df2, df3);
+      const result = joinOuter3DfOnFieldColumn(df1, df2, df3);
 
       // Then
 
@@ -101,7 +102,7 @@ describe("Cdtn popularity", () => {
     });
   });
   describe("#computeReports", () => {
-    it("_____", async () => {
+    it("should compute reports by month for each given url", async () => {
       // Given
       const focusCountsData = [
         { count: 1000, field: "covid19-protocole", normalized_count: 0.1 },
