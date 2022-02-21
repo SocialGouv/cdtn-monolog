@@ -12,6 +12,10 @@ const mappings = {
       type: "keyword",
     },
 
+    idCc: {
+      type: "integer",
+    },
+
     idVisit: {
       type: "keyword",
     },

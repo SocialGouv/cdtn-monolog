@@ -103,9 +103,23 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
       return { query: action.eventAction, type: "theme_candidates" };
     }
     case "outil": {
-      const outilAction = action.eventAction.startsWith("view_step_")
-        ? "view_step"
-        : "click_previous";
+      let outilAction = null;
+      if (action.eventAction.startsWith("view_step_")) {
+        outilAction = "view_step";
+      } else if (action.eventAction.startsWith("click_previous")) {
+        outilAction = "click_previous";
+      } else if (
+        ["cc_select_traitée", "cc_select_non_traitée"].includes(
+          action.eventAction
+        )
+      ) {
+        return {
+          idCc: parseInt(action.eventName),
+          type: action.eventAction,
+        };
+      } else {
+        outilAction = action.eventAction;
+      }
       const outil = action.eventAction.slice(
         action.eventAction.lastIndexOf("_") + 1
       );

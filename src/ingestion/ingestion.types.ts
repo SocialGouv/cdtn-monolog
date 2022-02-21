@@ -1,3 +1,5 @@
+import {integer} from "@elastic/elasticsearch/api/types";
+
 export type RootAction = {
   url: string;
   timeSpent: number;
@@ -54,6 +56,7 @@ export type MonologActionFields = {
 
   cc?: string;
   ccAction?: string;
+  idCc?: number;
 };
 
 export type MonologAction = VisitFields &
