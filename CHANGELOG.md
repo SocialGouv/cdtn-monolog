@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.2...v1.9.0) (2022-02-21)
+
+
+### Features
+
+* **add event:** add idCc for cc_select_traitée and non_traitée ([#159](https://github.com/SocialGouv/cdtn-monolog/issues/159)) ([0ae6b7f](https://github.com/SocialGouv/cdtn-monolog/commit/0ae6b7f4571cd41a365b6ae635c9fffbe238a44c))
+
 ## [1.8.2](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.1...v1.8.2) (2022-02-17)
 
 
