@@ -124,7 +124,7 @@ export const getNbVisitIfStepDefinedInTool = (
 
 export const getListOfKpiCompletionRate = (
   visitsByUrlAndEvent: IDataFrame,
-  startDate: string,
+  startDate: Date,
   reportId: string
 ): KpiReport[] => {
   return Object.entries(
@@ -155,8 +155,17 @@ export const getListOfKpiCompletionRate = (
   });
 };
 
-const getFirstDayOfMonth = (series: ISeries): string => {
-  return series.toArray().sort()[0];
+const getFirstDayOfMonth = (series: ISeries): Date => {
+  const last_day = new Date(series.toArray().sort().pop());
+  last_day.setTime(
+    last_day.getTime() + last_day.getTimezoneOffset() * 60 * 1000
+  );
+  return new Date(
+    last_day.getFullYear(),
+    last_day.getMonth(),
+    1,
+    last_day.getHours()
+  );
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

@@ -210,6 +210,7 @@ describe("kpi", () => {
         },
       ];
       const dataset = new DataFrame(data);
+      const date = new Date("2020-01-01T00:00:00.000");
       const expected = [
         {
           denominator: 900,
@@ -218,7 +219,7 @@ describe("kpi", () => {
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "convention-collective",
         },
         {
@@ -228,7 +229,7 @@ describe("kpi", () => {
           rate: 0.9,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "heures-recherche-emploi",
         },
         {
@@ -238,7 +239,7 @@ describe("kpi", () => {
           rate: 555 / 1111,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "indemnite-licenciement",
         },
         {
@@ -248,12 +249,12 @@ describe("kpi", () => {
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "indemnite-precarite",
         },
       ];
       // When
-      const result = getListOfKpiCompletionRate(dataset, "2020-01-01", "2020");
+      const result = getListOfKpiCompletionRate(dataset, date, "2020");
 
       // Then
       expect(result[0]).toStrictEqual(expected[0]);
@@ -266,6 +267,7 @@ describe("kpi", () => {
   describe("#computeCompletionRateOfUrlTool - Integration test", () => {
     it("given a list of event, method should return kpis of completion rate by url", () => {
       // Given
+      const date = new Date("2020-01-01T00:00:00.000");
       const data = [
         {
           idVisit: 1,
@@ -403,7 +405,7 @@ describe("kpi", () => {
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "convention-collective",
         },
         {
@@ -413,7 +415,7 @@ describe("kpi", () => {
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "heures-recherche-emploi",
         },
         {
@@ -423,7 +425,7 @@ describe("kpi", () => {
           rate: 1,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "indemnite-licenciement",
         },
         {
@@ -433,7 +435,7 @@ describe("kpi", () => {
           rate: 1,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "indemnite-precarite",
         },
         {
@@ -443,7 +445,7 @@ describe("kpi", () => {
           rate: 0.5,
           reportId: "2020",
           reportType: "kpi",
-          start_date: "2020-01-01",
+          start_date: date,
           url: "preavis-demission",
         },
       ];

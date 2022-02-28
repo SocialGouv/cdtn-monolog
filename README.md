@@ -23,6 +23,10 @@ To run locally launch ES :
 
     docker-compose up
 
+NB: to run any command on your local environment, you won't need any ELASTIC_API_TOKEN in next commands.
+
+However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index. 
+
 ## Log storage
 
 ### Backup

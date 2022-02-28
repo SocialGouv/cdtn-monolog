@@ -95,7 +95,7 @@ export type KpiReport = Report & {
   kpi_type: string;
   numerator: number;
   rate: number;
-  start_date: string;
+  start_date: Date;
   url: string;
 };
 
