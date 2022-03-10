@@ -94,9 +94,9 @@ export type KpiReport = Report & {
   denominator: number;
   kpi_type: string;
   numerator: number;
+  outil: string;
   rate: number;
   start_date: Date;
-  url: string;
 };
 
 export type CovisiteReport = Report & {

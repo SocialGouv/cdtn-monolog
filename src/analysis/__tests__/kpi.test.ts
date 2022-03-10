@@ -1,107 +1,79 @@
 import { DataFrame } from "data-forge";
 
 import {
-  cleanUrl,
   computeCompletionRateOfUrlTool,
+  getConventionCollectiveCompletionRate,
   getListOfKpiCompletionRate,
   getNbVisitIfStepDefinedInTool,
-  getNumberOfVisitByUrlAndEvent,
+  getNumberOfVisitsByCcType,
+  getNumberOfVisitsByOutilAndEvent,
 } from "../kpi";
 
 describe("kpi", () => {
-  describe("#cleanUrl", () => {
-    it("should return url without anchor", () => {
-      // Given
-      const data = [
-        { idVisit: 1, url: "/outils/indemnite-licenciement?arg2" },
-        { idVisit: 1, url: "/outils/indemnite-licenciement#20aij?arg2" },
-        { idVisit: 2, url: "/outils/indemnite-licenciement?arg2=5" },
-        { idVisit: 2, url: "/outils/indemnite-licenciement" },
-        { idVisit: 2, url: "/outils/mon-outil" },
-        { idVisit: 2, url: "/outils/mon-outil" },
-      ];
-      const dataset = new DataFrame(data);
-      const dataExpected = [
-        { idVisit: 1, url_cleaned: "indemnite-licenciement" },
-        { idVisit: 1, url_cleaned: "indemnite-licenciement" },
-        { idVisit: 2, url_cleaned: "indemnite-licenciement" },
-        { idVisit: 2, url_cleaned: "indemnite-licenciement" },
-        { idVisit: 2, url_cleaned: "mon-outil" },
-        { idVisit: 2, url_cleaned: "mon-outil" },
-      ];
-      const datasetExpected = new DataFrame(dataExpected);
-      // When
-      const result = cleanUrl(dataset);
-
-      // Then
-      expect(result).toStrictEqual(datasetExpected);
-    });
-  });
-
-  describe("#getNumberOfVisitByUrlAndEvent", () => {
+  describe("#getNumberOfVisitsByOutilAndEvent", () => {
     it("should return list of visits by event and url", () => {
       const data = [
         {
           idVisit: 1,
+          outil: "indemnite-licenc",
           outilEvent: "start",
-          url_cleaned: "/outils/indemnite-licenc",
         },
         {
           idVisit: 2,
+          outil: "indemnite-licenc",
           outilEvent: "start",
-          url_cleaned: "/outils/indemnite-licenc",
         },
         {
           idVisit: 2,
+          outil: "indemnite-licenc",
           outilEvent: "random",
-          url_cleaned: "/outils/indemnite-licenc",
         },
-        { idVisit: 2, outilEvent: "start", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 2, outilEvent: "results", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 3, outilEvent: "aze", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 3, outilEvent: "start", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 3, outilEvent: "results", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 3, outilEvent: "results", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 4, outilEvent: "outil", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 4, outilEvent: "second", url_cleaned: "/outils/mon-outil" },
-        { idVisit: 4, outilEvent: "results", url_cleaned: "/outils/mon-outil" },
+        { idVisit: 2, outil: "mon-outil", outilEvent: "start" },
+        { idVisit: 2, outil: "mon-outil", outilEvent: "results" },
+        { idVisit: 3, outil: "mon-outil", outilEvent: "aze" },
+        { idVisit: 3, outil: "mon-outil", outilEvent: "start" },
+        { idVisit: 3, outil: "mon-outil", outilEvent: "results" },
+        { idVisit: 3, outil: "mon-outil", outilEvent: "results" },
+        { idVisit: 4, outil: "mon-outil", outilEvent: "outil" },
+        { idVisit: 4, outil: "mon-outil", outilEvent: "second" },
+        { idVisit: 4, outil: "mon-outil", outilEvent: "results" },
       ];
       const dataset = new DataFrame(data);
       const dataExpected = [
-        { nbVisit: 2, outilEvent: "start", url: "/outils/indemnite-licenc" },
-        { nbVisit: 1, outilEvent: "random", url: "/outils/indemnite-licenc" },
-        { nbVisit: 2, outilEvent: "start", url: "/outils/mon-outil" },
-        { nbVisit: 3, outilEvent: "results", url: "/outils/mon-outil" },
-        { nbVisit: 1, outilEvent: "aze", url: "/outils/mon-outil" },
-        { nbVisit: 1, outilEvent: "outil", url: "/outils/mon-outil" },
-        { nbVisit: 1, outilEvent: "second", url: "/outils/mon-outil" },
+        { nbVisit: 2, outil: "indemnite-licenc", outilEvent: "start" },
+        { nbVisit: 1, outil: "indemnite-licenc", outilEvent: "random" },
+        { nbVisit: 2, outil: "mon-outil", outilEvent: "start" },
+        { nbVisit: 3, outil: "mon-outil", outilEvent: "results" },
+        { nbVisit: 1, outil: "mon-outil", outilEvent: "aze" },
+        { nbVisit: 1, outil: "mon-outil", outilEvent: "outil" },
+        { nbVisit: 1, outil: "mon-outil", outilEvent: "second" },
       ];
       const datasetExpected = new DataFrame(dataExpected);
       // When
-      const result = getNumberOfVisitByUrlAndEvent(dataset);
+      const result = getNumberOfVisitsByOutilAndEvent(dataset);
 
       // Then
       expect(result).toStrictEqual(datasetExpected);
     });
     it("should remove duplicates for a given visitor", () => {
       const data = [
-        { idVisit: 5, outilEvent: "start", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "start", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "start", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "start", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "results", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "results", url_cleaned: "/outils/preavis" },
-        { idVisit: 5, outilEvent: "results", url_cleaned: "/outils/preavis" },
+        { idVisit: 5, outil: "preavis", outilEvent: "start" },
+        { idVisit: 5, outil: "preavis", outilEvent: "start" },
+        { idVisit: 5, outil: "preavis", outilEvent: "start" },
+        { idVisit: 5, outil: "preavis", outilEvent: "start" },
+        { idVisit: 5, outil: "preavis", outilEvent: "results" },
+        { idVisit: 5, outil: "preavis", outilEvent: "results" },
+        { idVisit: 5, outil: "preavis", outilEvent: "results" },
       ];
       const dataset = new DataFrame(data);
       const dataExpected = [
-        { nbVisit: 1, outilEvent: "start", url: "/outils/preavis" },
-        { nbVisit: 1, outilEvent: "results", url: "/outils/preavis" },
+        { nbVisit: 1, outil: "preavis", outilEvent: "start" },
+        { nbVisit: 1, outil: "preavis", outilEvent: "results" },
       ];
       const datasetExpected = new DataFrame(dataExpected);
 
       // When
-      const result = getNumberOfVisitByUrlAndEvent(dataset);
+      const result = getNumberOfVisitsByOutilAndEvent(dataset);
 
       // Then
       expect(result).toStrictEqual(datasetExpected);
@@ -112,11 +84,11 @@ describe("kpi", () => {
     it("should return the number of visits for a given url and start step", () => {
       // Given
       const data = [
-        { nbVisit: 10, outilEvent: "start", url: "simulateur-embauche" },
-        { nbVisit: 678, outilEvent: "start", url: "simulateur" },
-        { nbVisit: 8, outilEvent: "result", url: "simulateur-embauche" },
-        { nbVisit: 3, outilEvent: "results", url: "simulateur-embauche" },
-        { nbVisit: 9, outilEvent: "inter", url: "simulateur-embauche" },
+        { nbVisit: 10, outil: "simulateur-embauche", outilEvent: "start" },
+        { nbVisit: 678, outil: "simulateur", outilEvent: "start" },
+        { nbVisit: 8, outil: "simulateur-embauche", outilEvent: "result" },
+        { nbVisit: 3, outil: "simulateur-embauche", outilEvent: "results" },
+        { nbVisit: 9, outil: "simulateur-embauche", outilEvent: "inter" },
       ];
       const dataset = new DataFrame(data);
       const url = "simulateur-embauche";
@@ -132,11 +104,11 @@ describe("kpi", () => {
     it("should return the number of visits for a given url and results step", () => {
       // Given
       const data = [
-        { nbVisit: 10, outilEvent: "start", url: "simulateur-embauche" },
-        { nbVisit: 678, outilEvent: "start", url: "simulateur" },
-        { nbVisit: 8, outilEvent: "result", url: "simulateur-embauche" },
-        { nbVisit: 3, outilEvent: "results", url: "simulateur-embauche" },
-        { nbVisit: 9, outilEvent: "inter", url: "simulateur-embauche" },
+        { nbVisit: 10, outil: "simulateur-embauche", outilEvent: "start" },
+        { nbVisit: 678, outil: "simulateur", outilEvent: "start" },
+        { nbVisit: 8, outil: "simulateur-embauche", outilEvent: "result" },
+        { nbVisit: 3, outil: "simulateur-embauche", outilEvent: "results" },
+        { nbVisit: 9, outil: "simulateur-embauche", outilEvent: "inter" },
       ];
       const dataset = new DataFrame(data);
       const url = "simulateur-embauche";
@@ -195,62 +167,84 @@ describe("kpi", () => {
     it("should return list of kpi completion rate by url", () => {
       // Given
       const data = [
-        { nbVisit: 900, outilEvent: "start", url: "convention-collective" },
-        { nbVisit: 800, outilEvent: "step", url: "convention-collective" },
-        { nbVisit: 700, outilEvent: "results", url: "convention-collective" },
-        { nbVisit: 100, outilEvent: "start", url: "heures-recherche-emploi" },
-        { nbVisit: 90, outilEvent: "results", url: "heures-recherche-emploi" },
-        { nbVisit: 1111, outilEvent: "start", url: "indemnite-licenciement" },
-        { nbVisit: 999, outilEvent: "step1", url: "indemnite-licenciement" },
-        { nbVisit: 777, outilEvent: "step2", url: "indemnite-licenciement" },
+        {
+          nbVisit: 100,
+          outil: "Heures pour recherche d’emploi",
+          outilEvent: "start",
+        },
+        {
+          nbVisit: 90,
+          outil: "Heures pour recherche d’emploi",
+          outilEvent: "results",
+        },
+        {
+          nbVisit: 1111,
+          outil: "Indemnité de licenciement",
+          outilEvent: "start",
+        },
+        {
+          nbVisit: 999,
+          outil: "Indemnité de licenciement",
+          outilEvent: "step1",
+        },
+        {
+          nbVisit: 777,
+          outil: "Indemnité de licenciement",
+          outilEvent: "step2",
+        },
         {
           nbVisit: 555,
+          outil: "Indemnité de licenciement",
           outilEvent: "indemnite_legale",
-          url: "indemnite-licenciement",
+        },
+        {
+          nbVisit: 900,
+          outil: "Trouver sa convention collective",
+          outilEvent: "start",
+        },
+        {
+          nbVisit: 800,
+          outil: "Trouver sa convention collective",
+          outilEvent: "step",
+        },
+        {
+          nbVisit: 700,
+          outil: "Trouver sa convention collective",
+          outilEvent: "results",
         },
       ];
       const dataset = new DataFrame(data);
       const date = new Date("2020-01-01T00:00:00.000");
       const expected = [
         {
-          denominator: 900,
-          kpi_type: "Completion-rate-of-tools",
-          numerator: 0,
-          rate: 0,
-          reportId: "2020",
-          reportType: "kpi",
-          start_date: date,
-          url: "convention-collective",
-        },
-        {
           denominator: 100,
           kpi_type: "Completion-rate-of-tools",
           numerator: 90,
+          outil: "Heures pour recherche d’emploi",
           rate: 0.9,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "heures-recherche-emploi",
         },
         {
           denominator: 1111,
           kpi_type: "Completion-rate-of-tools",
           numerator: 555,
+          outil: "Indemnité de licenciement",
           rate: 555 / 1111,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "indemnite-licenciement",
         },
         {
           denominator: 0,
           kpi_type: "Completion-rate-of-tools",
           numerator: 0,
+          outil: "Indemnité de précarité",
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "indemnite-precarite",
         },
       ];
       // When
@@ -260,7 +254,176 @@ describe("kpi", () => {
       expect(result[0]).toStrictEqual(expected[0]);
       expect(result[1]).toStrictEqual(expected[1]);
       expect(result[2]).toStrictEqual(expected[2]);
-      expect(result[3]).toStrictEqual(expected[3]);
+    });
+  });
+
+  describe("#getNumberOfVisitsByCcType", () => {
+    it("should return a dataframe of number of visits by convention collective type", () => {
+      // Given
+      const data = [
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 3,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_p1",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_p1",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const expectedDataset = new DataFrame({
+        index: ["cc_search", "cc_select_p1", "cc_select_traitée"],
+        values: [{ nbVisit: 3 }, { nbVisit: 2 }, { nbVisit: 1 }],
+      });
+
+      // When
+      const result = getNumberOfVisitsByCcType(dataset);
+
+      // Then
+      expect(result).toStrictEqual(expectedDataset);
+    });
+  });
+
+  describe("#getConventionCollectiveCompletionRate", () => {
+    it("should return a kpi completion rate for outil convention collective for P1", () => {
+      // Given
+      const data = [
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_p1",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const date = new Date("2020-01-01T00:00:00.000");
+      const expected = {
+        denominator: 2,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 1,
+        outil: "Trouver sa convention collective",
+        rate: 0.5,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      };
+      // When
+      const result = getConventionCollectiveCompletionRate(
+        dataset,
+        date,
+        "2020"
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+    it("should return a kpi completion rate for outil convention collective for P2", () => {
+      // Given
+      const data = [
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "enterprise_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_p2",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "enterprise_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          outil: "Trouver sa convention collective",
+          type: "cc_select_p2",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 3,
+          outil: "Trouver sa convention collective",
+          type: "enterprise_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const date = new Date("2020-01-01T00:00:00.000");
+      const expected = {
+        denominator: 3,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 2,
+        outil: "Trouver sa convention collective",
+        rate: 2 / 3,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      };
+      // When
+      const result = getConventionCollectiveCompletionRate(
+        dataset,
+        date,
+        "2020"
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
     });
   });
 
@@ -272,181 +435,195 @@ describe("kpi", () => {
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-05",
+          outil: "Trouver sa convention collective",
+          outilAction: "view_step",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          lastActionDateTime: "2020-01-10",
+          outil: "Trouver sa convention collective",
+          outilAction: "view_step",
+          type: "cc_select_p1",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          lastActionDateTime: "2020-01-10",
+          outil: "Trouver sa convention collective",
+          outilAction: "view_step",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 2,
+          lastActionDateTime: "2020-01-10",
+          outil: "Trouver sa convention collective",
+          outilAction: "view_step",
+          type: "cc_search",
+          url: "https://code.travail.gouv.fr/outils/convention-collective",
+        },
+        {
+          idVisit: 1,
+          lastActionDateTime: "2020-01-10",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "start",
-          url: "/outils/convention-collective?arg2",
         },
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-10",
-          outilAction: "view_step",
-          outilEvent: "step1",
-          url: "/outils/convention-collective#aze",
-        },
-        {
-          idVisit: 1,
-          lastActionDateTime: "2020-01-10",
-          outilAction: "view_step",
-          outilEvent: "step2",
-          url: "/outils/convention-collective",
-        },
-        {
-          idVisit: 1,
-          lastActionDateTime: "2020-01-10",
-          outilAction: "view_step",
-          outilEvent: "convention-collective",
-          url: "/outils/convention-collective",
-        },
-        {
-          idVisit: 1,
-          lastActionDateTime: "2020-01-10",
-          outilAction: "view_step",
-          outilEvent: "start",
-          url: "/outils/indemnite-licenciement#20aij?arg2",
-        },
-        {
-          idVisit: 1,
-          lastActionDateTime: "2020-01-10",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "compute",
-          url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-10",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "results",
-          url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-01",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
-          url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-20",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
-          url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 1,
           lastActionDateTime: "2020-01-20",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
-          url: "/outils/indemnite-licenciement?arg2=5",
         },
         {
           idVisit: 2,
           lastActionDateTime: "2020-01-20",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "start",
-          url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 2,
           lastActionDateTime: "2020-01-20",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "compute",
-          url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 2,
           lastActionDateTime: "2020-01-20",
+          outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
-          url: "/outils/indemnite-licenciement",
         },
         {
           idVisit: 3,
           lastActionDateTime: "2020-01-25",
+          outil: "Indemnité de précarité",
           outilAction: "view_step",
           outilEvent: "start",
-          url: "/outils/indemnite-precarite?fgh",
         },
         {
           idVisit: 3,
           lastActionDateTime: "2020-01-25",
+          outil: "Indemnité de précarité",
           outilAction: "view_step",
           outilEvent: "indemnite",
-          url: "/outils/indemnite-precarite?fgh",
         },
         {
           idVisit: 3,
           lastActionDateTime: "2020-01-25",
+          outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "start",
-          url: "/outils/preavis-demission",
         },
         {
           idVisit: 4,
           lastActionDateTime: "2020-01-25",
+          outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "start",
-          url: "/outils/preavis-demission",
         },
         {
           idVisit: 4,
           lastActionDateTime: "2020-01-02",
+          outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "results",
-          url: "/outils/preavis-demission",
         },
       ];
       const dataset = new DataFrame(data);
       const expected = [
         {
-          denominator: 1,
-          kpi_type: "Completion-rate-of-tools",
-          numerator: 0,
-          rate: 0,
-          reportId: "2020",
-          reportType: "kpi",
-          start_date: date,
-          url: "convention-collective",
-        },
-        {
           denominator: 0,
           kpi_type: "Completion-rate-of-tools",
           numerator: 0,
+          outil: "Heures pour recherche d’emploi",
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "heures-recherche-emploi",
         },
         {
           denominator: 2,
           kpi_type: "Completion-rate-of-tools",
           numerator: 2,
+          outil: "Indemnité de licenciement",
           rate: 1,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "indemnite-licenciement",
         },
         {
           denominator: 1,
           kpi_type: "Completion-rate-of-tools",
           numerator: 1,
+          outil: "Indemnité de précarité",
           rate: 1,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "indemnite-precarite",
         },
         {
           denominator: 2,
           kpi_type: "Completion-rate-of-tools",
           numerator: 1,
+          outil: "Préavis de démission",
           rate: 0.5,
           reportId: "2020",
           reportType: "kpi",
           start_date: date,
-          url: "preavis-demission",
+        },
+        {
+          denominator: 0,
+          kpi_type: "Completion-rate-of-tools",
+          numerator: 0,
+          outil: "Préavis de départ ou de mise à la retraite",
+          rate: 0,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: date,
+        },
+        {
+          denominator: 2,
+          kpi_type: "Completion-rate-of-tools",
+          numerator: 1,
+          outil: "Trouver sa convention collective",
+          rate: 0.5,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: date,
         },
       ];
       // When

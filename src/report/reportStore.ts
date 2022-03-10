@@ -360,14 +360,14 @@ export const kpiMappings = {
     numerator: {
       type: "integer",
     },
+    outil: {
+      type: "keyword",
+    },
     rate: {
       type: "float",
     },
     start_date: {
       type: "date",
-    },
-    url: {
-      type: "keyword",
     },
   },
 };

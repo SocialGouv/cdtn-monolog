@@ -1,41 +1,32 @@
 import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
-import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
-  "convention-collective": {
-    firstStep: "start",
-    lastStep: undefined,
-  },
-  "heures-recherche-emploi": {
+  "Heures pour recherche d’emploi": {
     firstStep: "start",
     lastStep: "results",
   },
-  "indemnite-licenciement": {
+  "Indemnité de licenciement": {
     firstStep: "start",
     lastStep: "indemnite_legale",
   },
-  "indemnite-precarite": {
+  "Indemnité de précarité": {
     firstStep: "start",
     lastStep: "indemnite",
   },
-  "preavis-demission": {
+  "Préavis de démission": {
     firstStep: "start",
     lastStep: "results",
   },
-  "preavis-licenciement": {
-    firstStep: "start",
-    lastStep: "results",
-  },
-  "preavis-retraite": {
+  "Préavis de départ ou de mise à la retraite": {
     firstStep: "start",
     lastStep: "result",
   },
-  "simulateur-embauche": {
+  "Préavis de licenciement": {
     firstStep: "start",
-    lastStep: undefined,
+    lastStep: "results",
   },
 };
 
@@ -83,37 +74,92 @@ export const readDaysAndWriteKpi = async (
   return;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const cleanUrl = (dataset: IDataFrame) => {
-  const newSeries = dataset
-    .deflate((row) => row.url)
-    .select((value) => removeAnchor(value).split("/").slice(-1).toString());
-  return dataset.withSeries({ url_cleaned: newSeries }).dropSeries("url");
+const getValInDfIfIndexIsInList = (
+  index: string,
+  list: string[],
+  df: IDataFrame<string, number>
+): number => {
+  return list.includes(index) ? df.getSeries("nbVisit").at(index) : 0;
 };
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getNumberOfVisitByUrlAndEvent = (dataset: IDataFrame) => {
-  return dataset
-    .groupBy((row) => [row.url_cleaned, row.outilEvent])
+export const getNumberOfVisitsByCcType = (
+  logsOutilDataset: IDataFrame
+): IDataFrame<string, number> => {
+  return logsOutilDataset
+    .groupBy((row) => [row.type])
     .select((group) => ({
       nbVisit: group
         .deflate((row) => row.idVisit)
         .distinct()
         .count(),
+      type: group.first().type,
+    }))
+    .inflate()
+    .setIndex("type")
+    .dropSeries("type");
+};
+
+export const getConventionCollectiveCompletionRate = (
+  logsOutilDataset: IDataFrame,
+  startDate: Date,
+  reportId: string
+): KpiReport => {
+  const logsConventionCollectiveDataset = logsOutilDataset.where(
+    (log) =>
+      log.url != undefined &&
+      log.url.startsWith(
+        "https://code.travail.gouv.fr/outils/convention-collective"
+      )
+  );
+
+  const nbVisitsByCcType = getNumberOfVisitsByCcType(
+    logsConventionCollectiveDataset
+  );
+
+  const ccTypes = nbVisitsByCcType.getIndex().toArray();
+
+  const denominator =
+    getValInDfIfIndexIsInList("cc_search", ccTypes, nbVisitsByCcType) +
+    getValInDfIfIndexIsInList("enterprise_search", ccTypes, nbVisitsByCcType);
+  const numerator =
+    getValInDfIfIndexIsInList("cc_select_p1", ccTypes, nbVisitsByCcType) +
+    getValInDfIfIndexIsInList("cc_select_p2", ccTypes, nbVisitsByCcType);
+
+  return {
+    denominator: denominator,
+    kpi_type: "Completion-rate-of-tools",
+    numerator: numerator,
+    outil: "Trouver sa convention collective",
+    rate: denominator > 0 ? numerator / denominator : 0,
+    reportId: reportId,
+    reportType: "kpi",
+    start_date: startDate,
+  };
+};
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const getNumberOfVisitsByOutilAndEvent = (dataset: IDataFrame) => {
+  return dataset
+    .groupBy((row) => [row.outil, row.outilEvent])
+    .select((group) => ({
+      nbVisit: group
+        .deflate((row) => row.idVisit)
+        .distinct()
+        .count(),
+      outil: group.first().outil,
       outilEvent: group.first().outilEvent,
-      url: group.first().url_cleaned,
     }))
     .inflate();
 };
 
 export const getNbVisitIfStepDefinedInTool = (
-  url: string,
+  outil: string,
   eventStep: string | undefined,
   dataset: IDataFrame
 ): number => {
   if (eventStep != undefined) {
     const datasetFiltered = dataset.where(
-      (row) => row.url === url && row.outilEvent === eventStep
+      (row) => row.outil === outil && row.outilEvent === eventStep
     );
     if (datasetFiltered.count() > 0) {
       return datasetFiltered.first().nbVisit;
@@ -141,16 +187,15 @@ export const getListOfKpiCompletionRate = (
       visitsByUrlAndEvent
     );
 
-    // TODO: change start_date
     return {
       denominator: denominator,
       kpi_type: "Completion-rate-of-tools",
       numerator: numerator,
+      outil: key,
       rate: denominator > 0 ? numerator / denominator : 0,
       reportId: reportId,
       reportType: "kpi",
       start_date: startDate,
-      url: key,
     };
   });
 };
@@ -170,19 +215,31 @@ const getFirstDayOfMonth = (series: ISeries): Date => {
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const computeCompletionRateOfUrlTool = (
-  dataset: IDataFrame,
+  logsOutilDataset: IDataFrame,
   reportId: string = new Date().getTime().toString()
 ): KpiReport[] => {
-  const firstDay = getFirstDayOfMonth(dataset.getSeries("lastActionDateTime"));
+  const firstDay = getFirstDayOfMonth(
+    logsOutilDataset.getSeries("lastActionDateTime")
+  );
 
-  const datasetFiltered = dataset.where(
+  const conventionCollectiveCompletionRate =
+    getConventionCollectiveCompletionRate(logsOutilDataset, firstDay, reportId);
+
+  const logsOutilDatasetFiltered = logsOutilDataset.where(
     (row) => row.outilAction == "view_step"
   );
 
-  const datasetWithCleanUrl = cleanUrl(datasetFiltered);
+  const visitsByUrlAndEvent = getNumberOfVisitsByOutilAndEvent(
+    logsOutilDatasetFiltered
+  );
 
-  const visitsByUrlAndEvent =
-    getNumberOfVisitByUrlAndEvent(datasetWithCleanUrl);
+  const listOfKpisCompletionRate = getListOfKpiCompletionRate(
+    visitsByUrlAndEvent,
+    firstDay,
+    reportId
+  );
 
-  return getListOfKpiCompletionRate(visitsByUrlAndEvent, firstDay, reportId);
+  listOfKpisCompletionRate.push(conventionCollectiveCompletionRate);
+
+  return listOfKpisCompletionRate;
 };
