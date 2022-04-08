@@ -39,14 +39,23 @@ export const getDocumentsFromES = async (
   query: any,
   // TODO use fp-ts option here
   aggs: any = undefined,
-  withDocs = true
+  withDocs = true,
+  withSearch = false
 ): Promise<DocumentResponse> => {
-  const initResponse = await esClient.count({
-    body: { aggs, query },
-    index,
-  });
+  const initResponse = !withSearch
+    ? await esClient.count({
+        body: { aggs, query },
+        index,
+      })
+    : await esClient.search({
+        body: { aggs, query },
+        index,
+        size: BATCH_SIZE,
+      });
 
-  const total = initResponse.body.count;
+  const total = !withSearch
+    ? initResponse.body.count
+    : initResponse.body.hits.total.value;
 
   const { aggregations } = initResponse.body;
 
@@ -99,9 +108,10 @@ const getDocuments = async (
   query: any,
   // TODO use fp-ts option here
   aggs: any = undefined,
-  withDocs = true
+  withDocs = true,
+  withSearch = false
 ): Promise<DocumentResponse> =>
-  getDocumentsFromES(esClient, index, query, aggs, withDocs);
+  getDocumentsFromES(esClient, index, query, aggs, withDocs, withSearch);
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {

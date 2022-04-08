@@ -159,10 +159,12 @@ export const countVisits = async (
 
   const getCount = (day: string) => {
     const { query, aggs } = makeAgg(day);
-    return getDocuments(index, query, aggs, false).then(({ aggregations }) => ({
-      count: aggregations.visit_count.value,
-      day,
-    }));
+    return getDocuments(index, query, aggs, false, true).then(
+      ({ aggregations }) => ({
+        count: aggregations.visit_count.value,
+        day,
+      })
+    );
   };
 
   const countCalls = days.map((day) => esQueue.add(() => getCount(day)));
