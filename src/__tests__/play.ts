@@ -98,7 +98,7 @@ const getLogs = async () => {
     .where((r) => m1.includes(r.logfile) && r.query.toLowerCase() == "amiante")
     .distinct((r) => r.idVisit);
 
-  const count = countQueries(november, some(cache));
+  const count = countQueries(november, some(cache), new Map<number, string>());
   console.log(am.count());
   console.log(am2.count());
 
