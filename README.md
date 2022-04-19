@@ -23,6 +23,10 @@ To run locally launch ES :
 
     docker-compose up
 
+NB: to run any command on your local environment, you won't need any ELASTIC_API_TOKEN in next commands.
+
+However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index. 
+
 ## Log storage
 
 ### Backup
@@ -89,10 +93,12 @@ Based on usage logs we compute several reports and store them to Elastic :
 
 - _Monthly report_ contains metrics for the last month : average daily visits, number of unique visits...
 - _Popularity reports_ describe the most popular contents, conventions collectives and queries. We compute popularity for each of the last three months in order to observe their progression. (Note: queries are grouped in clusters, if the trigger the same results from the API, we consider them as part of the same _query cluster_)
+  - _KPI reports_ create kpi for tools, as the completion rate. Each month, we compute kpis for the last month.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog monthly -d data.csv -c cache.json
+ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog monthly -m mmmmmm
 ```
+_mmmmmm_ being the suffix of folder _data-mmmmmm_, _data-outils-mmmmmm_ and _cache-mmmmmm.json_
 
 ### `query reports`
 

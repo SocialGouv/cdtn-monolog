@@ -48,7 +48,7 @@ export const getDaysInPrevMonth = (month: number, year: number): string[] => {
 
 export const getLastMonthsComplete = (
   ref: Option<Date> = none,
-  n: Option<number> = none
+  numberOfMonths: Option<number> = none
 ): string[][] => {
   // const end = setDate(getOrElse(() => new Date())(ref), 1);
 
@@ -59,10 +59,10 @@ export const getLastMonthsComplete = (
   );
 
   // we want the 3 last month by default
-  const d = 3;
+  const defaultNumberOfMonths = 3;
   const nMonths = pipe(
-    n,
-    getOrElse(() => d),
+    numberOfMonths,
+    getOrElse(() => defaultNumberOfMonths),
     (i) => Array(i).keys(),
     (a) => Array.from(a)
   );

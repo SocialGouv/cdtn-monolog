@@ -1,8 +1,12 @@
 import { logger } from "@socialgouv/cdtn-logger";
-import { some } from "fp-ts/lib/Option";
+import { none, some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
+import {
+  computeCompletionRateOfUrlTool,
+  readDaysAndWriteKpi,
+} from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import {
   analyse as queryAnalysis,
@@ -13,12 +17,14 @@ import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
 import { readSuggestions } from "./cdtn/suggestions";
 import {
+  KPI_INDEX,
   LOG_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
   SATISFACTION_REASONS_INDEX,
+  testAndCreateIndex,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
@@ -35,6 +41,7 @@ import {
   removeThemesQueries,
 } from "./reader/readerUtil";
 import {
+  kpiMappings,
   queryReportMappings,
   resetReportIndex,
   resultReportMappings,
@@ -67,7 +74,8 @@ export const runQueryAnalysis = async (
   suggestionPath: string | undefined
 ): Promise<void> => {
   logger.info(
-    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
+    `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
+      suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
@@ -90,16 +98,13 @@ export const runQueryAnalysis = async (
   await saveReport(RESULTS_REPORT_INDEX, results);
 };
 
-export const runMonthly = async (
-  dataPath: string,
-  cachePath: string
-): Promise<void> => {
+export const runMonthly = async (monthPath: string): Promise<void> => {
   logger.info(
-    `Running monthly log analysis (monthly counts and popularity reports) using data ${dataPath} and cache ${cachePath}, saved in Elastic reports`
+    `Running monthly log analysis (monthly counts and popularity reports) using data data-${monthPath} and cache cache-${monthPath}.json, saved in Elastic reports`
   );
 
   const [m0, m1, m2] = getLastMonthsComplete();
-  const data_raw = await readFromFolder(dataPath);
+  const data_raw = await readFromFolder(`data-${monthPath}`);
   const data = removeThemesQueries(data_raw);
   const satisfaction = satisfactionAnalysis(data);
 
@@ -107,7 +112,7 @@ export const runMonthly = async (
   await saveReport(SATISFACTION_REASONS_INDEX, satisfaction.reasons);
 
   //const data = data_raw;
-  const cache = await readCache(cachePath);
+  const cache = await readCache(`cache-${monthPath}.json`);
 
   // we use the last analysed month (m0)
   const month = parseInt(m0[0].split("-")[1]);
@@ -147,21 +152,35 @@ export const runMonthly = async (
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
+
+  const outputFolderName = `data-outils-${monthPath}`;
+  logger.info(
+    `Running monthly log analysis for KPI rate of completion using data ${outputFolderName}, saved in Elastic reports`
+  );
+  // TODO : decomment next line one time
+  await resetReportIndex(KPI_INDEX, kpiMappings);
+  const rawDataForUrlOutil = await readFromFolder(outputFolderName);
+  const completionRateKpi = computeCompletionRateOfUrlTool(rawDataForUrlOutil);
+  await saveReport(KPI_INDEX, completionRateKpi);
 };
 
 export const retrieveThreeMonthsData = async (
   output: string
 ): Promise<void> => {
-  const days = getLastMonthsComplete().flat().sort();
+  const daysOfLastThreeMonths = getLastMonthsComplete().flat().sort();
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${days[0]} to ${days[days.length - 1]
-    }), saved in ${output}`
+    `Retrieve log data for the last three months (${
+      daysOfLastThreeMonths[0]
+    } to ${
+      daysOfLastThreeMonths[daysOfLastThreeMonths.length - 1]
+    }), saved in data-${output}`
   );
 
   await readDaysandWrite(
     LOG_INDEX,
-    days,
+    daysOfLastThreeMonths,
     [
       actionTypes.search,
       actionTypes.visit,
@@ -171,7 +190,16 @@ export const retrieveThreeMonthsData = async (
       actionTypes.feedback_category,
       actionTypes.feedback_suggestion,
     ],
-    output
+    `data-${output}`
+  );
+
+  logger.info(
+    `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-outils-${output}`
+  );
+  await readDaysAndWriteKpi(
+    LOG_INDEX,
+    daysOfLastMonth,
+    `data-outils-${output}`
   );
 
   //await data.asCSV().writeFile(output);

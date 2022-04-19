@@ -21,7 +21,7 @@ const build_query = (day: string, type: Array<string>) => {
     },
   };
 };
-const queryAndWrite = async (
+export const queryAndWrite = async (
   index: string,
   day: string,
   query: any,
@@ -35,19 +35,19 @@ const queryAndWrite = async (
   // unfold the result selection object in two columns
   const unfoldedData = (await type.includes(actionTypes.selectResult))
     ? data.withSeries({
-      resultSelectionAlgo: (df) =>
-        df
-          .deflate((row) => row.resultSelection)
-          .select((resultSelection) =>
-            resultSelection ? resultSelection.algo : undefined
-          ),
-      resultSelectionUrl: (df) =>
-        df
-          .deflate((row) => row.resultSelection)
-          .select((resultSelection) =>
-            resultSelection ? resultSelection.url : undefined
-          ),
-    })
+        resultSelectionAlgo: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.algo : undefined
+            ),
+        resultSelectionUrl: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) =>
+              resultSelection ? resultSelection.url : undefined
+            ),
+      })
     : data;
   if (!fs.existsSync(output)) {
     fs.mkdirSync(output);
@@ -159,10 +159,12 @@ export const countVisits = async (
 
   const getCount = (day: string) => {
     const { query, aggs } = makeAgg(day);
-    return getDocuments(index, query, aggs, false).then(({ aggregations }) => ({
-      count: aggregations.visit_count.value,
-      day,
-    }));
+    return getDocuments(index, query, aggs, false, true).then(
+      ({ aggregations }) => ({
+        count: aggregations.visit_count.value,
+        day,
+      })
+    );
   };
 
   const countCalls = days.map((day) => esQueue.add(() => getCount(day)));
