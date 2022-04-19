@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.9.0...v1.10.0) (2022-04-19)
+
+
+### Features
+
+* for step retrieve => get data from url 'outil' and save them to… ([#167](https://github.com/SocialGouv/cdtn-monolog/issues/167)) ([e5afdff](https://github.com/SocialGouv/cdtn-monolog/commit/e5afdff9aca3ecf3815740805b24b18b3fd1a8aa))
+
 # [1.9.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.8.2...v1.9.0) (2022-02-21)
 
 
