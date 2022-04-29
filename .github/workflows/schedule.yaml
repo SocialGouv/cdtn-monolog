@@ -11,16 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: docker://mcr.microsoft.com/azure-cli
-        run: |
-          bash ./scripts/dump_matomo_yesterday.sh
+        with:
+          args: "bash ./scripts/dump_matomo_yesterday.sh"
         env:
           AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
       - uses: docker://mcr.microsoft.com/azure-cli
-        run: |
-          bash ./scripts/download_dump.sh
+        with:
+          args: "bash ./scripts/download_dump.sh"
         env:
           AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
       - run: |
+          ls -la
+          ls -la data
           yarn
           yarn monolog ingest
         env:
