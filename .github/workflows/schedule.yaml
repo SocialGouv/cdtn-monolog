@@ -1,0 +1,28 @@
+name: Schedule
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 8 * * *"
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker://mcr.microsoft.com/azure-cli
+        run: |
+          bash ./scripts/dump_matomo_yesterday.sh
+        env:
+          AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
+      - uses: docker://mcr.microsoft.com/azure-cli
+        run: |
+          bash ./scripts/download_dump.sh
+        env:
+          AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
+      - run: |
+          yarn
+          yarn monolog ingest
+        env:
+          ELASTICSEARCH_URL: ${{ secrets.ELASTICSEARCH_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
