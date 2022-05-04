@@ -2,6 +2,8 @@ import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
 import { KpiReport } from "./reports";
+import {parseISO} from "date-fns";
+import {removeAnchor} from "./popularity";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
   "Heures pour recherche d’emploi": {
@@ -242,4 +244,22 @@ export const computeCompletionRateOfUrlTool = (
   listOfKpisCompletionRate.push(conventionCollectiveCompletionRate);
 
   return listOfKpisCompletionRate;
+};
+
+export const computeKpiPercentVisitsOnCCPagesOnContrib = (
+  logs: IDataFrame,
+  reportId: string = new Date().getTime().toString()
+): KpiReport[] => {
+  const logsVisitsOnContrib = logs
+    .where(
+      (log) =>
+        log.url != undefined &&
+        log.url.startsWith("https://code.travail.gouv.fr/contribution/")
+    )
+    .withSeries({
+      url: (df) =>
+        df.deflate((row) => row.url).select((url) => removeAnchor(url)),
+    });
+
+  return [];
 };

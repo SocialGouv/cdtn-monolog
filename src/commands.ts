@@ -4,7 +4,7 @@ import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
 import {
-  computeCompletionRateOfUrlTool,
+  computeCompletionRateOfUrlTool, computeKpiPercentVisitsOnCCPagesOnContrib,
   readDaysAndWriteKpi,
 } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
@@ -154,13 +154,20 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
 
   const outputFolderName = `data-outils-${monthPath}`;
+  const allLogsForLastMonthFolder = `all-logs-${monthPath}`;
   logger.info(
     `Running monthly log analysis for KPI rate of completion using data ${outputFolderName}, saved in Elastic reports`
   );
   // TODO : decomment next line one time
-  await resetReportIndex(KPI_INDEX, kpiMappings);
+  //await resetReportIndex(KPI_INDEX, kpiMappings);
+  // TODO : faire la récupération de tous les logs dans un dossier all-logs-${monthPath}
+  // TODO !! notebook 4026_KPI3_percent_person_receiving_convention_result
+  // TODO : a refacto sur la partie KPI
   const rawDataForUrlOutil = await readFromFolder(outputFolderName);
   const completionRateKpi = computeCompletionRateOfUrlTool(rawDataForUrlOutil);
+  const rawData = await readFromFolder(allLogsForLastMonthFolder);
+  const percentVisitsOnCCPagesOnContrib =
+    computeKpiPercentVisitsOnCCPagesOnContrib(rawData);
   await saveReport(KPI_INDEX, completionRateKpi);
 };
 
