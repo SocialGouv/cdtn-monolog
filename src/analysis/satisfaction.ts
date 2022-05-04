@@ -194,7 +194,9 @@ const analyse = (dataset: IDataFrame): any => {
   const today = new Date();
   const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
 
+  const newIndex = Array.from(Array(dataset.count()).keys());
   const datasetThisMonth = dataset
+    .withIndex(newIndex)
     .withSeries({
       lastActionDateTime: (df) =>
         df
