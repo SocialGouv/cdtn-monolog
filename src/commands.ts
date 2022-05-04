@@ -158,7 +158,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
     `Running monthly log analysis for KPI rate of completion using data ${outputFolderName}, saved in Elastic reports`
   );
   // TODO : decomment next line one time
-  //await resetReportIndex(KPI_INDEX, kpiMappings);
+  await resetReportIndex(KPI_INDEX, kpiMappings);
   const rawDataForUrlOutil = await readFromFolder(outputFolderName);
   const completionRateKpi = computeCompletionRateOfUrlTool(rawDataForUrlOutil);
   await saveReport(KPI_INDEX, completionRateKpi);

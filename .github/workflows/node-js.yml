@@ -19,7 +19,7 @@ jobs:
       # - run: head -c 30 /data/test-data.csv
       - uses: actions/checkout@v2
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: lts/*
           cache: yarn

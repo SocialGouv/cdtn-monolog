@@ -13,7 +13,7 @@ jobs:
         with:
           token: ${{ secrets.SOCIALGROOVYBOT_BOTO_PAT }}
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: lts/*
           cache: yarn
