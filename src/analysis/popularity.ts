@@ -101,7 +101,8 @@ const countURLs = (dataframe: IDataFrame) => {
 
 export const countQueries = (
   logs: IDataFrame,
-  cache: Option<Cache>
+  cache: Option<Cache>,
+  dictOfIndexAndQueries: Map<number, string>
 ): DataFrame => {
   if (isSome(cache)) {
     const queries = logs
@@ -118,10 +119,14 @@ export const countQueries = (
 
     queries.forEach((currQ) => {
       const idx = cache.value.queryMap.get(currQ);
-      const entry = idx && cache.value.clusters.get(idx);
+      const entry = idx != undefined ? cache.value.clusters.get(idx) : 0;
 
       // case no entry or no result in entry
-      if (!idx || !entry || (entry as CacheQueryCluster).results.size == 0) {
+      if (
+        idx == undefined ||
+        !entry ||
+        (entry as CacheQueryCluster).results.size == 0
+      ) {
         //TODO
         //   console.log("Issue " + query);
         //   console.log(idx);
@@ -152,12 +157,19 @@ export const countQueries = (
       normalized_count: number;
     };
 
-    const reportedClusters: ClusterReport[] = Array.from(clusterCounts.values())
-      .map((cc: ClusterCount) => {
+    const reportedClusters: ClusterReport[] = Array.from(
+      clusterCounts.entries()
+    )
+      .map(([idx, cc]) => {
         const count = cc.reduce((acc, next) => acc + next.count, 0);
         const normalized_count = count / queries.length;
         // most frequent query
-        const field = cc.sort((a, b) => b.count - a.count)[0].query;
+        let field = cc.sort((a, b) => b.count - a.count)[0].query;
+        if (!dictOfIndexAndQueries.has(idx)) {
+          dictOfIndexAndQueries.set(idx, field);
+        } else {
+          field = <string>dictOfIndexAndQueries.get(idx);
+        }
 
         if (field == "amiante") {
           console.log(cc);
@@ -260,9 +272,11 @@ const analyse = (
     m1Counts = countURLs(reference);
     m2Counts = countURLs(m2Data);
   } else {
-    m0Counts = countQueries(focus, cache);
-    m1Counts = countQueries(reference, cache);
-    m2Counts = countQueries(m2Data, cache);
+    const dictOfIndexAndQueries = new Map<number, string>();
+    // dictOfIndexAndQueries will be modified by parameters
+    m0Counts = countQueries(focus, cache, dictOfIndexAndQueries);
+    m1Counts = countQueries(reference, cache, dictOfIndexAndQueries);
+    m2Counts = countQueries(m2Data, cache, dictOfIndexAndQueries);
   }
 
   return computeReports(
