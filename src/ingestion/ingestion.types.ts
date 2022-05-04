@@ -1,5 +1,3 @@
-import {integer} from "@elastic/elasticsearch/api/types";
-
 export type RootAction = {
   url: string;
   timeSpent: number;
