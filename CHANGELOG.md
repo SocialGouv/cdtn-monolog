@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.10.0...v1.11.0) (2022-05-24)
+
+
+### Features
+
+* query monolog ([2cce9d6](https://github.com/SocialGouv/cdtn-monolog/commit/2cce9d62d7dea3063a983adccc41ab9a2d1d9ab3))
+
 # [1.10.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.9.0...v1.10.0) (2022-04-19)
 
 
