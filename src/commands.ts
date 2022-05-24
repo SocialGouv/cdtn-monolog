@@ -3,10 +3,7 @@ import { none, some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
-import {
-  computeCompletionRateOfUrlTool, computeKpiPercentVisitsOnCCPagesOnContrib,
-  readDaysAndWriteKpi,
-} from "./analysis/kpi";
+import { monthlyAnalysis, readDaysAndWriteAllLogs } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import {
   analyse as queryAnalysis,
@@ -106,6 +103,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   const [m0, m1, m2] = getLastMonthsComplete();
   const data_raw = await readFromFolder(`data-${monthPath}`);
   const data = removeThemesQueries(data_raw);
+  console.log("Satisfaction analysis ...");
   const satisfaction = satisfactionAnalysis(data);
 
   await saveReport("logs-satisfaction", satisfaction.analysis);
@@ -120,6 +118,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
 
   const reportId = month.toString() + year.toString();
 
+  console.log("Popularity analysis ...");
   const contentPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONTENT");
   const conventionPop = popularityAnalysis(
     data,
@@ -146,6 +145,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
     ...queryPop,
   ]);
 
+  console.log("Visit analysis ...");
   const logFiles = getDaysInPrevMonth(month, year);
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
@@ -153,27 +153,25 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
 
-  const outputFolderName = `data-outils-${monthPath}`;
-  const allLogsForLastMonthFolder = `all-logs-${monthPath}`;
+  const allLogsForLastMonthFolder = `data-all-logs-${monthPath}`;
   logger.info(
-    `Running monthly log analysis for KPI rate of completion using data ${outputFolderName}, saved in Elastic reports`
+    `Running monthly log analysis for KPI rate of completion using data ${allLogsForLastMonthFolder}, saved in Elastic reports`
   );
-  // TODO : decomment next line one time
+  console.log("Monthly KPI analysis ...");
+  // TODO : uncomment next line first time
   //await resetReportIndex(KPI_INDEX, kpiMappings);
-  // TODO : faire la récupération de tous les logs dans un dossier all-logs-${monthPath}
-  // TODO !! notebook 4026_KPI3_percent_person_receiving_convention_result
-  // TODO : a refacto sur la partie KPI
-  const rawDataForUrlOutil = await readFromFolder(outputFolderName);
-  const completionRateKpi = computeCompletionRateOfUrlTool(rawDataForUrlOutil);
   const rawData = await readFromFolder(allLogsForLastMonthFolder);
-  const percentVisitsOnCCPagesOnContrib =
-    computeKpiPercentVisitsOnCCPagesOnContrib(rawData);
-  await saveReport(KPI_INDEX, completionRateKpi);
+  const kpiReport = monthlyAnalysis(rawData);
+  await saveReport(KPI_INDEX, kpiReport);
 };
 
 export const retrieveThreeMonthsData = async (
   output: string
 ): Promise<void> => {
+  // Uncomment next two lines to get data from a given month and give it in parameter of getLastMonthsComplete
+  /*const date = new Date();
+  const someDateForAGivenMonthAndYear = some(setYear(setMonth(date, 0), 2022));*/
+
   const daysOfLastThreeMonths = getLastMonthsComplete().flat().sort();
   const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
 
@@ -201,12 +199,12 @@ export const retrieveThreeMonthsData = async (
   );
 
   logger.info(
-    `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-outils-${output}`
+    `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`
   );
-  await readDaysAndWriteKpi(
+  await readDaysAndWriteAllLogs(
     LOG_INDEX,
     daysOfLastMonth,
-    `data-outils-${output}`
+    `data-all-logs-${output}`
   );
 
   //await data.asCSV().writeFile(output);
