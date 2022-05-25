@@ -1,3 +1,10 @@
+## [1.12.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.12.0...v1.12.1) (2022-05-25)
+
+
+### Bug Fixes
+
+* **actions:** remove monolog job ([f51b8b1](https://github.com/SocialGouv/cdtn-monolog/commit/f51b8b12462f7af4bb791932d019b72f6f0ca09f))
+
 # [1.12.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.11.1...v1.12.0) (2022-05-25)
 
 
