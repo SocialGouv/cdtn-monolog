@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Run Monolog Job
 
 on:
   workflow_dispatch:
