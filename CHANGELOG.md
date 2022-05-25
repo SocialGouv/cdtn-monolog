@@ -1,3 +1,15 @@
+# [1.12.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.11.1...v1.12.0) (2022-05-25)
+
+
+### Bug Fixes
+
+* **covisit:** cli command ([52bb0e1](https://github.com/SocialGouv/cdtn-monolog/commit/52bb0e13c39952d32ffcddfef7a938ec4110e3bf))
+
+
+### Features
+
+* add monolog job ([873e785](https://github.com/SocialGouv/cdtn-monolog/commit/873e7853b356abc4ccbf44c5bddf9cb975598541))
+
 ## [1.11.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.11.0...v1.11.1) (2022-05-25)
 
 
