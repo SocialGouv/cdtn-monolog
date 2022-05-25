@@ -222,7 +222,7 @@ export const refreshCovisits = async (dataPath: string): Promise<void> => {
 
   // TODO : delete previous covisit reports
 
-  //await saveReport(REPORT_INDEX, covisitReports);
+  await saveReport(REPORT_INDEX, covisitReports);
 };
 
 // TODO function to recreate all reports from january 2020
