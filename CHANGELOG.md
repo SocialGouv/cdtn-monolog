@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.11.0...v1.11.1) (2022-05-25)
+
+
+### Bug Fixes
+
+* **docs:** readme.md ([85002da](https://github.com/SocialGouv/cdtn-monolog/commit/85002dae0ed9205b2f02fec8e9350d15e8bef118))
+
 # [1.11.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.10.0...v1.11.0) (2022-05-24)
 
 
