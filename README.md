@@ -14,7 +14,7 @@ As this project lies between different services, it is useful to understand the 
 ```
 MATOMO_URL # URL of the Matomo server where raw logs can be found
 AZ_STORAGE_TOKEN # Azure token to push dump to Azure blob
-ELASTIC_URL # URL of the Elastic instance where the logs are stored eventually
+ELASTICSEARCH_URL # URL of the Elastic instance where the logs are stored eventually
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
 CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results
 ```
@@ -23,7 +23,7 @@ To run locally launch ES :
 
     docker-compose up
 
-NB: to run any command on your local environment, you won't need any ELASTIC_API_TOKEN in next commands.
+NB: to run any command on your local environment, you won't need any API_KEY in next commands.
 
 However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index. 
 
@@ -39,7 +39,7 @@ The `ingest` task takes a Matomo dump file in `data/`, convert it, and push the 
 The `download_dump.sh` script allows you to get a dump file from Azure.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog ingest data/
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog ingest data/
 ```
 
 To test locally we can use the file  [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to beisolated in a folder (e.g. /src/__tests__/__fixtures__/data/2020-04-24.json) to then run 
@@ -75,7 +75,7 @@ Retrieve logs for the last 3 months and store them in the output as a CSV file.
 We only select _some_ action types : searches / selections / content visits / feebdack.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog retrieve -o data.csv
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog retrieve -o data.csv
 ```
 
 ### `cache`
@@ -96,7 +96,7 @@ Based on usage logs we compute several reports and store them to Elastic :
   - _KPI reports_ create kpi for tools, as the completion rate. Each month, we compute kpis for the last month.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog monthly -m mmmmmm
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog monthly -m mmmmmm
 ```
 _mmmmmm_ being the suffix of folder _data-mmmmmm_, _data-outils-mmmmmm_ and _cache-mmmmmm.json_
 
@@ -108,7 +108,7 @@ We also use the suggestion list used by the CDTN API in order to track if a quer
 Query reports are stored in Elastic.
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt
 ```
 
 ## Covisits
@@ -122,7 +122,7 @@ The CDTN API will then read those links at build time, and use them to provide t
 To refresh the covisits using a CSV data export (see `retrieve` above) :
 
 ```console
-ELASTIC_URL=xxxx ELASTIC_API_TOKEN=yyyy yarn monolog covisits -d data.csv
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog covisits -d data.csv
 ```
 
 ## Elastic Reports
