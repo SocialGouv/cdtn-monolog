@@ -158,8 +158,6 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
     `Running monthly log analysis for KPI rate of completion using data ${allLogsForLastMonthFolder}, saved in Elastic reports`
   );
   console.log("Monthly KPI analysis ...");
-  // TODO : uncomment next line first time
-  //await resetReportIndex(KPI_INDEX, kpiMappings);
   const rawData = await readFromFolder(allLogsForLastMonthFolder);
   const kpiReport = monthlyAnalysis(rawData);
   await saveReport(KPI_INDEX, kpiReport);
@@ -168,10 +166,6 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
 export const retrieveThreeMonthsData = async (
   output: string
 ): Promise<void> => {
-  // Uncomment next two lines to get data from a given month and give it in parameter of getLastMonthsComplete
-  /*const date = new Date();
-  const someDateForAGivenMonthAndYear = some(setYear(setMonth(date, 0), 2022));*/
-
   const daysOfLastThreeMonths = getLastMonthsComplete().flat().sort();
   const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
 

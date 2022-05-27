@@ -211,7 +211,7 @@ export const filterDataframeByUrlWithPrefix = (
   dataset: IDataFrame,
   prefixUrl: string
 ): IDataFrame => {
-  return dataset.where(
+  return dataset.filter(
     (log) => log.url != undefined && log.url.startsWith(prefixUrl)
   );
 };
@@ -220,13 +220,11 @@ export const filterDataframeByUrlWithPrefix = (
 export const computeCompletionRateOfUrlTool = (
   logs: IDataFrame,
   startDate: Date,
-  reportId: string = new Date().getTime().toString()
+  reportId: string = new Date().getTime().toString(),
+  url = "https://code.travail.gouv.fr/outils"
 ): KpiReport[] => {
   // Get logs on tools
-  const logsOutil = filterDataframeByUrlWithPrefix(
-    logs,
-    "https://code.travail.gouv.fr/outils"
-  );
+  const logsOutil = filterDataframeByUrlWithPrefix(logs, url);
 
   // Compute completion rate of convention collective tool first
   const conventionCollectiveCompletionRate =
@@ -250,11 +248,11 @@ export const computeCompletionRateOfUrlTool = (
   return listOfKpisCompletionRate;
 };
 
-export const filterDataframeByContrib = (dataset: IDataFrame): IDataFrame => {
-  return filterDataframeByUrlWithPrefix(
-    dataset,
-    "https://code.travail.gouv.fr/contribution/"
-  ).withSeries({
+export const filterDataframeByContrib = (
+  dataset: IDataFrame,
+  url = "https://code.travail.gouv.fr/contribution/"
+): IDataFrame => {
+  return filterDataframeByUrlWithPrefix(dataset, url).withSeries({
     url: (df) =>
       df.deflate((row) => row.url).select((url) => removeAnchor(url)),
   });
