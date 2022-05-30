@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.12.1...v1.13.0) (2022-05-30)
+
+
+### Features
+
+* KPI 3 Pourcentage de personnes qui obtiennent un résultat conventionnel dans les pages personnalisables (contributions) ([#177](https://github.com/SocialGouv/cdtn-monolog/issues/177)) ([bf63ac4](https://github.com/SocialGouv/cdtn-monolog/commit/bf63ac4a9eebea165e403996280031d86b45bb3a))
+
 ## [1.12.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.12.0...v1.12.1) (2022-05-25)
 
 
