@@ -2,11 +2,19 @@ import { DataFrame } from "data-forge";
 
 import {
   computeCompletionRateOfUrlTool,
+  computeKpiRateVisitsOnCcPagesOnAllContribPages,
+  computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib,
+  computeRateOfCcSelectOverVisitsOnContribWithoutIdcc,
+  countOccurrencesOfAGivenTypeInDf,
+  dfContribDropDuplicates,
+  filterDataframeByContrib,
   getConventionCollectiveCompletionRate,
   getListOfKpiCompletionRate,
   getNbVisitIfStepDefinedInTool,
   getNumberOfVisitsByCcType,
   getNumberOfVisitsByOutilAndEvent,
+  getVisitsOnContribWithIdcc,
+  getVisitsOnContribWithoutIdcc,
 } from "../kpi";
 
 describe("kpi", () => {
@@ -470,6 +478,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "start",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 1,
@@ -477,6 +486,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "compute",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 1,
@@ -484,6 +494,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "results",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 1,
@@ -491,6 +502,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 1,
@@ -498,6 +510,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 1,
@@ -505,6 +518,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 2,
@@ -512,6 +526,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "start",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 2,
@@ -519,6 +534,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "compute",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 2,
@@ -526,6 +542,7 @@ describe("kpi", () => {
           outil: "Indemnité de licenciement",
           outilAction: "view_step",
           outilEvent: "indemnite_legale",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 3,
@@ -533,6 +550,7 @@ describe("kpi", () => {
           outil: "Indemnité de précarité",
           outilAction: "view_step",
           outilEvent: "start",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 3,
@@ -540,6 +558,7 @@ describe("kpi", () => {
           outil: "Indemnité de précarité",
           outilAction: "view_step",
           outilEvent: "indemnite",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 3,
@@ -547,6 +566,7 @@ describe("kpi", () => {
           outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "start",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 4,
@@ -554,6 +574,7 @@ describe("kpi", () => {
           outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "start",
+          url: "https://code.travail.gouv.fr/outils/",
         },
         {
           idVisit: 4,
@@ -561,6 +582,7 @@ describe("kpi", () => {
           outil: "Préavis de démission",
           outilAction: "view_step",
           outilEvent: "results",
+          url: "https://code.travail.gouv.fr/outils/",
         },
       ];
       const dataset = new DataFrame(data);
@@ -627,10 +649,340 @@ describe("kpi", () => {
         },
       ];
       // When
-      const result = computeCompletionRateOfUrlTool(dataset, "2020");
+      const result = computeCompletionRateOfUrlTool(dataset, date, "2020");
 
       // Then
       expect(result.slice(0, 5)).toStrictEqual(expected.slice(0, 5));
+    });
+  });
+
+  describe("#filterDataframeByContrib", () => {
+    it("should return list contrib with url formated", () => {
+      const data = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil?edrfgh" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil#dfvgbhn" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil?cdj#fhj" },
+        { url: undefined },
+        { url: "https://code.travail.gouv.fr/convention/mon-outil" },
+        { url: "https://code.travail.gouv.fr/convention/mon-outil" },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+      ];
+      const datasetExpected = new DataFrame(dataExpected);
+      // When
+      const result = filterDataframeByContrib(dataset);
+
+      // Then
+      expect(result).toStrictEqual(datasetExpected);
+    });
+  });
+  describe("#dfContribDropDuplicates", () => {
+    it("should return df of contrib without duplicates", () => {
+      const data = [
+        { idVisit: 1, type: "cc_search", url: "mon-outil" },
+        { idVisit: 1, type: "cc_search", url: "mon-outil" },
+        { idVisit: 1, type: "cc_select", url: "mon-outil" },
+        { idVisit: 2, type: "cc_search", url: "mon-outil" },
+        { idVisit: 2, type: "cc_search", url: "mon-autre-outil" },
+        { idVisit: 2, type: "cc_select", url: "mon-outil" },
+        { idVisit: 2, type: "cc_select", url: "mon-autre-outil" },
+        { idVisit: 3, type: "cc_search", url: "mon-outil" },
+        { idVisit: 3, type: "cc_select", url: "mon-outil" },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected = [
+        { idVisit: 1, type: "cc_search", url: "mon-outil" },
+        { idVisit: 1, type: "cc_select", url: "mon-outil" },
+        { idVisit: 2, type: "cc_search", url: "mon-outil" },
+        { idVisit: 2, type: "cc_search", url: "mon-autre-outil" },
+        { idVisit: 2, type: "cc_select", url: "mon-outil" },
+        { idVisit: 2, type: "cc_select", url: "mon-autre-outil" },
+        { idVisit: 3, type: "cc_search", url: "mon-outil" },
+        { idVisit: 3, type: "cc_select", url: "mon-outil" },
+      ];
+      const datasetExpected = new DataFrame(dataExpected);
+      // When
+      const result = dfContribDropDuplicates(dataset);
+
+      // Then
+      expect(result).toStrictEqual(datasetExpected);
+    });
+  });
+  describe("#getVisitsOnContribWithoutIdcc", () => {
+    it("should return df of contribu without contrib with idcc", () => {
+      const data = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/1234" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil1" },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil1" },
+      ];
+      const datasetExpected = new DataFrame(dataExpected);
+      // When
+      const result = getVisitsOnContribWithoutIdcc(dataset);
+
+      // Then
+      expect(result).toStrictEqual(datasetExpected);
+    });
+  });
+  describe("#getVisitsOnContribWithIdcc", () => {
+    it("should return df of contrib with only contrib with idcc", () => {
+      const data = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/contribution/1234" },
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil1" },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected = [
+        { url: "https://code.travail.gouv.fr/contribution/1234" },
+      ];
+      const datasetExpected = new DataFrame(dataExpected);
+      // When
+      const result = getVisitsOnContribWithIdcc(dataset);
+
+      // Then
+      expect(result).toStrictEqual(datasetExpected);
+    });
+  });
+  describe("#countOccurrencesOfAGivenTypeInDf", () => {
+    it("count the occurence of a given type in series type of a dataframe", () => {
+      const data = [
+        { idVisit: 1, type: "cc_search", url: "mon-outil" },
+        { idVisit: 1, type: "visit_content", url: "mon-outil" },
+        { idVisit: 1, type: "cc_select", url: "mon-outil" },
+        { idVisit: 2, type: "visit_content", url: "mon-outil" },
+        { idVisit: 2, type: "cc_search", url: "mon-autre-outil" },
+        { idVisit: 2, type: "cc_select", url: "mon-outil" },
+        { idVisit: 3, type: "visit_content", url: "mon-outil" },
+      ];
+      const dataset = new DataFrame(data);
+      const expected = 3;
+      // When
+      const result = countOccurrencesOfAGivenTypeInDf(dataset, "visit_content");
+
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+  });
+  describe("#computeRateOfCcSelectOverVisitsOnContrib", () => {
+    it("should compute rate of persons selecting a cc in non-personalized contribution pages", () => {
+      const data = [
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/123-page1",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/123-page1",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1-123456",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page-2",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/PAGE2",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/R3-page2",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const date = new Date("2020-01-01T00:00:00.000");
+      const expected = {
+        denominator: 4,
+        kpi_type: "Rate-of-cc-select-on-pages-contribution-without-idcc",
+        numerator: 3,
+        outil: "pages-contribution",
+        rate: 75,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      };
+      // When
+      const result = computeRateOfCcSelectOverVisitsOnContribWithoutIdcc(
+        dataset,
+        date,
+        "2020"
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+  });
+  describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
+    it("should compute rate of persons getting a personalized pages in all contribution pages", () => {
+      const date = new Date("2020-01-01T00:00:00.000");
+      const data = [
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/123-page1",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/123-page1",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1-123456",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page-2",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/PAGE2",
+        },
+        {
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/R3-page2",
+        },
+        {
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page2",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const expected = {
+        denominator: 6,
+        kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+        numerator: 5,
+        outil: "pages-contribution",
+        rate: 83.333,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      };
+      // When
+      const result = computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib(
+        dataset,
+        date,
+        "2020"
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+  });
+
+  describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", () => {
+    it("should return list contrib with url formated", () => {
+      const date = new Date("2020-01-01T00:00:00.000");
+      const data = [
+        {
+          idVisit: 1,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page0",
+        },
+        {
+          idVisit: 1,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          idVisit: 1,
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          idVisit: 1,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/123-page1",
+        },
+        {
+          idVisit: 2,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+        {
+          idVisit: 2,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1#3",
+        },
+        {
+          idVisit: 2,
+          type: "visit_content",
+          url: "https://code.travail.gouv.fr/contribution/page1?az=2",
+        },
+        {
+          idVisit: 2,
+          type: "cc_select",
+          url: "https://code.travail.gouv.fr/contribution/page1",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const expected = [
+        {
+          denominator: 3,
+          kpi_type: "Rate-of-cc-select-on-pages-contribution-without-idcc",
+          numerator: 2,
+          outil: "pages-contribution",
+          rate: 66.667,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: date,
+        },
+        {
+          denominator: 4,
+          kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+          numerator: 3,
+          outil: "pages-contribution",
+          rate: 75,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: date,
+        },
+      ];
+      // When
+      const result = computeKpiRateVisitsOnCcPagesOnAllContribPages(
+        dataset,
+        date,
+        "2020"
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
     });
   });
 });

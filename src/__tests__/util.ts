@@ -33,8 +33,11 @@ export const wait = (ms: number): Promise<void> =>
 export const readLogfile = (): Promise<dataForge.IDataFrame> =>
   Reader.readFromFile(logfile);
 
+// TODO : ne semble plus utiliser, à vérifier puis supprimer
+
 export const readLogFile = async (
   path: string
+  // eslint-disable-next-line import/namespace
 ): Promise<dataForge.IDataFrame> => dataForge.readFile(path).parseCSV();
 
 export const LOGS_TEST_INDEX = "logs_data-test";
