@@ -5,7 +5,7 @@ import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
-  "Heures pour recherche d’emploi": {
+  "Heures d'absence pour rechercher un emploi": {
     firstStep: "start",
     lastStep: "results",
   },
