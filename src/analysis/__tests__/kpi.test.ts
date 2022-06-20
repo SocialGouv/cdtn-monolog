@@ -177,12 +177,12 @@ describe("kpi", () => {
       const data = [
         {
           nbVisit: 100,
-          outil: "Heures pour recherche d’emploi",
+          outil: "Heures d'absence pour rechercher un emploi",
           outilEvent: "start",
         },
         {
           nbVisit: 90,
-          outil: "Heures pour recherche d’emploi",
+          outil: "Heures d'absence pour rechercher un emploi",
           outilEvent: "results",
         },
         {
@@ -228,7 +228,7 @@ describe("kpi", () => {
           denominator: 100,
           kpi_type: "Completion-rate-of-tools",
           numerator: 90,
-          outil: "Heures pour recherche d’emploi",
+          outil: "Heures d'absence pour rechercher un emploi",
           rate: 0.9,
           reportId: "2020",
           reportType: "kpi",
@@ -591,7 +591,7 @@ describe("kpi", () => {
           denominator: 0,
           kpi_type: "Completion-rate-of-tools",
           numerator: 0,
-          outil: "Heures pour recherche d’emploi",
+          outil: "Heures d'absence pour rechercher un emploi",
           rate: 0,
           reportId: "2020",
           reportType: "kpi",
@@ -886,7 +886,8 @@ describe("kpi", () => {
       const dataset = new DataFrame(data);
       const expected = {
         denominator: 6,
-        kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+        kpi_type:
+          "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
         numerator: 5,
         outil: "pages-contribution",
         rate: 83.333,
@@ -965,7 +966,8 @@ describe("kpi", () => {
         },
         {
           denominator: 4,
-          kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+          kpi_type:
+            "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
           numerator: 3,
           outil: "pages-contribution",
           rate: 75,
