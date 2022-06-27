@@ -1,6 +1,7 @@
 import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
+import * as util from "../reader/readerUtil";
 import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
 
@@ -386,6 +387,108 @@ export const computeKpiRateVisitsOnCcPagesOnAllContribPages = (
   ];
 };
 
+export const filterDataframeByToolAndRemoveAnchorFromUrl = (
+  dataset: IDataFrame,
+  url = "https://code.travail.gouv.fr/outils/"
+): IDataFrame => {
+  return filterDataframeByUrlWithPrefix(dataset, url).withSeries({
+    url: (df) =>
+      df.deflate((row) => row.url).select((url) => removeAnchor(url)),
+  });
+};
+
+export function computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
+  url_tool: string,
+  tool_final_step: string,
+  logsTools: IDataFrame<number, any>
+): { [key: string]: number } {
+  const logsForAGivenTool = filterDataframeByUrlWithPrefix(logsTools, url_tool);
+
+  const allVisitorsReachingResultStep = logsForAGivenTool
+    .filter((log) => log.outilEvent == tool_final_step)
+    .getSeries("idVisit")
+    .distinct()
+    .toArray();
+  const nbVisitorsReachingResultStep = allVisitorsReachingResultStep.length;
+
+  const allVisitorsWhoHaveSelectedProcessedCc = logsForAGivenTool
+    .filter((log) => log.type == util.actionTypes.selectProcessedCC)
+    .getSeries("idVisit")
+    .distinct()
+    .toArray();
+  const nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep =
+    allVisitorsReachingResultStep.filter((value) =>
+      allVisitorsWhoHaveSelectedProcessedCc.includes(value)
+    ).length;
+
+  return {
+    nbVisitorsReachingResultStep,
+    nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep,
+  };
+}
+
+export const computeRateOfProcessedCcResultsOverAllResultsByTools = (
+  logs: IDataFrame,
+  startDate: Date,
+  reportId: string = new Date().getTime().toString()
+): KpiReport[] => {
+  const DICT_URL_TOOLS_STEPS = {
+    "https://code.travail.gouv.fr/outils/heures-recherche-emploi": {
+      tool_final_step: "results",
+      tool_name: "Heures d'absence pour rechercher un emploi",
+    },
+    "https://code.travail.gouv.fr/outils/indemnite-precarite": {
+      tool_final_step: "indemnite",
+      tool_name: "Indemnité de précarité",
+    },
+    "https://code.travail.gouv.fr/outils/preavis-demission": {
+      tool_final_step: "results",
+      tool_name: "Préavis de démission",
+    },
+    "https://code.travail.gouv.fr/outils/preavis-licenciement": {
+      tool_final_step: "results",
+      tool_name: "Préavis de licenciement",
+    },
+    "https://code.travail.gouv.fr/outils/preavis-retraite": {
+      tool_final_step: "result",
+      tool_name: "Préavis de départ ou de mise à la retraite",
+    },
+  };
+
+  // Get logs on tools and only take columns needed for performance
+  const subsetLogs = logs.subset(["url", "type", "outilEvent", "idVisit"]);
+  const logsTools =
+    filterDataframeByToolAndRemoveAnchorFromUrl(subsetLogs).bake();
+
+  return Object.entries(DICT_URL_TOOLS_STEPS).map(
+    ([url_tool, tool_characteristics]) => {
+      const r = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
+        url_tool,
+        tool_characteristics.tool_final_step,
+        logsTools
+      );
+      const denominator = r.nbVisitorsReachingResultStep;
+      const numerator =
+        r.nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep;
+
+      const rate =
+        denominator > 0
+          ? Math.round((numerator / denominator) * 10000) / 100
+          : 0;
+      return {
+        denominator: denominator,
+        kpi_type: "Rate-of-conventional-results-on-tools",
+        numerator: numerator,
+        outil: tool_characteristics.tool_name,
+        rate: rate,
+        reportId: reportId,
+        reportType: "kpi",
+        start_date: startDate,
+      };
+    }
+  );
+};
+
 export const monthlyAnalysis = (
   logs: IDataFrame,
   reportId: string = new Date().getTime().toString()
@@ -396,8 +499,26 @@ export const monthlyAnalysis = (
 
   const startDate = getFirstDayOfMonth(logs.getSeries("lastActionDateTime"));
 
-  const completionRateKpi = computeCompletionRateOfUrlTool(logsIndexed, startDate, reportId);
-  const rateVisitsOnCCPagesOnAllContribPages = computeKpiRateVisitsOnCcPagesOnAllContribPages(logsIndexed, startDate, reportId);
+  const completionRateKpi = computeCompletionRateOfUrlTool(
+    logsIndexed,
+    startDate,
+    reportId
+  );
+  const rateVisitsOnCcPagesOnAllContribPages =
+    computeKpiRateVisitsOnCcPagesOnAllContribPages(
+      logsIndexed,
+      startDate,
+      reportId
+    );
+  const rateOfCcResultsOverAllResultsOnTools =
+    computeRateOfProcessedCcResultsOverAllResultsByTools(
+      logsIndexed,
+      startDate,
+      reportId
+    );
 
-  return completionRateKpi.concat(rateVisitsOnCCPagesOnAllContribPages);
+  return completionRateKpi.concat(
+    rateVisitsOnCcPagesOnAllContribPages,
+    rateOfCcResultsOverAllResultsOnTools
+  );
 };

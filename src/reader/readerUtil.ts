@@ -84,9 +84,11 @@ export const actionTypes = {
   search: "search",
   searchCC: "cc_search",
   selectCC: "cc_select",
+  selectProcessedCC: "cc_select_traitée",
   selectRelated: "select_related",
   selectResult: "select_result",
   selectSuggestion: "select_suggestion",
+  selectUnprocessedCC: "cc_select_non_traitée",
   themes: "themes",
   visit: "visit_content",
 };

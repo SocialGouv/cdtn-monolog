@@ -5,9 +5,12 @@ import {
   computeKpiRateVisitsOnCcPagesOnAllContribPages,
   computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib,
   computeRateOfCcSelectOverVisitsOnContribWithoutIdcc,
+  computeRateOfProcessedCcResultsOverAllResultsByTools,
+  computeRateOfProcessedCcResultsOverAllResultsForAGivenTool,
   countOccurrencesOfAGivenTypeInDf,
   dfContribDropDuplicates,
   filterDataframeByContrib,
+  filterDataframeByToolAndRemoveAnchorFromUrl,
   getConventionCollectiveCompletionRate,
   getListOfKpiCompletionRate,
   getNbVisitIfStepDefinedInTool,
@@ -16,6 +19,7 @@ import {
   getVisitsOnContribWithIdcc,
   getVisitsOnContribWithoutIdcc,
 } from "../kpi";
+import { KpiReport } from "../reports";
 
 describe("kpi", () => {
   describe("#getNumberOfVisitsByOutilAndEvent", () => {
@@ -985,6 +989,355 @@ describe("kpi", () => {
 
       // Then
       expect(result).toStrictEqual(expected);
+    });
+  });
+  describe("#filterDataframeByToolAndRemoveAnchorFromUrl", () => {
+    it("should return df with url without anchor and beginning by https://code.travail.gouv.fr/outils/", () => {
+      const data = [
+        { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
+        { url: "https://code.travail.gouv.fr/outils" },
+        { url: "https://code.travail.gouv.fr/outils/" },
+        { url: "https://code.travail.gouv.fr/outils/precarite" },
+        { url: "https://code.travail.gouv.fr/outils/precarite?zertyu=4" },
+        { url: "https://code.travail.gouv.fr/outils/indemnite#987" },
+        { url: "https://code.travail.gouv.fr/outils/precarite?erty#987" },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected = [
+        { url: "https://code.travail.gouv.fr/outils/" },
+        { url: "https://code.travail.gouv.fr/outils/precarite" },
+        { url: "https://code.travail.gouv.fr/outils/precarite" },
+        { url: "https://code.travail.gouv.fr/outils/indemnite" },
+        { url: "https://code.travail.gouv.fr/outils/precarite" },
+      ];
+      const datasetExpected = new DataFrame(dataExpected);
+      // When
+      const result = filterDataframeByToolAndRemoveAnchorFromUrl(dataset);
+
+      // Then
+      expect(result).toStrictEqual(datasetExpected);
+    });
+  });
+  describe("#computeRateOfProcessedCcResultsOverAllResultsForAGivenTool", () => {
+    it("should return rate of processed cc results over all results for tool preavis-demissio", () => {
+      const url_tool = "https://code.travail.gouv.fr/outils/preavis-demission";
+      const tool_final_step = "results";
+      const data = [
+        {
+          idVisit: "1",
+          outilEvent: "_",
+          type: "visit",
+          url: "https://code.travail.gouv.fr/outils/",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "start",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "select_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "select_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+        {
+          idVisit: "2",
+          outilEvent: "",
+          type: "cc_select_non_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "2",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "3",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const expected = {
+        nbVisitorsReachingResultStep: 3,
+        nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep: 1,
+      };
+      // When
+      const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
+        url_tool,
+        tool_final_step,
+        dataset
+      );
+
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+    it("should return rate of processed cc results over all results for tool heures-recherche-emploi", () => {
+      const url_tool =
+        "https://code.travail.gouv.fr/outils/heures-recherche-emploi";
+      const tool_final_step = "results";
+      const data = [
+        {
+          idVisit: "1",
+          outilEvent: "_",
+          type: "visit",
+          url: "https://code.travail.gouv.fr/outils/",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "start",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "select_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const expected = {
+        nbVisitorsReachingResultStep: 0,
+        nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep: 0,
+      };
+      // When
+      const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
+        url_tool,
+        tool_final_step,
+        dataset
+      );
+      // Then
+      expect(result).toStrictEqual(expected);
+    });
+  });
+  describe("#computeRateOfProcessedCcResultsOverAllResultsByTools", () => {
+    it("INTEGRATION : should return list of KpiReport formatted having the rate of processed CC results over all results", () => {
+      const reportId = "2020";
+      const startDate = new Date("2020-01-01T00:00:00.000");
+      const data = [
+        {
+          idVisit: "1",
+          outilEvent: "_",
+          type: "visit",
+          url: "https://code.travail.gouv.fr/contribution/",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "_",
+          type: "visit",
+          url: "https://code.travail.gouv.fr/outils/",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "start",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "select_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-demission",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "cc_select_non_traitée",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "results",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/heures-recherche-emploi",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/indemnite-precarite",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/indemnite-precarite",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "indemnite",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/indemnite-precarite",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "1",
+          outilEvent: "result",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "2",
+          outilEvent: "info_cc",
+          type: "cc_select_non_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "2",
+          outilEvent: "result",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "3",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "4",
+          outilEvent: "info_cc",
+          type: "cc_select_traitée",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+        {
+          idVisit: "4",
+          outilEvent: "result",
+          type: "",
+          url: "https://code.travail.gouv.fr/outils/preavis-retraite",
+        },
+      ];
+      const dataset = new DataFrame(data);
+      const dataExpected: KpiReport[] = [
+        {
+          denominator: 1,
+          kpi_type: "Rate-of-conventional-results-on-tools",
+          numerator: 0,
+          outil: "Heures d'absence pour rechercher un emploi",
+          rate: 0,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: startDate,
+        },
+        {
+          denominator: 1,
+          kpi_type: "Rate-of-conventional-results-on-tools",
+          numerator: 1,
+          outil: "Indemnité de précarité",
+          rate: 100,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: startDate,
+        },
+        {
+          denominator: 1,
+          kpi_type: "Rate-of-conventional-results-on-tools",
+          numerator: 1,
+          outil: "Préavis de démission",
+          rate: 100,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: startDate,
+        },
+        {
+          denominator: 0,
+          kpi_type: "Rate-of-conventional-results-on-tools",
+          numerator: 0,
+          outil: "Préavis de licenciement",
+          rate: 0,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: startDate,
+        },
+        {
+          denominator: 3,
+          kpi_type: "Rate-of-conventional-results-on-tools",
+          numerator: 2,
+          outil: "Préavis de départ ou de mise à la retraite",
+          rate: 66.67,
+          reportId: "2020",
+          reportType: "kpi",
+          start_date: startDate,
+        },
+      ];
+      // When
+      const result = computeRateOfProcessedCcResultsOverAllResultsByTools(
+        dataset,
+        startDate,
+        reportId
+      );
+
+      // Then
+      expect(result).toStrictEqual(dataExpected);
     });
   });
 });
