@@ -1,3 +1,10 @@
+## [1.13.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.0...v1.13.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* update naming from Heures pour recherche d’emploi to Heures d'absence pour rechercher un emploi ([#180](https://github.com/SocialGouv/cdtn-monolog/issues/180)) ([5728f38](https://github.com/SocialGouv/cdtn-monolog/commit/5728f38051ff6e5dc3967d4891a85d761e930a0e))
+
 # [1.13.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.12.1...v1.13.0) (2022-05-30)
 
 
