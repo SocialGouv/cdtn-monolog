@@ -35,10 +35,4 @@ describe("Report", () => {
   });
 });
 
-afterAll(
-  async () =>
-    await es.esClient.deleteByQuery({
-      body: { query: { match_all: {} } },
-      index,
-    })
-);
+afterAll(async () => await es.deleteIfExists(index));

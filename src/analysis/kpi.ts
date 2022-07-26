@@ -1,6 +1,7 @@
 import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
+import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "./kpi/computeRateOfProcessedCcResultsOverAllResultsByTools";
 import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
 
@@ -216,6 +217,26 @@ export const filterDataframeByUrlWithPrefix = (
   );
 };
 
+export const filterDataframeByToolAndRemoveAnchorFromUrl = (
+  dataset: IDataFrame,
+  url = "https://code.travail.gouv.fr/outils/"
+): IDataFrame => {
+  return filterDataframeByUrlWithPrefix(dataset, url).withSeries({
+    url: (df) =>
+      df.deflate((row) => row.url).select((url) => removeAnchor(url)),
+  });
+};
+
+export const filterDataframeByContribAndRemoveAnchorFromUrl = (
+  dataset: IDataFrame,
+  url = "https://code.travail.gouv.fr/contribution/"
+): IDataFrame => {
+  return filterDataframeByUrlWithPrefix(dataset, url).withSeries({
+    url: (df) =>
+      df.deflate((row) => row.url).select((url) => removeAnchor(url)),
+  });
+};
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const computeCompletionRateOfUrlTool = (
   logs: IDataFrame,
@@ -246,16 +267,6 @@ export const computeCompletionRateOfUrlTool = (
   listOfKpisCompletionRate.push(conventionCollectiveCompletionRate);
 
   return listOfKpisCompletionRate;
-};
-
-export const filterDataframeByContrib = (
-  dataset: IDataFrame,
-  url = "https://code.travail.gouv.fr/contribution/"
-): IDataFrame => {
-  return filterDataframeByUrlWithPrefix(dataset, url).withSeries({
-    url: (df) =>
-      df.deflate((row) => row.url).select((url) => removeAnchor(url)),
-  });
 };
 
 export const dfContribDropDuplicates = (dataset: IDataFrame): IDataFrame => {
@@ -361,7 +372,7 @@ export const computeKpiRateVisitsOnCcPagesOnAllContribPages = (
   reportId: string = new Date().getTime().toString()
 ): KpiReport[] => {
   // Get logs on pages contribution without duplicates in triple (url, idVisit, type)
-  const logsOnContrib = filterDataframeByContrib(logs);
+  const logsOnContrib = filterDataframeByContribAndRemoveAnchorFromUrl(logs);
   const logsOnContribWithoutDuplicates = dfContribDropDuplicates(logsOnContrib);
 
   // KPI Rate of persons selecting a cc in non-personalized contribution pages
@@ -396,8 +407,26 @@ export const monthlyAnalysis = (
 
   const startDate = getFirstDayOfMonth(logs.getSeries("lastActionDateTime"));
 
-  const completionRateKpi = computeCompletionRateOfUrlTool(logsIndexed, startDate, reportId);
-  const rateVisitsOnCCPagesOnAllContribPages = computeKpiRateVisitsOnCcPagesOnAllContribPages(logsIndexed, startDate, reportId);
+  const completionRateKpi = computeCompletionRateOfUrlTool(
+    logsIndexed,
+    startDate,
+    reportId
+  );
+  const rateVisitsOnCcPagesOnAllContribPages =
+    computeKpiRateVisitsOnCcPagesOnAllContribPages(
+      logsIndexed,
+      startDate,
+      reportId
+    );
+  const rateOfCcResultsOverAllResultsOnTools =
+    computeRateOfProcessedCcResultsOverAllResultsByTools(
+      logsIndexed,
+      startDate,
+      reportId
+    );
 
-  return completionRateKpi.concat(rateVisitsOnCCPagesOnAllContribPages);
+  return completionRateKpi.concat(
+    rateVisitsOnCcPagesOnAllContribPages,
+    rateOfCcResultsOverAllResultsOnTools
+  );
 };

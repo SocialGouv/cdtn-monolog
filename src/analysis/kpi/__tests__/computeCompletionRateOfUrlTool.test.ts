@@ -1,0 +1,224 @@
+import { DataFrame } from "data-forge";
+
+import { computeCompletionRateOfUrlTool } from "../../kpi";
+
+describe("#computeCompletionRateOfUrlTool - Integration test", () => {
+  it("given a list of event, method should return kpis of completion rate by url", () => {
+    // Given
+    const date = new Date("2020-01-01T00:00:00.000");
+    const data = [
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-05",
+        outil: "Trouver sa convention collective",
+        outilAction: "view_step",
+        type: "cc_search",
+        url: "https://code.travail.gouv.fr/outils/convention-collective",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-10",
+        outil: "Trouver sa convention collective",
+        outilAction: "view_step",
+        type: "cc_select_p1",
+        url: "https://code.travail.gouv.fr/outils/convention-collective",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-10",
+        outil: "Trouver sa convention collective",
+        outilAction: "view_step",
+        type: "cc_search",
+        url: "https://code.travail.gouv.fr/outils/convention-collective",
+      },
+      {
+        idVisit: 2,
+        lastActionDateTime: "2020-01-10",
+        outil: "Trouver sa convention collective",
+        outilAction: "view_step",
+        type: "cc_search",
+        url: "https://code.travail.gouv.fr/outils/convention-collective",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-10",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-10",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "compute",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-10",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "results",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-01",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "indemnite_legale",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-20",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "indemnite_legale",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 1,
+        lastActionDateTime: "2020-01-20",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "indemnite_legale",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 2,
+        lastActionDateTime: "2020-01-20",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 2,
+        lastActionDateTime: "2020-01-20",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "compute",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 2,
+        lastActionDateTime: "2020-01-20",
+        outil: "Indemnité de licenciement",
+        outilAction: "view_step",
+        outilEvent: "indemnite_legale",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 3,
+        lastActionDateTime: "2020-01-25",
+        outil: "Indemnité de précarité",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 3,
+        lastActionDateTime: "2020-01-25",
+        outil: "Indemnité de précarité",
+        outilAction: "view_step",
+        outilEvent: "indemnite",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 3,
+        lastActionDateTime: "2020-01-25",
+        outil: "Préavis de démission",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 4,
+        lastActionDateTime: "2020-01-25",
+        outil: "Préavis de démission",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+      {
+        idVisit: 4,
+        lastActionDateTime: "2020-01-02",
+        outil: "Préavis de démission",
+        outilAction: "view_step",
+        outilEvent: "results",
+        url: "https://code.travail.gouv.fr/outils/",
+      },
+    ];
+    const dataset = new DataFrame(data);
+    const expected = [
+      {
+        denominator: 0,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 0,
+        outil: "Heures d'absence pour rechercher un emploi",
+        rate: 0,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
+        denominator: 2,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 2,
+        outil: "Indemnité de licenciement",
+        rate: 1,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
+        denominator: 1,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 1,
+        outil: "Indemnité de précarité",
+        rate: 1,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
+        denominator: 2,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 1,
+        outil: "Préavis de démission",
+        rate: 0.5,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
+        denominator: 0,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 0,
+        outil: "Préavis de départ ou de mise à la retraite",
+        rate: 0,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
+        denominator: 2,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 1,
+        outil: "Trouver sa convention collective",
+        rate: 0.5,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+    ];
+    // When
+    const result = computeCompletionRateOfUrlTool(dataset, date, "2020");
+
+    // Then
+    expect(result.slice(0, 5)).toStrictEqual(expected.slice(0, 5));
+  });
+});
