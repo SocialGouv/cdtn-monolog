@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "../../kpi";
+import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "../computeKpiRateVisitsOnCcPagesOnAllContribPages";
 
 describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", () => {
   it("should return list contrib with url formated", () => {

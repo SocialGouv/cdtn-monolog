@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib } from "../../kpi";
+import { computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib } from "../computeKpiRateVisitsOnCcPagesOnAllContribPages";
 
 describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
   it("should compute rate of persons getting a personalized pages in all contribution pages", () => {
