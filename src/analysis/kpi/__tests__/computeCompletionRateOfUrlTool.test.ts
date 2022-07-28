@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { computeCompletionRateOfUrlTool } from "../../kpi";
+import { computeCompletionRateOfUrlTool } from "../computeCompletionRateOfUrlTool";
 
 describe("#computeCompletionRateOfUrlTool - Integration test", () => {
   it("given a list of event, method should return kpis of completion rate by url", () => {

@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getConventionCollectiveCompletionRate } from "../../kpi";
+import { getConventionCollectiveCompletionRate } from "../computeCompletionRateOfUrlTool";
 
 describe("#getConventionCollectiveCompletionRate", () => {
   it("should return a kpi completion rate for outil convention collective for P1", () => {

@@ -1,7 +1,7 @@
 import { DataFrame } from "data-forge";
 
 import { KpiReport } from "../../reports";
-import {computeRateOfProcessedCcResultsOverAllResultsByTools} from "../computeRateOfProcessedCcResultsOverAllResultsByTools";
+import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "../computeRateOfProcessedCcResultsOverAllResultsByTools";
 
 describe("#computeRateOfProcessedCcResultsOverAllResultsByTools - Integration test", () => {
   it("should return list of KpiReport formatted having the rate of processed CC results over all results", () => {

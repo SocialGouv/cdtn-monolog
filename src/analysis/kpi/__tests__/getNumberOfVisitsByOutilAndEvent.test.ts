@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getNumberOfVisitsByOutilAndEvent } from "../../kpi";
+import { getNumberOfVisitsByOutilAndEvent } from "../computeCompletionRateOfUrlTool";
 
 describe("#getNumberOfVisitsByOutilAndEvent", () => {
   it("should return list of visits by event and url", () => {

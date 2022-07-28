@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import {computeRateOfProcessedCcResultsOverAllResultsForAGivenTool} from "../computeRateOfProcessedCcResultsOverAllResultsByTools";
+import { computeRateOfProcessedCcResultsOverAllResultsForAGivenTool } from "../computeRateOfProcessedCcResultsOverAllResultsByTools";
 
 describe("#computeRateOfProcessedCcResultsOverAllResultsForAGivenTool", () => {
   it("should return rate of processed cc results over all results for tool preavis-demissio", () => {

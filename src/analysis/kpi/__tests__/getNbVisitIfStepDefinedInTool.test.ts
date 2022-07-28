@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getNbVisitIfStepDefinedInTool } from "../../kpi";
+import { getNbVisitIfStepDefinedInTool } from "../computeCompletionRateOfUrlTool";
 
 describe("#getNbVisitIfStepDefinedInTool", () => {
   it("should return the number of visits for a given url and start step", () => {
