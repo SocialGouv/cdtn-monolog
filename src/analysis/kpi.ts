@@ -7,7 +7,6 @@ import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "./kpi/comp
 import { getRateOfSuccessfulSearchWhenLookingForACc } from "./kpi/getRateOfSuccessfulSearchWhenLookingForACc";
 import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
-import { computeCompletionRateOfUrlTool } from "./kpi/computeCompletionRateOfUrlTool";
 
 const generateQueryToGetLogsForAGivenDate = (day: string) => {
   return {
