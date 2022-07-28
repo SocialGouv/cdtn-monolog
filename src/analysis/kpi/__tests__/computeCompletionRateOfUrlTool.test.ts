@@ -12,7 +12,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-05",
         outil: "Trouver sa convention collective",
         outilAction: "view_step",
-        type: "cc_search",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
@@ -28,7 +28,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-10",
         outil: "Trouver sa convention collective",
         outilAction: "view_step",
-        type: "cc_search",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
@@ -36,7 +36,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-10",
         outil: "Trouver sa convention collective",
         outilAction: "view_step",
-        type: "cc_search",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
@@ -205,6 +205,16 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         start_date: date,
       },
       {
+        denominator: 0,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 0,
+        outil: "Préavis de licenciement",
+        rate: 0,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
+      {
         denominator: 2,
         kpi_type: "Completion-rate-of-tools",
         numerator: 1,
@@ -219,6 +229,6 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
     const result = computeCompletionRateOfUrlTool(dataset, date, "2020");
 
     // Then
-    expect(result.slice(0, 5)).toStrictEqual(expected.slice(0, 5));
+    expect(result.slice(0, 7)).toStrictEqual(expected.slice(0, 7));
   });
 });
