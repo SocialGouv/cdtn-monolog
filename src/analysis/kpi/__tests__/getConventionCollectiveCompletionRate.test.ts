@@ -9,13 +9,15 @@ describe("#getConventionCollectiveCompletionRate", () => {
       {
         idVisit: 1,
         outil: "Trouver sa convention collective",
-        type: "cc_search",
+        outilAction: "view_step",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
         idVisit: 2,
         outil: "Trouver sa convention collective",
-        type: "cc_search",
+        outilAction: "view_step",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
@@ -49,7 +51,8 @@ describe("#getConventionCollectiveCompletionRate", () => {
       {
         idVisit: 1,
         outil: "Trouver sa convention collective",
-        type: "enterprise_search",
+        outilAction: "view_step",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
@@ -61,13 +64,21 @@ describe("#getConventionCollectiveCompletionRate", () => {
       {
         idVisit: 2,
         outil: "Trouver sa convention collective",
-        type: "enterprise_search",
+        outilAction: "view_step",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
         idVisit: 2,
         outil: "Trouver sa convention collective",
         type: "cc_select_p2",
+        url: "https://code.travail.gouv.fr/outils/convention-collective",
+      },
+      {
+        idVisit: 3,
+        outil: "Trouver sa convention collective",
+        outilAction: "view_step",
+        outilEvent: "start",
         url: "https://code.travail.gouv.fr/outils/convention-collective",
       },
       {
