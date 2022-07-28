@@ -113,9 +113,13 @@ export const getConventionCollectiveCompletionRate = (
 
   const ccTypes = nbVisitsByCcType.getIndex().toArray();
 
-  const denominator =
-    getValInDfIfIndexIsInList("cc_search", ccTypes, nbVisitsByCcType) +
-    getValInDfIfIndexIsInList("enterprise_search", ccTypes, nbVisitsByCcType);
+  const denominator = logsConventionCollectiveDataset
+    .where(
+      (row) => row.outilAction == "view_step" && row.outilEvent === "start"
+    )
+    .distinct((row) => row.idVisit)
+    .count();
+
   const numerator =
     getValInDfIfIndexIsInList("cc_select_p1", ccTypes, nbVisitsByCcType) +
     getValInDfIfIndexIsInList("cc_select_p2", ccTypes, nbVisitsByCcType);
