@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getRateOfSuccessfulSearchWhenLookingForACcInContribPages } from "../getRateOfSuccessfulSearchWhenLookingForACc";
+import { getRateOfSuccessfulSearchesWhenLookingForACcInContribPages } from "../getRateOfSuccessfulSearchWhenLookingForACc";
 
 describe("#getRateOfSuccessfulSearchWhenLookingForACcInContribPages", () => {
   it("should return dict with numerator, denominator and rate of successful CC searches in contributions", () => {
@@ -45,7 +45,7 @@ describe("#getRateOfSuccessfulSearchWhenLookingForACcInContribPages", () => {
     };
     // When
     const result =
-      getRateOfSuccessfulSearchWhenLookingForACcInContribPages(dataset);
+      getRateOfSuccessfulSearchesWhenLookingForACcInContribPages(dataset);
 
     // Then
     expect(result).toStrictEqual(expected);
