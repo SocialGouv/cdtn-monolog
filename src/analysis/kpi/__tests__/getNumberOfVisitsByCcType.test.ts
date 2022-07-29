@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getNumberOfVisitsByCcType } from "../../kpi";
+import { getNumberOfVisitsByCcType } from "../computeCompletionRateOfUrlTool";
 
 describe("#getNumberOfVisitsByCcType", () => {
   it("should return a dataframe of number of visits by convention collective type", () => {

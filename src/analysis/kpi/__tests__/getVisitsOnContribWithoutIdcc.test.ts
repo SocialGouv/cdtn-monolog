@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getVisitsOnContribWithoutIdcc } from "../../kpi";
+import { getVisitsOnContribWithoutIdcc } from "../computeKpiRateVisitsOnCcPagesOnAllContribPages";
 
 describe("#getVisitsOnContribWithoutIdcc", () => {
   it("should return df of contribu without contrib with idcc", () => {

@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getListOfKpiCompletionRate } from "../../kpi";
+import { getListOfKpiCompletionRate } from "../computeCompletionRateOfUrlTool";
 
 describe("#getListOfKpiCompletionRate", () => {
   it("should return list of kpi completion rate by url", () => {

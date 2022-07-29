@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { getVisitsOnContribWithIdcc } from "../../kpi";
+import { getVisitsOnContribWithIdcc } from "../computeKpiRateVisitsOnCcPagesOnAllContribPages";
 
 describe("#getVisitsOnContribWithIdcc", () => {
   it("should return df of contrib with only contrib with idcc", () => {
