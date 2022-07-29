@@ -2,7 +2,7 @@ import { IDataFrame } from "data-forge";
 
 import {
   countOccurrencesOfAGivenTypeInDf,
-  dfContribDropDuplicates,
+  dfDropDuplicatesOnUrlAndIdVisitAndType,
   filterDataframeByContribAndRemoveAnchorFromUrl,
 } from "../kpi";
 import { KpiReport } from "../reports";
@@ -100,7 +100,8 @@ export const computeKpiRateVisitsOnCcPagesOnAllContribPages = (
 ): KpiReport[] => {
   // Get logs on pages contribution without duplicates in triple (url, idVisit, type)
   const logsOnContrib = filterDataframeByContribAndRemoveAnchorFromUrl(logs);
-  const logsOnContribWithoutDuplicates = dfContribDropDuplicates(logsOnContrib);
+  const logsOnContribWithoutDuplicates =
+    dfDropDuplicatesOnUrlAndIdVisitAndType(logsOnContrib);
 
   // KPI Rate of persons selecting a cc in non-personalized contribution pages
   const rateOfCcSelectOverVisitsOnContribWithoutIdcc =

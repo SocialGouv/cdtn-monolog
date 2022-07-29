@@ -1,6 +1,6 @@
 import { DataFrame } from "data-forge";
 
-import { dfContribDropDuplicates } from "../../kpi";
+import { dfDropDuplicatesOnUrlAndIdVisitAndType } from "../../kpi";
 
 describe("#dfContribDropDuplicates", () => {
   it("should return df of contrib without duplicates", () => {
@@ -28,7 +28,7 @@ describe("#dfContribDropDuplicates", () => {
     ];
     const datasetExpected = new DataFrame(dataExpected);
     // When
-    const result = dfContribDropDuplicates(dataset);
+    const result = dfDropDuplicatesOnUrlAndIdVisitAndType(dataset);
 
     // Then
     expect(result).toStrictEqual(datasetExpected);
