@@ -4,6 +4,7 @@ import { dfDropDuplicatesOnUrlAndIdVisitAndType } from "../../kpi";
 
 describe("#dfContribDropDuplicates", () => {
   it("should return df of contrib without duplicates", () => {
+    // Given
     const data = [
       { idVisit: 1, type: "cc_search", url: "mon-outil" },
       { idVisit: 1, type: "cc_search", url: "mon-outil" },

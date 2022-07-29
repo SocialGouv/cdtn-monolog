@@ -4,6 +4,7 @@ import { getRateOfSuccessfulSearchWhenLookingForACcInContribPages } from "../get
 
 describe("#getRateOfSuccessfulSearchWhenLookingForACcInContribPages", () => {
   it("should return dict with numerator, denominator and rate of successful CC searches in contributions", () => {
+    // Given
     const data = [
       {
         idVisit: 0,

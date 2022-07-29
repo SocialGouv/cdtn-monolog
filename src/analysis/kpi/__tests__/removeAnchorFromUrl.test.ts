@@ -3,7 +3,8 @@ import { DataFrame } from "data-forge";
 import { removeAnchorFromUrl } from "../../kpi";
 
 describe("#removeAnchorFromUrl", () => {
-  it("should dataframe of url without anchor", () => {
+  it("should return dataframe of url without anchor", () => {
+    // Given
     const data = [
       { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
       { url: "https://code.travail.gouv.fr/contribution/mon-outil#345" },

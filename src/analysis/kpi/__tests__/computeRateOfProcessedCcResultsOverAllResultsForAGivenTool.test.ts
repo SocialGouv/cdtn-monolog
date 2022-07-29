@@ -4,6 +4,7 @@ import { computeRateOfProcessedCcResultsOverAllResultsForAGivenTool } from "../c
 
 describe("#computeRateOfProcessedCcResultsOverAllResultsForAGivenTool", () => {
   it("should return rate of processed cc results over all results for tool preavis-demissio", () => {
+    // Given
     const url_tool = "https://code.travail.gouv.fr/outils/preavis-demission";
     const tool_final_step = "results";
     const data = [

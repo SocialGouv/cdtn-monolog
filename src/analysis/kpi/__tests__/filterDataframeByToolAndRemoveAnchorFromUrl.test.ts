@@ -4,6 +4,7 @@ import { filterDataframeByToolAndRemoveAnchorFromUrl } from "../../kpi";
 
 describe("#filterDataframeByToolAndRemoveAnchorFromUrl", () => {
   it("should return df with url without anchor and beginning by https://code.travail.gouv.fr/outils/", () => {
+    // Given
     const data = [
       { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
       { url: "https://code.travail.gouv.fr/outils" },

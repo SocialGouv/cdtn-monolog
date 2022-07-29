@@ -4,6 +4,7 @@ import { countOccurrencesOfAGivenTypeInDf } from "../../kpi";
 
 describe("#countOccurrencesOfAGivenTypeInDf", () => {
   it("count the occurence of a given type in series type of a dataframe", () => {
+    // Given
     const data = [
       { idVisit: 1, type: "cc_search", url: "mon-outil" },
       { idVisit: 1, type: "visit_content", url: "mon-outil" },

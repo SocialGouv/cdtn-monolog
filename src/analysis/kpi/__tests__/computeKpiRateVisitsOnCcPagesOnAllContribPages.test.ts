@@ -4,6 +4,7 @@ import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "../computeKpiRat
 
 describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", () => {
   it("should return list contrib with url formated", () => {
+    // Given
     const date = new Date("2020-01-01T00:00:00.000");
     const data = [
       {

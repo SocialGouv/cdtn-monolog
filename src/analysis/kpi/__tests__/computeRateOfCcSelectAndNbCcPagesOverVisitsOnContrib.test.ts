@@ -4,6 +4,7 @@ import { computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib } from "../compute
 
 describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
   it("should compute rate of persons getting a personalized pages in all contribution pages", () => {
+    // Given
     const date = new Date("2020-01-01T00:00:00.000");
     const data = [
       {

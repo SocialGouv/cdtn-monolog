@@ -5,6 +5,7 @@ import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "../compute
 
 describe("#computeRateOfProcessedCcResultsOverAllResultsByTools - Integration test", () => {
   it("should return list of KpiReport formatted having the rate of processed CC results over all results", () => {
+    // Given
     const reportId = "2020";
     const startDate = new Date("2020-01-01T00:00:00.000");
     const data = [
