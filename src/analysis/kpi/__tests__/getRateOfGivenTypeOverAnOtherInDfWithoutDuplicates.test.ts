@@ -23,7 +23,6 @@ describe("#getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates", () => {
     const expected = {
       denominator: 4,
       numerator: 3,
-      rate: 75,
     };
     // When
     const result = getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates(

@@ -115,6 +115,29 @@ export const getRateWith2decimalsGivenNumeratorAndDenominator = (
     : 0;
 };
 
+export const formatKpiReport = (
+  denominator: number,
+  kpiType: string,
+  numerator: number,
+  reportId: string,
+  startDate: Date,
+  outil = ""
+): KpiReport => {
+  return {
+    denominator: denominator,
+    kpi_type: kpiType,
+    numerator: numerator,
+    outil: outil,
+    rate: getRateWith2decimalsGivenNumeratorAndDenominator(
+      denominator,
+      numerator
+    ),
+    reportId: reportId,
+    reportType: "kpi",
+    start_date: startDate,
+  };
+};
+
 export const monthlyAnalysis = (
   logs: IDataFrame,
   reportId: string = new Date().getTime().toString()

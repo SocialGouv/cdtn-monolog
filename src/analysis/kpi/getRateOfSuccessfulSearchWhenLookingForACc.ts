@@ -4,12 +4,12 @@ import {
   countOccurrencesOfAGivenTypeInDf,
   dfDropDuplicatesOnUrlAndIdVisitAndType,
   filterDataframeByUrlWithPrefix,
-  getRateWith2decimalsGivenNumeratorAndDenominator,
+  formatKpiReport,
   removeAnchorFromUrl,
 } from "../kpi";
 import { KpiReport } from "../reports";
 
-type KpiRate = { denominator: number; numerator: number; rate: number };
+type KpiRate = { denominator: number; numerator: number };
 
 export const getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates = (
   logs: IDataFrame,
@@ -18,17 +18,9 @@ export const getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates = (
 ): KpiRate => {
   const uniqueLogs = dfDropDuplicatesOnUrlAndIdVisitAndType(logs).bake();
 
-  const denominator = countOccurrencesOfAGivenTypeInDf(uniqueLogs, typeDenominator);
-  const numerator = countOccurrencesOfAGivenTypeInDf(uniqueLogs, typeNumerator);
-  const rate = getRateWith2decimalsGivenNumeratorAndDenominator(
-    denominator,
-    numerator
-  );
-
   return {
-    denominator: denominator,
-    numerator: numerator,
-    rate: rate,
+    denominator: countOccurrencesOfAGivenTypeInDf(uniqueLogs, typeDenominator),
+    numerator: countOccurrencesOfAGivenTypeInDf(uniqueLogs, typeNumerator),
   };
 };
 
@@ -52,7 +44,7 @@ export const getRateOfSuccessfulSearchesWhenLookingForAnEnterpriseInCertainTools
   };
 
 export const getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools =
-  (logs: IDataFrame): KpiRate[] => {
+  (logs: IDataFrame, startDate: Date, reportId: string): KpiReport[] => {
     const logsTools = logs
       .filter(
         (log) =>
@@ -69,23 +61,48 @@ export const getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertai
       getRateOfSuccessfulSearchesWhenLookingForACcInCertainTools(logsTools);
     const rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools =
       getRateOfSuccessfulSearchesWhenLookingForAnEnterpriseInCertainTools(logsTools);
+
     return [
-      rateOfSuccessfulSearchWhenLookingForACcInCertainTools,
-      rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools,
+      formatKpiReport(
+        rateOfSuccessfulSearchWhenLookingForACcInCertainTools.denominator,
+        "Rate-of-successful-results-when-searching-cc-in-tools",
+        rateOfSuccessfulSearchWhenLookingForACcInCertainTools.numerator,
+        reportId,
+        startDate
+      ),
+      formatKpiReport(
+        rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools.denominator,
+        "Rate-of-successful-results-when-searching-enterprise-in-tools",
+        rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools.numerator,
+        reportId,
+        startDate
+      ),
     ];
   };
 
 export const getRateOfSuccessfulSearchesWhenLookingForACcInContribPages = (
-  logs: IDataFrame
-): { denominator: number; numerator: number; rate: number } => {
+  logs: IDataFrame,
+  startDate: Date,
+  reportId: string
+): KpiReport => {
   const logsContrib = filterDataframeByUrlWithPrefix(
     logs,
     "https://code.travail.gouv.fr/contribution/"
   ).bake();
-  return getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates(
-    logsContrib,
-    "cc_search",
-    "cc_select"
+
+  const rateOfSuccessfulSearches =
+    getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates(
+      logsContrib,
+      "cc_search",
+      "cc_select"
+    );
+
+  return formatKpiReport(
+    rateOfSuccessfulSearches.denominator,
+    "Rate-of-successful-results-when-searching-cc-in-contribution-pages",
+    rateOfSuccessfulSearches.numerator,
+    reportId,
+    startDate
   );
 };
 
@@ -110,17 +127,19 @@ export const getRateOfSuccessfulSearchWhenLookingForACc = (
 
   const rateOfSuccessfulSearchesWhenLookingForACcInContribPages =
     getRateOfSuccessfulSearchesWhenLookingForACcInContribPages(
-      logsWithUrlCleaned
+      logsWithUrlCleaned,
+      startDate,
+      reportId
     );
 
   const ratesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools =
     getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools(
-      logsWithUrlCleaned
+      logsWithUrlCleaned,
+      startDate,
+      reportId
     );
-  console.log(
-    ratesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools.concat(
-      [rateOfSuccessfulSearchesWhenLookingForACcInContribPages]
-    )
+
+  return ratesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools.concat(
+    [rateOfSuccessfulSearchesWhenLookingForACcInContribPages]
   );
-  return [];
 };
