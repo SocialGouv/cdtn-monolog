@@ -165,9 +165,16 @@ export const monthlyAnalysis = (
       startDate,
       reportId
     );
+  const rateOfSuccessfulSearchWhenLookingForACc =
+    getRateOfSuccessfulSearchWhenLookingForACc(
+      logsIndexed,
+      startDate,
+      reportId
+    );
 
   return completionRateKpi.concat(
     rateVisitsOnCcPagesOnAllContribPages,
-    rateOfCcResultsOverAllResultsOnTools
+    rateOfCcResultsOverAllResultsOnTools,
+    rateOfSuccessfulSearchWhenLookingForACc
   );
 };
