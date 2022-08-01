@@ -44,7 +44,7 @@ describe("#getRateOfSuccessfulSearchesWhenLookingForACcInContribPages", () => {
       kpi_type:
         "Rate-of-successful-results-when-searching-cc-in-contribution-pages",
       numerator: 1,
-      outil: "",
+      outil: "Recherches de CC dans les contributions",
       rate: 50,
       reportId: "2020",
       reportType: "kpi",

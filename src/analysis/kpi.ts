@@ -106,7 +106,7 @@ export const countOccurrencesOfAGivenTypeInDf = (
   return dataset.where((row) => row.type == type).count();
 };
 
-export const getRateWith2decimalsGivenNumeratorAndDenominator = (
+export const getRateWith2decimalsGivenDenominatorAndNumerator = (
   denominator: number,
   numerator: number
 ): number => {
@@ -128,7 +128,7 @@ export const formatKpiReport = (
     kpi_type: kpiType,
     numerator: numerator,
     outil: outil,
-    rate: getRateWith2decimalsGivenNumeratorAndDenominator(
+    rate: getRateWith2decimalsGivenDenominatorAndNumerator(
       denominator,
       numerator
     ),

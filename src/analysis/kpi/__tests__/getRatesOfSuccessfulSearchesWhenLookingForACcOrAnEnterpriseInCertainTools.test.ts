@@ -30,7 +30,7 @@ describe("#getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainT
         denominator: 4,
         kpi_type: "Rate-of-successful-results-when-searching-cc-in-tools",
         numerator: 3,
-        outil: "",
+        outil: "Recherches de CC dans les outils",
         rate: 75,
         reportId: "2020",
         reportType: "kpi",
@@ -41,7 +41,7 @@ describe("#getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainT
         kpi_type:
           "Rate-of-successful-results-when-searching-enterprise-in-tools",
         numerator: 1,
-        outil: "",
+        outil: "Recherches d'entreprises dans les outils",
         rate: 0,
         reportId: "2020",
         reportType: "kpi",

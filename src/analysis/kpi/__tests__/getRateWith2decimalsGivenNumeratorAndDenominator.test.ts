@@ -1,4 +1,4 @@
-import { getRateWith2decimalsGivenNumeratorAndDenominator } from "../../kpi";
+import { getRateWith2decimalsGivenDenominatorAndNumerator } from "../../kpi";
 
 describe("#getRateWith2decimalsGivenNumeratorAndDenominator", () => {
   it("should return 0 if denominator is 0", () => {
@@ -7,7 +7,7 @@ describe("#getRateWith2decimalsGivenNumeratorAndDenominator", () => {
     const denominator = 0;
     const expected = 0;
     // When
-    const result = getRateWith2decimalsGivenNumeratorAndDenominator(
+    const result = getRateWith2decimalsGivenDenominatorAndNumerator(
       denominator,
       numerator
     );
@@ -21,7 +21,7 @@ describe("#getRateWith2decimalsGivenNumeratorAndDenominator", () => {
     const denominator = 3;
     const expected = 33.33;
     // When
-    const result = getRateWith2decimalsGivenNumeratorAndDenominator(
+    const result = getRateWith2decimalsGivenDenominatorAndNumerator(
       denominator,
       numerator
     );

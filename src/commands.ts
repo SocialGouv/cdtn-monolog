@@ -119,7 +119,9 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   const reportId = month.toString() + year.toString();
 
   console.log("Popularity analysis ...");
+  console.log("... for content ...");
   const contentPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONTENT");
+  console.log("... for convention ...");
   const conventionPop = popularityAnalysis(
     data,
     m0,
@@ -128,6 +130,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
     reportId,
     "CONVENTION"
   );
+  console.log("... for query ...");
   const queryPop = popularityAnalysis(
     data,
     m0,

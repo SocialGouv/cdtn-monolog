@@ -68,14 +68,16 @@ export const getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertai
         "Rate-of-successful-results-when-searching-cc-in-tools",
         rateOfSuccessfulSearchWhenLookingForACcInCertainTools.numerator,
         reportId,
-        startDate
+        startDate,
+        "Recherches de CC dans les outils"
       ),
       formatKpiReport(
         rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools.denominator,
         "Rate-of-successful-results-when-searching-enterprise-in-tools",
         rateOfSuccessfulSearchWhenLookingForAnEnterpriseInCertainTools.numerator,
         reportId,
-        startDate
+        startDate,
+        "Recherches d'entreprises dans les outils"
       ),
     ];
   };
@@ -102,7 +104,8 @@ export const getRateOfSuccessfulSearchesWhenLookingForACcInContribPages = (
     "Rate-of-successful-results-when-searching-cc-in-contribution-pages",
     rateOfSuccessfulSearches.numerator,
     reportId,
-    startDate
+    startDate,
+    "Recherches de CC dans les contributions"
   );
 };
 

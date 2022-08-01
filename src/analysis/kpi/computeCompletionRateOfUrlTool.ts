@@ -1,6 +1,9 @@
 import { IDataFrame } from "data-forge";
 
-import { filterDataframeByUrlWithPrefix } from "../kpi";
+import {
+  filterDataframeByUrlWithPrefix,
+  getRateWith2decimalsGivenDenominatorAndNumerator,
+} from "../kpi";
 import { KpiReport } from "../reports";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
@@ -90,7 +93,10 @@ export const getConventionCollectiveCompletionRate = (
     kpi_type: "Completion-rate-of-tools",
     numerator: numerator,
     outil: "Trouver sa convention collective",
-    rate: denominator > 0 ? numerator / denominator : 0,
+    rate: getRateWith2decimalsGivenDenominatorAndNumerator(
+      denominator,
+      numerator
+    ),
     reportId: reportId,
     reportType: "kpi",
     start_date: startDate,
@@ -151,7 +157,10 @@ export const getListOfKpiCompletionRate = (
       kpi_type: "Completion-rate-of-tools",
       numerator: numerator,
       outil: key,
-      rate: denominator > 0 ? numerator / denominator : 0,
+      rate: getRateWith2decimalsGivenDenominatorAndNumerator(
+        denominator,
+        numerator
+      ),
       reportId: reportId,
       reportType: "kpi",
       start_date: startDate,
