@@ -43,6 +43,14 @@ export const getRateOfSuccessfulSearchesWhenLookingForAnEnterpriseInCertainTools
     );
   };
 
+/**
+ * This function compute the rate of successful searches (when clicking on a result) for visitors searching for a cc or an enterprise in
+ *  tools above all visitors making at lease when search of cc or enterprise in tools and return them in the form of a list of KpiReport
+ *
+ * @param {IDataFrame} logs - the dataframe containing all logs
+ * @param {Date} startDate - the first day of the month using to order the report in kibana
+ * @param {string} reportId - the timestamp in string of the date where the script is running
+ **/
 export const getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools =
   (logs: IDataFrame, startDate: Date, reportId: string): KpiReport[] => {
     const logsTools = logs
@@ -82,6 +90,14 @@ export const getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertai
     ];
   };
 
+/**
+ * This function compute the rate of successful searches (when clicking on a result) for visitors searching for a cc in
+ *  contribution pages above all visitors making at lease when search of cc in these pages and return it in the form of a KpiReport
+ *
+ * @param {IDataFrame} logs - the dataframe containing all logs
+ * @param {Date} startDate - the first day of the month using to order the report in kibana
+ * @param {string} reportId - the timestamp in string of the date where the script is running
+ **/
 export const getRateOfSuccessfulSearchesWhenLookingForACcInContribPages = (
   logs: IDataFrame,
   startDate: Date,
@@ -109,6 +125,14 @@ export const getRateOfSuccessfulSearchesWhenLookingForACcInContribPages = (
   );
 };
 
+/**
+ * This function compute the rate of successful searches (when clicking on a result) for visitors searching for a cc or an enterprise above all visitors making at lease when search of cc or enterprise,
+ *  compute this ratio for certain tools and for contribution pages and return them in the form of a list of KpiReport
+ *
+ * @param {IDataFrame} logs - the dataframe containing all logs
+ * @param {Date} startDate - the first day of the month using to order the report in kibana
+ * @param {string} reportId - the timestamp in string of the date where the script is running
+ **/
 export const getRateOfSuccessfulSearchWhenLookingForACc = (
   logs: IDataFrame,
   startDate: Date,
