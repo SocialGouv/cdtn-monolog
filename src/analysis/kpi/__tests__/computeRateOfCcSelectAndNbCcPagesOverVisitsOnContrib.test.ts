@@ -55,7 +55,7 @@ describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
         "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
       numerator: 5,
       outil: "pages-contribution",
-      rate: 83.333,
+      rate: 83.33,
       reportId: "2020",
       reportType: "kpi",
       start_date: date,

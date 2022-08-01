@@ -4,6 +4,7 @@ import {
   countOccurrencesOfAGivenTypeInDf,
   dfDropDuplicatesOnUrlAndIdVisitAndType,
   filterDataframeByContribAndRemoveAnchorFromUrl,
+  formatKpiReport,
 } from "../kpi";
 import { KpiReport } from "../reports";
 
@@ -36,23 +37,14 @@ export const computeRateOfCcSelectOverVisitsOnContribWithoutIdcc = (
     "cc_select"
   );
 
-  return {
-    denominator: nbTotalVisitsOnContribWithoutIdcc,
-    kpi_type: "Rate-of-cc-select-on-pages-contribution-without-idcc",
-    numerator: nbCcSelectOnContribWithoutIdcc,
-    outil: "pages-contribution",
-    rate:
-      nbTotalVisitsOnContribWithoutIdcc > 0
-        ? Math.round(
-            (nbCcSelectOnContribWithoutIdcc /
-              nbTotalVisitsOnContribWithoutIdcc) *
-              100000
-          ) / 1000
-        : 0,
-    reportId: reportId,
-    reportType: "kpi",
-    start_date: startDate,
-  };
+  return formatKpiReport(
+    nbTotalVisitsOnContribWithoutIdcc,
+    "Rate-of-cc-select-on-pages-contribution-without-idcc",
+    nbCcSelectOnContribWithoutIdcc,
+    reportId,
+    startDate,
+    "pages-contribution"
+  );
 };
 
 export const computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib = (
@@ -77,20 +69,15 @@ export const computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib = (
     "cc_select"
   );
   const numerator = nbCcSelectOnContrib + nbTotalVisitsOnContribWithIdcc;
-  return {
-    denominator: nbTotalVisitsOnContrib,
-    kpi_type:
-      "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
-    numerator: numerator,
-    outil: "pages-contribution",
-    rate:
-      nbTotalVisitsOnContrib > 0
-        ? Math.round((numerator / nbTotalVisitsOnContrib) * 100000) / 1000
-        : 0,
-    reportId: reportId,
-    reportType: "kpi",
-    start_date: startDate,
-  };
+
+  return formatKpiReport(
+    nbTotalVisitsOnContrib,
+    "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+    numerator,
+    reportId,
+    startDate,
+    "pages-contribution"
+  );
 };
 
 export const computeKpiRateVisitsOnCcPagesOnAllContribPages = (

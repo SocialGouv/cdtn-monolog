@@ -60,7 +60,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-10",
         outil: "Indemnité de licenciement",
         outilAction: "view_step",
-        outilEvent: "results",
+        outilEvent: "indemnite_legale",
         url: "https://code.travail.gouv.fr/outils/",
       },
       {
@@ -68,7 +68,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-01",
         outil: "Indemnité de licenciement",
         outilAction: "view_step",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
         url: "https://code.travail.gouv.fr/outils/",
       },
       {
@@ -76,7 +76,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-20",
         outil: "Indemnité de licenciement",
         outilAction: "view_step",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
         url: "https://code.travail.gouv.fr/outils/",
       },
       {
@@ -84,7 +84,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-20",
         outil: "Indemnité de licenciement",
         outilAction: "view_step",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
         url: "https://code.travail.gouv.fr/outils/",
       },
       {
@@ -108,7 +108,7 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         lastActionDateTime: "2020-01-20",
         outil: "Indemnité de licenciement",
         outilAction: "view_step",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
         url: "https://code.travail.gouv.fr/outils/",
       },
       {

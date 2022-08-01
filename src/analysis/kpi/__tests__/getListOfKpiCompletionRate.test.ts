@@ -34,7 +34,7 @@ describe("#getListOfKpiCompletionRate", () => {
       {
         nbVisit: 555,
         outil: "Indemnité de licenciement",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
       },
       {
         nbVisit: 900,

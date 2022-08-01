@@ -4,6 +4,7 @@ import * as util from "../../reader/readerUtil";
 import {
   filterDataframeByToolAndRemoveAnchorFromUrl,
   filterDataframeByUrlWithPrefix,
+  formatKpiReport,
 } from "../kpi";
 import { KpiReport } from "../reports";
 
@@ -98,20 +99,14 @@ export const computeRateOfProcessedCcResultsOverAllResultsByTools = (
       const numerator =
         r.nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep;
 
-      const rate =
-        denominator > 0
-          ? Math.round((numerator / denominator) * 10000) / 100
-          : 0;
-      return {
-        denominator: denominator,
-        kpi_type: "Rate-of-conventional-results-on-tools",
-        numerator: numerator,
-        outil: tool_characteristics.tool_name,
-        rate: rate,
-        reportId: reportId,
-        reportType: "kpi",
-        start_date: startDate,
-      };
+      return formatKpiReport(
+        denominator,
+        "Rate-of-conventional-results-on-tools",
+        numerator,
+        reportId,
+        startDate,
+        tool_characteristics.tool_name
+      );
     }
   );
 };

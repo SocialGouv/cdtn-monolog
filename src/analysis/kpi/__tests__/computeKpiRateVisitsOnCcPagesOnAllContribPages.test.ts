@@ -55,7 +55,7 @@ describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", (
         kpi_type: "Rate-of-cc-select-on-pages-contribution-without-idcc",
         numerator: 2,
         outil: "pages-contribution",
-        rate: 66.667,
+        rate: 66.67,
         reportId: "2020",
         reportType: "kpi",
         start_date: date,
