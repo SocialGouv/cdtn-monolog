@@ -67,6 +67,12 @@ export const filterDataframeByUrlWithPrefix = (
   );
 };
 
+export const removeAnchorFromUrl = (dataset: IDataFrame): IDataFrame => {
+  return dataset.withSeries({
+    url: (df) => df.deflate((row) => removeAnchor(row.url)),
+  });
+};
+
 export const filterDataframeByToolAndRemoveAnchorFromUrl = (
   dataset: IDataFrame,
   url = "https://code.travail.gouv.fr/outils/"
@@ -87,7 +93,9 @@ export const filterDataframeByContribAndRemoveAnchorFromUrl = (
   });
 };
 
-export const dfContribDropDuplicates = (dataset: IDataFrame): IDataFrame => {
+export const dfDropDuplicatesOnUrlAndIdVisitAndType = (
+  dataset: IDataFrame
+): IDataFrame => {
   return dataset.distinct((row) => [row.url, row.idVisit, row.type].join("_"));
 };
 
@@ -96,6 +104,38 @@ export const countOccurrencesOfAGivenTypeInDf = (
   type: string
 ): number => {
   return dataset.where((row) => row.type == type).count();
+};
+
+export const getRateWith2decimalsGivenDenominatorAndNumerator = (
+  denominator: number,
+  numerator: number
+): number => {
+  return denominator > 0
+    ? Math.round((numerator / denominator) * 10000) / 100
+    : 0;
+};
+
+export const formatKpiReport = (
+  denominator: number,
+  kpiType: string,
+  numerator: number,
+  reportId: string,
+  startDate: Date,
+  outil = ""
+): KpiReport => {
+  return {
+    denominator: denominator,
+    kpi_type: kpiType,
+    numerator: numerator,
+    outil: outil,
+    rate: getRateWith2decimalsGivenDenominatorAndNumerator(
+      denominator,
+      numerator
+    ),
+    reportId: reportId,
+    reportType: "kpi",
+    start_date: startDate,
+  };
 };
 
 export const monthlyAnalysis = (
@@ -125,9 +165,16 @@ export const monthlyAnalysis = (
       startDate,
       reportId
     );
+  const rateOfSuccessfulSearchWhenLookingForACc =
+    getRateOfSuccessfulSearchWhenLookingForACc(
+      logsIndexed,
+      startDate,
+      reportId
+    );
 
   return completionRateKpi.concat(
     rateVisitsOnCcPagesOnAllContribPages,
-    rateOfCcResultsOverAllResultsOnTools
+    rateOfCcResultsOverAllResultsOnTools,
+    rateOfSuccessfulSearchWhenLookingForACc
   );
 };

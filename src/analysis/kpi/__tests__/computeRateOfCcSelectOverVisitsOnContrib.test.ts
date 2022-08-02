@@ -4,6 +4,7 @@ import { computeRateOfCcSelectOverVisitsOnContribWithoutIdcc } from "../computeK
 
 describe("#computeRateOfCcSelectOverVisitsOnContrib", () => {
   it("should compute rate of persons selecting a cc in non-personalized contribution pages", () => {
+    // Given
     const data = [
       {
         type: "visit_content",

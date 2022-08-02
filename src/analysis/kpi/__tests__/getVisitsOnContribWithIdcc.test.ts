@@ -4,6 +4,7 @@ import { getVisitsOnContribWithIdcc } from "../computeKpiRateVisitsOnCcPagesOnAl
 
 describe("#getVisitsOnContribWithIdcc", () => {
   it("should return df of contrib with only contrib with idcc", () => {
+    // Given
     const data = [
       { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
       { url: "https://code.travail.gouv.fr/contribution/1234" },

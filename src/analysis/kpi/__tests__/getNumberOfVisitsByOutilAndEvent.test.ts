@@ -4,6 +4,7 @@ import { getNumberOfVisitsByOutilAndEvent } from "../computeCompletionRateOfUrlT
 
 describe("#getNumberOfVisitsByOutilAndEvent", () => {
   it("should return list of visits by event and url", () => {
+    // Given
     const data = [
       {
         idVisit: 1,
@@ -48,6 +49,7 @@ describe("#getNumberOfVisitsByOutilAndEvent", () => {
     expect(result).toStrictEqual(datasetExpected);
   });
   it("should remove duplicates for a given visitor", () => {
+    // Given
     const data = [
       { idVisit: 5, outil: "preavis", outilEvent: "start" },
       { idVisit: 5, outil: "preavis", outilEvent: "start" },

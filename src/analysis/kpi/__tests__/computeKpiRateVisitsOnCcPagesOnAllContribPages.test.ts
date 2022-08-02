@@ -4,6 +4,7 @@ import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "../computeKpiRat
 
 describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", () => {
   it("should return list contrib with url formated", () => {
+    // Given
     const date = new Date("2020-01-01T00:00:00.000");
     const data = [
       {
@@ -54,7 +55,7 @@ describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", (
         kpi_type: "Rate-of-cc-select-on-pages-contribution-without-idcc",
         numerator: 2,
         outil: "pages-contribution",
-        rate: 66.667,
+        rate: 66.67,
         reportId: "2020",
         reportType: "kpi",
         start_date: date,

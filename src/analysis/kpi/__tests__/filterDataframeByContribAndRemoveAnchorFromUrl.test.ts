@@ -4,6 +4,7 @@ import { filterDataframeByContribAndRemoveAnchorFromUrl } from "../../kpi";
 
 describe("#filterDataframeByContribAndRemoveAnchorFromUrl", () => {
   it("should return list contrib with url formated", () => {
+    // Given
     const data = [
       { url: "https://code.travail.gouv.fr/contribution/mon-outil" },
       { url: "https://code.travail.gouv.fr/contribution/mon-outil" },

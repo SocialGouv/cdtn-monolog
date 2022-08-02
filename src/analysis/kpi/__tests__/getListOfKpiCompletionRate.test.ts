@@ -34,7 +34,7 @@ describe("#getListOfKpiCompletionRate", () => {
       {
         nbVisit: 555,
         outil: "Indemnité de licenciement",
-        outilEvent: "indemnite_legale",
+        outilEvent: "results",
       },
       {
         nbVisit: 900,
@@ -60,7 +60,7 @@ describe("#getListOfKpiCompletionRate", () => {
         kpi_type: "Completion-rate-of-tools",
         numerator: 90,
         outil: "Heures d'absence pour rechercher un emploi",
-        rate: 0.9,
+        rate: 90,
         reportId: "2020",
         reportType: "kpi",
         start_date: date,
@@ -70,7 +70,7 @@ describe("#getListOfKpiCompletionRate", () => {
         kpi_type: "Completion-rate-of-tools",
         numerator: 555,
         outil: "Indemnité de licenciement",
-        rate: 555 / 1111,
+        rate: 49.95,
         reportId: "2020",
         reportType: "kpi",
         start_date: date,

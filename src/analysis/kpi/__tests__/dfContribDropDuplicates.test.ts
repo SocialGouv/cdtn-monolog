@@ -1,9 +1,10 @@
 import { DataFrame } from "data-forge";
 
-import { dfContribDropDuplicates } from "../../kpi";
+import { dfDropDuplicatesOnUrlAndIdVisitAndType } from "../../kpi";
 
 describe("#dfContribDropDuplicates", () => {
   it("should return df of contrib without duplicates", () => {
+    // Given
     const data = [
       { idVisit: 1, type: "cc_search", url: "mon-outil" },
       { idVisit: 1, type: "cc_search", url: "mon-outil" },
@@ -28,7 +29,7 @@ describe("#dfContribDropDuplicates", () => {
     ];
     const datasetExpected = new DataFrame(dataExpected);
     // When
-    const result = dfContribDropDuplicates(dataset);
+    const result = dfDropDuplicatesOnUrlAndIdVisitAndType(dataset);
 
     // Then
     expect(result).toStrictEqual(datasetExpected);

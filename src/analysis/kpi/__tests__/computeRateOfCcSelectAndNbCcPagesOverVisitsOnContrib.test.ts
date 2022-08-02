@@ -4,6 +4,7 @@ import { computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib } from "../compute
 
 describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
   it("should compute rate of persons getting a personalized pages in all contribution pages", () => {
+    // Given
     const date = new Date("2020-01-01T00:00:00.000");
     const data = [
       {
@@ -54,7 +55,7 @@ describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
         "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
       numerator: 5,
       outil: "pages-contribution",
-      rate: 83.333,
+      rate: 83.33,
       reportId: "2020",
       reportType: "kpi",
       start_date: date,

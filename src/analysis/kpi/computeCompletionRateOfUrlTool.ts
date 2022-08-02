@@ -1,6 +1,10 @@
 import { IDataFrame } from "data-forge";
 
-import { filterDataframeByUrlWithPrefix } from "../kpi";
+import {
+  filterDataframeByUrlWithPrefix,
+  formatKpiReport,
+  getRateWith2decimalsGivenDenominatorAndNumerator,
+} from "../kpi";
 import { KpiReport } from "../reports";
 
 const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
@@ -10,7 +14,7 @@ const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
   },
   "Indemnité de licenciement": {
     firstStep: "start",
-    lastStep: "indemnite_legale",
+    lastStep: "results",
   },
   "Indemnité de précarité": {
     firstStep: "start",
@@ -85,16 +89,14 @@ export const getConventionCollectiveCompletionRate = (
     getValInDfIfIndexIsInList("cc_select_p1", ccTypes, nbVisitsByCcType) +
     getValInDfIfIndexIsInList("cc_select_p2", ccTypes, nbVisitsByCcType);
 
-  return {
-    denominator: denominator,
-    kpi_type: "Completion-rate-of-tools",
-    numerator: numerator,
-    outil: "Trouver sa convention collective",
-    rate: denominator > 0 ? numerator / denominator : 0,
-    reportId: reportId,
-    reportType: "kpi",
-    start_date: startDate,
-  };
+  return formatKpiReport(
+    denominator,
+    "Completion-rate-of-tools",
+    numerator,
+    reportId,
+    startDate,
+    "Trouver sa convention collective"
+  );
 };
 
 export const getNumberOfVisitsByOutilAndEvent = (dataset: IDataFrame) => {
@@ -146,16 +148,14 @@ export const getListOfKpiCompletionRate = (
       visitsByUrlAndEvent
     );
 
-    return {
-      denominator: denominator,
-      kpi_type: "Completion-rate-of-tools",
-      numerator: numerator,
-      outil: key,
-      rate: denominator > 0 ? numerator / denominator : 0,
-      reportId: reportId,
-      reportType: "kpi",
-      start_date: startDate,
-    };
+    return formatKpiReport(
+      denominator,
+      "Completion-rate-of-tools",
+      numerator,
+      reportId,
+      startDate,
+      key
+    );
   });
 };
 
