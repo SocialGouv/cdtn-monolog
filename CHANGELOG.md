@@ -1,3 +1,10 @@
+## [1.13.2](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.1...v1.13.2) (2022-10-05)
+
+
+### Bug Fixes
+
+* simplified groupby before computing covisit in order to decrease complexity ([#185](https://github.com/SocialGouv/cdtn-monolog/issues/185)) ([12afa8c](https://github.com/SocialGouv/cdtn-monolog/commit/12afa8c8c9c09a998540e2512308c0f1ba4ea720))
+
 ## [1.13.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.0...v1.13.1) (2022-06-27)
 
 
