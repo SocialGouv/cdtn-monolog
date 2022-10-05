@@ -21,7 +21,7 @@
     "lint": "eslint src/ --ext .ts --fix",
     "test": "jest",
     "test-one": "jest analysis --watch",
-    "monolog": "node -r ts-node/register --max-old-space-size=20000 src/bin/index.ts",
+    "monolog": "node -r ts-node/register --max-old-space-size=28000 src/bin/index.ts",
     "build:bin": "yarn run ncc build src/bin/index.ts -o bin",
     "build:lib": "yarn tsc -p src/tsconfig.lib.json",
     "start": "node ./bin/index.js",

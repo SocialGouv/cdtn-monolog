@@ -2,6 +2,7 @@ import { IDataFrame } from "data-forge";
 
 import * as datasetUtil from "../reader/dataset";
 import { urlToPath } from "../reader/readerUtil";
+import * as util from "../reader/readerUtil";
 import { CovisiteReport } from "./reports";
 
 const reportType = "covisit";
@@ -18,41 +19,43 @@ const analyse = (
   linkLimit: number = LINK_LIMIT,
   reportId: string = new Date().getTime().toString()
 ): CovisiteReport[] => {
-  // FIXME avoid using to array
-  const visits = datasetUtil.getVisits(dataset).toArray();
+  const newIndex = Array.from(Array(dataset.count()).keys());
+  const datasetIndexed = dataset
+    .withIndex(newIndex)
+    .where((a) => a.type == util.actionTypes.visit);
 
-  const uniqueViews = visits.map((v) =>
-    datasetUtil.toUniqueViews(v).deflate((a: any) => a.url)
-  );
+  const visits = datasetUtil.getVisits(datasetIndexed).toArray();
+  const uniqueViews = visits
+    .map((v: IDataFrame) => {
+      return [...new Set(v.deflate((r) => r.url).toArray())];
+    })
+    .filter((urls) => urls.length > 1);
 
   // unique key to represent link between a & b
   const toKey = (a: string, b: string) => (a < b ? `${a}__${b}` : `${b}__${a}`);
 
   const graph = new Map();
 
-  uniqueViews.forEach((vv) => {
-    const visitViews = vv.toArray();
-    if (visitViews.length > 1) {
-      // visitViews.map((v) => console.log(v.toString()));
-      // get all pairs of contents A/B
-      const covisits = visitViews.reduce(
-        (acc: string[][], a: string, i: number) => {
-          acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
-          return acc;
-        },
-        []
-      );
+  uniqueViews.forEach((visitViews) => {
+    // visitViews.map((v) => console.log(v.toString()));
+    // get all pairs of contents A/B
+    const covisits = visitViews.reduce(
+      (acc: string[][], a: string, i: number) => {
+        acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
+        return acc;
+      },
+      []
+    );
 
-      // TODO use proper edge type rather than array
-      covisits.forEach(([a, b]: string[]) => {
-        const key = toKey(a, b);
-        if (!graph.has(key)) {
-          graph.set(key, { count: 1, nodes: [a, b] });
-        } else {
-          graph.get(key).count++;
-        }
-      });
-    }
+    // TODO use proper edge type rather than array
+    covisits.forEach(([a, b]: string[]) => {
+      const key = toKey(a, b);
+      if (!graph.has(key)) {
+        graph.set(key, { count: 1, nodes: [a, b] });
+      } else {
+        graph.get(key).count++;
+      }
+    });
   });
 
   const contents = new Map<string, Map<string, number>>();
