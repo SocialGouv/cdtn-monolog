@@ -9,6 +9,10 @@ import { getDocuments } from "../es/elastic";
 import { actionTypes, getLastDays } from "./readerUtil";
 
 const defaultTypesToConsider = Object.values(actionTypes);
+
+export const delay = (seconds: number) =>
+  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+
 const build_query = (day: string, type: Array<string>) => {
   return {
     bool: {
@@ -55,7 +59,7 @@ export const queryAndWrite = async (
   console.log(`writing ${day}`);
   await unfoldedData.asCSV().writeFile(output + "/" + day);
 };
-export const readDaysandWrite = async (
+export const readDaysAndWrite = async (
   index: string,
   days: string[],
   type: string[],

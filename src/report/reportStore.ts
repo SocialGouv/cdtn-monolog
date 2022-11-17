@@ -16,6 +16,20 @@ export const standardMappings = {
       type: "integer",
     },
 
+    doc: {
+      properties: {
+        m0_norm_count: {
+          type: "float",
+        },
+        m1_norm_count: {
+          type: "float",
+        },
+        rel_diff: {
+          type: "float",
+        },
+      },
+    },
+
     links: {
       type: "object",
     },

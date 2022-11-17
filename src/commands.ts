@@ -26,7 +26,8 @@ import {
 import { checkIndex, ingest } from "./ingestion/ingester";
 import {
   countVisits,
-  readDaysandWrite,
+  delay,
+  readDaysAndWrite,
   readDaysFromElastic,
   readFromFile,
   readFromFolder,
@@ -142,11 +143,13 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   );
   // TODO : delete previous popularity reports
   await resetReportIndex(REPORT_INDEX, standardMappings);
+  await delay(60);
   await saveReport(REPORT_INDEX, [
     ...contentPop,
     ...conventionPop,
     ...queryPop,
   ]);
+  await delay(180);
 
   console.log("Visit analysis ...");
   const logFiles = getDaysInPrevMonth(month, year);
@@ -182,7 +185,7 @@ export const retrieveThreeMonthsData = async (
     }), saved in data-${output}`
   );
 
-  await readDaysandWrite(
+  await readDaysAndWrite(
     LOG_INDEX,
     daysOfLastThreeMonths,
     [
@@ -196,6 +199,8 @@ export const retrieveThreeMonthsData = async (
     ],
     `data-${output}`
   );
+
+  await delay(240);
 
   logger.info(
     `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`
