@@ -17,10 +17,7 @@ describe("#getRateWith2decimalsGivenNumeratorAndDenominator", () => {
   });
   it("should return 33.33 when numerator is 1 and denominator is 3", () => {
     // When
-    const result = getRateWith2decimalsGivenDenominatorAndNumerator(
-      3,
-      1
-    );
+    const result = getRateWith2decimalsGivenDenominatorAndNumerator(3, 1);
 
     // Then
     expect(result).toStrictEqual(33.33);

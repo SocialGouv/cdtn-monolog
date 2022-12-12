@@ -40,6 +40,10 @@ export const computeReports = (
   const minOccurence = 40;
 
   const diff = joined
+    .where(
+      (r) =>
+        r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != ""
+    )
     .generateSeries({
       diff: (row) => row.m0_norm_count - row.m1_norm_count,
     })
@@ -49,11 +53,7 @@ export const computeReports = (
     .generateSeries({
       rel_diff: (row) =>
         row.m1_count > 0 ? (row.m0_count - row.m1_count) / row.m1_count : 0,
-    })
-    .where(
-      (r) =>
-        r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != ""
-    );
+    });
 
   const topDiff = diff.orderByDescending((r: any) => r.abs_diff).take(nContent);
   const topPop = diff.orderByDescending((r) => r.m0_count).take(nContent);
