@@ -93,7 +93,7 @@ const main = async () => {
       .demandCommand()
       // .strict()
       .help().argv;
-  } catch (err) {
+  } catch (err: any) {
     if (err.name != undefined && err.name == ConnectionError.name) {
       logger.error("Cannot access Elastic : " + JSON.stringify(err, null, 2));
     } else {
