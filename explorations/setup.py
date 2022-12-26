@@ -8,6 +8,7 @@ setup(
     author='OCTO Technology',
     install_requires=['elasticsearch==7.17',
                       #'eland==8.3', with elasticsearch 8.3 for explo 7
+                      'ipywidgets==8.0.4',
                       'jupyterlab',
                       'notebook==6.4',
                       'pandas==1.5',
