@@ -20,6 +20,7 @@ setup(
                       'torch==1.12',
                       'transformers==4.21',
                       'tqdm==4.64',
+                      'ipywidgets==8.0.4',
                       'unidecode==1.3.4'],
     python_requires='>=3.9',
 )
