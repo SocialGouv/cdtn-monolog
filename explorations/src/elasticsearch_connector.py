@@ -4,7 +4,7 @@ import pandas as pd
 import math
 from tqdm.notebook import tqdm
 from typing import List, Dict
-from elasticsearch import Elasticsearch    
+from elasticsearch import Elasticsearch
 import os
 from dotenv import load_dotenv
 import logging
@@ -16,7 +16,7 @@ class ElasticsearchConnector:
         #self.host = os.getenv('ELASTICSEARCH_HOST')
         #self.user = os.getenv('ELASTICSEARCH_USER')
         #self.password = os.getenv('ELASTICSEARCH_PASSWORD')
-        if env=='local':  
+        if env=='local':
             self.overrides_env_es_local()
         elif env=='monolog':
             self.overrides_env_es_monolog()
@@ -27,22 +27,22 @@ class ElasticsearchConnector:
         else:
             raise Exception('Unexpected env', f'No environement corresponding to {env}')
         self.connection = self._get_connection()
-        
+
     def overrides_env_es_monolog(self):
         self.host = os.getenv('ELASTICSEARCH_MONOLOG_HOST')
         self.user = os.getenv('ELASTICSEARCH_MONOLOG_USER')
         self.password = os.getenv('ELASTICSEARCH_MONOLOG_PASSWORD')
-        
+
     def overrides_env_es_admin(self):
         self.host = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_HOST')
         self.user = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_USER')
         self.password = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_PASSWORD')
-        
+
     def overrides_env_es_admin_test(self):
-        self.host = 'https://test-ml.es.francecentral.azure.elastic-cloud.com:9243' # os.getenv('ELASTICSEARCH_SEARCH_ENGINE_TEST_HOST')
+        self.host = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_TEST_HOST')
         self.user = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_TEST_USER')
         self.password = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_TEST_PASSWORD')
-        
+
     def overrides_env_es_local(self):
         self.host = os.getenv('ELASTICSEARCH_LOCAL_HOST')
         self.user = os.getenv('LOCAL_ELASTICSEARCH_LOCAL_USER', "")
@@ -54,7 +54,7 @@ class ElasticsearchConnector:
             '\x1B[1m\x1b[91mis KO\x1b[0m'
         print(f'connection with ElasticSearch {connection_sucess}')
         return es_connection
-    
+
     def count_hits(self, query: Dict, index: str) -> int:
         nb_hits = self.connection.count(
             index = index,
@@ -88,7 +88,7 @@ class ElasticsearchConnector:
             scroll_id, hits = self._init_query(query, index)
             data.extend(hits)
             pbar.update(step_size)
-            
+
             for i in range(math.floor(num_hits/step_size)):
                 data.extend(self._scroll_query(scroll_id))
                 # voir comment sauvegarder au fur et a mesure
@@ -103,7 +103,7 @@ class ElasticsearchConnector:
             scroll_id, hits = self._init_query(query, index)
             data.extend(hits)
             pbar.update(step_size)
-            
+
             for i in range(math.floor(num_hits/step_size)):
                 data.extend(self._scroll_query(scroll_id))
                 # voir comment sauvegarder au fur et a mesure
