@@ -151,6 +151,14 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         outilEvent: "results",
         url: "https://code.travail.gouv.fr/outils/",
       },
+      {
+        idVisit: 4,
+        lastActionDateTime: "2020-01-25",
+        outil: "Procédure licenciement",
+        outilAction: "view_step",
+        outilEvent: "start",
+        url: "https://code.travail.gouv.fr/outils/procedure-licenciement",
+      },
     ];
     const dataset = new DataFrame(data);
     const expected = [
@@ -224,11 +232,21 @@ describe("#computeCompletionRateOfUrlTool - Integration test", () => {
         reportType: "kpi",
         start_date: date,
       },
+      {
+        denominator: 1,
+        kpi_type: "Completion-rate-of-tools",
+        numerator: 0,
+        outil: "Comprendre sa procédure de licenciement",
+        rate: 0,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: date,
+      },
     ];
     // When
     const result = computeCompletionRateOfUrlTool(dataset, date, "2020");
 
     // Then
-    expect(result.slice(0, 7)).toStrictEqual(expected.slice(0, 7));
+    expect(result.slice(0, 8)).toStrictEqual(expected.slice(0, 8));
   });
 });
