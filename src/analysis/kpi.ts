@@ -1,3 +1,4 @@
+import { logger } from "@socialgouv/cdtn-logger";
 import { IDataFrame, ISeries } from "data-forge";
 
 import { queryAndWrite } from "../reader/logReader";
@@ -148,10 +149,14 @@ export const monthlyAnalysis = (
 
   const startDate = getFirstDayOfMonth(logs.getSeries("lastActionDateTime"));
 
+  logger.info("Computing completion rate for tools");
   const completionRateKpi = computeCompletionRateOfUrlTool(
     logsIndexed,
     startDate,
     reportId
+  );
+  logger.info(
+    "Computing the rate of personalized contrib with CC over all visits on page contrib"
   );
   const rateVisitsOnCcPagesOnAllContribPages =
     computeKpiRateVisitsOnCcPagesOnAllContribPages(
@@ -159,12 +164,16 @@ export const monthlyAnalysis = (
       startDate,
       reportId
     );
+  logger.info(
+    "Computing the rate of personalized tool result with CC over all people attaining result page of tool"
+  );
   const rateOfCcResultsOverAllResultsOnTools =
     computeRateOfProcessedCcResultsOverAllResultsByTools(
       logsIndexed,
       startDate,
       reportId
     );
+  logger.info("Computing the rate of successful search when looking for a CC");
   const rateOfSuccessfulSearchWhenLookingForACc =
     getRateOfSuccessfulSearchWhenLookingForACc(
       logsIndexed,

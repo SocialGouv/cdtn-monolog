@@ -163,7 +163,7 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   logger.info(
     `Running monthly log analysis for KPI rate of completion using data ${allLogsForLastMonthFolder}, saved in Elastic reports`
   );
-  console.log("Monthly KPI analysis ...");
+  logger.info("Monthly KPI analysis ...");
   // TODO : uncomment next line first time
   //await resetReportIndex(KPI_INDEX, kpiMappings);
   const rawData = await readFromFolder(allLogsForLastMonthFolder);
