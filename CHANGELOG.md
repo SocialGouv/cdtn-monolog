@@ -1,3 +1,10 @@
+# [1.14.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.3...v1.14.0) (2022-12-27)
+
+
+### Features
+
+* ajout du taux de complétion pour l'outil procédure licenciement ([#188](https://github.com/SocialGouv/cdtn-monolog/issues/188)) ([ec5e2e7](https://github.com/SocialGouv/cdtn-monolog/commit/ec5e2e7cd08fc5841e377038607161ee222fd26c))
+
 ## [1.13.3](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.2...v1.13.3) (2022-12-12)
 
 

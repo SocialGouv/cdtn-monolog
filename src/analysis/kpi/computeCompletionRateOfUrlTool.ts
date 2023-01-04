@@ -36,9 +36,9 @@ const DICT_OF_OUTILS_WITH_STARTING_AND_ENDING_STEP_EVENT_NAME = {
 
 const getValInDfIfIndexIsInList = (
   index: string,
-  list: string[],
   df: IDataFrame<string, number>
 ): number => {
+  const list = df.getIndex().toArray();
   return list.includes(index) ? df.getSeries("nbVisit").at(index) : 0;
 };
 
@@ -72,12 +72,6 @@ export const getConventionCollectiveCompletionRate = (
       )
   );
 
-  const nbVisitsByCcType = getNumberOfVisitsByCcType(
-    logsConventionCollectiveDataset
-  );
-
-  const ccTypes = nbVisitsByCcType.getIndex().toArray();
-
   const denominator = logsConventionCollectiveDataset
     .where(
       (row) => row.outilAction == "view_step" && row.outilEvent === "start"
@@ -85,9 +79,20 @@ export const getConventionCollectiveCompletionRate = (
     .distinct((row) => row.idVisit)
     .count();
 
+  const nbVisitsByCcType = getNumberOfVisitsByCcType(
+    logsConventionCollectiveDataset
+  );
+
   const numerator =
-    getValInDfIfIndexIsInList("cc_select_p1", ccTypes, nbVisitsByCcType) +
-    getValInDfIfIndexIsInList("cc_select_p2", ccTypes, nbVisitsByCcType);
+    getValInDfIfIndexIsInList("cc_select_p1", nbVisitsByCcType) +
+    getValInDfIfIndexIsInList("cc_select_p2", nbVisitsByCcType);
+
+  const numerator2 = logsConventionCollectiveDataset
+    .where(
+      (row) => row.outilAction == "view_step" && row.outilEvent === "start"
+    )
+    .distinct((row) => row.idVisit)
+    .count();
 
   return formatKpiReport(
     denominator,
@@ -96,6 +101,43 @@ export const getConventionCollectiveCompletionRate = (
     reportId,
     startDate,
     "Trouver sa convention collective"
+  );
+};
+
+export const getProcedureLicenciementCompletionRate = (
+  logsOutilDataset: IDataFrame,
+  startDate: Date,
+  reportId: string
+): KpiReport => {
+  const logsProcedureLicenciementDataset = logsOutilDataset.where(
+    (log) =>
+      log.url != undefined &&
+      log.url.startsWith(
+        "https://code.travail.gouv.fr/outils/procedure-licenciement"
+      )
+  );
+
+  const denominator = logsProcedureLicenciementDataset
+    .where((row) => row.outilAction == "view_step" && row.outilEvent == "start")
+    .distinct((row) => row.idVisit)
+    .count();
+
+  const numerator = logsProcedureLicenciementDataset
+    .where(
+      (row) =>
+        row.outilAction == "comprendre_sa_procedure_de_licenciement" &&
+        row.outilEvent == "click_afficher_les_infos_personnalisées"
+    )
+    .distinct((row) => row.idVisit)
+    .count();
+
+  return formatKpiReport(
+    denominator,
+    "Completion-rate-of-tools",
+    numerator,
+    reportId,
+    startDate,
+    "Comprendre sa procédure de licenciement"
   );
 };
 
@@ -168,9 +210,14 @@ export const computeCompletionRateOfUrlTool = (
   // Get logs on tools
   const logsOutil = filterDataframeByUrlWithPrefix(logs, url);
 
+  // Some tools's completion rate are computed differently. Let's compute them first
   // Compute completion rate of convention collective tool first
   const conventionCollectiveCompletionRate =
     getConventionCollectiveCompletionRate(logsOutil, startDate, reportId);
+
+  // Compute completion rate of tool 'comprendre sa procédure de licenciement'
+  const procedureLicenciementCompletionRate =
+    getProcedureLicenciementCompletionRate(logsOutil, startDate, reportId);
 
   const logsOutilFiltered = logsOutil.where(
     (row) => row.outilAction == "view_step"
@@ -185,7 +232,8 @@ export const computeCompletionRateOfUrlTool = (
     reportId
   );
 
-  listOfKpisCompletionRate.push(conventionCollectiveCompletionRate);
-
-  return listOfKpisCompletionRate;
+  return listOfKpisCompletionRate.concat([
+    conventionCollectiveCompletionRate,
+    procedureLicenciementCompletionRate,
+  ]);
 };
