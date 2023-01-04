@@ -1,3 +1,27 @@
+# [1.14.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.3...v1.14.0) (2022-12-27)
+
+
+### Features
+
+* ajout du taux de complétion pour l'outil procédure licenciement ([#188](https://github.com/SocialGouv/cdtn-monolog/issues/188)) ([ec5e2e7](https://github.com/SocialGouv/cdtn-monolog/commit/ec5e2e7cd08fc5841e377038607161ee222fd26c))
+
+## [1.13.3](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.2...v1.13.3) (2022-12-12)
+
+
+### Bug Fixes
+
+* add elasticsearch mapping for some float fields for popularity job ([130309b](https://github.com/SocialGouv/cdtn-monolog/commit/130309bf75a5cf41aa388162042b8c9a7e37d221))
+* ci ([f499bdf](https://github.com/SocialGouv/cdtn-monolog/commit/f499bdf41a5fc21e9e67de58463b7ad3017decd0))
+* ci ([8128db8](https://github.com/SocialGouv/cdtn-monolog/commit/8128db898c137bca05478dd8a47caace8d839abc))
+* simplified groupby before computing covisit in order to decrease complexity ([359f39f](https://github.com/SocialGouv/cdtn-monolog/commit/359f39f8b9fe5d49e2e97d583fbc3be1bd8d3e43))
+
+## [1.13.2](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.1...v1.13.2) (2022-10-05)
+
+
+### Bug Fixes
+
+* simplified groupby before computing covisit in order to decrease complexity ([#185](https://github.com/SocialGouv/cdtn-monolog/issues/185)) ([12afa8c](https://github.com/SocialGouv/cdtn-monolog/commit/12afa8c8c9c09a998540e2512308c0f1ba4ea720))
+
 ## [1.13.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.0...v1.13.1) (2022-06-27)
 
 
