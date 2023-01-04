@@ -1,3 +1,10 @@
+# [1.15.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.14.0...v1.15.0) (2023-01-04)
+
+
+### Features
+
+* add doc ([9e13ea4](https://github.com/SocialGouv/cdtn-monolog/commit/9e13ea467e8fa6e86def53a479d17a0cce3cfac6))
+
 # [1.14.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.13.3...v1.14.0) (2022-12-27)
 
 
