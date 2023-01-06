@@ -39,7 +39,7 @@
     "fp-ts": "^2.11.5",
     "murmurhash-js": "^1.0.0",
     "node-fetch": "^2.6.6",
-    "p-queue": "^6.6.2",
+    "p-queue": "^7.0.0",
     "winston": "^3.3.3",
     "yargs": "^17.2.1"
   },
