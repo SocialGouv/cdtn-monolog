@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.16.0...v1.16.1) (2023-01-06)
+
+
+### Bug Fixes
+
+* doc ([362ad9f](https://github.com/SocialGouv/cdtn-monolog/commit/362ad9fdb22aef2996ca6ebdc9ce2f9afe8a0974))
+
 # [1.16.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.15.0...v1.16.0) (2023-01-06)
 
 
