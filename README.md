@@ -18,14 +18,16 @@ ELASTICSEARCH_URL # URL of the Elastic instance where the logs are stored eventu
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
 CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results
 ```
+
 ## Local
+
 To run locally launch ES :
 
     docker-compose up
 
 NB: to run any command on your local environment, you won't need any API_KEY in next commands.
 
-However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index. 
+However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index.
 
 ## Log storage
 
@@ -42,12 +44,14 @@ The `download_dump.sh` script allows you to get a dump file from Azure.
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog ingest data/
 ```
 
-To test locally we can use the file  [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to beisolated in a folder (e.g. /src/__tests__/__fixtures__/data/2020-04-24.json) to then run 
+To test locally we can use the file [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to beisolated in a folder (e.g. /src/**tests**/**fixtures**/data/2020-04-24.json) to then run
+
 ```console
 yarn monolog ingest src/__tests__/input/data/
 ```
 
 You can then run for example :
+
 ```console
 node -r ts-node/register src/tests/query_es.ts
 ```
@@ -98,6 +102,7 @@ Based on usage logs we compute several reports and store them to Elastic :
 ```console
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog monthly -m mmmmmm
 ```
+
 _mmmmmm_ being the suffix of folder _data-mmmmmm_, _data-outils-mmmmmm_ and _cache-mmmmmm.json_
 
 ### `query reports`
@@ -169,7 +174,7 @@ Most analysis are indexed in ElasticSearch and visualized via Kibana Dashboards
 ## saved objects
 
 To restore Dashboards & visualisations follow this [documentation](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html)
-kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/) 
+kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/)
 
 ## Adding a new analysis
 
@@ -189,7 +194,8 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly -m november # génerer le
 :warning: Il faut juste récupérer le dernier mois dans le retrieve
 
 ```sh
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o data-last-month
-CDTN_API_URL=http://url-preprod yarn monolog cache -d data-last-month -o cache-last-month.json # convertir les logs dans un json
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-last-month -c cache-last-month.json -s suggestions.txt # générer les rapports queries
+ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o data-last-month # ~ 630 secondes
+CDTN_API_URL=https://api-code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog cache -d data-last-month -o cache-last-month.json # convertir les logs dans un json ~ 6260.84s.
+# touch suggestions.txt
+ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-last-month -c cache-last-month.json -s suggestions.txt # générer les rapports queries ~ 44 secondes
 ```
