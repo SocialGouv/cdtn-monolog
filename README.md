@@ -186,7 +186,7 @@ TODO : describe how to create an additional report
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois
 yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly -m november # génerer les rapports mensuels
- yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois)
+yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois)
 ```
 
 ## Pour les queries
@@ -194,8 +194,7 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly -m november # génerer le
 :warning: Il faut juste récupérer le dernier mois dans le retrieve
 
 ```sh
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o data-last-month # ~ 630 secondes
-CDTN_API_URL=https://api-code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog cache -d data-last-month -o cache-last-month.json # convertir les logs dans un json ~ 6260.84s.
-# touch suggestions.txt
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-last-month -c cache-last-month.json -s suggestions.txt # générer les rapports queries ~ 44 secondes
+ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o month # ~ 630 secondes
+CDTN_API_URL=https://api-code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog cache -d data-month -o cache-month.json # convertir les logs dans un json ~ 6260.84s.
+ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-month -c cache-month.json # générer les rapports queries ~ 271 secondes
 ```
