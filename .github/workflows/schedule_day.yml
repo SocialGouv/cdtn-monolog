@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       date:
-        description: 'Date à laquelle, on récupère la donnée'
+        description: 'Date à laquelle, on récupère la donnée (format: yyyy-mm-dd)'
         required: true
 
 jobs:
