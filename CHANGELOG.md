@@ -1,3 +1,18 @@
+# [1.17.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.16.1...v1.17.0) (2023-02-13)
+
+
+### Bug Fixes
+
+* **actions:** modify naming for new workflow ([e2da382](https://github.com/SocialGouv/cdtn-monolog/commit/e2da382298624ce544ca49f82982dcf4041e3544))
+* **actions:** upgrade release ([b4ffec0](https://github.com/SocialGouv/cdtn-monolog/commit/b4ffec0a8e328ded60a6b3562035cc408969b4b9))
+* add precise date ([eb634c7](https://github.com/SocialGouv/cdtn-monolog/commit/eb634c7d6d1e39eca0d8f061911852324d2d9664))
+* remove ([f54edcf](https://github.com/SocialGouv/cdtn-monolog/commit/f54edcffe6d5ca0fe662c98aa0f7011575835e24))
+
+
+### Features
+
+* **alert:** envoie une alerte sur mattermost quand la synchro des données échoue ([2d963fe](https://github.com/SocialGouv/cdtn-monolog/commit/2d963fed2f62ebcaae82ccb1838a0d8cb9d03d31))
+
 ## [1.16.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.16.0...v1.16.1) (2023-01-06)
 
 
