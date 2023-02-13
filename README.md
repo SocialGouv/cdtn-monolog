@@ -180,7 +180,7 @@ kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/)
 
 TODO : describe how to create an additional report
 
-## Etape à effectuer chaque mois
+## Étapes à effectuer chaque mois
 
 ```sh
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
@@ -190,9 +190,9 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly-kpi -m november # génere
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois) ~ 6min
 ```
 
-## Pour les queries
+### Les queries
 
-:warning: Il faut juste récupérer le dernier mois dans le retrieve
+:warning: Il faut juste récupérer le dernier mois dans le retrieve d'où le script `get_last_month_cache.sh`
 
 ```sh
 chmod +x scripts/get_last_month_cache.sh
