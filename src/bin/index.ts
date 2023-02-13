@@ -9,6 +9,7 @@ import {
   retrieveThreeMonthsData,
   runIngestion,
   runMonthly,
+  runMonthlyKpi,
   runQueryAnalysis,
 } from "../commands";
 
@@ -89,6 +90,14 @@ const main = async () => {
           month: { alias: "m", demand: true },
         },
         ({ month }) => runMonthly(month as string)
+      )
+      .command(
+        "monthly-kpi [data]",
+        "Compute monthly reports (visit and popularity)",
+        {
+          month: { alias: "m", demand: true },
+        },
+        ({ month }) => runMonthlyKpi(month as string)
       )
       .demandCommand()
       // .strict()
