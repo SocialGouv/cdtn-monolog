@@ -196,7 +196,7 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog covisits -d data-november # géne
 
 ```sh
 chmod +x scripts/get_last_month_cache.sh
-./scripts/get_last_month_cache.sh data-january
+./scripts/get_last_month_cache.sh data-month
 yarn monolog cache -d data-queries -o cache-queries.json # convertir les logs dans un json ~ 30min
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-queries -c cache-queries.json # générer les rapports queries ~ 2 minutes
 ```
