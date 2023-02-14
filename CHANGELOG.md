@@ -1,3 +1,11 @@
+## [1.18.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.18.0...v1.18.1) (2023-02-14)
+
+
+### Bug Fixes
+
+* add graph ([4228853](https://github.com/SocialGouv/cdtn-monolog/commit/4228853f88b3a3473b422a2ed3c8bee9aee0bdd8))
+* files ([88030d7](https://github.com/SocialGouv/cdtn-monolog/commit/88030d701afaea64c43fbed8c884e582bcb40cd3))
+
 # [1.18.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.17.0...v1.18.0) (2023-02-14)
 
 
