@@ -200,3 +200,109 @@ chmod +x scripts/get_last_month_cache.sh
 yarn monolog cache -d data-queries -o cache-queries.json # convertir les logs dans un json ~ 30min
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-queries -c cache-queries.json # générer les rapports queries ~ 2 minutes
 ```
+
+### Les index à supprimer lorsqu'on relance les commandes à effectuer chaque mois
+
+- `logs-satisfaction`
+- `logs-satisfaction-reasons`
+- `log_reports_monthly`
+- `log_kpi_index`
+
+Ci-dessous, un example pour supprimer les données de janvier 2023
+
+#### Pour `logs-satisfaction` et `logs-satisfaction-reasons`
+
+```elasticsearch
+GET logs-satisfaction*/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {
+          "endDate": {
+            "gte": "2023-01-01",
+            "lt": "2023-02-01"
+          }
+        }}
+      ]
+    }
+  }
+}
+
+POST logs-satisfaction*/_delete_by_query
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {
+          "endDate": {
+            "gte": "2023-01-01",
+            "lt": "2023-02-01"
+          }
+        }}
+      ]
+    }
+  }
+}
+```
+
+#### Pour `log_reports_monthly`
+
+```elasticsearch
+GET log_reports_monthly/_search
+{
+  "query": {
+    "term": {
+      "reportId.keyword": "monthly-1-2023"
+    }
+  }
+}
+
+# Etape 2 : supprimer l'index
+POST log_reports_monthly/_delete_by_query
+{
+  "query": {
+    "term": {
+      "reportId.keyword": {
+        "value": "monthly-1-2023"
+      }
+    }
+  }
+}
+```
+
+#### Pour `log_kpi_index`
+
+```elasticsearch
+GET log_kpi_index/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {
+          "start_date": {
+            "gte": "2023-01-01",
+            "lt": "2023-02-01"
+          }
+        }}
+      ]
+    }
+  }
+}
+
+POST log_kpi_index/_delete_by_query
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"range": {
+          "start_date": {
+            "gte": "2023-01-01",
+            "lt": "2023-02-01"
+          }
+        }}
+      ]
+    }
+  }
+}
+```
