@@ -21,7 +21,7 @@ jobs:
       - name: Download
         uses: docker://mcr.microsoft.com/azure-cli
         with:
-          args: "bash ./scripts/download_dump.sh"
+          args: bash ./scripts/download_dump_precise_date.sh ${{ github.event.inputs.date }}
         env:
           AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
       - name: Ingest
