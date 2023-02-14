@@ -51,8 +51,7 @@ describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
     const dataset = new DataFrame(data);
     const expected = {
       denominator: 6,
-      kpi_type:
-        "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+      kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
       numerator: 5,
       outil: "pages-contribution",
       rate: 83.33,
@@ -61,11 +60,7 @@ describe("#computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib", () => {
       start_date: date,
     };
     // When
-    const result = computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);

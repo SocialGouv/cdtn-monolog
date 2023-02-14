@@ -7,8 +7,7 @@ import { actionTypes, urlToPath } from "../reader/readerUtil";
 import { joinOuter3DfOnFieldColumn } from "./dataframeUtils";
 import { PopularityReport } from "./reports";
 
-const reportType = (pt: PopularityTypeString): string =>
-  `${pt.toLowerCase()}-popularity`;
+const reportType = (pt: PopularityTypeString): string => `${pt.toLowerCase()}-popularity`;
 
 const removeAnchor = (url: string) => {
   // remove query parameters
@@ -30,20 +29,13 @@ export const computeReports = (
   reportId: string,
   reportType: string
 ) => {
-  const joined = joinOuter3DfOnFieldColumn(
-    focusCounts,
-    refCounts,
-    previousMonthCount
-  );
+  const joined = joinOuter3DfOnFieldColumn(focusCounts, refCounts, previousMonthCount);
 
   const nContent = 40;
   const minOccurence = 40;
 
   const diff = joined
-    .where(
-      (r) =>
-        r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != ""
-    )
+    .where((r) => r.m1_count + r.m0_count + r.m2_count > minOccurence && r.field != "")
     .generateSeries({
       diff: (row) => row.m0_norm_count - row.m1_norm_count,
     })
@@ -51,8 +43,7 @@ export const computeReports = (
       abs_diff: (row) => Math.abs(row.diff),
     })
     .generateSeries({
-      rel_diff: (row) =>
-        row.m1_count > 0 ? (row.m0_count - row.m1_count) / row.m1_count : 0,
+      rel_diff: (row) => (row.m1_count > 0 ? (row.m0_count - row.m1_count) / row.m1_count : 0),
     });
 
   const topDiff = diff.orderByDescending((r: any) => r.abs_diff).take(nContent);
@@ -93,8 +84,7 @@ const countURLs = (dataframe: IDataFrame) => {
 
   const sum = counts.deflate((r) => r.count).sum();
   const normalizedCounts = counts.withSeries({
-    normalized_count: (df) =>
-      df.deflate((row) => row.count).select((count) => count / sum),
+    normalized_count: (df) => df.deflate((row) => row.count).select((count) => count / sum),
   });
   return normalizedCounts.setIndex("url");
 };
@@ -122,11 +112,7 @@ export const countQueries = (
       const entry = idx != undefined ? cache.value.clusters.get(idx) : 0;
 
       // case no entry or no result in entry
-      if (
-        idx == undefined ||
-        !entry ||
-        (entry as CacheQueryCluster).results.size == 0
-      ) {
+      if (idx == undefined || !entry || (entry as CacheQueryCluster).results.size == 0) {
         //TODO
         //   console.log("Issue " + query);
         //   console.log(idx);
@@ -157,9 +143,7 @@ export const countQueries = (
       normalized_count: number;
     };
 
-    const reportedClusters: ClusterReport[] = Array.from(
-      clusterCounts.entries()
-    )
+    const reportedClusters: ClusterReport[] = Array.from(clusterCounts.entries())
       .map(([idx, cc]) => {
         const count = cc.reduce((acc, next) => acc + next.count, 0);
         const normalized_count = count / queries.length;
@@ -224,17 +208,10 @@ const analyse = (
   */
 
   // so we use toArray for now
-  const grouping =
-    popularityType == PopularityType[PopularityType.QUERY]
-      ? toUniqueSearches
-      : toUniqueViews;
-  const uniqueViews = DataFrame.concat(
-    visits.select((visit) => grouping(visit)).toArray()
-  );
+  const grouping = popularityType == PopularityType[PopularityType.QUERY] ? toUniqueSearches : toUniqueViews;
+  const uniqueViews = DataFrame.concat(visits.select((visit) => grouping(visit)).toArray());
 
-  const idxUniqueViews = uniqueViews.withIndex(
-    Array.from(Array(uniqueViews.count()).keys())
-  );
+  const idxUniqueViews = uniqueViews.withIndex(Array.from(Array(uniqueViews.count()).keys()));
 
   // clean views
   const noError = (action: any) =>
@@ -250,8 +227,7 @@ const analyse = (
     filter = "convention-collective/";
   }
 
-  const filterUrl = (action: any) =>
-    filter ? action.url.includes(filter) : true;
+  const filterUrl = (action: any) => (filter ? action.url.includes(filter) : true);
 
   const filteredVisitViews = idxUniqueViews.where(noError).where(filterUrl);
 

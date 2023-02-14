@@ -7,10 +7,7 @@ describe("#getRateWith2decimalsGivenNumeratorAndDenominator", () => {
     const denominator = 0;
     const expected = 0;
     // When
-    const result = getRateWith2decimalsGivenDenominatorAndNumerator(
-      denominator,
-      numerator
-    );
+    const result = getRateWith2decimalsGivenDenominatorAndNumerator(denominator, numerator);
 
     // Then
     expect(result).toStrictEqual(expected);

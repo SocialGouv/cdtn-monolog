@@ -22,11 +22,7 @@ const hash = (s: string) =>
     return a & a;
   }, 0);
 
-const parseAction = (
-  action: MatomoAction,
-  visit: MatomoVisit,
-  logfile: string
-): MonologAction => {
+const parseAction = (action: MatomoAction, visit: MatomoVisit, logfile: string): MonologAction => {
   const matomoActionFields = (({ url, timeSpent, timestamp }) => ({
     timeSpent,
     timestamp: timestamp + 28800,
@@ -75,9 +71,7 @@ const parseAction = (
 
 const parseVisit = (visit: MatomoVisit, logfile: string) => {
   if (visit.actionDetails !== undefined) {
-    return visit.actionDetails.flatMap((action: MatomoAction) =>
-      parseAction(action, visit, logfile)
-    );
+    return visit.actionDetails.flatMap((action: MatomoAction) => parseAction(action, visit, logfile));
   } else {
     return [];
   }
@@ -87,10 +81,7 @@ const parse = (rawData: string, logfile: string) => {
   // use io-ts / Reader
   const rawVisits: MatomoVisit[] = JSON.parse(rawData);
 
-  fs.writeFileSync(
-    "test-dump.json",
-    JSON.stringify(rawVisits.slice(0, 100), null, 2)
-  );
+  fs.writeFileSync("test-dump.json", JSON.stringify(rawVisits.slice(0, 100), null, 2));
 
   return rawVisits.flatMap((visit) => {
     return parseVisit(visit, logfile);
@@ -105,10 +96,7 @@ const checkIndex = async (index: string): Promise<void> => {
 // TODO should return TaskEither
 const ingest = async (dumpPath: string, index: string): Promise<void> => {
   logger.info(`Ingesting dump ${dumpPath} to ES.`);
-  const logfile = dumpPath.slice(
-    dumpPath.lastIndexOf("/") + 1,
-    dumpPath.lastIndexOf(".")
-  );
+  const logfile = dumpPath.slice(dumpPath.lastIndexOf("/") + 1, dumpPath.lastIndexOf("."));
 
   // TODO hmm hmm
   const rawData = fs.readFileSync(dumpPath) as unknown as string;

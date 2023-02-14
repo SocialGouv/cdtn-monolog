@@ -386,25 +386,17 @@ export const kpiMappings = {
   },
 };
 
-export const resetReportIndex = async (
-  indexName: string,
-  mappings: any
-): Promise<void> => {
+export const resetReportIndex = async (indexName: string, mappings: any): Promise<void> => {
   await es
     .deleteIfExists(indexName)
     .then(() => es.testAndCreateIndex(indexName, mappings))
     .catch((err: any) => logger.error(err));
 };
 
-export const saveReport = async (
-  indexName: string,
-  docs: Report[]
-): Promise<number> => {
+export const saveReport = async (indexName: string, docs: Report[]): Promise<number> => {
   await es.batchInsert(indexName, docs);
   return 0;
 };
 
-export const loadReport = async (
-  indexName: string,
-  query: any
-): Promise<DocumentResponse> => es.getDocuments(indexName, query);
+export const loadReport = async (indexName: string, query: any): Promise<DocumentResponse> =>
+  es.getDocuments(indexName, query);

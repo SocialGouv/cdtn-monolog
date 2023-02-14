@@ -20,9 +20,7 @@ const analyse = (
   reportId: string = new Date().getTime().toString()
 ): CovisiteReport[] => {
   const newIndex = Array.from(Array(dataset.count()).keys());
-  const datasetIndexed = dataset
-    .withIndex(newIndex)
-    .where((a) => a.type == util.actionTypes.visit);
+  const datasetIndexed = dataset.withIndex(newIndex).where((a) => a.type == util.actionTypes.visit);
 
   const visits = datasetUtil.getVisits(datasetIndexed).toArray();
   const uniqueViews = visits
@@ -39,13 +37,10 @@ const analyse = (
   uniqueViews.forEach((visitViews) => {
     // visitViews.map((v) => console.log(v.toString()));
     // get all pairs of contents A/B
-    const covisits = visitViews.reduce(
-      (acc: string[][], a: string, i: number) => {
-        acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
-        return acc;
-      },
-      []
-    );
+    const covisits = visitViews.reduce((acc: string[][], a: string, i: number) => {
+      acc.push(...visitViews.slice(i + 1).map((b: string) => [a, b]));
+      return acc;
+    }, []);
 
     // TODO use proper edge type rather than array
     covisits.forEach(([a, b]: string[]) => {

@@ -12,10 +12,7 @@ import { triggerSearch } from "./cdtnApi";
 
 // we deduplicate queries and only select the one appearing
 // at least {minOccurence} times
-export const deduplicateQueries = (
-  dataset: IDataFrame,
-  minOccurence: number
-): string[] =>
+export const deduplicateQueries = (dataset: IDataFrame, minOccurence: number): string[] =>
   dataset
     .where((a) => a.type == actionTypes.search)
     .groupBy((r) => r.query.toLowerCase())
@@ -28,36 +25,23 @@ export const deduplicateQueries = (
     .map((q) => q.toLowerCase());
 
 const buildQueryMap = (queryClusters: string[][]) =>
-  new Map<string, number>(
-    queryClusters.flatMap((queryCluster, i) =>
-      queryCluster.map((query: string) => [query, i])
-    )
-  );
+  new Map<string, number>(queryClusters.flatMap((queryCluster, i) => queryCluster.map((query: string) => [query, i])));
 
 // get all search queries and build a cache of the responses
-export const buildCache = async (
-  dataset: IDataFrame,
-  minOccurence = 0
-): Promise<Cache> => {
+export const buildCache = async (dataset: IDataFrame, minOccurence = 0): Promise<Cache> => {
   const pqueue = new PQueue({ concurrency: 16 });
 
   // we get all unique queries (deduplicate when happening in same visit + min occurence)
   const visits = getVisits(dataset);
-  const uniqueSearches = DataFrame.concat(
-    visits.select((visit) => toUniqueSearches(visit)).toArray()
-  );
+  const uniqueSearches = DataFrame.concat(visits.select((visit) => toUniqueSearches(visit)).toArray());
 
   const queries: string[] = deduplicateQueries(uniqueSearches, minOccurence);
 
-  logger.info(
-    `Calling API for ${queries.length} queries, this might take some time`
-  );
+  logger.info(`Calling API for ${queries.length} queries, this might take some time`);
 
   // for prequalified results, we want to remove "completed results" and only keep PQ since #2037
   const isolatePrequalified = (documents: Document[]) =>
-    documents[0].algo == "pre-qualified"
-      ? documents.filter((d) => d.algo == "pre-qualified")
-      : documents;
+    documents[0].algo == "pre-qualified" ? documents.filter((d) => d.algo == "pre-qualified") : documents;
 
   const pSearches = Array.from(queries).map((query) =>
     pqueue.add(() =>
@@ -148,13 +132,11 @@ export const readCache = async (file: string): Promise<Cache> => {
     cacheB64.push(JSON.parse(line));
   }
 
-  const clusters: CacheQueryCluster[] = cacheB64.map(
-    ({ queries, results }) => ({
-      queries: queries,
-      // documents: JSON.parse(new Buffer(documents, "base64")),
-      results: new Map(results),
-    })
-  );
+  const clusters: CacheQueryCluster[] = cacheB64.map(({ queries, results }) => ({
+    queries: queries,
+    // documents: JSON.parse(new Buffer(documents, "base64")),
+    results: new Map(results),
+  }));
 
   // const groups = new Map();
 

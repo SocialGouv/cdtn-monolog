@@ -20,9 +20,7 @@ const getPageType = (x: string) => {
 };
 
 const sameMonth = (d1: Date, d2: Date): boolean => {
-  return (
-    d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth()
-  );
+  return d1.getFullYear() === d2.getFullYear() && d1.getMonth() === d2.getMonth();
 };
 
 const countURLs = (dataframe: IDataFrame) => {
@@ -35,24 +33,16 @@ const countURLs = (dataframe: IDataFrame) => {
           .deflate((g) => g.timeSpent)
           .where((x) => x !== undefined)
           .average(),
-        feed_nb: group
-          .where((row) => ["positive", "negative"].includes(row.feedbackType))
-          .count(),
-        feed_negative: group
-          .where((row) => row.feedbackType == "negative")
-          .count(),
-        feed_positive: group
-          .where((row) => row.feedbackType == "positive")
-          .count(),
+        feed_nb: group.where((row) => ["positive", "negative"].includes(row.feedbackType)).count(),
+        feed_negative: group.where((row) => row.feedbackType == "negative").count(),
+        feed_positive: group.where((row) => row.feedbackType == "positive").count(),
         median_time_spent: group
           .deflate((g) => g.timeSpent)
           .where((x) => x !== undefined)
           .median(),
         page_name: group.deflate((g) => g.url).first(),
         page_views: group.count(),
-        select_related_out_nb: group
-          .where((row) => row.type == "select_related")
-          .count(),
+        select_related_out_nb: group.where((row) => row.type == "select_related").count(),
       };
     })
     .inflate()
@@ -89,13 +79,9 @@ const custGroupBy = (x: Array<string>) => {
   for (let i = 0; i < x.length; i++) {
     var elementObject = x[i];
     if (elementObject["type"] == "feedback_suggestion") {
-      defarray[elementObject["url"]].reasons.push(
-        elementObject["feedbackType"]
-      );
+      defarray[elementObject["url"]].reasons.push(elementObject["feedbackType"]);
     } else if (elementObject["type"] == "feedback_category") {
-      defarray[elementObject["url"]].comments.push(
-        elementObject["feedbackType"]
-      );
+      defarray[elementObject["url"]].comments.push(elementObject["feedbackType"]);
     }
   }
   return defarray;
@@ -141,14 +127,8 @@ const analyzeSession = (dataframe: IDataFrame) => {
     .select((group) => {
       return {
         is_entry: group.toArray().map((x, index) => index === 0),
-        is_exit: group
-          .toArray()
-          .map((x, index) => index === group.toArray().length - 1),
-        is_unique_page: group
-          .toArray()
-          .map(
-            (x, index) => index === group.toArray().length - 1 && index === 0
-          ),
+        is_exit: group.toArray().map((x, index) => index === group.toArray().length - 1),
+        is_unique_page: group.toArray().map((x, index) => index === group.toArray().length - 1 && index === 0),
         rank: group.toArray().map((x, index) => index),
         url: group.toArray().map((x, index) => x.url),
       };
@@ -198,39 +178,28 @@ const analyse = (dataset: IDataFrame): any => {
   const datasetThisMonth = dataset
     .withIndex(newIndex)
     .withSeries({
-      lastActionDateTime: (df) =>
-        df
-          .deflate((row) => row.lastActionDateTime)
-          .select((value) => parseISO(value)),
+      lastActionDateTime: (df) => df.deflate((row) => row.lastActionDateTime).select((value) => parseISO(value)),
     })
     .where((row) => sameMonth(row.lastActionDateTime, lastMonth));
-  const maxDate = new Date(
-    datasetThisMonth.getSeries("lastActionDateTime").max()
-  );
+  const maxDate = new Date(datasetThisMonth.getSeries("lastActionDateTime").max());
 
   // get unique visits
   const visits = getVisits(datasetThisMonth);
   const uniqueViews = DataFrame.concat(visits.toArray());
 
-  const idxUniqueViews = uniqueViews.withIndex(
-    Array.from(Array(uniqueViews.count()).keys())
-  );
+  const idxUniqueViews = uniqueViews.withIndex(Array.from(Array(uniqueViews.count()).keys()));
   const filteredVisitViews = idxUniqueViews.where(noError);
   const cleanedViews = filteredVisitViews.transformSeries({
     url: (u) => urlToPath(removeAnchor(u)),
   });
   // filter only feedbacks
-  const feedbacks = cleanedViews.where(
-    (row) => !["", "positive", "negative"].includes(row.feedbackType)
-  );
+  const feedbacks = cleanedViews.where((row) => !["", "positive", "negative"].includes(row.feedbackType));
   const feedbacks_grouped = custGroupBy(feedbacks.toArray());
   const uniqueUrls = countURLs(cleanedViews);
   const augmentedDf = uniqueUrls.generateSeries({
     feedback_difference: (row) => row.feed_positive - row.feed_negative,
     feedback_ratio: (row) =>
-      row.feed_negative + row.feed_negative > 0
-        ? row.feed_positive / (row.feed_negative + row.feed_positive)
-        : 0,
+      row.feed_negative + row.feed_negative > 0 ? row.feed_positive / (row.feed_negative + row.feed_positive) : 0,
     pageType: (row) => getPageType(row.page_name),
     select_related_ratio: (row) => row.select_related_out_nb / row.page_views,
   });

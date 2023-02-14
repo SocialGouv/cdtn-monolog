@@ -19,10 +19,7 @@ describe("#filterDataframeByUrlWithPrefix", () => {
     ];
     const datasetExpected = new DataFrame(dataExpected);
     // When
-    const result = filterDataframeByUrlWithPrefix(
-      dataset,
-      "https://code.travail.gouv.fr/contribution/"
-    );
+    const result = filterDataframeByUrlWithPrefix(dataset, "https://code.travail.gouv.fr/contribution/");
 
     // Then
     expect(result).toStrictEqual(datasetExpected);

@@ -1,10 +1,6 @@
 import { DataFrame, IDataFrame } from "data-forge";
 
-export const joinOuter3DfOnFieldColumn = (
-  df1: IDataFrame,
-  df2: IDataFrame,
-  df3: IDataFrame
-): IDataFrame => {
+export const joinOuter3DfOnFieldColumn = (df1: IDataFrame, df2: IDataFrame, df3: IDataFrame): IDataFrame => {
   const newDf1 = df1.select((row) => {
     return {
       field: row.field,

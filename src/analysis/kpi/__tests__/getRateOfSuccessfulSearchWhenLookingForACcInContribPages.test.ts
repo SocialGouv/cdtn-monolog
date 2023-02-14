@@ -41,8 +41,7 @@ describe("#getRateOfSuccessfulSearchesWhenLookingForACcInContribPages", () => {
     const date = new Date("2020-01-01T00:00:00.000");
     const expected = {
       denominator: 2,
-      kpi_type:
-        "Rate-of-successful-results-when-searching-cc-in-contribution-pages",
+      kpi_type: "Rate-of-successful-results-when-searching-cc-in-contribution-pages",
       numerator: 1,
       outil: "Recherches de CC dans les contributions",
       rate: 50,
@@ -51,11 +50,7 @@ describe("#getRateOfSuccessfulSearchesWhenLookingForACcInContribPages", () => {
       start_date: date,
     };
     // When
-    const result = getRateOfSuccessfulSearchesWhenLookingForACcInContribPages(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = getRateOfSuccessfulSearchesWhenLookingForACcInContribPages(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);

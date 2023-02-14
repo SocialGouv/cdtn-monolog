@@ -81,18 +81,13 @@ describe("#computeRateOfProcessedCcResultsOverAllResultsForAGivenTool", () => {
       nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep: 1,
     };
     // When
-    const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
-      url_tool,
-      tool_final_step,
-      dataset
-    );
+    const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(url_tool, tool_final_step, dataset);
 
     // Then
     expect(result).toStrictEqual(expected);
   });
   it("should return rate of processed cc results over all results for tool heures-recherche-emploi", () => {
-    const url_tool =
-      "https://code.travail.gouv.fr/outils/heures-recherche-emploi";
+    const url_tool = "https://code.travail.gouv.fr/outils/heures-recherche-emploi";
     const tool_final_step = "results";
     const data = [
       {
@@ -138,11 +133,7 @@ describe("#computeRateOfProcessedCcResultsOverAllResultsForAGivenTool", () => {
       nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep: 0,
     };
     // When
-    const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
-      url_tool,
-      tool_final_step,
-      dataset
-    );
+    const result = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(url_tool, tool_final_step, dataset);
     // Then
     expect(result).toStrictEqual(expected);
   });

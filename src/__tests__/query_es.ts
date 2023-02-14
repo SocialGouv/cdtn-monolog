@@ -13,9 +13,7 @@ const retrieveData = async () => {
   // constdays=["2020-04-24"];
 
   console.log(days);
-  const data = await readDaysFromElastic(LOG_INDEX, days, [
-    actionTypes.searchCC,
-  ]);
+  const data = await readDaysFromElastic(LOG_INDEX, days, [actionTypes.searchCC]);
 
   await data.asCSV().writeFile("./data/cc-search.csv");
 };

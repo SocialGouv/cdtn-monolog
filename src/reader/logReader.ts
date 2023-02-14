@@ -10,8 +10,7 @@ import { actionTypes, getLastDays } from "./readerUtil";
 
 const defaultTypesToConsider = Object.values(actionTypes);
 
-export const delay = (seconds: number) =>
-  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+export const delay = (seconds: number) => new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 
 const build_query = (day: string, type: Array<string>) => {
   return {
@@ -42,15 +41,11 @@ export const queryAndWrite = async (
         resultSelectionAlgo: (df) =>
           df
             .deflate((row) => row.resultSelection)
-            .select((resultSelection) =>
-              resultSelection ? resultSelection.algo : undefined
-            ),
+            .select((resultSelection) => (resultSelection ? resultSelection.algo : undefined)),
         resultSelectionUrl: (df) =>
           df
             .deflate((row) => row.resultSelection)
-            .select((resultSelection) =>
-              resultSelection ? resultSelection.url : undefined
-            ),
+            .select((resultSelection) => (resultSelection ? resultSelection.url : undefined)),
       })
     : data;
   if (!fs.existsSync(output)) {
@@ -72,18 +67,12 @@ export const readDaysAndWrite = async (
   }));
 
   Promise.all(
-    queries_and_days.map((query_days) =>
-      queryAndWrite(index, query_days.day, query_days.query, output, type)
-    )
+    queries_and_days.map((query_days) => queryAndWrite(index, query_days.day, query_days.query, output, type))
   );
   return;
 };
 
-export const readDaysFromElastic = async (
-  index: string,
-  days: string[],
-  type: string[]
-): Promise<IDataFrame> => {
+export const readDaysFromElastic = async (index: string, days: string[], type: string[]): Promise<IDataFrame> => {
   const query = {
     bool: {
       must: [
@@ -106,15 +95,11 @@ export const readDaysFromElastic = async (
         resultSelectionAlgo: (df) =>
           df
             .deflate((row) => row.resultSelection)
-            .select((resultSelection) =>
-              resultSelection ? resultSelection.algo : undefined
-            ),
+            .select((resultSelection) => (resultSelection ? resultSelection.algo : undefined)),
         resultSelectionUrl: (df) =>
           df
             .deflate((row) => row.resultSelection)
-            .select((resultSelection) =>
-              resultSelection ? resultSelection.url : undefined
-            ),
+            .select((resultSelection) => (resultSelection ? resultSelection.url : undefined)),
       })
     : data;
 
@@ -133,10 +118,7 @@ export const readFromElastic = async (
 };
 
 // count visit per days in Elastic
-export const countVisits = async (
-  index: string,
-  days: string[]
-): Promise<DataFrame> => {
+export const countVisits = async (index: string, days: string[]): Promise<DataFrame> => {
   const esQueue = new PQueue({ concurrency: 4 });
 
   const makeAgg = (day: string) => ({
@@ -163,12 +145,10 @@ export const countVisits = async (
 
   const getCount = (day: string) => {
     const { query, aggs } = makeAgg(day);
-    return getDocuments(index, query, aggs, false, true).then(
-      ({ aggregations }) => ({
-        count: aggregations.visit_count.value,
-        day,
-      })
-    );
+    return getDocuments(index, query, aggs, false, true).then(({ aggregations }) => ({
+      count: aggregations.visit_count.value,
+      day,
+    }));
   };
 
   const countCalls = days.map((day) => esQueue.add(() => getCount(day)));
@@ -178,13 +158,9 @@ export const countVisits = async (
   return new DataFrame({ considerAllRows: true, values: counts });
 };
 
-export const readFromFile = async (path: string): Promise<IDataFrame> =>
-  readFile(path).parseCSV();
+export const readFromFile = async (path: string): Promise<IDataFrame> => readFile(path).parseCSV();
 
-export const readSingleFile = async (
-  file: string,
-  path: string
-): Promise<IDataFrame<number, any>> => {
+export const readSingleFile = async (file: string, path: string): Promise<IDataFrame<number, any>> => {
   return readFile(path + "/" + file).parseCSV();
 };
 export const readFromFolder = async (path: string): Promise<IDataFrame> => {

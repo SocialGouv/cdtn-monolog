@@ -25,11 +25,7 @@ describe("#getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates", () => {
       numerator: 3,
     };
     // When
-    const result = getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates(
-      dataset,
-      denominator,
-      numerator
-    );
+    const result = getRateOfGivenTypeOverAnOtherInDfWithoutDuplicates(dataset, denominator, numerator);
 
     // Then
     expect(result).toStrictEqual(expected);
