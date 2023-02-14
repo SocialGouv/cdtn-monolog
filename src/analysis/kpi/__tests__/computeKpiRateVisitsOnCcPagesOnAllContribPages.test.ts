@@ -62,8 +62,7 @@ describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", (
       },
       {
         denominator: 4,
-        kpi_type:
-          "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
+        kpi_type: "Rate-of-personalized-pages-and-cc-select-on-all-pages-contribution",
         numerator: 3,
         outil: "pages-contribution",
         rate: 75,
@@ -73,11 +72,7 @@ describe("#computeKpiRateVisitsOnCcPagesOnAllContribPages - Integration test", (
       },
     ];
     // When
-    const result = computeKpiRateVisitsOnCcPagesOnAllContribPages(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = computeKpiRateVisitsOnCcPagesOnAllContribPages(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);

@@ -5,18 +5,13 @@ import * as elastic from "../../es/elastic";
 import { ingest } from "../ingester";
 import { mappings } from "../mappings";
 
-const dumpfile = path.join(
-  __dirname,
-  "../../__tests__/__fixtures__/2020-04-24.json"
-);
+const dumpfile = path.join(__dirname, "../../__tests__/__fixtures__/2020-04-24.json");
 
 const index = `${LOGS_TEST_INDEX}-${Number(Date.now())}`;
 
 beforeAll(async () => {
   // init and wait in case index does not exist yet
-  await elastic
-    .deleteIfExists(index)
-    .then(() => elastic.testAndCreateIndex(index, mappings));
+  await elastic.deleteIfExists(index).then(() => elastic.testAndCreateIndex(index, mappings));
   await elastic.esClient.deleteByQuery({
     body: { query: { match_all: {} } },
     index,

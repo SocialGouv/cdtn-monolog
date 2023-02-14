@@ -57,7 +57,4 @@ export type MonologActionFields = {
   idCc?: number;
 };
 
-export type MonologAction = VisitFields &
-  RootAction &
-  MonologActionFields &
-  MonologFields;
+export type MonologAction = VisitFields & RootAction & MonologActionFields & MonologFields;

@@ -56,11 +56,7 @@ describe("#computeRateOfCcSelectOverVisitsOnContrib", () => {
       start_date: date,
     };
     // When
-    const result = computeRateOfCcSelectOverVisitsOnContribWithoutIdcc(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = computeRateOfCcSelectOverVisitsOnContribWithoutIdcc(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);

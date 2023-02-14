@@ -38,8 +38,7 @@ describe("#getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainT
       },
       {
         denominator: 0,
-        kpi_type:
-          "Rate-of-successful-results-when-searching-enterprise-in-tools",
+        kpi_type: "Rate-of-successful-results-when-searching-enterprise-in-tools",
         numerator: 1,
         outil: "Recherches d'entreprises dans les outils",
         rate: 0,
@@ -49,12 +48,7 @@ describe("#getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainT
       },
     ];
     // When
-    const result =
-      getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools(
-        dataset,
-        date,
-        "2020"
-      );
+    const result = getRatesOfSuccessfulSearchesWhenLookingForACcOrAnEnterpriseInCertainTools(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);

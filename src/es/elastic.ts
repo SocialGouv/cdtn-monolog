@@ -1,19 +1,14 @@
 import { Client, ClientOptions } from "@elastic/elasticsearch";
 import { logger } from "@socialgouv/cdtn-logger";
 
-const ELASTICSEARCH_URL =
-  process.env.ELASTICSEARCH_URL || "http://localhost:9200";
+const ELASTICSEARCH_URL = process.env.ELASTICSEARCH_URL || "http://localhost:9200";
 const API_KEY = process.env.API_KEY || null;
 const LOG_INDEX = process.env.LOG_INDEX || "logs-new";
 const REPORT_INDEX = process.env.REPORT_INDEX || "log_reports";
-const MONTHLY_REPORT_INDEX =
-  process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
-const SATISFACTION_REASONS_INDEX =
-  process.env.SATISFACTION_REASONS_INDEX || "logs-satisfaction-reasons";
-const QUERY_REPORT_INDEX =
-  process.env.QUERY_REPORT_INDEX || "log_reports_queries";
-const RESULTS_REPORT_INDEX =
-  process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
+const MONTHLY_REPORT_INDEX = process.env.MONTHLY_REPORT_INDEX || "log_reports_monthly";
+const SATISFACTION_REASONS_INDEX = process.env.SATISFACTION_REASONS_INDEX || "logs-satisfaction-reasons";
+const QUERY_REPORT_INDEX = process.env.QUERY_REPORT_INDEX || "log_reports_queries";
+const RESULTS_REPORT_INDEX = process.env.RESULTS_REPORT_INDEX || "log_reports_queries_results";
 export const KPI_INDEX = process.env.KPI_INDEX || "log_kpi_index";
 
 const BATCH_SIZE = 1000;
@@ -53,9 +48,7 @@ export const getDocumentsFromES = async (
         size: BATCH_SIZE,
       });
 
-  const total = !withSearch
-    ? initResponse.body.count
-    : initResponse.body.hits.total.value;
+  const total = !withSearch ? initResponse.body.count : initResponse.body.hits.total.value;
 
   const { aggregations } = initResponse.body;
 
@@ -73,9 +66,7 @@ export const getDocumentsFromES = async (
       return hits[hits.length - 1].sort[0];
     };
 
-    const pointInTimeId = (
-      await esClient.openPointInTime({ index, keep_alive: "10m" })
-    ).body.id;
+    const pointInTimeId = (await esClient.openPointInTime({ index, keep_alive: "10m" })).body.id;
 
     let searchAfter;
 
@@ -110,8 +101,7 @@ const getDocuments = async (
   aggs: any = undefined,
   withDocs = true,
   withSearch = false
-): Promise<DocumentResponse> =>
-  getDocumentsFromES(esClient, index, query, aggs, withDocs, withSearch);
+): Promise<DocumentResponse> => getDocumentsFromES(esClient, index, query, aggs, withDocs, withSearch);
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {
@@ -166,9 +156,7 @@ const insertDocuments = async (index: string, documents: any) => {
     if (resp.body.errors) {
       resp.body.items.forEach((element: any) => {
         if (element.index.status == 400) {
-          logger.error(
-            `Error during insertion : ${element.index.error.reason}`
-          );
+          logger.error(`Error during insertion : ${element.index.error.reason}`);
         }
       });
     }

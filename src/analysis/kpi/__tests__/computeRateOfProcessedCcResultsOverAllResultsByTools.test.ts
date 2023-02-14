@@ -182,11 +182,7 @@ describe("#computeRateOfProcessedCcResultsOverAllResultsByTools - Integration te
       },
     ];
     // When
-    const result = computeRateOfProcessedCcResultsOverAllResultsByTools(
-      dataset,
-      startDate,
-      reportId
-    );
+    const result = computeRateOfProcessedCcResultsOverAllResultsByTools(dataset, startDate, reportId);
 
     // Then
     expect(result).toStrictEqual(dataExpected);

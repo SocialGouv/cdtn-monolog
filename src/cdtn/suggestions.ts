@@ -5,9 +5,7 @@ import * as readline from "readline";
  * Read suggestions used by CDTN
  * @param filePath CDTN suggestions file
  */
-export const readSuggestions = async (
-  filePath: string
-): Promise<Set<string>> => {
+export const readSuggestions = async (filePath: string): Promise<Set<string>> => {
   const entities: Set<string> = new Set();
 
   const promiseStream = new Promise<void>((resolve) => {

@@ -8,18 +8,12 @@ import {
 } from "../kpi";
 import { KpiReport } from "../reports";
 
-export const getVisitsOnContribWithoutIdcc = (
-  dataset: IDataFrame
-): IDataFrame => {
-  return dataset.filter((log) =>
-    /^https:\/\/code.travail.gouv.fr\/contribution\/[a-zA-Z]+/.test(log.url)
-  );
+export const getVisitsOnContribWithoutIdcc = (dataset: IDataFrame): IDataFrame => {
+  return dataset.filter((log) => /^https:\/\/code.travail.gouv.fr\/contribution\/[a-zA-Z]+/.test(log.url));
 };
 
 export const getVisitsOnContribWithIdcc = (dataset: IDataFrame): IDataFrame => {
-  return dataset.filter((log) =>
-    /^https:\/\/code.travail.gouv.fr\/contribution\/[0-9]+/.test(log.url)
-  );
+  return dataset.filter((log) => /^https:\/\/code.travail.gouv.fr\/contribution\/[0-9]+/.test(log.url));
 };
 
 export const computeRateOfCcSelectOverVisitsOnContribWithoutIdcc = (
@@ -28,14 +22,8 @@ export const computeRateOfCcSelectOverVisitsOnContribWithoutIdcc = (
   reportId: string
 ): KpiReport => {
   const logsOnContribWithoutIdcc = getVisitsOnContribWithoutIdcc(dataset);
-  const nbTotalVisitsOnContribWithoutIdcc = countOccurrencesOfAGivenTypeInDf(
-    logsOnContribWithoutIdcc,
-    "visit_content"
-  );
-  const nbCcSelectOnContribWithoutIdcc = countOccurrencesOfAGivenTypeInDf(
-    logsOnContribWithoutIdcc,
-    "cc_select"
-  );
+  const nbTotalVisitsOnContribWithoutIdcc = countOccurrencesOfAGivenTypeInDf(logsOnContribWithoutIdcc, "visit_content");
+  const nbCcSelectOnContribWithoutIdcc = countOccurrencesOfAGivenTypeInDf(logsOnContribWithoutIdcc, "cc_select");
 
   return formatKpiReport(
     nbTotalVisitsOnContribWithoutIdcc,
@@ -53,21 +41,12 @@ export const computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib = (
   reportId: string
 ): KpiReport => {
   // Compute denominator
-  const nbTotalVisitsOnContrib = countOccurrencesOfAGivenTypeInDf(
-    dataset,
-    "visit_content"
-  );
+  const nbTotalVisitsOnContrib = countOccurrencesOfAGivenTypeInDf(dataset, "visit_content");
 
   // Compute numerator (sum of the two subTotal following)
   const logsOnContribWithIdcc = getVisitsOnContribWithIdcc(dataset);
-  const nbTotalVisitsOnContribWithIdcc = countOccurrencesOfAGivenTypeInDf(
-    logsOnContribWithIdcc,
-    "visit_content"
-  );
-  const nbCcSelectOnContrib = countOccurrencesOfAGivenTypeInDf(
-    dataset,
-    "cc_select"
-  );
+  const nbTotalVisitsOnContribWithIdcc = countOccurrencesOfAGivenTypeInDf(logsOnContribWithIdcc, "visit_content");
+  const nbCcSelectOnContrib = countOccurrencesOfAGivenTypeInDf(dataset, "cc_select");
   const numerator = nbCcSelectOnContrib + nbTotalVisitsOnContribWithIdcc;
 
   return formatKpiReport(
@@ -87,27 +66,21 @@ export const computeKpiRateVisitsOnCcPagesOnAllContribPages = (
 ): KpiReport[] => {
   // Get logs on pages contribution without duplicates in triple (url, idVisit, type)
   const logsOnContrib = filterDataframeByContribAndRemoveAnchorFromUrl(logs);
-  const logsOnContribWithoutDuplicates =
-    dfDropDuplicatesOnUrlAndIdVisitAndType(logsOnContrib);
+  const logsOnContribWithoutDuplicates = dfDropDuplicatesOnUrlAndIdVisitAndType(logsOnContrib);
 
   // KPI Rate of persons selecting a cc in non-personalized contribution pages
-  const rateOfCcSelectOverVisitsOnContribWithoutIdcc =
-    computeRateOfCcSelectOverVisitsOnContribWithoutIdcc(
-      logsOnContribWithoutDuplicates,
-      startDate,
-      reportId
-    );
+  const rateOfCcSelectOverVisitsOnContribWithoutIdcc = computeRateOfCcSelectOverVisitsOnContribWithoutIdcc(
+    logsOnContribWithoutDuplicates,
+    startDate,
+    reportId
+  );
 
   // KPI Rate of persons getting a personalized pages in all contribution pages
-  const rateOfCcSelectAndNbCcPagesOverVisitsOnContrib =
-    computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib(
-      logsOnContribWithoutDuplicates,
-      startDate,
-      reportId
-    );
+  const rateOfCcSelectAndNbCcPagesOverVisitsOnContrib = computeRateOfCcSelectAndNbCcPagesOverVisitsOnContrib(
+    logsOnContribWithoutDuplicates,
+    startDate,
+    reportId
+  );
 
-  return [
-    rateOfCcSelectOverVisitsOnContribWithoutIdcc,
-    rateOfCcSelectAndNbCcPagesOverVisitsOnContrib,
-  ];
+  return [rateOfCcSelectOverVisitsOnContribWithoutIdcc, rateOfCcSelectAndNbCcPagesOverVisitsOnContrib];
 };

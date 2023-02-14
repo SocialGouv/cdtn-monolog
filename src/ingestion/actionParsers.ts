@@ -108,11 +108,7 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
         outilAction = "view_step";
       } else if (action.eventAction.startsWith("click_previous")) {
         outilAction = "click_previous";
-      } else if (
-        ["cc_select_traitée", "cc_select_non_traitée"].includes(
-          action.eventAction
-        )
-      ) {
+      } else if (["cc_select_traitée", "cc_select_non_traitée"].includes(action.eventAction)) {
         return {
           idCc: parseInt(action.eventName),
           type: action.eventAction,
@@ -120,9 +116,7 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
       } else {
         outilAction = action.eventAction;
       }
-      const outil = action.eventAction.slice(
-        action.eventAction.lastIndexOf("_") + 1
-      );
+      const outil = action.eventAction.slice(action.eventAction.lastIndexOf("_") + 1);
       const outilEvent = action.eventName;
 
       return { outil, outilAction, outilEvent, type: "outil" };

@@ -11,16 +11,8 @@ import { readCache } from "../cdtn/resultCache";
 import { LOG_INDEX, MONTHLY_REPORT_INDEX, REPORT_INDEX } from "../es/elastic";
 import { getVisits, toUniqueSearches } from "../reader/dataset";
 import { countVisits, readFromFile } from "../reader/logReader";
-import {
-  actionTypes,
-  getDaysInPrevMonth,
-  getLastMonthsComplete,
-} from "../reader/readerUtil";
-import {
-  queryReportMappings,
-  resetReportIndex,
-  saveReport,
-} from "../report/reportStore";
+import { actionTypes, getDaysInPrevMonth, getLastMonthsComplete } from "../reader/readerUtil";
+import { queryReportMappings, resetReportIndex, saveReport } from "../report/reportStore";
 
 const readSuggestions = async () => {
   const entities: string[] = [];
@@ -78,15 +70,10 @@ const getLogs = async () => {
 
   const visits = getVisits(data);
   // so we use toArray for now
-  const uniqueSearches = DataFrame.concat(
-    visits.select((visit) => toUniqueSearches(visit)).toArray()
-  );
+  const uniqueSearches = DataFrame.concat(visits.select((visit) => toUniqueSearches(visit)).toArray());
 
   const filtered = data
-    .where(
-      (r) =>
-        m1.includes(r.logfile) && r.type == "search" && r.query == "amiante"
-    )
+    .where((r) => m1.includes(r.logfile) && r.type == "search" && r.query == "amiante")
     .distinct((r) => r.idVisit)
     .head(10);
 
@@ -132,20 +119,11 @@ const monthlyRun = async () => {
   const queryPop = analyse(data, m0, m1, m2, "1220", "QUERY", some(cache));
 
   const suggestions = await readSuggestions();
-  const queryReports = analyseQueries(
-    data,
-    cache,
-    new Set(suggestions),
-    "1220"
-  );
+  const queryReports = analyseQueries(data, cache, new Set(suggestions), "1220");
 
   //   await resetReportIndex(MONTHLY_REPORT_INDEX, standardMappings);
 
-  await saveReport(REPORT_INDEX, [
-    ...contentPop,
-    ...conventionPop,
-    ...queryPop,
-  ]);
+  await saveReport(REPORT_INDEX, [...contentPop, ...conventionPop, ...queryPop]);
 
   const queryReportIndex = "log_reports_queries";
   await resetReportIndex(queryReportIndex, queryReportMappings);
@@ -157,10 +135,7 @@ const monthlyRun = async () => {
   const dataframe = await countVisits(LOG_INDEX, logFiles);
 
   // TODO we cast for now, we should change report type and id to respect Report type
-  const report = visitAnalysis(
-    dataframe,
-    `monthly-${month}-${year}`
-  ) as unknown as Report;
+  const report = visitAnalysis(dataframe, `monthly-${month}-${year}`) as unknown as Report;
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
 };
@@ -170,12 +145,7 @@ const playQueries = async () => {
   const cache = await readCache("./cache-sept-oct-nov.csv");
 
   const suggestions = await readSuggestions();
-  const queryReports = analyseQueries(
-    data,
-    cache,
-    new Set(suggestions),
-    "1220"
-  );
+  const queryReports = analyseQueries(data, cache, new Set(suggestions), "1220");
 
   const queryReportIndex = "log_reports_queries";
   await resetReportIndex(queryReportIndex, queryReportMappings);
@@ -186,9 +156,7 @@ const feedback = async () => {
   const data = await readFromFile("./logs-sept-oct-nov.csv");
   const logFiles = getDaysInPrevMonth(11, 2020);
 
-  const fb = data
-    .where((a) => a.type == actionTypes.feedback)
-    .where((a) => logFiles.includes(a.logfile));
+  const fb = data.where((a) => a.type == actionTypes.feedback).where((a) => logFiles.includes(a.logfile));
 
   const p = fb.where((a) => a.feedbackType == "positive").count();
   const t = fb.count();

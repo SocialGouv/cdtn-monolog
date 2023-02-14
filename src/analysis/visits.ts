@@ -21,9 +21,7 @@ const analyse = (dataset: IDataFrame, reportId: string): MonthlyReport => {
 
   const nbVisits = counts.sum();
   const maxDailyVisits = counts.max();
-  const maxDailyVisitsDay = dataset
-    .where((r) => r.count == maxDailyVisits)
-    .first().day;
+  const maxDailyVisitsDay = dataset.where((r) => r.count == maxDailyVisits).first().day;
   const averageDailyVisits = Math.floor(counts.average());
   const averageDailyVisitsWorkDays = Math.floor(countsWorkDays.average());
 

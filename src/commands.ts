@@ -5,10 +5,7 @@ import * as fs from "fs";
 import { analyse as covisitAnalysis } from "./analysis/covisit";
 import { monthlyAnalysis, readDaysAndWriteAllLogs } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
-import {
-  analyse as queryAnalysis,
-  generateAPIResponseReports,
-} from "./analysis/queries";
+import { analyse as queryAnalysis, generateAPIResponseReports } from "./analysis/queries";
 import { analyse as satisfactionAnalysis } from "./analysis/satisfaction";
 import { analyse as visitAnalysis } from "./analysis/visits";
 import { buildCache, persistCache, readCache } from "./cdtn/resultCache";
@@ -32,12 +29,7 @@ import {
   readFromFile,
   readFromFolder,
 } from "./reader/logReader";
-import {
-  actionTypes,
-  getDaysInPrevMonth,
-  getLastMonthsComplete,
-  removeThemesQueries,
-} from "./reader/readerUtil";
+import { actionTypes, getDaysInPrevMonth, getLastMonthsComplete, removeThemesQueries } from "./reader/readerUtil";
 import {
   kpiMappings,
   queryReportMappings,
@@ -80,9 +72,7 @@ export const runQueryAnalysis = async (
   const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
-  const suggestions = suggestionPath
-    ? await readSuggestions(suggestionPath as string)
-    : new Set<string>();
+  const suggestions = suggestionPath ? await readSuggestions(suggestionPath as string) : new Set<string>();
 
   logger.info("Analysing logs");
   const { queries } = await queryAnalysis(data, cache, suggestions);
@@ -123,32 +113,13 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   console.log("... for content ...");
   const contentPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONTENT");
   console.log("... for convention ...");
-  const conventionPop = popularityAnalysis(
-    data,
-    m0,
-    m1,
-    m2,
-    reportId,
-    "CONVENTION"
-  );
+  const conventionPop = popularityAnalysis(data, m0, m1, m2, reportId, "CONVENTION");
   console.log("... for query ...");
-  const queryPop = popularityAnalysis(
-    data,
-    m0,
-    m1,
-    m2,
-    reportId,
-    "QUERY",
-    some(cache)
-  );
+  const queryPop = popularityAnalysis(data, m0, m1, m2, reportId, "QUERY", some(cache));
   // TODO : delete previous popularity reports
   await resetReportIndex(REPORT_INDEX, standardMappings);
   await delay(60);
-  await saveReport(REPORT_INDEX, [
-    ...contentPop,
-    ...conventionPop,
-    ...queryPop,
-  ]);
+  await saveReport(REPORT_INDEX, [...contentPop, ...conventionPop, ...queryPop]);
   await delay(180);
 
   console.log("Visit analysis ...");
@@ -173,16 +144,12 @@ export const runMonthlyKpi = async (monthPath: string): Promise<void> => {
   await saveReport(KPI_INDEX, kpiReport);
 };
 
-export const retrieveThreeMonthsData = async (
-  output: string
-): Promise<void> => {
+export const retrieveThreeMonthsData = async (output: string): Promise<void> => {
   const daysOfLastThreeMonths = getLastMonthsComplete().flat().sort();
   const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
 
   logger.info(
-    `Retrieve log data for the last three months (${
-      daysOfLastThreeMonths[0]
-    } to ${
+    `Retrieve log data for the last three months (${daysOfLastThreeMonths[0]} to ${
       daysOfLastThreeMonths[daysOfLastThreeMonths.length - 1]
     }), saved in data-${output}`
   );
@@ -204,22 +171,13 @@ export const retrieveThreeMonthsData = async (
 
   await delay(240);
 
-  logger.info(
-    `Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`
-  );
-  await readDaysAndWriteAllLogs(
-    LOG_INDEX,
-    daysOfLastMonth,
-    `data-all-logs-${output}`
-  );
+  logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`);
+  await readDaysAndWriteAllLogs(LOG_INDEX, daysOfLastMonth, `data-all-logs-${output}`);
 
   //await data.asCSV().writeFile(output);
 };
 
-export const createCache = async (
-  dataPath: string,
-  output: string
-): Promise<void> => {
+export const createCache = async (dataPath: string, output: string): Promise<void> => {
   logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
   const data = await readFromFolder(dataPath);
   const cache = await buildCache(data, 2);

@@ -6,10 +6,7 @@ import * as elastic from "../../es/elastic";
 import { ingest } from "../../ingestion/ingester";
 import * as Reader from "../logReader";
 
-const dumpfile = path.join(
-  __dirname,
-  "../../__tests__/__fixtures__/2020-04-24.json"
-);
+const dumpfile = path.join(__dirname, "../../__tests__/__fixtures__/2020-04-24.json");
 
 const index = `${LOGS_TEST_INDEX}-${Number(Date.now())}`;
 

@@ -11,9 +11,7 @@ describe("#getVisitsOnContribWithIdcc", () => {
       { url: "https://code.travail.gouv.fr/contribution/mon-outil1" },
     ];
     const dataset = new DataFrame(data);
-    const dataExpected = [
-      { url: "https://code.travail.gouv.fr/contribution/1234" },
-    ];
+    const dataExpected = [{ url: "https://code.travail.gouv.fr/contribution/1234" }];
     const datasetExpected = new DataFrame(dataExpected);
     // When
     const result = getVisitsOnContribWithIdcc(dataset);

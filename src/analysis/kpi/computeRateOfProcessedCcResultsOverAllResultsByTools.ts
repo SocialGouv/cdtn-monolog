@@ -1,11 +1,7 @@
 import { IDataFrame } from "data-forge";
 
 import * as util from "../../reader/readerUtil";
-import {
-  filterDataframeByToolAndRemoveAnchorFromUrl,
-  filterDataframeByUrlWithPrefix,
-  formatKpiReport,
-} from "../kpi";
+import { filterDataframeByToolAndRemoveAnchorFromUrl, filterDataframeByUrlWithPrefix, formatKpiReport } from "../kpi";
 import { KpiReport } from "../reports";
 
 const DICT_URL_TOOLS_STEPS = {
@@ -63,10 +59,9 @@ export function computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
     .getSeries("idVisit")
     .distinct()
     .toArray();
-  const nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep =
-    allVisitorsReachingResultStep.filter((value) =>
-      allVisitorsWhoHaveSelectedProcessedCc.includes(value)
-    ).length;
+  const nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep = allVisitorsReachingResultStep.filter((value) =>
+    allVisitorsWhoHaveSelectedProcessedCc.includes(value)
+  ).length;
 
   return {
     nbVisitorsReachingResultStep,
@@ -89,28 +84,24 @@ export const computeRateOfProcessedCcResultsOverAllResultsByTools = (
 ): KpiReport[] => {
   // Get logs on tools and only take columns needed for performance
   const subsetLogs = logs.subset(["url", "type", "outilEvent", "idVisit"]);
-  const logsTools =
-    filterDataframeByToolAndRemoveAnchorFromUrl(subsetLogs).bake();
+  const logsTools = filterDataframeByToolAndRemoveAnchorFromUrl(subsetLogs).bake();
 
-  return Object.entries(DICT_URL_TOOLS_STEPS).map(
-    ([url_tool, tool_characteristics]) => {
-      const r = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
-        url_tool,
-        tool_characteristics.tool_final_step,
-        logsTools
-      );
-      const denominator = r.nbVisitorsReachingResultStep;
-      const numerator =
-        r.nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep;
+  return Object.entries(DICT_URL_TOOLS_STEPS).map(([url_tool, tool_characteristics]) => {
+    const r = computeRateOfProcessedCcResultsOverAllResultsForAGivenTool(
+      url_tool,
+      tool_characteristics.tool_final_step,
+      logsTools
+    );
+    const denominator = r.nbVisitorsReachingResultStep;
+    const numerator = r.nbVisitorsWhoHaveSelectedProcessedCcAndReachingResultStep;
 
-      return formatKpiReport(
-        denominator,
-        "Rate-of-conventional-results-on-tools",
-        numerator,
-        reportId,
-        startDate,
-        tool_characteristics.tool_name
-      );
-    }
-  );
+    return formatKpiReport(
+      denominator,
+      "Rate-of-conventional-results-on-tools",
+      numerator,
+      reportId,
+      startDate,
+      tool_characteristics.tool_name
+    );
+  });
 };

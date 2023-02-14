@@ -15,15 +15,13 @@ export const urlToPath = (url: string): string => {
   }
 };
 
-export const formatDate = (date: Date): string =>
-  date.toISOString().split("T")[0];
+export const formatDate = (date: Date): string => date.toISOString().split("T")[0];
 
 export const getLastDays = (n: number, ref: Date): string[] => {
   // a day in milliseconds
   const dayMillis = 24 * 60 * 60 * 1000;
 
-  const createDate = (i: number) =>
-    new Date(ref.getTime() - (i + 1) * dayMillis);
+  const createDate = (i: number) => new Date(ref.getTime() - (i + 1) * dayMillis);
 
   return [...Array(n).keys()].map(createDate).map(formatDate);
 };
@@ -46,10 +44,7 @@ export const getDaysInPrevMonth = (month: number, year: number): string[] => {
   return days.map(formatDate);
 };
 
-export const getLastMonthsComplete = (
-  ref: Option<Date> = none,
-  numberOfMonths: Option<number> = none
-): string[][] => {
+export const getLastMonthsComplete = (ref: Option<Date> = none, numberOfMonths: Option<number> = none): string[][] => {
   // const end = setDate(getOrElse(() => new Date())(ref), 1);
 
   const end = pipe(
@@ -67,9 +62,7 @@ export const getLastMonthsComplete = (
     (a) => Array.from(a)
   );
 
-  return nMonths
-    .map((i) => subMonths(end, i))
-    .map((d) => getDaysInPrevMonth(d.getMonth(), d.getFullYear()));
+  return nMonths.map((i) => subMonths(end, i)).map((d) => getDaysInPrevMonth(d.getMonth(), d.getFullYear()));
 };
 
 export const removeThemesQueries = (dataset: IDataFrame): IDataFrame => {

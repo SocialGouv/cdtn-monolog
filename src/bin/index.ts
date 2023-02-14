@@ -77,11 +77,7 @@ const main = async () => {
           suggestions: { alias: "s" },
         },
         ({ data, cache, suggestions }) =>
-          runQueryAnalysis(
-            data as string,
-            cache as string,
-            suggestions as string | undefined
-          )
+          runQueryAnalysis(data as string, cache as string, suggestions as string | undefined)
       )
       .command(
         "monthly [data]",

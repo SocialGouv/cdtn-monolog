@@ -16,8 +16,7 @@ describe("Covisit", () => {
   const analyse = (dataset: IDataFrame) => Covisit.analyse(dataset, 1, 3, "42");
 
   // takes tuples and generate data : [1,3] =>  visit id 1 / content viewed 3
-  const generate = (a: number[][]) =>
-    new DataFrame(a.map(([uvi, u]) => toVisitAction(uvi, url(u))));
+  const generate = (a: number[][]) => new DataFrame(a.map(([uvi, u]) => toVisitAction(uvi, url(u))));
 
   it("should only count unique visits", () => {
     const data = [

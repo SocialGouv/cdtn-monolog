@@ -47,11 +47,7 @@ describe("#getProcedureLicenciementCompletionRate", () => {
       start_date: date,
     };
     // When
-    const result = getProcedureLicenciementCompletionRate(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = getProcedureLicenciementCompletionRate(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);
@@ -123,11 +119,7 @@ describe("#getProcedureLicenciementCompletionRate", () => {
       start_date: date,
     };
     // When
-    const result = getProcedureLicenciementCompletionRate(
-      dataset,
-      date,
-      "2020"
-    );
+    const result = getProcedureLicenciementCompletionRate(dataset, date, "2020");
 
     // Then
     expect(result).toStrictEqual(expected);
