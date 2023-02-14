@@ -158,7 +158,9 @@ export const runMonthly = async (monthPath: string): Promise<void> => {
   const report = visitAnalysis(dataframe, `monthly-${month}-${year}`);
 
   await saveReport(MONTHLY_REPORT_INDEX, [report]);
+};
 
+export const runMonthlyKpi = async (monthPath: string): Promise<void> => {
   const allLogsForLastMonthFolder = `data-all-logs-${monthPath}`;
   logger.info(
     `Running monthly log analysis for KPI rate of completion using data ${allLogsForLastMonthFolder}, saved in Elastic reports`

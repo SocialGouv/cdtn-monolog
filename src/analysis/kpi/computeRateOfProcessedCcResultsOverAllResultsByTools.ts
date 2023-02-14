@@ -13,6 +13,10 @@ const DICT_URL_TOOLS_STEPS = {
     tool_final_step: "results",
     tool_name: "Heures d'absence pour rechercher un emploi",
   },
+  "https://code.travail.gouv.fr/outils/indemnite-licenciement": {
+    tool_final_step: "results",
+    tool_name: "Calculer l'indemnité de licenciement",
+  },
   "https://code.travail.gouv.fr/outils/indemnite-precarite": {
     tool_final_step: "indemnite",
     tool_name: "Indemnité de précarité",

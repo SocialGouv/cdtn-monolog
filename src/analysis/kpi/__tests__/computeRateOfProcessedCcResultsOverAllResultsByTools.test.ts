@@ -131,6 +131,16 @@ describe("#computeRateOfProcessedCcResultsOverAllResultsByTools - Integration te
         start_date: startDate,
       },
       {
+        denominator: 0,
+        kpi_type: "Rate-of-conventional-results-on-tools",
+        numerator: 0,
+        outil: "Calculer l'indemnité de licenciement",
+        rate: 0,
+        reportId: "2020",
+        reportType: "kpi",
+        start_date: startDate,
+      },
+      {
         denominator: 1,
         kpi_type: "Rate-of-conventional-results-on-tools",
         numerator: 1,
