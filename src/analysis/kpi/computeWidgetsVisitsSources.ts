@@ -29,7 +29,7 @@ export const computeWidgetsVisitsSources = (
         reportId: reportId,
         reportType: "kpi",
         source: group.first().referrerName,
-        startDate,
+        start_date: startDate,
         visits: group
           .deflate((row) => row.idVisit)
           .distinct()
