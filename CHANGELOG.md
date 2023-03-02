@@ -1,3 +1,10 @@
+# [1.19.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.18.1...v1.19.0) (2023-03-02)
+
+
+### Features
+
+* add node version ([572205b](https://github.com/SocialGouv/cdtn-monolog/commit/572205b27e4b2b9569b1eb0e4929b7143c0c9c96))
+
 ## [1.18.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.18.0...v1.18.1) (2023-02-14)
 
 
