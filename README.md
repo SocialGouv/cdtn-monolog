@@ -1,10 +1,12 @@
 # Code du travail numérique : Monolog
 
-> Tooling for CDTN log management : storage, analysis, interpretation. The reports produced by Monolog can be reused in order to drive some of the CDTN features (suggestions, relations between documents...).
+> Tooling for CDTN log management : storage, analysis, interpretation. The reports produced by Monolog can be reused in
+> order to drive some of the CDTN features (suggestions, relations between documents...).
 
 ## Usage
 
-Monolog can be used as a docker image to run log ingestion and log analysis, or as a JS library for accessing the log reports.
+Monolog can be used as a docker image to run log ingestion and log analysis, or as a JS library for accessing the log
+reports.
 Logs are structured as a list of typed _actions_ describing user behaviour during a _visit_.
 
 ### ENV variable
@@ -27,13 +29,16 @@ To run locally launch ES :
 
 NB: to run any command on your local environment, you won't need any API_KEY in next commands.
 
-However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index, mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with the index.
+However you may need to create manually all elastic indices which can be achieved by using testAndCreateIndex(index,
+mappingIndex) method and replacing index by the index you want to create and mappingIndex by the mapping associated with
+the index.
 
 ## Log storage
 
 ### Backup
 
-We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure is done through a bash script `dump_matomo_yesterday.sh` executed from the Azure Docker image.
+We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure
+is done through a bash script `dump_matomo_yesterday.sh` executed from the Azure Docker image.
 
 ### `ingest`
 
@@ -44,7 +49,8 @@ The `download_dump.sh` script allows you to get a dump file from Azure.
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog ingest data/
 ```
 
-To test locally we can use the file [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to beisolated in a folder (e.g. /src/**tests**/**fixtures**/data/2020-04-24.json) to then run
+To test locally we can use the file [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to
+beisolated in a folder (e.g. /src/**tests**/**fixtures**/data/2020-04-24.json) to then run
 
 ```console
 yarn monolog ingest src/__tests__/input/data/
@@ -58,7 +64,8 @@ node -r ts-node/register src/tests/query_es.ts
 
 ### Script
 
-These two steps can be found in the bash script `log-backup.sh`, which relies on Docker commands. It's called daily as a cron job.
+These two steps can be found in the bash script `log-backup.sh`, which relies on Docker commands. It's called daily as a
+cron job.
 
 ## Analysis
 
@@ -85,7 +92,8 @@ ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog retrieve -o data.csv
 ### `cache`
 
 We identify all _searches_ in the data CSV file, and trigger them to the CDTN API search endpoint.
-We store the results for those queries in a cache json file that'll be used in the next steps to compute popularity metrics and generate the query reports.
+We store the results for those queries in a cache json file that'll be used in the next steps to compute popularity
+metrics and generate the query reports.
 
 ```console
 CDTN_API_URL=zzzz yarn monolog cache -d data.csv -o cache.json
@@ -96,7 +104,9 @@ CDTN_API_URL=zzzz yarn monolog cache -d data.csv -o cache.json
 Based on usage logs we compute several reports and store them to Elastic :
 
 - _Monthly report_ contains metrics for the last month : average daily visits, number of unique visits...
-- _Popularity reports_ describe the most popular contents, conventions collectives and queries. We compute popularity for each of the last three months in order to observe their progression. (Note: queries are grouped in clusters, if the trigger the same results from the API, we consider them as part of the same _query cluster_)
+- _Popularity reports_ describe the most popular contents, conventions collectives and queries. We compute popularity
+  for each of the last three months in order to observe their progression. (Note: queries are grouped in clusters, if
+  the trigger the same results from the API, we consider them as part of the same _query cluster_)
   - _KPI reports_ create kpi for tools, as the completion rate. Each month, we compute kpis for the last month.
 
 ```console
@@ -107,9 +117,12 @@ _mmmmmm_ being the suffix of folder _data-mmmmmm_, _data-outils-mmmmmm_ and _cac
 
 ### `query reports`
 
-Using user searches and selections in conjonction with CDTN API search results, we can compute scores for each query cluster.
-It allows us to identify query that are underperforming (the user do not select any results, or the users always select the 4th result rather than the first one...).
-We also use the suggestion list used by the CDTN API in order to track if a query was suggested (query auto-completion) to the user.
+Using user searches and selections in conjonction with CDTN API search results, we can compute scores for each query
+cluster.
+It allows us to identify query that are underperforming (the user do not select any results, or the users always select
+the 4th result rather than the first one...).
+We also use the suggestion list used by the CDTN API in order to track if a query was suggested (query auto-completion)
+to the user.
 Query reports are stored in Elastic.
 
 ```console
@@ -122,7 +135,8 @@ The `covisits` task check for links between documents that can be found in the u
 If several visits contain the same content views, we use it as a signal for content recommandations.
 We store those links in the Elastic log reports.
 
-The CDTN API will then read those links at build time, and use them to provide the user with "related content" suggestions.
+The CDTN API will then read those links at build time, and use them to provide the user with "related content"
+suggestions.
 
 To refresh the covisits using a CSV data export (see `retrieve` above) :
 
@@ -134,7 +148,8 @@ ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog covisits -d data.csv
 
 Analysis reports are stored in different indices :
 
-- the `log_reports` index contains up-to-date reports that are overriden at each exection, there can be queried using the `reportType` attribute :
+- the `log_reports` index contains up-to-date reports that are overriden at each exection, there can be queried using
+  the `reportType` attribute :
   - `covisit` : covisit reports
   - `content-popularity` / `convention-popularity` / `query-popularity` : popularity reports for the current month
 - `log_reports_monthly` index containing a monthly report for each month
@@ -147,7 +162,8 @@ Analysis reports are stored in different indices :
 ## Query lib
 
 In order to reuse log reports, we also provide a query component to access them.
-In the context of the CDTN data management, the reports can be directly incorporated within the data to improve different services.
+In the context of the CDTN data management, the reports can be directly incorporated within the data to improve
+different services.
 
 ```
 import { Queries } from "@socialgouv/cdtn-monolog";
@@ -169,18 +185,14 @@ queries
 
 ## Kibana
 
-Most analysis are indexed in ElasticSearch and visualized via Kibana Dashboards.
-Les logs sont copiés de matomo vers ES de Kibana par une [github action](https://github.com/SocialGouv/cdtn-monolog/actions/workflows/schedule.yaml) dans l'index `log-new`
-
-Si on doit re-run les reports, il faut cleaner dans Kibana ceux déjà générés, pour ceux où on ne clean pas dans le script `runMonthly`.
-Par exemple ["logs-satisfaction"](./src/commands.ts).
-À noter qu'il n'y a pas besoin de cleaner "log_reports" parce que le script fait un resetReportIndex juste avant de le sauver.
-Pour cleaner, dans Kibana > Dev Tools
-On check les logs pour le dernier mois. Si pas de données rien à cleaner.
+Les logs sont copiés de matomo vers ES (Kibana) par
+une [github action](https://github.com/SocialGouv/cdtn-monolog/actions/workflows/schedule.yaml) dans l'index `log-new`
+et sont ensuite utilisés dans les dashboards sur Kibana.
 
 ## saved objects
 
-To restore Dashboards & visualisations follow this [documentation](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html)
+To restore Dashboards & visualisations follow
+this [documentation](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html)
 kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/)
 
 ## Adding a new analysis
@@ -209,6 +221,12 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-queries -c cache-
 ```
 
 ### Les index à supprimer lorsqu'on relance les commandes à effectuer chaque mois
+
+ce sont tous les index non cleané dans le script `runMonthly`.
+Par exemple, on a pas besoin de cleaner "log_reports" parce que le script fait un `resetReportIndex` juste avant de le
+sauver.
+
+Dans Kibana > Dev Tools
 
 - `logs-satisfaction`
 - `logs-satisfaction-reasons`
