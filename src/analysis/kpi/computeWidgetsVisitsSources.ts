@@ -4,6 +4,18 @@ import { filterDataframeByUrlWithPrefix } from "../kpi";
 
 const WIDGETS_LIST = [
   {
+    name: "Moteur de recherche",
+    url: "https://code.travail.gouv.fr/widgets/search",
+  },
+  {
+    name: "Indemnité de licenciement",
+    url: "https://code.travail.gouv.fr/widgets/indemnite-licenciement",
+  },
+  {
+    name: "Comprendre sa procédure de licenciement",
+    url: "https://code.travail.gouv.fr/widgets/procedure-licenciement",
+  },
+  {
     name: "Préavis de licenciement",
     url: "https://code.travail.gouv.fr/widgets/preavis-licenciement",
   },
