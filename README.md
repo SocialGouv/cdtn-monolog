@@ -44,7 +44,7 @@ The `download_dump.sh` script allows you to get a dump file from Azure.
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog ingest data/
 ```
 
-To test locally we can use the file [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to beisolated in a folder (e.g. /src/**tests**/**fixtures**/data/2020-04-24.json) to then run
+To test locally we can use the file [2020-04-24.json](./src/__tests__/__fixtures__/2020-04-24.json). It needs to be isolated in a folder (e.g. /src/**tests**/**fixtures**/data/2020-04-24.json) to then run
 
 ```console
 yarn monolog ingest src/__tests__/input/data/
@@ -97,7 +97,7 @@ Based on usage logs we compute several reports and store them to Elastic :
 
 - _Monthly report_ contains metrics for the last month : average daily visits, number of unique visits...
 - _Popularity reports_ describe the most popular contents, conventions collectives and queries. We compute popularity for each of the last three months in order to observe their progression. (Note: queries are grouped in clusters, if the trigger the same results from the API, we consider them as part of the same _query cluster_)
-  - _KPI reports_ create kpi for tools, as the completion rate. Each month, we compute kpis for the last month.
+- _KPI reports_ create kpi for tools, as the completion rate. Each month, we compute kpis for the last month.
 
 ```console
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog monthly -m mmmmmm
@@ -203,6 +203,11 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-queries -c cache-
 
 ### Les index à supprimer lorsqu'on relance les commandes à effectuer chaque mois
 
+ce sont tous les index non cleané dans le script `runMonthly`.
+Par exemple, on a pas besoin de cleaner "log_reports" parce que le script fait un `resetReportIndex` juste avant de le sauver.
+
+Dans Kibana > Dev Tools
+
 - `logs-satisfaction`
 - `logs-satisfaction-reasons`
 - `log_reports_monthly`
@@ -213,7 +218,7 @@ Ci-dessous, un example pour supprimer les données de janvier 2023
 #### Pour `logs-satisfaction` et `logs-satisfaction-reasons`
 
 ```elasticsearch
-GET logs-satisfaction*/_search
+GET logs-satisfaction/_search
 {
   "query": {
     "bool": {
@@ -229,7 +234,7 @@ GET logs-satisfaction*/_search
   }
 }
 
-POST logs-satisfaction*/_delete_by_query
+POST logs-satisfaction/_delete_by_query
 {
   "query": {
     "bool": {

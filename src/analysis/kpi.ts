@@ -5,6 +5,7 @@ import { queryAndWrite } from "../reader/logReader";
 import { computeCompletionRateOfUrlTool } from "./kpi/computeCompletionRateOfUrlTool";
 import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "./kpi/computeKpiRateVisitsOnCcPagesOnAllContribPages";
 import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "./kpi/computeRateOfProcessedCcResultsOverAllResultsByTools";
+import { computeWidgetsVisitsSources } from "./kpi/computeWidgetsVisitsSources";
 import { getRateOfSuccessfulSearchWhenLookingForACc } from "./kpi/getRateOfSuccessfulSearchWhenLookingForACc";
 import { removeAnchor } from "./popularity";
 import { KpiReport } from "./reports";
@@ -131,10 +132,13 @@ export const monthlyAnalysis = (logs: IDataFrame, reportId: string = new Date().
     startDate,
     reportId
   );
+  logger.info("Computing visits of each widgets pages");
+  const widgetsPagesVisits = computeWidgetsVisitsSources(logsIndexed, startDate, reportId);
 
   return completionRateKpi.concat(
     rateVisitsOnCcPagesOnAllContribPages,
     rateOfCcResultsOverAllResultsOnTools,
-    rateOfSuccessfulSearchWhenLookingForACc
+    rateOfSuccessfulSearchWhenLookingForACc,
+    widgetsPagesVisits
   );
 };
