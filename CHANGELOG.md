@@ -1,3 +1,11 @@
+# [1.20.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.19.0...v1.20.0) (2023-03-16)
+
+
+### Features
+
+* **widgets visits:** add new dashboard to display the monthly widgets pages visits ([4b5d1be](https://github.com/SocialGouv/cdtn-monolog/commit/4b5d1be187384a2569d5094773e8aa0c72bfc176))
+* **widgets visits:** plug new dashboard ([8102ff2](https://github.com/SocialGouv/cdtn-monolog/commit/8102ff268fc4a5c128aa8bc7a11dcb0907e687fd))
+
 # [1.19.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.18.1...v1.19.0) (2023-03-02)
 
 
