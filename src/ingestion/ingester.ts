@@ -32,18 +32,18 @@ const parseAction = (action: MatomoAction, visit: MatomoVisit, logfile: string):
   const matomoVisitFields = (({
     idVisit,
     serverTimePretty,
-    referrer,
     referrerName,
     referrerTypeName,
+    referrerUrl,
     lastActionTimestamp,
     lastActionDateTime,
   }) => ({
     idVisit,
     lastActionDateTime,
     lastActionTimestamp,
-    referrer,
     referrerName,
     referrerTypeName,
+    referrerUrl,
     serverTimePretty,
   }))(visit);
 
