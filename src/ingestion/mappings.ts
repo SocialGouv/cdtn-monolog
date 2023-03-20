@@ -62,6 +62,10 @@ const mappings = {
       type: "keyword",
     },
 
+    referrer: {
+      type: "keyword",
+    },
+
     referrerTypeName: {
       type: "keyword",
     },

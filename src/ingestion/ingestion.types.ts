@@ -13,6 +13,7 @@ export type VisitFields = {
   idVisit: number;
   serverTimePretty: number;
   referrerTypeName: string;
+  referrer: string;
   referrerName: string;
   lastActionTimestamp: number;
   lastActionDateTime: number;
