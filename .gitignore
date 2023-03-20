@@ -16,3 +16,5 @@ lib
 data-*
 .env.local
 cache-*
+.idea
+.DS_Store
