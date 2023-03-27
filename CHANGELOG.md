@@ -1,3 +1,10 @@
+# [1.22.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.21.0...v1.22.0) (2023-03-27)
+
+
+### Features
+
+* ajout du referrer dans l'import des données de matomo ([#204](https://github.com/SocialGouv/cdtn-monolog/issues/204)) ([66a6e61](https://github.com/SocialGouv/cdtn-monolog/commit/66a6e6177f16fca86c0a32509fe2149ffcff2710))
+
 # [1.21.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.20.0...v1.21.0) (2023-03-20)
 
 
