@@ -62,11 +62,11 @@ const mappings = {
       type: "keyword",
     },
 
-    referrer: {
+    referrerTypeName: {
       type: "keyword",
     },
 
-    referrerTypeName: {
+    referrerUrl: {
       type: "keyword",
     },
 
