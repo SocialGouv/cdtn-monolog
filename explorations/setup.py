@@ -13,7 +13,7 @@ setup(
                       'notebook==6.0.3',
                       'pandas==1.5',
                       'plotly-express==0.4',
-                      'psycopg2-binary==2.9',
+                      'psycopg2-binary==2.9.5',
                       'python-dotenv==0.20',
                       'requests==2.28',
                       'sentence-transformers==2.2',
