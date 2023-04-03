@@ -1,0 +1,35 @@
+name: Python Action
+
+on:
+  pull_request:
+    branches: [ master ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install virtualenv
+        run: |
+          pip install virtualenv
+      - name: Create virtualenv and install dependencies
+        run: |
+          cd explorations
+          virtualenv venv
+          source venv/bin/activate
+          python3 -m pip install --upgrade pip
+          pip3 install -e .
+      - name: Run script
+        run: |
+          cd explorations
+          source venv/bin/activate
+          python3 -m src
+        env:
+          ELASTICSEARCH_MONOLOG_HOST: ${{ secrets.ELASTICSEARCH_MONOLOG_HOST }}
+          ELASTICSEARCH_MONOLOG_USER: ${{ secrets.ELASTICSEARCH_MONOLOG_USER }}
+          ELASTICSEARCH_MONOLOG_PASSWORD: ${{ secrets.ELASTICSEARCH_MONOLOG_PASSWORD }}
