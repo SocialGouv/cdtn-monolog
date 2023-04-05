@@ -27,10 +27,15 @@ jobs:
       - run: yarn lint
       - run: yarn test
         env:
+          CDTN_API_URL: https://code-du-travail-numerique-preprod
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
       - run: yarn build:bin
       - run: yarn build:lib
       - run: yarn start --version
+        env:
+          CDTN_API_URL: https://code-du-travail-numerique-preprod
       - run: yarn start --help
+        env:
+          CDTN_API_URL: https://code-du-travail-numerique-preprod
       - uses: codecov/codecov-action@v2
