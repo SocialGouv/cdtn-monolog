@@ -33,6 +33,7 @@ jobs:
           yarn
           yarn monolog ingest
         env:
+          CDTN_API_URL: https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr
           ELASTICSEARCH_URL: ${{ secrets.ELASTICSEARCH_URL }}
           API_KEY: ${{ secrets.API_KEY }}
       - name: Create the Mattermost Message

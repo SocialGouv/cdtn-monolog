@@ -21,6 +21,7 @@ jobs:
       - run: yarn build:lib
       - run: yarn test --coverage
         env:
+          CDTN_API_URL: https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr
           ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
           API_KEY: ${{ secrets.ELASTIC_API_KEY }}
       - name: Semantic Release
