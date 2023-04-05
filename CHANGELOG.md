@@ -1,3 +1,10 @@
+## [1.22.1](https://github.com/SocialGouv/cdtn-monolog/compare/v1.22.0...v1.22.1) (2023-04-05)
+
+
+### Bug Fixes
+
+* mise à jour de l'URL de l'API de CDTN ([#208](https://github.com/SocialGouv/cdtn-monolog/issues/208)) ([13f528d](https://github.com/SocialGouv/cdtn-monolog/commit/13f528d5fa13775280fa2ec9649f5def51d104ac))
+
 # [1.22.0](https://github.com/SocialGouv/cdtn-monolog/compare/v1.21.0...v1.22.0) (2023-03-27)
 
 
