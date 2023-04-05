@@ -2,10 +2,13 @@ import fetch from "node-fetch";
 
 import { SearchResult } from "./cdtn.types";
 
-const CDTN_API_URL =
-  process.env.CDTN_API_URL || "https://api-code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr";
+const CDTN_API_URL = process.env.CDTN_API_URL;
 
-const path = "/api/v1/search";
+if (!CDTN_API_URL) {
+  throw new Error("missing CDTN_API_URL environment variable");
+}
+
+const path = "/api/search";
 
 export const triggerSearch = (query: string): Promise<SearchResult> => {
   console.log(query);

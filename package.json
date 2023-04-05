@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "jest --watch",
     "lint": "eslint src/ --ext .ts --fix",
-    "test": "jest",
+    "test": "CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r ts-node/register --max-old-space-size=28000 src/bin/index.ts",
     "build": "yarn run build:bin && yarn run build:lib",

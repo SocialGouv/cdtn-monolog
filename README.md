@@ -16,7 +16,7 @@ MATOMO_URL # URL of the Matomo server where raw logs can be found
 AZ_STORAGE_TOKEN # Azure token to push dump to Azure blob
 ELASTICSEARCH_URL # URL of the Elastic instance where the logs are stored eventually
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
-CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results
+CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results (without the api and final /)
 ```
 
 ## Local
@@ -79,7 +79,7 @@ Retrieve logs for the last 3 months and store them in the output as a CSV file.
 We only select _some_ action types : searches / selections / content visits / feebdack.
 
 ```console
-ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog retrieve -o data.csv
+ELASTICSEARCH_URL=xxxx API_KEY=yyyy CDTN_API_URL=zzzz yarn monolog retrieve -o data.csv
 ```
 
 ### `cache`
@@ -183,7 +183,7 @@ TODO : describe how to create an additional report
 ## Étapes à effectuer chaque mois
 
 ```sh
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
 yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json ~ 1h40
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly -m november # génerer les rapports mensuels ~ 1h20
 ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly-kpi -m november # génerer les KPIs mensuels ~ 17min
