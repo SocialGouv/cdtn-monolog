@@ -182,12 +182,47 @@ TODO : describe how to create an additional report
 
 ## Étapes à effectuer chaque mois
 
+### Check data 
+Check all days has events (<a href="https://cdtn-logs-kibana.fabrique.social.gouv.fr/app/dashboards#/view/ff3db4e0-799a-11ea-bd6b-db5304326dd3?_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-31d%2Fd,to:now))">you can use this graph</a>)
+
+If one day missing data, you can run the ingester for these days with [this github action](https://github.com/SocialGouv/cdtn-monolog/actions/workflows/schedule_day.yml).
+
+If one day has duplicated data, you can run the followin ES queries to remove all data then re-run the ingester with [this github action](https://github.com/SocialGouv/cdtn-monolog/actions/workflows/schedule_day.yml).
+
+```elasticsearch
+# Etape 1 : Vérifier les données qui seront supprimé (ici la journée du 1er Mars 2023)
+GET logs-new/_search
+{
+  "query": {
+		"term": {
+			"logfile": {
+				"value": "2023-03-01"
+			}
+		}
+	}
+}
+
+# Etape 2 : supprimer les données dans l'index
+POST logs-new/_delete_by_query
+{
+  "query": {
+		"term": {
+			"logfile": {
+				"value": "2023-03-01"
+			}
+		}
+	}
+}
+```
+
+### Monthly reports
+
 ```sh
 ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
-yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json ~ 1h40
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly -m november # génerer les rapports mensuels ~ 1h20
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog monthly-kpi -m november # génerer les KPIs mensuels ~ 17min
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois) ~ 6min
+CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json ~ 1h40
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog monthly -m november # génerer les rapports mensuels ~ 1h20
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog monthly-kpi -m november # génerer les KPIs mensuels ~ 17min
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois) ~ 6min
 ```
 
 ### Les queries
@@ -197,8 +232,8 @@ ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog covisits -d data-november # géne
 ```sh
 chmod +x scripts/get_last_month_cache.sh
 ./scripts/get_last_month_cache.sh data-month
-yarn monolog cache -d data-queries -o cache-queries.json # convertir les logs dans un json ~ 30min
-ELASTICSEARCH_URL=xxx API_KEY=yyy yarn monolog queries -d data-queries -c cache-queries.json # générer les rapports queries ~ 2 minutes
+CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr yarn monolog cache -d data-queries -o cache-queries.json # convertir les logs dans un json ~ 30min
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr  yarn monolog queries -d data-queries -c cache-queries.json # générer les rapports queries ~ 2 minutes
 ```
 
 ### Les index à supprimer lorsqu'on relance les commandes à effectuer chaque mois
