@@ -54,19 +54,15 @@ const main = async () => {
         ({ output }) => retrieveThreeMonthsData(output as string)
       )
       .command(
-        "cache [data] [output]",
-        "Generate API cache for searches in [data]",
+        "cache [output]",
+        "Generate API cache for searches",
         {
-          data: {
-            alias: "d",
-            demand: true,
-          },
           output: {
             alias: "o",
             demand: true,
           },
         },
-        ({ data, output }) => createCache(data as string, output as string)
+        ({ output }) => createCache(output as string)
       )
       .command(
         "queries [data] [cache] [suggestions]",

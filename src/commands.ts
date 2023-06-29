@@ -177,10 +177,10 @@ export const retrieveThreeMonthsData = async (output: string): Promise<void> => 
   //await data.asCSV().writeFile(output);
 };
 
-export const createCache = async (dataPath: string, output: string): Promise<void> => {
-  logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
-  const data = await readFromFolder(dataPath);
-  const cache = await buildCache(data, 2);
+export const createCache = async (output: string): Promise<void> => {
+  logger.info(`Creating cache, saved in ${output}`);
+  // const data = await readFromFolder(dataPath);
+  const cache = await buildCache();
   await persistCache(cache, output);
 };
 
