@@ -1,0 +1,22 @@
+name: Génération du cache pour les recherches
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Ingest
+        run: |
+          yarn
+          yarn monolog cache -o cache-request.json
+        env:
+          CDTN_API_URL: https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr
+          ELASTICSEARCH_URL: ${{ secrets.ELASTICSEARCH_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
