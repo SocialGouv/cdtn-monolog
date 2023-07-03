@@ -1,17 +1,26 @@
-FROM node:14.18.3-alpine3.14 as builder
+ARG NODE_VERSION=20.2.0-alpine
 
-WORKDIR /app
+FROM node:$NODE_VERSION as builder
+
+WORKDIR /dep
 
 COPY ./package.json package.json
+COPY ./yarn.lock yarn.lock
+
+RUN yarn --frozen-lockfile
+
 COPY ./tsconfig.json tsconfig.json
+COPY ./babel.config.js babel.config.js
 COPY ./src/ src/
 
-RUN yarn install
 RUN yarn build:bin
 
-FROM node:14.18.3-alpine3.14
+FROM node:$NODE_VERSION
+
 WORKDIR /app
-COPY --from=builder /app/bin .
 
+COPY --from=builder /dep/bin .
 
-CMD ["sh", "-c", "node index.js ${MONOLOG_ACTION}"]
+USER 1000
+
+CMD ["sh", "-c", "node index.js monolog queries"]

@@ -23,8 +23,8 @@
     "test-one": "jest analysis --watch",
     "monolog": "node -r ts-node/register --max-old-space-size=28000 src/bin/index.ts",
     "build": "yarn run build:bin && yarn run build:lib",
-    "build:bin": "yarn run ncc build src/bin/index.ts -o bin",
-    "build:lib": "yarn tsc -p src/tsconfig.lib.json",
+    "build:bin": "NODE_OPTIONS=--openssl-legacy-provider yarn run ncc build src/bin/index.ts -o bin",
+    "build:lib": "NODE_OPTIONS=--openssl-legacy-provider yarn tsc -p src/tsconfig.lib.json",
     "start": "node ./bin/index.js",
     "check:types": "tsc"
   },

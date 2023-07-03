@@ -58,11 +58,16 @@ export const runIngestion = async (dataPath: string): Promise<void> => {
   });
 };
 
-export const runQueryAnalysis = async (
-  dataPath: string,
-  cachePath: string,
-  suggestionPath: string | undefined
-): Promise<void> => {
+export const runQueryAnalysis = async (suggestionPath: string | undefined): Promise<void> => {
+  const dataPath = "data-all-logs-last-month";
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
+  logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in ${dataPath}`);
+  await readDaysAndWriteAllLogs(LOG_INDEX, daysOfLastMonth, dataPath);
+
+  const cachePath = "cache-request.json";
+  logger.info(`Download cache for the last month (${daysOfLastMonth[0]}), saved in ${cachePath}`);
+  // TODO Download the cache from Azure or Github action
+
   logger.info(
     `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
       suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
@@ -213,3 +218,9 @@ export const refreshCovisits = async (dataPath: string): Promise<void> => {
 //   const weekDate = setWeek(new Date(year, 1, 1, 12), ww + 1);
 //   runWeeklyReportByDate(weekDate);
 // });
+
+export const retrieveLastMonthsData = async (output: string): Promise<void> => {
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
+  logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`);
+  await readDaysAndWriteAllLogs(LOG_INDEX, daysOfLastMonth, `data-all-logs-${output}`);
+};
