@@ -80,8 +80,8 @@ export const buildCache = async (): Promise<Cache> => {
               range: {
                 lastActionTimestamp: {
                   format: "strict_date_optional_time",
-                  gte: "2023-05-01T00:00:00.000Z",
-                  lte: "2023-06-01T23:59:59.999Z",
+                  gte: "2023-06-01T00:00:00.000Z",
+                  lte: "2023-07-01T23:59:59.999Z",
                 },
               },
             },
