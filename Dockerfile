@@ -21,6 +21,7 @@ FROM node:$NODE_VERSION
 WORKDIR /app
 
 COPY --from=builder /dep/bin .
+COPY --from=builder /dep/last-month-request.json last-month-request.json
 
 USER 1000
 
