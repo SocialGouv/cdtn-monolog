@@ -23,4 +23,4 @@ COPY --from=builder /dep/bin .
 
 USER 1000
 
-CMD ["sh", "-c", "node index.js monolog queries"]
+CMD ["sh", "-c", "node index.js queries"]
