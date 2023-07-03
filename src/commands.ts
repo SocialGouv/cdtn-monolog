@@ -3,7 +3,7 @@ import { none, some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
-import { monthlyAnalysis, readDaysAndWriteAllLogs } from "./analysis/kpi";
+import { monthlyAnalysis, readDaysAllLogs, readDaysAndWriteAllLogs } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import { analyse as queryAnalysis, generateAPIResponseReports } from "./analysis/queries";
 import { analyse as satisfactionAnalysis } from "./analysis/satisfaction";
@@ -18,28 +18,11 @@ import {
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
   SATISFACTION_REASONS_INDEX,
-  testAndCreateIndex,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
-import {
-  countVisits,
-  delay,
-  readDaysAndWrite,
-  readDaysFromElastic,
-  readFromFile,
-  readFromFolder,
-} from "./reader/logReader";
+import { countVisits, delay, readDaysAndWrite, readFromFolder } from "./reader/logReader";
 import { actionTypes, getDaysInPrevMonth, getLastMonthsComplete, removeThemesQueries } from "./reader/readerUtil";
-import {
-  kpiMappings,
-  queryReportMappings,
-  resetReportIndex,
-  resultReportMappings,
-  satisfactionMappings,
-  satisfactionReasonsMappings,
-  saveReport,
-  standardMappings,
-} from "./report/reportStore";
+import { resetReportIndex, resultReportMappings, saveReport, standardMappings } from "./report/reportStore";
 
 // TODO shall we use EitherTask here ?
 export const runIngestion = async (dataPath: string): Promise<void> => {
@@ -62,9 +45,9 @@ export const runQueryAnalysis = async (suggestionPath: string | undefined): Prom
   const dataPath = "data-all-logs-last-month";
   const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
   logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in ${dataPath}`);
-  await readDaysAndWriteAllLogs(LOG_INDEX, daysOfLastMonth, dataPath);
+  const data_raw = await readDaysAllLogs(LOG_INDEX, daysOfLastMonth);
 
-  const cachePath = "cache-request.json";
+  const cachePath = "last-month-request.json";
   logger.info(`Download cache for the last month (${daysOfLastMonth[0]}), saved in ${cachePath}`);
   // TODO Download the cache from Azure or Github action
 
@@ -74,7 +57,6 @@ export const runQueryAnalysis = async (suggestionPath: string | undefined): Prom
     }, saved in Elastic reports`
   );
 
-  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
   const suggestions = suggestionPath ? await readSuggestions(suggestionPath as string) : new Set<string>();

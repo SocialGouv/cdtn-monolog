@@ -12,6 +12,7 @@ RUN yarn --frozen-lockfile
 COPY ./tsconfig.json tsconfig.json
 COPY ./babel.config.js babel.config.js
 COPY ./src/ src/
+COPY ./last-month-request.json last-month-request.json
 
 RUN yarn build:bin
 
