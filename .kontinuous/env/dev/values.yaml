@@ -1,6 +1,7 @@
 jobs:
   runs:
     job-monolog:
+      needs: [build-monolog]
       use: trigger-cronjob
       with:
         cronJobName: cron-monolog
