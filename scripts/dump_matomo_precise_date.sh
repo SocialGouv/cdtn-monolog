@@ -45,6 +45,7 @@ az storage blob upload \
   --account-name=cdtndata \
   --container logs \
   --file $file \
-  --name $name
+  --name $name \
+  --overwrite
 
 rm $file
