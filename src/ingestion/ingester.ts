@@ -79,7 +79,7 @@ const parseVisit = (visit: MatomoVisit, logfile: string) => {
   }
 };
 
-const parse = (rawData: string, logfile: string) => {
+const parse = (rawData: string, logfile: string): MonologAction[] => {
   // use io-ts / Reader
   const rawVisits: MatomoVisit[] = JSON.parse(rawData);
 

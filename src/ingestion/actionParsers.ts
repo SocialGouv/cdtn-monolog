@@ -8,7 +8,9 @@ const parseSearch = (action: MatomoAction): MonologActionFields => ({
 const parseStandard = (action: MatomoAction): MonologActionFields => {
   // TODO find a better way ot express this :
   const type = ((url) => {
-    if (url.endsWith("gouv.fr/")) {
+    if (!url) {
+      return "unknown";
+    } else if (url.endsWith("gouv.fr/")) {
       return "home";
     } else if (url.includes("/themes/") || url.endsWith("/themes")) {
       return "themes";
