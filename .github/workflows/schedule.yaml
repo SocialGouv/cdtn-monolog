@@ -3,7 +3,7 @@ name: Schedule
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 8 * * *"
+    - cron: "0 3 * * *"
 
 jobs:
   backup:
