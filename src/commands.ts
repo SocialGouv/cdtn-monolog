@@ -3,7 +3,7 @@ import { none, some } from "fp-ts/lib/Option";
 import * as fs from "fs";
 
 import { analyse as covisitAnalysis } from "./analysis/covisit";
-import { monthlyAnalysis, readDaysAndWriteAllLogs } from "./analysis/kpi";
+import { monthlyAnalysis, readDaysAllLogs, readDaysAndWriteAllLogs } from "./analysis/kpi";
 import { analyse as popularityAnalysis } from "./analysis/popularity";
 import { analyse as queryAnalysis, generateAPIResponseReports } from "./analysis/queries";
 import { analyse as satisfactionAnalysis } from "./analysis/satisfaction";
@@ -18,28 +18,11 @@ import {
   REPORT_INDEX,
   RESULTS_REPORT_INDEX,
   SATISFACTION_REASONS_INDEX,
-  testAndCreateIndex,
 } from "./es/elastic";
 import { checkIndex, ingest } from "./ingestion/ingester";
-import {
-  countVisits,
-  delay,
-  readDaysAndWrite,
-  readDaysFromElastic,
-  readFromFile,
-  readFromFolder,
-} from "./reader/logReader";
+import { countVisits, delay, readDaysAndWrite, readFromFolder } from "./reader/logReader";
 import { actionTypes, getDaysInPrevMonth, getLastMonthsComplete, removeThemesQueries } from "./reader/readerUtil";
-import {
-  kpiMappings,
-  queryReportMappings,
-  resetReportIndex,
-  resultReportMappings,
-  satisfactionMappings,
-  satisfactionReasonsMappings,
-  saveReport,
-  standardMappings,
-} from "./report/reportStore";
+import { resetReportIndex, resultReportMappings, saveReport, standardMappings } from "./report/reportStore";
 
 // TODO shall we use EitherTask here ?
 export const runIngestion = async (dataPath: string): Promise<void> => {
@@ -58,18 +41,22 @@ export const runIngestion = async (dataPath: string): Promise<void> => {
   });
 };
 
-export const runQueryAnalysis = async (
-  dataPath: string,
-  cachePath: string,
-  suggestionPath: string | undefined
-): Promise<void> => {
+export const runQueryAnalysis = async (suggestionPath: string | undefined): Promise<void> => {
+  const dataPath = "data-all-logs-last-month";
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
+  logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in ${dataPath}`);
+  const data_raw = await readDaysAllLogs(LOG_INDEX, daysOfLastMonth);
+
+  const cachePath = "last-month-request.json";
+  logger.info(`Download cache for the last month (${daysOfLastMonth[0]}), saved in ${cachePath}`);
+  // TODO Download the cache from Azure or Github action
+
   logger.info(
     `Running query analysis using data ${dataPath}, cache ${cachePath} and ${
       suggestionPath ? `suggestions ${suggestionPath}` : "no suggestions file"
     }, saved in Elastic reports`
   );
 
-  const data_raw = await readFromFolder(dataPath);
   const data = removeThemesQueries(data_raw);
   const cache = await readCache(cachePath);
   const suggestions = suggestionPath ? await readSuggestions(suggestionPath as string) : new Set<string>();
@@ -177,10 +164,10 @@ export const retrieveThreeMonthsData = async (output: string): Promise<void> => 
   //await data.asCSV().writeFile(output);
 };
 
-export const createCache = async (dataPath: string, output: string): Promise<void> => {
-  logger.info(`Creating cache for data ${dataPath}, saved in ${output}`);
-  const data = await readFromFolder(dataPath);
-  const cache = await buildCache(data, 2);
+export const createCache = async (output: string): Promise<void> => {
+  logger.info(`Creating cache, saved in ${output}`);
+  // const data = await readFromFolder(dataPath);
+  const cache = await buildCache();
   await persistCache(cache, output);
 };
 
@@ -213,3 +200,9 @@ export const refreshCovisits = async (dataPath: string): Promise<void> => {
 //   const weekDate = setWeek(new Date(year, 1, 1, 12), ww + 1);
 //   runWeeklyReportByDate(weekDate);
 // });
+
+export const retrieveLastMonthsData = async (output: string): Promise<void> => {
+  const daysOfLastMonth = getLastMonthsComplete(none, some(1)).flat().sort();
+  logger.info(`Retrieve log data for the last month (${daysOfLastMonth[0]}), saved in data-all-logs-${output}`);
+  await readDaysAndWriteAllLogs(LOG_INDEX, daysOfLastMonth, `data-all-logs-${output}`);
+};

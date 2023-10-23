@@ -1,0 +1,8 @@
+jobs:
+  ~chart: jobs
+  runs:
+    build-monolog:
+      use: build
+      with:
+        imagePackage: monolog
+        dockerfile: Dockerfile

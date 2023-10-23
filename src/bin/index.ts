@@ -1,4 +1,3 @@
-import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
 import { logger } from "@socialgouv/cdtn-logger";
 import yargs from "yargs/yargs";
 
@@ -54,30 +53,23 @@ const main = async () => {
         ({ output }) => retrieveThreeMonthsData(output as string)
       )
       .command(
-        "cache [data] [output]",
-        "Generate API cache for searches in [data]",
+        "cache [output]",
+        "Generate API cache for searches",
         {
-          data: {
-            alias: "d",
-            demand: true,
-          },
           output: {
             alias: "o",
             demand: true,
           },
         },
-        ({ data, output }) => createCache(data as string, output as string)
+        ({ output }) => createCache(output as string)
       )
       .command(
-        "queries [data] [cache] [suggestions]",
+        "queries [suggestions]",
         "Compute query reports",
         {
-          cache: { alias: "c", demand: true },
-          data: { alias: "d", demand: true },
           suggestions: { alias: "s" },
         },
-        ({ data, cache, suggestions }) =>
-          runQueryAnalysis(data as string, cache as string, suggestions as string | undefined)
+        ({ suggestions }) => runQueryAnalysis(suggestions as string | undefined)
       )
       .command(
         "monthly [data]",
@@ -99,12 +91,8 @@ const main = async () => {
       // .strict()
       .help().argv;
   } catch (err: any) {
-    if (err.name != undefined && err.name == ConnectionError.name) {
-      logger.error("Cannot access Elastic : " + JSON.stringify(err, null, 2));
-    } else {
-      console.log(err);
-      logger.error(JSON.stringify(err, null, 2));
-    }
+    console.log(err);
+    logger.error(JSON.stringify(err, null, 2));
     process.exit(1);
   }
 };

@@ -24,6 +24,7 @@ const build_query = (day: string, type: Array<string>) => {
     },
   };
 };
+
 export const queryAndWrite = async (
   index: string,
   day: string,
@@ -54,6 +55,33 @@ export const queryAndWrite = async (
   console.log(`writing ${day}`);
   await unfoldedData.asCSV().writeFile(output + "/" + day);
 };
+
+export const query = async (
+  index: string,
+  day: string,
+  query: any,
+  type: string[]
+): Promise<IDataFrame<number, any>> => {
+  console.log(`reading ${day}`);
+  const { docs } = await getDocuments(index, query, undefined);
+  const data = await new DataFrame({ considerAllRows: true, values: docs });
+  // in case we return select result type, we need to
+  // unfold the result selection object in two columns
+  const unfoldedData = (await type.includes(actionTypes.selectResult))
+    ? data.withSeries({
+        resultSelectionAlgo: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) => (resultSelection ? resultSelection.algo : undefined)),
+        resultSelectionUrl: (df) =>
+          df
+            .deflate((row) => row.resultSelection)
+            .select((resultSelection) => (resultSelection ? resultSelection.url : undefined)),
+      })
+    : data;
+  return unfoldedData;
+};
+
 export const readDaysAndWrite = async (
   index: string,
   days: string[],
