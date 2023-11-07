@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on error
+set -e
+
 mkdir data
 
 date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`

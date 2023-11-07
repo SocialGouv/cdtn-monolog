@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Exit on error
+set -e
+
 limit=100
 offset=0
 accu="[]"

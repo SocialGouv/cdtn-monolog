@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on error
+set -e
+
 DATA_FOLDER="data-queries"
 
 if [ -z "$1" ]; then
