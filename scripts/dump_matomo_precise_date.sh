@@ -3,6 +3,12 @@
 # Exit on error
 set -e
 
+if ! command -v curl &> /dev/null
+then
+    echo "curl could not be found, install it"
+    apk add curl
+fi
+
 limit=100
 offset=0
 accu="[]"

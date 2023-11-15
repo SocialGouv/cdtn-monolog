@@ -3,6 +3,12 @@
 # Exit on error
 set -e
 
+if ! command -v curl &> /dev/null
+then
+    echo "curl could not be found, install it"
+    apk add curl
+fi
+
 date=`date -d "@$(($(date +%s) - 86400))"  "+%Y-%m-%d"`
 # date=`gdate -d "@$(($(gdate +%s) - 86400))"  "+%Y-%m-%d"` # to run locally on macosx
 # date=2021-11-02
