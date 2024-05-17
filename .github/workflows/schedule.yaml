@@ -34,11 +34,11 @@ jobs:
           CDTN_API_URL: https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr
           ELASTICSEARCH_URL: ${{ secrets.ELASTICSEARCH_URL }}
           API_KEY: ${{ secrets.API_KEY }}
-      - name: Create the Mattermost Message
-        if: failure()
-        run: |
-          echo "{\"text\":\"La synchro des données Matomo a échoué, veuillez relancer le job : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}\"}" > mattermost.json
       - uses: mattermost/action-mattermost-notify@master
         if: failure()
         with:
           MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+          PAYLOAD: |-
+            {
+              "text": "La synchro des données Matomo a échoué, veuillez relancer le job : ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}",
+            }
