@@ -15,7 +15,7 @@ setup(
                       'plotly-express==0.4',
                       'psycopg2-binary==2.9.5',
                       'python-dotenv==0.20',
-                      'requests==2.28',
+                      'requests==2.28.2',
                       'sentence-transformers==2.2',
                       'sqlalchemy==1.4',
                       'torch==1.12.1',
