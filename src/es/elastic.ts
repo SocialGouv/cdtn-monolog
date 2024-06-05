@@ -37,20 +37,17 @@ export const getDocumentsFromES = async (
   withDocs = true,
   withSearch = false
 ): Promise<DocumentResponse> => {
-  const initResponse = !withSearch
-    ? await esClient.count({
-        body: { aggs, query },
-        index,
-      })
-    : await esClient.search({
-        body: { aggs, query },
-        index,
-        size: BATCH_SIZE,
-      });
+  console.log(`Get doc ES : ${withSearch} -> ${JSON.stringify(aggs)}`);
+  console.log(`Query(${index}) : ${JSON.stringify(query)}`);
+  const initResponse: any = await esClient.search<any>({
+    aggs,
+    index,
+    query,
+    size: BATCH_SIZE,
+  });
 
-  const total = !withSearch ? initResponse.body.count : initResponse.body.hits.total.value;
-
-  const { aggregations } = initResponse.body;
+  const total = initResponse.hits.total.value;
+  const aggregations = initResponse.aggregations;
 
   const docs: any[] = [];
 
@@ -66,7 +63,7 @@ export const getDocumentsFromES = async (
       return hits[hits.length - 1].sort[0];
     };
 
-    const pointInTimeId = (await esClient.openPointInTime({ index, keep_alive: "10m" })).body.id;
+    const pointInTimeId = (await esClient.openPointInTime({ index, keep_alive: "10m" })).id;
 
     let searchAfter;
 
@@ -87,8 +84,8 @@ export const getDocumentsFromES = async (
       if (docs.length % 50000 == 0) {
         logger.debug(docs.length);
       }
-      if (!response?.body?.hits?.hits || !response.body.hits.hits.length) break;
-      searchAfter = treatResponse({ hits: response.body.hits.hits });
+      if (!response?.hits?.hits || !response.hits.hits.length) break;
+      searchAfter = treatResponse({ hits: response.hits.hits });
     }
   }
   return { aggregations, docs };
@@ -105,9 +102,9 @@ const getDocuments = async (
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {
-  const { body } = await esClient.indices.exists({ index });
+  const exist = await esClient.indices.exists({ index });
 
-  if (!body) {
+  if (!exist) {
     try {
       await esClient.indices.create({
         body: {
@@ -135,8 +132,8 @@ const testAndCreateIndex = async (index: string, mappings: any) => {
 };
 
 const deleteIfExists = async (index: string) => {
-  const { body } = await esClient.indices.exists({ index });
-  if (body) {
+  const exist = await esClient.indices.exists({ index });
+  if (exist) {
     await esClient.indices.delete({ index });
     logger.info(`Index ${index} deleted.`);
   }
@@ -144,19 +141,17 @@ const deleteIfExists = async (index: string) => {
 
 const insertDocuments = async (index: string, documents: any) => {
   try {
-    const header = { index: { _index: index, _type: "_doc" } };
+    const header = { create: { _index: index } };
     const body = documents.flatMap((doc: any) => {
       return [header, doc];
     });
-    const resp = await esClient.bulk({
-      body,
-      index,
-    });
-    console.log(resp);
-    if (resp.body.errors) {
-      resp.body.items.forEach((element: any) => {
+    const resp = await esClient.bulk({ body, refresh: true });
+    console.log(`Batch ${resp.items.length} items : ${resp.errors}`);
+    if (resp.errors) {
+      resp.items.forEach((element: any) => {
         if (element.index.status == 400) {
-          logger.error(`Error during insertion : ${element.index.error.reason}`);
+          logger.error(`Error during insertion : ${element.index.error.reason} - ${JSON.stringify(element)}`);
+          // logger.error(`En echec : ${index} - ${JSON.stringify(documents)}`);
         }
       });
     }

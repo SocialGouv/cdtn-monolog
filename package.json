@@ -29,7 +29,7 @@
     "check:types": "tsc"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.15.0",
+    "@elastic/elasticsearch": "8.13.1",
     "@socialgouv/cdtn-logger": "^1.10.4",
     "@socialgouv/cdtn-sources": "^4.55.1",
     "data-forge": "^1.8.26",
