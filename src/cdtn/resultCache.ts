@@ -1,11 +1,11 @@
 import { logger } from "@socialgouv/cdtn-logger";
 import { getRouteBySource } from "@socialgouv/cdtn-sources";
-import { DataFrame, IDataFrame } from "data-forge";
+import { IDataFrame } from "data-forge";
 import * as fs from "fs";
 import PQueue from "p-queue";
 import * as readline from "readline";
 
-import { getVisits, toUniqueSearches } from "../reader/dataset";
+import { esClient, LOG_INDEX } from "../es/elastic";
 import { actionTypes } from "../reader/readerUtil";
 import { Cache, CacheQueryCluster, Document } from "./cdtn.types";
 import { triggerSearch } from "./cdtnApi";
@@ -28,14 +28,83 @@ const buildQueryMap = (queryClusters: string[][]) =>
   new Map<string, number>(queryClusters.flatMap((queryCluster, i) => queryCluster.map((query: string) => [query, i])));
 
 // get all search queries and build a cache of the responses
-export const buildCache = async (dataset: IDataFrame, minOccurence = 0): Promise<Cache> => {
+export const buildCache = async (): Promise<Cache> => {
+  /*
+  {
+  "size": 0,
+  "query": {
+    "term": {
+      "type": "search"
+    }
+  },
+  "aggs": {
+    "grouped_queries": {
+
+      "terms": {
+        "field": "query",
+        "min_doc_count": 10,
+        "size": 20000
+      }
+    }
+  }
+}
+
+   */
   const pqueue = new PQueue({ concurrency: 16 });
 
   // we get all unique queries (deduplicate when happening in same visit + min occurence)
-  const visits = getVisits(dataset);
-  const uniqueSearches = DataFrame.concat(visits.select((visit) => toUniqueSearches(visit)).toArray());
+  // const visits = getVisits(dataset);
+  // const uniqueSearches = DataFrame.concat(visits.select((visit) => toUniqueSearches(visit)).toArray());
 
-  const queries: string[] = deduplicateQueries(uniqueSearches, minOccurence);
+  // const queries: string[] = deduplicateQueries(uniqueSearches, minOccurence);
+
+  logger.info("Getting all queries from ES");
+  const result = await esClient.search({
+    body: {
+      size: 0,
+      query: {
+        bool: {
+          must: [],
+          filter: [
+            {
+              match_phrase: {
+                type: "search",
+              },
+            },
+            {
+              exists: {
+                field: "query",
+              },
+            },
+            {
+              range: {
+                lastActionTimestamp: {
+                  format: "strict_date_optional_time",
+                  gte: "2023-06-01T00:00:00.000Z",
+                  lte: "2023-07-01T23:59:59.999Z",
+                },
+              },
+            },
+          ],
+          should: [],
+          must_not: [],
+        },
+      },
+      aggs: {
+        grouped_queries: {
+          terms: {
+            field: "query",
+            min_doc_count: 2,
+            size: 20000,
+          },
+        },
+      },
+    },
+    index: LOG_INDEX,
+    size: 20000,
+  });
+
+  const queries: string[] = result.body.aggregations.grouped_queries.buckets.map((bucket: any) => bucket.key);
 
   logger.info(`Calling API for ${queries.length} queries, this might take some time`);
 

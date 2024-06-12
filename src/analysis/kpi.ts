@@ -1,7 +1,7 @@
 import { logger } from "@socialgouv/cdtn-logger";
-import { IDataFrame, ISeries } from "data-forge";
+import { DataFrame, IDataFrame, ISeries } from "data-forge";
 
-import { queryAndWrite } from "../reader/logReader";
+import { query, queryAndWrite } from "../reader/logReader";
 import { computeCompletionRateOfUrlTool } from "./kpi/computeCompletionRateOfUrlTool";
 import { computeKpiRateVisitsOnCcPagesOnAllContribPages } from "./kpi/computeKpiRateVisitsOnCcPagesOnAllContribPages";
 import { computeRateOfProcessedCcResultsOverAllResultsByTools } from "./kpi/computeRateOfProcessedCcResultsOverAllResultsByTools";
@@ -37,6 +37,19 @@ export const readDaysAndWriteAllLogs = async (
     queries_and_days.map((query_days) => queryAndWrite(index, query_days.day, query_days.query, outputFolderName, []))
   );
   return;
+};
+
+export const readDaysAllLogs = async (index: string, days: string[]): Promise<IDataFrame<number, any>> => {
+  const queries = days.map((day) => generateQueryToGetLogsForAGivenDate(day));
+  const queries_and_days = queries.map((q, i) => ({
+    day: days[i],
+    query: q,
+  }));
+
+  const result = await Promise.all(
+    queries_and_days.map((query_days) => query(index, query_days.day, query_days.query, []))
+  );
+  return DataFrame.concat(result);
 };
 
 const getFirstDayOfMonth = (series: ISeries): Date => {
