@@ -10,7 +10,7 @@ services:
       - 9200:9200
   kibana:
     container_name: monolog-kibana
-    image: docker.elastic.co/kibana/kibana:7.15.2
+    image: docker.elastic.co/kibana/kibana:7.17.22
     environment:
       - ELASTICSEARCH_HOSTS=http://monolog-elasticsearch:9200
     ports:
