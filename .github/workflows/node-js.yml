@@ -23,13 +23,19 @@ jobs:
         with:
           node-version: 20.3.1
           cache: "yarn"
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
+        with:
+          stack-version: 8.13.4
+          security-enabled: false
+      - name: Verify Elasticsearch connection
+        run: |
+          curl -fsSL "http://localhost:9200/_cat/health?h=status"
       - run: yarn --frozen-lockfile
       - run: yarn lint
       - run: yarn test
         env:
           CDTN_API_URL: https://code-du-travail-numerique-dev.dev.fabrique.social.gouv.fr
-          ELASTICSEARCH_URL: ${{ secrets.ELASTIC_URL }}
-          API_KEY: ${{ secrets.ELASTIC_API_KEY }}
       - run: yarn build:bin
       - run: yarn build:lib
       - run: yarn start --version
