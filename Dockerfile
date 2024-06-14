@@ -1,4 +1,5 @@
-FROM node:14.18.3-alpine3.14 as builder
+ARG NODE_VERSION=20.3.1-alpine
+FROM node:$NODE_VERSION as builder
 
 WORKDIR /app
 
@@ -9,7 +10,7 @@ COPY ./src/ src/
 RUN yarn install
 RUN yarn build:bin
 
-FROM node:14.18.3-alpine3.14
+FROM node:$NODE_VERSION
 WORKDIR /app
 COPY --from=builder /app/bin .
 

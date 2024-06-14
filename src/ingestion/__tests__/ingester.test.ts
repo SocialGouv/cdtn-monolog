@@ -24,7 +24,7 @@ test("ingest Matomo dump to ES", async () => {
   await ingest(dumpfile, index);
   await wait(2000);
   const resp = await elastic.esClient.count({ index });
-  expect(resp.body.count).toBe(299);
+  expect(resp.count).toBe(299);
 
   const docs = await elastic.getDocuments(index, { match_all: {} });
   expect(docs).toMatchSnapshot();
