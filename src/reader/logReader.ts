@@ -145,7 +145,7 @@ export const countVisits = async (index: string, days: string[]): Promise<DataFr
 
   const getCount = (day: string) => {
     const { query, aggs } = makeAgg(day);
-    return getDocuments(index, query, aggs, false, true).then(({ aggregations }) => ({
+    return getDocuments(index, query, aggs, false).then(({ aggregations }) => ({
       count: aggregations.visit_count.value,
       day,
     }));

@@ -34,8 +34,7 @@ export const getDocumentsFromES = async (
   query: any,
   // TODO use fp-ts option here
   aggs: any = undefined,
-  withDocs = true,
-  withSearch = false
+  withDocs = true
 ): Promise<DocumentResponse> => {
   const initResponse: any = await esClient.search<any>({
     aggs,
@@ -94,9 +93,8 @@ const getDocuments = async (
   query: any,
   // TODO use fp-ts option here
   aggs: any = undefined,
-  withDocs = true,
-  withSearch = false
-): Promise<DocumentResponse> => getDocumentsFromES(esClient, index, query, aggs, withDocs, withSearch);
+  withDocs = true
+): Promise<DocumentResponse> => getDocumentsFromES(esClient, index, query, aggs, withDocs);
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {
