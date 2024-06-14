@@ -37,8 +37,6 @@ export const getDocumentsFromES = async (
   withDocs = true,
   withSearch = false
 ): Promise<DocumentResponse> => {
-  console.log(`Get doc ES : ${withSearch} -> ${JSON.stringify(aggs)}`);
-  console.log(`Query(${index}) : ${JSON.stringify(query)}`);
   const initResponse: any = await esClient.search<any>({
     aggs,
     index,
@@ -146,12 +144,11 @@ const insertDocuments = async (index: string, documents: any) => {
       return [header, doc];
     });
     const resp = await esClient.bulk({ body, refresh: true });
-    console.log(`Batch ${resp.items.length} items : ${resp.errors}`);
+    console.log(`Batch ${resp.items.length} (with errors : ${resp.errors})`);
     if (resp.errors) {
       resp.items.forEach((element: any) => {
         if (element.index.status == 400) {
-          logger.error(`Error during insertion : ${element.index.error.reason} - ${JSON.stringify(element)}`);
-          // logger.error(`En echec : ${index} - ${JSON.stringify(documents)}`);
+          logger.error(`Error during insertion : ${element.index.error.reason}`);
         }
       });
     }
