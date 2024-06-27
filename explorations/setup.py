@@ -19,7 +19,7 @@ setup(
                       'sentence-transformers==2.2',
                       'sqlalchemy==1.4',
                       'torch==1.12.1',
-                      'transformers==4.21',
+                      'transformers==4.38.0',
                       'tqdm==4.64',
                       'unidecode==1.3.4'],
     python_requires='>=3.9',
