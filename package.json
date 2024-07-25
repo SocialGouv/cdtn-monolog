@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "jest --watch",
     "lint": "eslint src/ --ext .ts --fix",
-    "test": "CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr jest",
+    "test": "CDTN_API_URL=https://code-du-travail-numerique-preprod.ovh.fabrique.social.gouv.fr jest",
     "test-one": "jest analysis --watch",
     "monolog": "node -r ts-node/register --max-old-space-size=45000 src/bin/index.ts",
     "build": "yarn run build:bin && yarn run build:lib",
@@ -29,7 +29,7 @@
     "check:types": "tsc"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.15.0",
+    "@elastic/elasticsearch": "8.13.1",
     "@socialgouv/cdtn-logger": "^1.10.4",
     "@socialgouv/cdtn-sources": "^4.55.1",
     "data-forge": "^1.8.26",
@@ -49,10 +49,10 @@
     "@socialgouv/eslint-config-recommended": "^1.84.3",
     "@types/jest": "^27.0.2",
     "@types/murmurhash-js": "^1.0.3",
-    "@types/node-fetch": "^2.5.12",
+    "@types/node-fetch": "^2.6.11",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
-    "@vercel/ncc": "^0.29.2",
+    "@vercel/ncc": "0.38.1",
     "eslint": "^7.32.0",
     "esm": "^3.2.25",
     "husky": "^7.0.4",
@@ -83,6 +83,6 @@
     }
   },
   "volta": {
-    "node": "14.18.3"
+    "node": "20.3.1"
   }
 }

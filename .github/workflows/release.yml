@@ -15,8 +15,8 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: lts/*
-          cache: yarn
+          node-version: 20.3.1
+          cache: "yarn"
       - run: yarn --frozen-lockfile
       - run: yarn build:lib
       - run: yarn test --coverage

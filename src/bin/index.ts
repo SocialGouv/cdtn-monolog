@@ -1,4 +1,4 @@
-import { ConnectionError } from "@elastic/elasticsearch/lib/errors";
+import { errors } from "@elastic/elasticsearch";
 import { logger } from "@socialgouv/cdtn-logger";
 import yargs from "yargs/yargs";
 
@@ -99,7 +99,7 @@ const main = async () => {
       // .strict()
       .help().argv;
   } catch (err: any) {
-    if (err.name != undefined && err.name == ConnectionError.name) {
+    if (err instanceof errors.ConnectionError) {
       logger.error("Cannot access Elastic : " + JSON.stringify(err, null, 2));
     } else {
       console.log(err);
