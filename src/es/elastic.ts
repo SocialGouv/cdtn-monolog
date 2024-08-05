@@ -88,6 +88,41 @@ export const getDocumentsFromES = async (
   return { aggregations, docs };
 };
 
+export const getAllDocumentsFromES = async (client: Client, index: string, query: any) => {
+  const scrollTime = "10m";
+
+  const initialResponse = await client.search({
+    index,
+    scroll: scrollTime,
+    size: BATCH_SIZE,
+    query,
+  });
+
+  let scrollId = initialResponse._scroll_id;
+  let documents = initialResponse.hits.hits.map((doc) => doc._source);
+
+  let responseCount = documents.length;
+
+  while (responseCount > 0) {
+    const response = await client.scroll({
+      scroll_id: scrollId,
+      scroll: scrollTime,
+    });
+
+    responseCount = response.hits.hits.length;
+    if (responseCount > 0) {
+      documents = documents.concat(response.hits.hits.map((doc) => doc._source));
+      scrollId = response._scroll_id;
+    }
+  }
+
+  await client.clearScroll({
+    scroll_id: scrollId,
+  });
+
+  return documents;
+};
+
 const getDocuments = async (
   index: string,
   query: any,
@@ -95,6 +130,9 @@ const getDocuments = async (
   aggs: any = undefined,
   withDocs = true
 ): Promise<DocumentResponse> => getDocumentsFromES(esClient, index, query, aggs, withDocs);
+
+const getAllDocuments = async (index: string, query: any): Promise<any[]> =>
+  getAllDocumentsFromES(esClient, index, query);
 
 // we ensure index exists otherwise we create it
 const testAndCreateIndex = async (index: string, mappings: any) => {
@@ -173,6 +211,7 @@ export {
   deleteIfExists,
   esClient,
   getDocuments,
+  getAllDocuments,
   LOG_INDEX,
   MONTHLY_REPORT_INDEX,
   QUERY_REPORT_INDEX,
