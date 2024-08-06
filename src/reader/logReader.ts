@@ -5,7 +5,7 @@ import { DataFrame, IDataFrame, readFile } from "data-forge";
 import fs from "fs";
 import PQueue from "p-queue";
 
-import { getDocuments } from "../es/elastic";
+import { getAllDocuments, getDocuments } from "../es/elastic";
 import { actionTypes, getLastDays } from "./readerUtil";
 
 const defaultTypesToConsider = Object.values(actionTypes);
@@ -32,7 +32,7 @@ export const queryAndWrite = async (
   type: string[]
 ): Promise<void> => {
   console.log(`reading ${day}`);
-  const { docs } = await getDocuments(index, query, undefined);
+  const docs = await getAllDocuments(index, query);
   const data = await new DataFrame({ considerAllRows: true, values: docs });
   // in case we return select result type, we need to
   // unfold the result selection object in two columns
