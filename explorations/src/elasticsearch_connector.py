@@ -32,6 +32,7 @@ class ElasticsearchConnector:
         self.host = os.getenv('ELASTICSEARCH_MONOLOG_HOST')
         self.user = os.getenv('ELASTICSEARCH_MONOLOG_USER')
         self.password = os.getenv('ELASTICSEARCH_MONOLOG_PASSWORD')
+        self.api_key = os.getenv('ELASTICSEARCH_API_KEY', "")
 
     def overrides_env_es_admin(self):
         self.host = os.getenv('ELASTICSEARCH_SEARCH_ENGINE_HOST')
@@ -49,10 +50,14 @@ class ElasticsearchConnector:
         self.password = os.getenv('ELASTICSEARCH_LOCAL_PASSWORD', "")
 
     def _get_connection(self) -> Elasticsearch:
-        es_connection = Elasticsearch([self.host], http_auth=(self.user, self.password), timeout=36600)
-        connection_sucess = '\x1b[92mestablished with success\x1b[0m' if es_connection.ping() else \
+        if self.api_key:
+            es_connection = Elasticsearch([self.host], api_key=self.api_key, timeout=36600)
+        else:
+            es_connection = Elasticsearch([self.host], http_auth=(self.user, self.password), timeout=36600)
+
+        connection_success = '\x1b[92mestablished with success\x1b[0m' if es_connection.ping() else \
             '\x1B[1m\x1b[91mis KO\x1b[0m'
-        print(f'connection with ElasticSearch {connection_sucess}')
+        print(f'connection with ElasticSearch {connection_success}')
         return es_connection
 
     def count_hits(self, query: Dict, index: str) -> int:
