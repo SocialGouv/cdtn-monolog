@@ -14,7 +14,7 @@ setup(
                       'pandas==1.5.3',
                       'plotly-express==0.4.1',
                       'psycopg2-binary==2.9.9',
-                      'python-dotenv==0.20',
+                      'python-dotenv==0.21.1',
                       'requests==2.28',
                       'sentence-transformers==2.2.2',
                       'sqlalchemy==1.4.53',
