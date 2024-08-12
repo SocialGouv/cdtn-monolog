@@ -20,7 +20,7 @@ setup(
                       'sqlalchemy==1.4.53',
                       'torch==1.12.1',
                       'transformers==4.21',
-                      'tqdm==4.64',
+                      'tqdm==4.66.3',
                       'unidecode==1.3.8'],
     python_requires='>=3.9',
 )
