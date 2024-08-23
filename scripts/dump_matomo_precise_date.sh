@@ -48,14 +48,3 @@ file=$name.json
 jq -c -s '[.[][]]' $prefix*.json >$file
 
 rm $prefix*.json
-
-echo "Push file to Azure"
-az storage blob upload \
-  --account-key "$AZ_STORAGE_TOKEN" \
-  --account-name=cdtndata \
-  --container logs \
-  --file $file \
-  --name $name \
-  --overwrite
-
-rm $file
