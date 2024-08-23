@@ -15,18 +15,8 @@ jobs:
         with:
           node-version: 20.3.1
           cache: "yarn"
-      - name: Backup
-        uses: docker://mcr.microsoft.com/azure-cli
-        with:
-          args: "bash ./scripts/dump_matomo_yesterday.sh"
-        env:
-          AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
-      - name: Download
-        uses: docker://mcr.microsoft.com/azure-cli
-        with:
-          args: "bash ./scripts/download_dump.sh"
-        env:
-          AZ_STORAGE_TOKEN: ${{ secrets.AZ_STORAGE_TOKEN }}
+      - name: Retrieve data
+        run: "./scripts/dump_matomo_yesterday.sh"
       - name: Ingest
         run: |
           yarn

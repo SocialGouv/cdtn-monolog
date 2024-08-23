@@ -13,7 +13,6 @@ As this project lies between different services, it is useful to understand the 
 
 ```
 MATOMO_URL # URL of the Matomo server where raw logs can be found
-AZ_STORAGE_TOKEN # Azure token to push dump to Azure blob
 ELASTICSEARCH_URL # URL of the Elastic instance where the logs are stored eventually
 ELASTIC_TOKEN # Token to use the Elastic API, read-only token is enough for the query lib
 CDTN_API_URL # URL of the CDTN API required to generate a cache of the search engine results (without the api and final /)
@@ -31,14 +30,9 @@ However you may need to create manually all elastic indices which can be achieve
 
 ## Log storage
 
-### Backup
-
-We use Azure blob to store daily dumps of the Matomo content. Downloading the data from Matomo and pushing it to Azure is done through a bash script `dump_matomo_yesterday.sh` executed from the Azure Docker image.
-
 ### `ingest`
 
 The `ingest` task takes a Matomo dump file in `data/`, convert it, and push the actions to Elastic.
-The `download_dump.sh` script allows you to get a dump file from Azure.
 
 ```console
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog ingest data/
