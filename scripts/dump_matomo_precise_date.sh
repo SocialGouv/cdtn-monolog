@@ -48,3 +48,7 @@ file=$name.json
 jq -c -s '[.[][]]' $prefix*.json >$file
 
 rm $prefix*.json
+
+mkdir data
+
+mv $file data/$date.json

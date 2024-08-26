@@ -18,7 +18,7 @@ jobs:
           node-version: 20.3.1
           cache: "yarn"
       - name: Retrieve data
-        run: "./scripts/dump_matomo_yesterday.sh"
+        run: "./scripts/dump_matomo_precise_date.sh ${{ github.event.inputs.date }}"
       - name: Ingest
         run: |
           yarn
