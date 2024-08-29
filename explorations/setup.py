@@ -8,7 +8,7 @@ setup(
     author='Code du travail numérique',
     install_requires=['elasticsearch==7.17.9',
                       # 'eland==8.3', with elasticsearch 8.3 for explo 7
-                      'ipywidgets==8.0.7',
+                      'ipywidgets==8.1.5',
                       'jupyterlab',
                       'notebook==6.0.3',
                       'pandas==1.5.3',
