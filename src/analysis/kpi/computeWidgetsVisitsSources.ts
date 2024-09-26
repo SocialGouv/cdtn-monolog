@@ -12,6 +12,10 @@ const WIDGETS_LIST = [
     url: "https://code.travail.gouv.fr/widgets/indemnite-licenciement",
   },
   {
+    name: "Indemnité de rupture conventionnelle",
+    url: "https://code.travail.gouv.fr/widgets/indemnite-rupture-conventionnelle",
+  },
+  {
     name: "Comprendre sa procédure de licenciement",
     url: "https://code.travail.gouv.fr/widgets/procedure-licenciement",
   },
