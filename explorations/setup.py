@@ -16,7 +16,7 @@ setup(
                       'psycopg2-binary==2.9.9',
                       'python-dotenv==0.20',
                       'requests==2.28',
-                      'sentence-transformers==2.2.2',
+                      'sentence-transformers==2.7.0',
                       'sqlalchemy==1.4.53',
                       'torch==1.12.1',
                       'transformers==4.21',
