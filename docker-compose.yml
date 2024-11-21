@@ -1,7 +1,7 @@
 version: "3"
 services:
   monolog-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.16.1
     environment:
       - node.name=monolog-elasticsearch
       - cluster.name=es-docker-cluster
