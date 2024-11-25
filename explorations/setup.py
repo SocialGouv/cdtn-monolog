@@ -10,7 +10,7 @@ setup(
                       # 'eland==8.3', with elasticsearch 8.3 for explo 7
                       'ipywidgets==8.0.7',
                       'jupyterlab',
-                      'notebook==6.0.3',
+                      'notebook==6.4.12',
                       'pandas==1.5.3',
                       'plotly-express==0.4.1',
                       'psycopg2-binary==2.9.9',
