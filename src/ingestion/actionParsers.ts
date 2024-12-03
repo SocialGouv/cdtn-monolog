@@ -139,6 +139,8 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
     }
     default: {
       return {
+        action: action.eventAction,
+        name: action.eventName,
         type: action.eventCategory,
       };
     }

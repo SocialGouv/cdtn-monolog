@@ -36,6 +36,8 @@ export type MatomoVisit = VisitFields & {
 
 export type MonologActionFields = {
   type: string;
+  action?: string;
+  name?: string;
 
   // additional fields for Monolog format
   query?: string;
