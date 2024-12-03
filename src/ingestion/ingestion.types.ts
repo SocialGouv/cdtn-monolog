@@ -57,7 +57,7 @@ export type MonologActionFields = {
   ccAction?: string;
   idCc?: number;
 
-  action: string;
+  action?: string;
 };
 
 export type MonologAction = VisitFields & RootAction & MonologActionFields & MonologFields;
