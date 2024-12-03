@@ -58,8 +58,6 @@ export type MonologActionFields = {
   cc?: string;
   ccAction?: string;
   idCc?: number;
-
-  action: string;
 };
 
 export type MonologAction = VisitFields & RootAction & MonologActionFields & MonologFields;
