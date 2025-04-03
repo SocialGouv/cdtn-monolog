@@ -51,7 +51,7 @@ export const runIngestion = async (dataPath: string): Promise<void> => {
     // convert data
     // save actions to Elastic
     try {
-      await ingest(dataPath + f, LOG_INDEX);
+      await ingest(`${dataPath}/${f}`, LOG_INDEX);
     } catch (err) {
       logger.error(JSON.stringify(err, null, 2));
     }
