@@ -36,7 +36,7 @@ export const getDaysInPrevMonth = (month: number, year: number): string[] => {
   const date = subMonths(new Date(year, month, 1, 12), 1); // remove one month --> last finished month
   const currentMonth = date.getMonth();
 
-  const days = [];
+  const days: Date[] = [];
   while (date.getMonth() === currentMonth) {
     days.push(new Date(date));
     date.setDate(date.getDate() + 1);

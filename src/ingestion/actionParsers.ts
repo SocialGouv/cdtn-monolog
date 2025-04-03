@@ -105,7 +105,7 @@ const parseEvent = (action: MatomoAction): MonologActionFields => {
       return { query: action.eventAction, type: "theme_candidates" };
     }
     case "outil": {
-      let outilAction = null;
+      let outilAction: string | undefined = undefined;
       if (action.eventAction.startsWith("view_step_")) {
         outilAction = "view_step";
       } else if (action.eventAction.startsWith("click_previous")) {

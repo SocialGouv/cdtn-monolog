@@ -126,7 +126,7 @@ export const readCache = async (file: string): Promise<Cache> => {
     input: fs.createReadStream(file),
   });
 
-  const cacheB64 = [];
+  const cacheB64: Array<{ queries: string[]; results: any[] }> = [];
 
   for await (const line of readInterface) {
     cacheB64.push(JSON.parse(line));
