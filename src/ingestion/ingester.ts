@@ -1,5 +1,9 @@
 import { logger } from "@socialgouv/cdtn-logger";
 import * as fs from "fs";
+import { Transform } from "stream";
+import { chain } from "stream-chain";
+import { parser } from "stream-json";
+import { streamArray } from "stream-json/streamers/StreamArray";
 
 import * as elastic from "../es/elastic";
 import { parseEvent, parseSearch, parseStandard } from "./actionParsers";
@@ -100,13 +104,52 @@ const ingest = async (dumpPath: string, index: string): Promise<void> => {
   logger.info(`Ingesting dump ${dumpPath} to ES.`);
   const logfile = dumpPath.slice(dumpPath.lastIndexOf("/") + 1, dumpPath.lastIndexOf("."));
 
-  // TODO hmm hmm
-  const rawData = fs.readFileSync(dumpPath) as unknown as string;
+  return new Promise((resolve, reject) => {
+    // Create a batch array to collect actions
+    let actions: MonologAction[] = [];
+    const BATCH_SIZE = 1000;
 
-  const actions = parse(rawData, logfile);
+    // Create the streaming pipeline
+    const pipeline: Transform = chain([fs.createReadStream(dumpPath), parser(), streamArray()]);
 
-  await elastic.batchInsert(index, actions);
-  return;
+    // Process each visit object as it comes in
+    pipeline.on("data", (data: any) => {
+      const visit: MatomoVisit = data.value;
+      const visitActions = parseVisit(visit, logfile);
+      actions = actions.concat(visitActions);
+
+      // When we reach the batch size, process and reset
+      if (actions.length >= BATCH_SIZE) {
+        const batchToProcess = actions;
+        actions = [];
+
+        // Process batch
+        elastic.batchInsert(index, batchToProcess).catch((err) => {
+          pipeline.destroy();
+          reject(err);
+        });
+      }
+    });
+
+    // Handle the end of the stream
+    pipeline.on("end", async () => {
+      try {
+        // Process any remaining actions
+        if (actions.length > 0) {
+          await elastic.batchInsert(index, actions);
+        }
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+    // Handle errors
+    pipeline.on("error", (err: NodeJS.ErrnoException) => {
+      logger.error(`Error processing file ${dumpPath}: ${err}`);
+      reject(err);
+    });
+  });
 };
 
 export { checkIndex, ingest };

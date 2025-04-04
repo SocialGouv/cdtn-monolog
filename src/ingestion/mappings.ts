@@ -67,7 +67,7 @@ const mappings = {
     },
 
     referrerUrl: {
-      type: "keyword",
+      type: "text",
     },
 
     resultSelection: {

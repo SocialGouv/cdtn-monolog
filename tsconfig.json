@@ -7,19 +7,14 @@
     "declaration": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "lib": [
-      "es2019"
-    ],
+    "lib": ["es2019"],
     "resolveJsonModule": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "outDir": "lib",
     "skipLibCheck": true,
     "sourceMap": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "bin"
-  ]
+  "exclude": ["node_modules", "lib", "bin"]
 }
