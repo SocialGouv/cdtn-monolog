@@ -110,20 +110,6 @@ Query reports are stored in Elastic.
 ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog queries -d data.csv -c cache.json -s suggestions.txt
 ```
 
-## Covisits
-
-The `covisits` task check for links between documents that can be found in the user journeys.
-If several visits contain the same content views, we use it as a signal for content recommandations.
-We store those links in the Elastic log reports.
-
-The CDTN API will then read those links at build time, and use them to provide the user with "related content" suggestions.
-
-To refresh the covisits using a CSV data export (see `retrieve` above) :
-
-```console
-ELASTICSEARCH_URL=xxxx API_KEY=yyyy yarn monolog covisits -d data.csv
-```
-
 ## Elastic Reports
 
 Analysis reports are stored in different indices :
@@ -174,7 +160,7 @@ kibana dashboard are stored in the [kibana folder](./kibana/saved_objects/)
 
 TODO : describe how to create an additional report
 
-## Étapes à effectuer chaque mois
+## Steps to populate kibana data (run each month)
 
 ### Check data
 
@@ -210,30 +196,50 @@ POST logs-new/_delete_by_query
 }
 ```
 
-### Monthly reports
+### Start a frontend locally with an API
 
-```sh
-ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
-CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json ~ 1h40
-ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog monthly -m november # génerer les rapports mensuels ~ 1h20
-ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog monthly-kpi -m november # génerer les KPIs mensuels ~ 17min
-ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog covisits -d data-november # génerer les covisites, il faut le faire sur le plus de données possible (6 mois) ~ 6min
+You need to run the frontend locally to expose the search API.
+First, clone the frontend project: https://github.com/SocialGouv/code-du-travail-numerique
+
+Duplicate the file `/packages/code-du-travail-frontend/pages/api/enterprises.ts` to `/packages/code-du-travail-frontend/pages/api/search.ts`
+
+and change the `EnterprisesController` in the file by `SearchController`. The file should contain:
+
+```ts
+import { NextApiRequest, NextApiResponse } from "next";
+import { runMiddleware, SearchController } from "../../src/api";
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  await runMiddleware(req, res);
+  const controller = new SearchController(req, res);
+  if (req.method === "GET") {
+    controller.get();
+  }
+}
 ```
 
-### Les queries
+The run the project plugged to the preprod database :
 
-:warning: Il faut juste récupérer le dernier mois dans le retrieve d'où le script `get_last_month_cache.sh`
+https://github.com/SocialGouv/code-du-travail-numerique?tab=readme-ov-file#code-du-travail-frontend
+
+### Monthly scripts
 
 ```sh
-chmod +x scripts/get_last_month_cache.sh
-./scripts/get_last_month_cache.sh data-month
-CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr yarn monolog cache -d data-queries -o cache-queries.json # convertir les logs dans un json ~ 30min
-ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=https://code-du-travail-numerique-preprod.dev.fabrique.social.gouv.fr  yarn monolog queries -d data-queries -c cache-queries.json # générer les rapports queries ~ 2 minutes
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=http://localhost:3000 yarn monolog retrieve -o november # pour génerer des csv des 3 derniers mois ~ 10min
+CDTN_API_URL=http://localhost:3000 yarn monolog cache -d data-november -o cache-november.json # convertir les logs dans un json ~ 1h40
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=http://localhost:3000 yarn monolog monthly -m november # génerer les rapports mensuels ~ 1h20
+ELASTICSEARCH_URL=xxx API_KEY=yyy CDTN_API_URL=http://localhost:3000 yarn monolog monthly-kpi -m november # génerer les KPIs mensuels ~ 17min
 ```
 
-### Les index à supprimer lorsqu'on relance les commandes à effectuer chaque mois
+### Troubleshooting
 
-ce sont tous les index non cleané dans le script `runMonthly`.
+#### A script has failed
+
+A lancer pour clean les index ES et éviter les données dupliquées.
+
 Par exemple, on a pas besoin de cleaner "log_reports" parce que le script fait un `resetReportIndex` juste avant de le sauver.
 
 Dans Kibana > Dev Tools
