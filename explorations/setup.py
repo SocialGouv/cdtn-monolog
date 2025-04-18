@@ -18,7 +18,7 @@ setup(
                       'requests==2.28',
                       'sentence-transformers==2.2.2',
                       'sqlalchemy==1.4.53',
-                      'torch==1.12.1',
+                      'torch==2.6.0',
                       'transformers==4.21',
                       'tqdm==4.64',
                       'unidecode==1.3.8'],
