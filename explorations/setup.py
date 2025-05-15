@@ -6,21 +6,21 @@ setup(
     packages=find_packages(where='src'),
     package_dir={"": "src"},
     author='Code du travail numérique',
-    install_requires=['elasticsearch==7.17.9',
+    install_requires=['elasticsearch==8.8.0',
                       # 'eland==8.3', with elasticsearch 8.3 for explo 7
-                      'ipywidgets==8.0.7',
+                      # 'sentence-transformers==2.2.2', for explo 7
+                      # 'transformers==4.21', for explo 7
+                      # 'sqlalchemy==1.4.53', for explo 7
+                      # 'torch==1.12.1', for explo 7
+                      # 'unidecode==1.3.8', for explo 7
+                      # 'psycopg2-binary==2.9.9', for explo 7
+                      # 'requests==2.32.3', for explo 7
+                      'ipywidgets==8.1.5',
                       'jupyterlab',
-                      'notebook==6.0.3',
-                      'pandas==1.5.3',
-                      'plotly-express==0.4.1',
-                      'psycopg2-binary==2.9.9',
-                      'python-dotenv==0.20',
-                      'requests==2.28',
-                      'sentence-transformers==2.2.2',
-                      'sqlalchemy==1.4.53',
-                      'torch==1.12.1',
-                      'transformers==4.21',
-                      'tqdm==4.64',
-                      'unidecode==1.3.8'],
+                      'notebook==7.2.2',
+                      'pandas==2.2.3',
+                      'python-dotenv==1.0.1',
+                      'tqdm==4.67.0'
+                      ],
     python_requires='>=3.9',
 )

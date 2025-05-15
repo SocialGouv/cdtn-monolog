@@ -28,7 +28,7 @@ pip3 install -e .
 
 Démarrer Jupyter Lab en lançant la commande :
 ``` bash
-jupyter lab
+jupyter notebook
 ```
 
 Si vous souhaitez créer un nouveau notebook, il vous suffit de dupliquer le ``0_A_DUPLIQUER_POUR_EXPLO.ipynb``.
