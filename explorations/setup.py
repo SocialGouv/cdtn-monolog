@@ -17,7 +17,7 @@ setup(
                       # 'requests==2.32.3', for explo 7
                       'ipywidgets==8.1.7',
                       'jupyterlab',
-                      'notebook==7.2.3',
+                      'notebook==7.4.4',
                       'pandas==2.2.3',
                       'python-dotenv==1.0.1',
                       'tqdm==4.67.1'
