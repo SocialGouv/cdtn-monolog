@@ -19,6 +19,14 @@ export type VisitFields = {
   lastActionDateTime: number;
 };
 
+export type ExperimentsFields = {
+  experiments: {
+    id: string;
+    name: string;
+    variation: { idvariation: string; name: string };
+  }[];
+};
+
 export type MatomoAction = RootAction & {
   // update
   type: string;
@@ -30,9 +38,10 @@ export type MatomoAction = RootAction & {
   eventName: string;
 };
 
-export type MatomoVisit = VisitFields & {
-  actionDetails: MatomoAction[];
-};
+export type MatomoVisit = VisitFields &
+  ExperimentsFields & {
+    actionDetails: MatomoAction[];
+  };
 
 export type MonologActionFields = {
   type: string;
