@@ -51,10 +51,16 @@ const parseAction = (action: MatomoAction, visit: MatomoVisit, logfile: string):
     serverTimePretty,
   }))(visit);
 
+  const matomoAbTestingFields = (() => {
+    const firstExp = visit.experiments?.[0];
+    return firstExp ? { abName: firstExp.name, abVariant: firstExp.variation?.name } : {};
+  })();
+
   const uvi = hash(`${visit.idVisit}-${visit.lastActionDateTime}`);
 
   const partialMonologAction: VisitFields & RootAction & MonologFields = {
     ...matomoActionFields,
+    ...matomoAbTestingFields,
     ...matomoVisitFields,
     logfile,
     uvi,
