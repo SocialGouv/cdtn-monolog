@@ -19,7 +19,7 @@ setup(
                       'jupyterlab',
                       'notebook==7.2.3',
                       'pandas==2.2.3',
-                      'python-dotenv==1.0.1',
+                      'python-dotenv==1.2.1',
                       'tqdm==4.67.1'
                       ],
     python_requires='>=3.9',
