@@ -6,7 +6,7 @@ setup(
     packages=find_packages(where='src'),
     package_dir={"": "src"},
     author='Code du travail numérique',
-    install_requires=['elasticsearch==8.8.2',
+    install_requires=['elasticsearch==8.19.2',
                       # 'eland==8.3', with elasticsearch 8.3 for explo 7
                       # 'sentence-transformers==2.2.2', for explo 7
                       # 'transformers==4.21', for explo 7
