@@ -15,7 +15,7 @@ setup(
                       # 'unidecode==1.3.8', for explo 7
                       # 'psycopg2-binary==2.9.9', for explo 7
                       # 'requests==2.32.3', for explo 7
-                      'ipywidgets==8.1.7',
+                      'ipywidgets==8.1.8',
                       'jupyterlab',
                       'notebook==7.2.3',
                       'pandas==2.2.3',
